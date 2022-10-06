@@ -1,5 +1,6 @@
 /*
-Source code provided by Professor.
+Source code provided by the teacher.
+As it is presented, it is not completed.
 */
 
 #include <iostream>
