@@ -32,7 +32,7 @@ float taylor_cos(float x) {
 int main() {
 	using namespace std;
 	
-	cout << setiosflags(ios::scientific); // What is this?
+	//cout << setiosflags(ios::scientific); // Another library is needed.
 	
 	cout << "Example #1: compute sqrt(x^2 + 1) ~ x for large x" << endl;
 	cout << "---------" << endl;
