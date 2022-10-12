@@ -29,7 +29,7 @@ int main() {
 	double a, b, tollerance, I;
 	a = 0.0;
 	b = 1.0;
-	tollerance = 1e-9;
+	tollerance = 1e-5;
 	
 	// Test rectangular quadrature.
 	N = testquad(rectangualquad, function, a, b, tollerance);
@@ -48,7 +48,7 @@ int main() {
 	
 	// Test simpson quadrature.
 	N = testquad(simpsonquad, function, a, b, tollerance);
-	I = simpsonquad(function, a, b, N);
+	I = simpsonquad(function, a, b, 6);
 	cout << "Simpson: " << I << "; N = " << N << endl;
 	return 0;
 }
@@ -120,27 +120,27 @@ double trapezioidalquad(double (*f)(double x), double a, double b, int N) {
 	*/
 }
 
-// MC finire.
+// MC finire: risultato sbagliato.
 double simpsonquad(double (*f)(double x), double a, double b, int N) {
 	orderinterval(&a, &b);
 	if (N % 2 != 0) {
-		std::cout << "Error: for the Simpson rule the number of intervals must be even" << std::endl;
+		std::cout << "Error: to apply the Simpson rule the number of intervals must be even" << std::endl;
 		exit(1);
 	}
 	double dx, x_n, s_n;
 	dx = (b - a) / N;
-	x_n = a;
-	s_n = (f(a) + f(b)) / 3.0;
-	for (int n = 1; n < N; n++) {
-		x_n += n * dx;
-		s_n = (2.0 * f(x_n) + f(x_n + dx)) * 2.0 / 3.0;
+	x_n = a + dx;
+	s_n = f(a) + f(b);
+	for (int n = 1; n <= N - 1; n++) {
+		x_n = a + n * dx;
+		s_n += f(x_n) * 2.0 * (1 + n & 1);
 	}
-	return s_n * dx;
+	return s_n * dx / 3.0;
 }
 
 int testquad(double (*q)(double (*f)(double x), double a, double b, int N), double (*f)(double x), double a, double b, double tollerance) {
 	orderinterval(&a, &b);
-	int N = 1;
+	int N = 2;
 	double err;
 	do {
 		err = fabs(q(f, a, b, 2*N) - q(f, a, b, N));
