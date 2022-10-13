@@ -19,7 +19,6 @@ double midpointquad(double (*f)(double x), double a, double b, int N);
 double trapezioidalquad(double (*f)(double x), double a, double b, int N);
 double simpsonquad(double (*f)(double x), double a, double b, int N);
 
-// MC testare.
 int testquad(double (*q)(double (*f)(double x), double a, double b, int N), double (*f)(double x), double a, double b, double tollerance);
 
 int main() {
@@ -48,7 +47,7 @@ int main() {
 	
 	// Test simpson quadrature.
 	N = testquad(simpsonquad, function, a, b, tollerance);
-	I = simpsonquad(function, a, b, 6);
+	I = simpsonquad(function, a, b, N);
 	cout << "Simpson: " << I << "; N = " << N << endl;
 	return 0;
 }
@@ -120,7 +119,6 @@ double trapezioidalquad(double (*f)(double x), double a, double b, int N) {
 	*/
 }
 
-// MC finire: risultato sbagliato.
 double simpsonquad(double (*f)(double x), double a, double b, int N) {
 	orderinterval(&a, &b);
 	if (N % 2 != 0) {
@@ -129,11 +127,11 @@ double simpsonquad(double (*f)(double x), double a, double b, int N) {
 	}
 	double dx, x_n, s_n;
 	dx = (b - a) / N;
-	x_n = a + dx;
+	//x_n = a + dx;
 	s_n = f(a) + f(b);
 	for (int n = 1; n <= N - 1; n++) {
 		x_n = a + n * dx;
-		s_n += f(x_n) * 2.0 * (1 + n & 1);
+		s_n += f(x_n) * 2.0 * (1 + n % 2);
 	}
 	return s_n * dx / 3.0;
 }
@@ -141,10 +139,13 @@ double simpsonquad(double (*f)(double x), double a, double b, int N) {
 int testquad(double (*q)(double (*f)(double x), double a, double b, int N), double (*f)(double x), double a, double b, double tollerance) {
 	orderinterval(&a, &b);
 	int N = 2;
-	double err;
+	double t_0, t, err;
+	t_0 = q(f, a, b, N);
 	do {
-		err = fabs(q(f, a, b, 2*N) - q(f, a, b, N));
 		N *= 2;
+		t = q(f, a, b, N);
+		err = fabs(t - t_0);
+		t_0 = t;
 	} while (err > tollerance);
 	return N;
 }
