@@ -23,7 +23,7 @@ x : double *
 w : double *
  	Array of length Ng filled with weights associated to each gaussian point.
 */
-void gausspoints(int Ng, double * x, double * w);
+void gaussianpoints(int Ng, double * t, double * w);
 
 
 
@@ -34,7 +34,7 @@ void gausspoints(int Ng, double * x, double * w);
 /*
 Evaluate the integral of function f in the real interval [a, b] divided in N sub intervals using the rectangular quadrature.
 */
-double rectangualquad(double (*f)(double x), double a, double b, int N);
+double rectangularquad(double (*f)(double x), double a, double b, int N);
 
 /*
 Evaluate the integral of function f in the real interval [a, b] divided in N sub intervals using the midpoint quadrature.
@@ -52,7 +52,12 @@ Evaluate the integral of function f in the real interval [a, b] divided in N sub
 double simpsonquad(double (*f)(double x), double a, double b, int N);
 
 /*
-Evaluate the integral of function f in the real interval [a, b] subdivided in N sub intervals using Gauss-Legendre quadrature.
+Evaluate the integral of function f in the real interval [a, b] divided in N sub intervals using Gauss-Legendre quadrature.
 */
 double gaussquad(double (*f)(double x), double a, double b, int N, int Ng);
+
+/*
+Evaluate the integral of function f in the real interval [a, b] x [a, b] each divided in N sub intervals using Gauss-Legendre quadrature.
+*/
+double multiquad(double (*f)(double x, double y), double a, double b, int N, int Ng);
 
