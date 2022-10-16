@@ -151,7 +151,7 @@ double gaussquad(double (*f)(double x), double a, double b, int N, int Ng) {
 	double * x, * w;
 	x = new double[Ng];
 	w = new double[Ng];
-	gausspoints(Ng, x, w);
+	gaussianpoints(Ng, x, w);
 	dx = (b - a) / N;
 	sum = 0.0;
 	for (int n = 1; n <= N; n++) {
@@ -178,7 +178,7 @@ double multiquad(double (*f)(double x, double y), double a, double b, int N, int
 	int n_x, n_y;
 	t = new double[Ng];
 	w = new double[Ng];
-	gausspoints(Ng, t, w);
+	gaussianpoints(Ng, t, w);
 	dx = (b - a) / N;
 	dy = (b - a) / N;
 	sum = 0.0;
