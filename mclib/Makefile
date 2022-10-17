@@ -1,12 +1,15 @@
-main : main.o lib.o
+MAIN=main
+LIB=../mclib/mclib
+
+main: main.o lib.o
 	g++ main.o lib.o -o main
 
-main.o : main.cpp lib.h
-	g++ -c main.cpp -o main.o
+main.o: ${MAIN}.cpp ${LIB}.h
+	g++ -c ${MAIN}.cpp -o main.o
 
-lib.o : lib.cpp lib.h
-	g++ -c lib.cpp -o lib.o
+lib.o: ${LIB}.cpp ${LIB}.h
+	g++ -c ${LIB}.cpp -o lib.o
 
-clean :
+clean:
 	rm *.o
 

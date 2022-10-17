@@ -9,9 +9,9 @@
 void orderinterval(double * a, double * b) {
 	double * tmp;
 	if (*a >= *b) {
-		tmp = b;
-		b = tmp;
-		a = tmp;
+		*tmp = *b;
+		*b = *a;
+		*a = *tmp;
 	}
 }
 
