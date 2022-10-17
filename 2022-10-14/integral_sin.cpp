@@ -52,11 +52,11 @@ int main() {
 	outfile.open("out.dat");
 	outfile.precision(PRECISION);
 	outfile.setf(ios::scientific);
-	//outfile << "h, M(h), T(h)" << endl;
+	outfile << "h, M(h), T(h)" << endl;
 	for (int n = 0; n < NUM_INTERVALS; n++) {
 		m = primitive(midpointquad, function, x, x_0, h[n]);
 		t = primitive(trapezioidalquad, function, x, x_0, h[n]);
-		//outfile << h[n] << ", " << m << ", " << t << endl;
+		outfile << h[n] << ", " << m << ", " << t << endl;
 	}
 	outfile.close();
 	return 0;
