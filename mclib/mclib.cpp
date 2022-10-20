@@ -64,6 +64,15 @@ void gaussianpoints(int Ng, double * t, double * w) {
 	}
 }
 
+char check_intermediate_value(double (*f)(double x), double a, double b) {
+	char _return = 0;
+	if (f(a) * f(b) < 0.0) {
+		_return = 1;
+	}
+	return _return;
+}
+
+
 
 ////////// Quadrature functions //////////
 
@@ -202,3 +211,37 @@ double multiquad(double (*f)(double x, double y), double a, double b, int N, int
 	return sum;
 }
 
+
+
+////////// Root finders //////////
+
+
+
+// MC one can improve this function avoiding multiple calls to f by saving the values in a variable.
+double bisection(double (*f)(double x), double a, double b, double tollerance) {
+	if (!check_intermediate_value(f, a, b)) {
+		std::cout << "Function f, assumed continuous, does not have zeros in interval [" << a << ", " << b << "]";
+		exit(1);
+	}
+	double x_0;
+	#ifdef DEBUG
+	int k = 0;
+	#endif /* DEBUG */
+	do {
+		x_0 = (a + b) / 2.0;
+		#ifdef DEBUG
+		++k;
+		std::cout << "Bisection(): k = " << k << "; [a,b] = [" << a << ", " << b << "]; xm = " << x_0 << "; dx = " << b - a << "; fm = " << f(x_0) << std::endl;
+		#endif /* DEBUG */
+		if (check_intermediate_value(f, a, x_0)) {
+			b = x_0;
+		} else {
+			a = x_0;
+		}
+	} while (fabs(b - a) >= tollerance);
+	#ifdef DEBUG
+	++k;
+	std::cout << "Bisection(): k = " << k << "; [a,b] = [" << a << ", " << b << "]; xm = " << x_0 << "; dx = " << b - a << "; fm = " << f(x_0) << std::endl;
+	#endif /* DEBUG */
+	return x_0;
+}
