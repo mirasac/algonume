@@ -15,7 +15,7 @@ void orderinterval(double * a, double * b) {
 	}
 }
 
-void gaussianpoints(int Ng, double * t, double * w) {
+void gaussianpoints(int Ng, double t[], double w[]) {
 	switch (Ng) {
 	case 1:
 		t[0] = 0.0;
@@ -261,6 +261,36 @@ double bisection(double (*f)(double x), double a, double b, double tollerance) {
 	return x_0;
 }
 
+double falseposition(double (*f)(double x), double a, double b, double tollerance) {
+	orderinterval(&a, &b);
+	if (!check_intermediate_value(f, a, b)) {
+		std::cout << "Function f, assumed continuous, does not have zeros in interval [" << a << ", " << b << "]";
+		exit(1);
+	}
+	double x_m, f_a, f_b, f_m;
+	#ifdef DEBUG
+	int k = 0;
+	#endif /* DEBUG */
+	f_a = f(a);
+	f_b = f(b);
+	while (b - a >= tollerance) {
+		x_m = (f_a * b - f_b * a) / (f_a - f_b);
+		f_m = f(x_m);
+		#ifdef DEBUG
+		++k;
+		std::cout << "FalsePosition(): k = " << k << "; [a,b] = [" << a << ", " << b << "]; xm = " << x_m << "; dx = " << b - a << "; fm = " << f_m << std::endl;
+		#endif /* DEBUG */
+		if (f_a * f_m >= 0.0) {
+			a = x_m;
+			f_a = f_m;
+		} else {
+			b = x_m;
+			f_b = f_m;
+		}
+	}
+	return x_m;
+}
+
 double secant(double (*f)(double x), double a, double b, double tollerance) {
 	double x_0, x_prev, f_0, f_prev;
 	#ifdef DEBUG
@@ -346,10 +376,8 @@ double newtonraphson_poly(double (*p)(int n, double c[], double x), int n, doubl
 
 
 
-int bracketing(double (*f)(double x), double a, double b, int N, double * x_L, double * x_R) {
+int bracketing(double (*f)(double x), double a, double b, int N, double x_L[], double x_R[]) {
 	orderinterval(&a, &b);
-	x_L = new double[N];
-	x_R = new double[N];
 	double x_a, x_b, dx;
 	int k;
 	dx = (b - a) / N;
@@ -365,4 +393,3 @@ int bracketing(double (*f)(double x), double a, double b, int N, double * x_L, d
 	}
 	return k;
 }
-

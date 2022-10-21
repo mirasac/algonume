@@ -26,7 +26,7 @@ x : double *
 w : double *
  	Array of length Ng filled with weights associated to each gaussian point.
 */
-void gaussianpoints(int Ng, double * t, double * w);
+void gaussianpoints(int Ng, double t[], double w[]);
 
 /*
 Check if intermediate value theorem is applicable for function f in the interval [a, b], in other words check if the function, if continuous, may have a zero in the interval.
@@ -135,7 +135,7 @@ The first point x where the function assumes a value lower than the specified to
 double newtonraphson(double (*f)(double x), double (*f1)(double x), double a, double b, double tollerance);
 
 /*
-Variant of function newtonraphson to be used when function f is a polynomial.
+Variant of function `newtonraphson` to be used when function f is a polynomial.
 */
 double newtonraphson_poly(double (*p)(int n, double c[], double x), int n, double c[], double a, double b, double tollerance);
 
@@ -145,5 +145,4 @@ double newtonraphson_poly(double (*p)(int n, double c[], double x), int n, doubl
 
 
 
-int bracketing(double a, double b, int N, double x_l[], double x_r[]);
-
+int bracketing(double (*f)(double x), double a, double b, int N, double x_L[], double x_R[]);
