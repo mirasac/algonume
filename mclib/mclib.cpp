@@ -66,10 +66,25 @@ void gaussianpoints(int Ng, double * t, double * w) {
 
 char check_intermediate_value(double (*f)(double x), double a, double b) {
 	char _return = 0;
-	if (f(a) * f(b) < 0.0) {
+	if (f(a) * f(b) <= 0.0) {
 		_return = 1;
 	}
 	return _return;
+}
+
+double polynomial(int n, double c[], double x) {
+	double _return;
+	_return = c[n];
+	for (int i = n-1; i >= 0; i--) {
+		_return = _return * x + c[i];
+	}
+	return _return;
+}
+
+void polynomial_derivative(int n, double c[], double c1[]) {
+	for (int i = 1; i <= n; i++) {
+		c1[i-1] = c[i] * i;
+	}
 }
 
 
@@ -245,3 +260,109 @@ double bisection(double (*f)(double x), double a, double b, double tollerance) {
 	#endif /* DEBUG */
 	return x_0;
 }
+
+double secant(double (*f)(double x), double a, double b, double tollerance) {
+	double x_0, x_prev, f_0, f_prev;
+	#ifdef DEBUG
+	int k = 0;
+	#endif /* DEBUG */
+	x_0 = (a + b) / 2.0;  // Initial guess.
+	x_prev = a;
+	f_prev = f(x_prev);
+	do {
+		f_0 = f(x_0);
+		x_0 = x_0 - f_0 * (x_0 - x_prev) / (f_0 - f_prev);
+		x_prev = x_0;
+		f_prev = f_0;
+		#ifdef DEBUG
+		++k;
+		std::cout << "Secant(): k = " << k << "; xc = " << x_0 << "; dx = " << x_0 - x_prev << std::endl;
+		#endif /* DEBUG */
+	} while(fabs(x_0 - x_prev) >= tollerance);
+	#ifdef DEBUG
+	++k;
+	std::cout << "Secant(): k = " << k << "; xc = " << x_0 << "; dx = " << x_prev - x_0 << std::endl;
+	std::cout << "Secant(): f = " << f(x_0) << std::endl;
+	#endif /* DEBUG */
+	return x_0;
+}
+
+double newtonraphson(double (*f)(double x), double (*f1)(double x), double a, double b, double tollerance) {
+	orderinterval(&a, &b);
+	double x_prev, x_0, f_0;
+	#ifdef DEBUG
+	int k = 0;
+	#endif /* DEBUG */
+	x_0 = (a + b) / 2.0;  // Initial guess.
+	do {
+		f_0 = f(x_0);
+		x_prev = x_0;
+		x_0 = x_0 - f_0 / f1(x_0);
+		#ifdef DEBUG
+		++k;
+		std::cout << "Newton(): k = " << k << "; xc = " << x_0 << "; dx = " << x_0 - x_prev << std::endl;
+		#endif /* DEBUG */
+	} while (fabs(x_0 - x_prev) >= tollerance);
+	#ifdef DEBUG
+	++k;
+	std::cout << "Newton(): k = " << k << "; xc = " << x_0 << "; dx = " << x_prev - x_0 << std::endl;
+	std::cout << "Newton(): f = " << f(x_0) << std::endl;
+	#endif /* DEBUG */
+	return x_0;
+}
+
+double newtonraphson_poly(double (*p)(int n, double c[], double x), int n, double c[], double a, double b, double tollerance) {
+	orderinterval(&a, &b);
+	double x_prev, x_0, f_0, f1;
+	double * c1;
+	c1 = new double[n];
+	polynomial_derivative(n, c, c1);
+	#ifdef DEBUG
+	int k = 0;
+	#endif /* DEBUG */
+	x_0 = (a + b) / 2.0;  // Initial guess.
+	do {
+		f_0 = p(n, c, x_0);
+		f1 = p(n-1, c1, x_0);
+		x_prev = x_0;
+		x_0 = x_0 - f_0 / f1;
+		#ifdef DEBUG
+		++k;
+		std::cout << "Newton(): k = " << k << "; xc = " << x_0 << "; dx = " << x_0 - x_prev << std::endl;
+		#endif /* DEBUG */
+	} while (fabs(x_0 - x_prev) >= tollerance);
+	#ifdef DEBUG
+	++k;
+	std::cout << "Newton(): k = " << k << "; xc = " << x_0 << "; dx = " << x_prev - x_0 << std::endl;
+	std::cout << "Newton(): f = " << p(n, c, x_0) << std::endl;
+	#endif /* DEBUG */
+	delete[] c1;
+	return x_0;
+}
+
+
+
+////////// Bracketing //////////
+
+
+
+int bracketing(double (*f)(double x), double a, double b, int N, double * x_L, double * x_R) {
+	orderinterval(&a, &b);
+	x_L = new double[N];
+	x_R = new double[N];
+	double x_a, x_b, dx;
+	int k;
+	dx = (b - a) / N;
+	k = 0;
+	for (int n = 0; n < N; n++) {
+		x_a = a + dx * n;
+		x_b = a + dx * (n + 1);
+		if (check_intermediate_value(f, x_a, x_b)) {
+			x_L[k] = x_a;
+			x_R[k] = x_b;
+			++k;
+		}
+	}
+	return k;
+}
+
