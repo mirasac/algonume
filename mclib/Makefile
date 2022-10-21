@@ -1,7 +1,7 @@
 MAIN=main
 LIB=../mclib/mclib
 
-main: main.o lib.o
+main.out: main.o lib.o
 	g++ main.o lib.o -o main
 
 main.o: ${MAIN}.cpp ${LIB}.h
@@ -11,5 +11,5 @@ lib.o: ${LIB}.cpp ${LIB}.h
 	g++ -c ${LIB}.cpp -o lib.o
 
 clean:
-	rm *.o
+	rm *.o *.out
 
