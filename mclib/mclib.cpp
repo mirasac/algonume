@@ -87,6 +87,28 @@ void polynomial_derivative(int n, double c[], double c1[]) {
 	}
 }
 
+double polynomial_legendre(int n, double x) {
+	double _return, P_h, P_i;
+	P_h = 1.0; // Order 0.
+	P_i = x; // Order 1.
+	switch (n) {
+	case 0:
+		_return = P_h;
+		break;
+	case 1:
+		_return = P_i;
+		break;
+	default:
+		for (int i = 1; i < n; i++) {
+			_return = ( (2 * i + 1) * x * P_i - i * P_h ) / (i + 1);
+			P_h = P_i;
+			P_i = _return;
+		}
+		break;
+	}
+	return _return;
+}
+
 
 
 ////////// Quadrature functions //////////
@@ -239,25 +261,25 @@ double bisection(double (*f)(double x), double a, double b, double tollerance) {
 		exit(1);
 	}
 	double x_0;
-	#ifdef DEBUG
+	#if FLG_DEBUG
 	int k = 0;
-	#endif /* DEBUG */
+	#endif /* FLG_DEBUG */
 	do {
 		x_0 = (a + b) / 2.0;
-		#ifdef DEBUG
+		#if FLG_DEBUG
 		++k;
 		std::cout << "Bisection(): k = " << k << "; [a,b] = [" << a << ", " << b << "]; xm = " << x_0 << "; dx = " << b - a << "; fm = " << f(x_0) << std::endl;
-		#endif /* DEBUG */
+		#endif /* FLG_DEBUG */
 		if (check_intermediate_value(f, a, x_0)) {
 			b = x_0;
 		} else {
 			a = x_0;
 		}
 	} while (fabs(b - a) >= tollerance);
-	#ifdef DEBUG
+	#if FLG_DEBUG
 	++k;
 	std::cout << "Bisection(): k = " << k << "; [a,b] = [" << a << ", " << b << "]; xm = " << x_0 << "; dx = " << b - a << "; fm = " << f(x_0) << std::endl;
-	#endif /* DEBUG */
+	#endif /* FLG_DEBUG */
 	return x_0;
 }
 
@@ -268,18 +290,18 @@ double falseposition(double (*f)(double x), double a, double b, double tolleranc
 		exit(1);
 	}
 	double x_m, f_a, f_b, f_m;
-	#ifdef DEBUG
+	#if FLG_DEBUG
 	int k = 0;
-	#endif /* DEBUG */
+	#endif /* FLG_DEBUG */
 	f_a = f(a);
 	f_b = f(b);
 	while (b - a >= tollerance) {
 		x_m = (f_a * b - f_b * a) / (f_a - f_b);
 		f_m = f(x_m);
-		#ifdef DEBUG
+		#if FLG_DEBUG
 		++k;
 		std::cout << "FalsePosition(): k = " << k << "; [a,b] = [" << a << ", " << b << "]; xm = " << x_m << "; dx = " << b - a << "; fm = " << f_m << std::endl;
-		#endif /* DEBUG */
+		#endif /* FLG_DEBUG */
 		if (f_a * f_m >= 0.0) {
 			a = x_m;
 			f_a = f_m;
@@ -293,9 +315,9 @@ double falseposition(double (*f)(double x), double a, double b, double tolleranc
 
 double secant(double (*f)(double x), double a, double b, double tollerance) {
 	double x_0, x_prev, f_0, f_prev;
-	#ifdef DEBUG
+	#if FLG_DEBUG
 	int k = 0;
-	#endif /* DEBUG */
+	#endif /* FLG_DEBUG */
 	x_0 = (a + b) / 2.0;  // Initial guess.
 	x_prev = a;
 	f_prev = f(x_prev);
@@ -304,40 +326,40 @@ double secant(double (*f)(double x), double a, double b, double tollerance) {
 		x_0 = x_0 - f_0 * (x_0 - x_prev) / (f_0 - f_prev);
 		x_prev = x_0;
 		f_prev = f_0;
-		#ifdef DEBUG
+		#if FLG_DEBUG
 		++k;
 		std::cout << "Secant(): k = " << k << "; xc = " << x_0 << "; dx = " << x_0 - x_prev << std::endl;
-		#endif /* DEBUG */
+		#endif /* FLG_DEBUG */
 	} while(fabs(x_0 - x_prev) >= tollerance);
-	#ifdef DEBUG
+	#if FLG_DEBUG
 	++k;
 	std::cout << "Secant(): k = " << k << "; xc = " << x_0 << "; dx = " << x_prev - x_0 << std::endl;
 	std::cout << "Secant(): f = " << f(x_0) << std::endl;
-	#endif /* DEBUG */
+	#endif /* FLG_DEBUG */
 	return x_0;
 }
 
 double newtonraphson(double (*f)(double x), double (*f1)(double x), double a, double b, double tollerance) {
 	orderinterval(&a, &b);
 	double x_prev, x_0, f_0;
-	#ifdef DEBUG
+	#if FLG_DEBUG
 	int k = 0;
-	#endif /* DEBUG */
+	#endif /* FLG_DEBUG */
 	x_0 = (a + b) / 2.0;  // Initial guess.
 	do {
 		f_0 = f(x_0);
 		x_prev = x_0;
 		x_0 = x_0 - f_0 / f1(x_0);
-		#ifdef DEBUG
+		#if FLG_DEBUG
 		++k;
 		std::cout << "Newton(): k = " << k << "; xc = " << x_0 << "; dx = " << x_0 - x_prev << std::endl;
-		#endif /* DEBUG */
+		#endif /* FLG_DEBUG */
 	} while (fabs(x_0 - x_prev) >= tollerance);
-	#ifdef DEBUG
+	#if FLG_DEBUG
 	++k;
 	std::cout << "Newton(): k = " << k << "; xc = " << x_0 << "; dx = " << x_prev - x_0 << std::endl;
 	std::cout << "Newton(): f = " << f(x_0) << std::endl;
-	#endif /* DEBUG */
+	#endif /* FLG_DEBUG */
 	return x_0;
 }
 
@@ -347,25 +369,25 @@ double newtonraphson_poly(double (*p)(int n, double c[], double x), int n, doubl
 	double * c1;
 	c1 = new double[n];
 	polynomial_derivative(n, c, c1);
-	#ifdef DEBUG
+	#if FLG_DEBUG
 	int k = 0;
-	#endif /* DEBUG */
+	#endif /* FLG_DEBUG */
 	x_0 = (a + b) / 2.0;  // Initial guess.
 	do {
 		f_0 = p(n, c, x_0);
 		f1 = p(n-1, c1, x_0);
 		x_prev = x_0;
 		x_0 = x_0 - f_0 / f1;
-		#ifdef DEBUG
+		#if FLG_DEBUG
 		++k;
 		std::cout << "Newton(): k = " << k << "; xc = " << x_0 << "; dx = " << x_0 - x_prev << std::endl;
-		#endif /* DEBUG */
+		#endif /* FLG_DEBUG */
 	} while (fabs(x_0 - x_prev) >= tollerance);
-	#ifdef DEBUG
+	#if FLG_DEBUG
 	++k;
 	std::cout << "Newton(): k = " << k << "; xc = " << x_0 << "; dx = " << x_prev - x_0 << std::endl;
 	std::cout << "Newton(): f = " << p(n, c, x_0) << std::endl;
-	#endif /* DEBUG */
+	#endif /* FLG_DEBUG */
 	delete[] c1;
 	return x_0;
 }

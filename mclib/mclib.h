@@ -1,7 +1,11 @@
+#ifndef __MCLIB_H
+#define __MCLIB_H
+
 #include <cmath>
 #include <iostream>
 
-#define DEBUG
+#define N_PRECISION 12
+#define FLG_DEBUG 0
 
 
 
@@ -56,6 +60,31 @@ Set array c1 as the array of coefficients of the derivative of the polynomial of
 */
 void polynomial_derivative(int n, double c[], double c1[]);
 
+/*
+Evaluate Legendre polynomial of order n in point x.
+*/
+double polynomial_legendre(int n, double x);
+
+// MC does not work because I do not know how to use correctly the preprocessor, elaborate.
+/*
+#define POW2(x) ( (x)*(x) )
+
+#define POW3(x) ( (x)*(x)*(x) )
+
+#define POW4(x) ( (x)*(x)*(x)*(x) )
+
+#define POW5(x) ( (x)*(x)*(x)*(x)*(x) )
+
+#define POW6(x) ( (x)*(x)*(x)*(x)*(x)*(x) )
+
+#define POW7(x) ( (x)*(x)*(x)*(x)*(x)*(x)*(x) )
+
+#define POW8(x) ( (x)*(x)*(x)*(x)*(x)*(x)*(x)*(x) )
+
+#define POW9(x) ( (x)*(x)*(x)*(x)*(x)*(x)*(x)*(x)*(x) )
+
+#define POW(x, n) POW n(x)
+*/
 
 
 ////////// Quadrature functions //////////
@@ -145,4 +174,14 @@ double newtonraphson_poly(double (*p)(int n, double c[], double x), int n, doubl
 
 
 
+/*
+Execute the bracketing of interval [a, b] by dividing it in N subintervals and checking for each subinterval if function f changes sign. Boundaries of intervals which satisfy this condition are saved in arrays x_L (lower boundaries) and x_R (upper boundaries) in ascending order.
+
+Return
+------
+Number of intervals which may have at least a zero of the function.
+*/
 int bracketing(double (*f)(double x), double a, double b, int N, double x_L[], double x_R[]);
+
+#endif /* __MCLIB_H */
+
