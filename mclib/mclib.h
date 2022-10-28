@@ -183,5 +183,26 @@ Number of intervals which may have at least a zero of the function.
 */
 int bracketing(double (*f)(double x), double a, double b, int N, double x_L[], double x_R[]);
 
+
+
+////////// Differentation //////////
+
+
+
+/*
+Evaluate forward difference of f in point x with grid step h.
+*/
+double forward_difference(double (*f)(double), double h, double x);
+
+/*
+Evaluate backward difference of f in point x with grid step h.
+*/
+double backward_difference(double (*f)(double), double h, double x);
+
+/*
+Evaluate central difference of f in point x with grid step h.
+*/
+double central_difference(double (*f)(double), double h, double x);
+
 #endif /* __MCLIB_H */
 

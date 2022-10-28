@@ -415,3 +415,22 @@ int bracketing(double (*f)(double x), double a, double b, int N, double x_L[], d
 	}
 	return k;
 }
+
+
+
+////////// Differentation //////////
+
+
+
+double forward_difference(double (*f)(double), double h, double x) {
+	return (f(x + h) - f(x)) / h;
+}
+
+double backward_difference(double (*f)(double), double h, double x) {
+	return (f(x) - f(x - h)) / h;
+}
+
+double central_difference(double (*f)(double), double h, double x) {
+	return (f(x + h) - f(x - h)) / (2.0 * h);
+}
+
