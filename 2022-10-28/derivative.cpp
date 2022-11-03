@@ -33,6 +33,7 @@ int main() {
 		plotfile << setw(N_WIDTH) << 1.0 / h << ' ' << epsilon_FD << ' ' << epsilon_BD << ' ' << epsilon_CD << endl;
 		h /= 2;
 	}
+	plotfile.close();
 	return 0;
 }
 
