@@ -434,3 +434,17 @@ double central_difference(double (*f)(double), double h, double x) {
 	return (f(x + h) - f(x - h)) / (2.0 * h);
 }
 
+
+
+////////// ODE integration //////////
+
+
+
+// MC finire.
+void euler_step(void (*RHS)(double t, double * y_0, double * y), double t, double * y, double dt, int n_eq) {
+	int k;
+	double * rhs;
+	rhs = new double[n_eq];
+	RHS(t, 
+}
+

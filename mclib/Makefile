@@ -11,5 +11,5 @@ lib.o: ${LIB}.cpp ${LIB}.h
 	g++ -c ${LIB}.cpp -o lib.o
 
 clean:
-	rm *.o *.out
+	rm *.o *.out *.dat
 

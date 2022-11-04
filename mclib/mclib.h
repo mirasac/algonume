@@ -204,5 +204,17 @@ Evaluate central difference of f in point x with grid step h.
 */
 double central_difference(double (*f)(double), double h, double x);
 
+
+
+////////// ODE integration //////////
+
+
+
+// MC finire.
+/*
+This function works for a multi dimensional RHS which depends on a single parameter p.
+*/
+void euler_step(double t, double * y, void (*RHS)(double p, double * y, double * a), double dt, int n_eq);
+
 #endif /* __MCLIB_H */
 
