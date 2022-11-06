@@ -275,7 +275,7 @@ double bisection(double (*f)(double x), double a, double b, double tollerance) {
 		} else {
 			a = x_0;
 		}
-	} while (fabs(b - a) >= tollerance);
+	} while (fabs(b - a) > tollerance);
 	#if FLG_DEBUG
 	++k;
 	std::cout << "Bisection(): k = " << k << "; [a,b] = [" << a << ", " << b << "]; xm = " << x_0 << "; dx = " << b - a << "; fm = " << f(x_0) << std::endl;
@@ -441,10 +441,11 @@ double central_difference(double (*f)(double), double h, double x) {
 
 
 // MC finire.
+/*
 void euler_step(void (*RHS)(double t, double * y_0, double * y), double t, double * y, double dt, int n_eq) {
 	int k;
 	double * rhs;
 	rhs = new double[n_eq];
 	RHS(t, 
 }
-
+*/
