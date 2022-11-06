@@ -5,8 +5,8 @@ LIB=./mclib/mclib
 dev: main lib
 	g++ ${CPPFLAGS} -o ${MAIN}.out ${MAIN}.o ${LIB}.o
 
-prod: ${MAIN}.cpp
-	g++ ${CPPFLAGS} -DPROD -o ${MAIN}.cpp ${MAIN}.cpp
+prod: main lib
+	g++ ${CPPFLAGS} -DPROD -o ${MAIN}.out ${MAIN}.o ${LIB}.o
 
 main: ${MAIN}.cpp ${LIB}.h
 	g++ ${CPPFLAGS} -c ${MAIN}.cpp -o ${MAIN}.o
