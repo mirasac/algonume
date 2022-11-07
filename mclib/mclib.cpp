@@ -7,11 +7,11 @@
 
 
 void orderinterval(double * a, double * b) {
-	double * tmp;
+	double tmp;
 	if (*a >= *b) {
-		*tmp = *b;
+		tmp = *b;
 		*b = *a;
-		*a = *tmp;
+		*a = tmp;
 	}
 }
 
