@@ -177,7 +177,7 @@ int main() {
 	}
 	cout << ii << endl;
 	#endif /* PROD */
-	b = 31.0;
+	b = 28.0;
 	// Loop on t.
 	#ifndef PROD
 	clock_t time_start, time_end;
