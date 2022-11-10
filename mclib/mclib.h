@@ -210,11 +210,22 @@ double central_difference(double (*f)(double), double h, double x);
 
 
 
-// MC finire.
 /*
-This function works for a multi dimensional RHS which depends on a single parameter p.
+Perform a single step of the Euler method for ODEs resolution. First order ODEs are accepted, but an ODE of any order can be treated if it is rewrited as a system of first order ODEs.
+
+Parameters
+----------
+t : double
+	Time value considered during the step execution.
+dt : double
+	Time step.
+Y : double
+	Array of numerical solutions at time t + dt.
+rhs : void
+	Function representing the RHS terms of the equations. It operates simultaneously on all equations, using t as time, Y_0 as array of initial values and R as array of solutions of the operation.
+n_eq : int
+	Number of first order ODEs treated.
 */
-void euler_step(double t, double * y, void (*RHS)(double p, double * y, double * a), double dt, int n_eq);
+void eulerstep(double t, double dt, double Y[], void (*rhs)(double t, double Y_0[], double R[]), int n_eq);
 
 #endif /* __MCLIB_H */
-

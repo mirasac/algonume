@@ -440,12 +440,12 @@ double central_difference(double (*f)(double), double h, double x) {
 
 
 
-// MC finire.
-/*
-void euler_step(void (*RHS)(double t, double * y_0, double * y), double t, double * y, double dt, int n_eq) {
-	int k;
-	double * rhs;
-	rhs = new double[n_eq];
-	RHS(t, 
+void eulerstep(double t, double dt, double Y[], void (*rhs)(double t, double Y_0[], double R[]), int n_eq) {
+	double * R;
+	R = new double[n_eq];
+	rhs(t, Y, R);
+	for (int k = 0; k < n_eq; k++) {
+		Y[k] += dt * R[k];
+	}
+	delete[] R;
 }
-*/
