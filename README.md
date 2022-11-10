@@ -7,6 +7,23 @@ Professor Mignone stores slides for each lesson on [his site](http://personalpag
 ### Disclaimer
 This repository exists just as an effective way to save the code while the exercises are being done, it is not meant for presenting them in a complete and nice way. Just the information sufficient for the course are included.
 
+### Chapters
+Course topics are grouped in chapters as shown on the course web page. A chapter can span more lessons, so the following is the agenda:
+- 2022-09-29 - Chapter 1
+- 2022-09-30 - Chapter 1
+- 2022-10-06 - Chapter 2
+- 2022-10-07 - Chapter 2, chapter 3
+- 2022-10-13 - Chapter 3
+- 2022-10-14 - Chapter 3
+- 2022-10-20 - Chapter 5
+- 2022-10-21 - Chapter 5
+- 2022-10-27 - Chapter 5
+- 2022-10-28 - Chapter 6
+- 2022-11-03 - Chapter 4
+- 2022-11-04 - Chapter 4, chapter 7
+- 2022-11-10 - Chapter 7
+- 2022-11-11 - Chapter 7
+
 ## Repository structure
 Files and exercises used in each lesson are contained in folders named with the day of the relative lesson in [ISO format](https://en.wikipedia.org/wiki/ISO_8601#Dates) for calendar dates, with dashes.
 
@@ -17,3 +34,5 @@ I use VS Code as visual text editor, which I installed on the VM.
 
 ### Failed attempts
 I tried to use WSL2 and install all the request software there, including [gnuplot](http://www.gnuplot.info/), which is used for the graphical part of programs we write. To display the plots created by gnuplot on the WSL2 side, a [X11 server](https://sourceforge.net/projects/xming/) on Windows was needed and I tried to install it following [this guide](https://blog.karatos.in/a?ID=01700-6d257862-8225-4d2a-b4cd-140b2fba8020), but it did not work.
+
+## Chapters
