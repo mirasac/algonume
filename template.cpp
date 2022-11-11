@@ -1,3 +1,5 @@
+#include <cmath>
+#include <fstream>
 #include <iomanip>
 #include <iostream>
 #include "../mclib/mclib.h"
