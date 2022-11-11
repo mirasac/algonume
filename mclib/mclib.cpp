@@ -444,8 +444,56 @@ void eulerstep(double t, double dt, double Y[], void (*rhs)(double t, double Y_0
 	double * R;
 	R = new double[n_eq];
 	rhs(t, Y, R);
-	for (int k = 0; k < n_eq; k++) {
-		Y[k] += dt * R[k];
+	for (int i = 0; i < n_eq; i++) {
+		Y[i] += dt * R[i];
 	}
 	delete[] R;
+}
+
+void rungekutta2(double t, double h, double Y[], void (*rhs)(double t, double Y_0[], double R[]), int n_eq) {
+	double * R, * k_1, * k_2;
+	R = new double[n_eq];
+	k_1 = new double[n_eq];
+	k_2 = new double[n_eq];
+	rhs(t, Y, k_1);
+	for (int i = 0; i < n_eq; i++) {
+		R[i] = Y[i] + 0.5 * h * k_1[i];
+	}
+	rhs(t + 0.5 * h, R, k_2);
+	for (int i = 0; i < n_eq; i++) {
+		Y[i] = Y[i] + h * k_2[i];
+	}
+	delete[] R;
+	delete[] k_1;
+	delete[] k_2;
+}
+
+void rungekutta4(double t, double h, double Y[], void (*rhs)(double t, double Y_0[], double R[]), int n_eq) {
+	double * R, * k_1, * k_2, * k_3, * k_4;
+	R = new double[n_eq];
+	k_1 = new double[n_eq];
+	k_2 = new double[n_eq];
+	k_3 = new double[n_eq];
+	k_4 = new double[n_eq];
+	rhs(t, Y, k_1);
+	for (int i = 0; i < n_eq; i++) {
+		R[i] = Y[i] + 0.5 * h * k_1[i];
+	}
+	rhs(t + 0.5 * h, R, k_2);
+	for (int i = 0; i < n_eq; i++) {
+		R[i] = Y[i] + 0.5 * h * k_2[i];
+	}
+	rhs(t + 0.5 * h, R, k_3);
+	for (int i = 0; i < n_eq; i++) {
+		R[i] = Y[i] + h * k_3[i];
+	}
+	rhs(t + h, R, k_4);
+	for (int i = 0; i < n_eq; i++) {
+		Y[i] = Y[i] + h / 6.0 * (k_1[i] + 2.0 * k_2[i] + 2.0 * k_3[i] + k_4[i]);
+	}
+	delete[] R;
+	delete[] k_1;
+	delete[] k_2;
+	delete[] k_3;
+	delete[] k_4;
 }

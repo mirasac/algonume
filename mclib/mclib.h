@@ -220,12 +220,16 @@ t : double
 dt : double
 	Time step.
 Y : double
-	Array of numerical solutions at time t + dt.
+	Array of solutions. When the function is called it must contain initial values at time t and after step execution it contains solutions at time t + dt.
 rhs : void
 	Function representing the RHS terms of the equations. It operates simultaneously on all equations, using t as time, Y_0 as array of initial values and R as array of solutions of the operation.
 n_eq : int
 	Number of first order ODEs treated.
 */
 void eulerstep(double t, double dt, double Y[], void (*rhs)(double t, double Y_0[], double R[]), int n_eq);
+
+void rungekutta2(double t, double h, double Y[], void (*rhs)(double t, double Y_0[], double R[]), int n_eq);
+
+void rungekutta4(double t, double h, double Y[], void (*rhs)(double t, double Y_0[], double R[]), int n_eq);
 
 #endif /* __MCLIB_H */
