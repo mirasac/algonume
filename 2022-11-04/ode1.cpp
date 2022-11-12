@@ -20,16 +20,18 @@ void rhs(double t, double Y_0[], double R[]) {
 int main() {
 	using namespace std;
 	cout << setprecision(N_PRECISION) << scientific;
-	int N;
+	int N, h_int;
 	int const n_eq = 1;
-	double t_min, t_max, h, t, y_ref, abs_err, rel_err;
+	double t_min, t_max, h, t, y_ref, abs_err, rel_err, h_order;
 	double Y[n_eq];
 	char * filename = new char[9 + N_STEP_SIZE / 10 + 1];
 	ofstream plot_file;
 	t_min = 0.0;
 	t_max = 3.0;
-	h = 0.5;
+	h_int = 5;
+	h_order = 0.1;
 	for (int n = 1; n <= N_STEP_SIZE; ++n) {
+		h = h_int * h_order;
 		sprintf(filename, "ode1_%d.dat", n);
 		plot_file.open(filename);
 		plot_file << setprecision(N_PRECISION) << scientific;
@@ -45,8 +47,11 @@ int main() {
 			plot_file << t << ' ' << Y[0] << ' ' << abs_err << ' ' << rel_err << endl;
 		}
 		plot_file.close();
-		h /= 2;  // MC finire perché non step corretti.
-		cout << h << endl; // MC debug.
+		h_int /= 2;
+		if (n % 3 == 0) {
+			h_order /= 10;
+			h_int = 5;
+		}
 	}
 	delete[] filename;
 	return 0;
