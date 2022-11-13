@@ -35,16 +35,16 @@ int main() {
 		sprintf(filename, "ode1_%d.dat", n);
 		plot_file.open(filename);
 		plot_file << setprecision(N_PRECISION) << scientific;
-		plot_file << "t y(t) abs_err rel_err" << endl;
+		plot_file << "t y(t) abs_{err}(t) rel_{err}(t)" << endl;
 		Y[0] = 1.0;  // Initial value.
 		N = (t_max - t_min) / h;  // Suppose h multiple of t_max - t_min.
 		for (int i = 0; i <= N; ++i) {
 			t = i * h;
-			eulerstep(t, h, Y, rhs, n_eq);
 			y_ref = solution(t);
 			abs_err = fabs(Y[0] - y_ref);
 			rel_err = abs_err / fabs(y_ref);
 			plot_file << t << ' ' << Y[0] << ' ' << abs_err << ' ' << rel_err << endl;
+			eulerstep(t, h, Y, rhs, n_eq);
 		}
 		plot_file.close();
 		h_int /= 2;
