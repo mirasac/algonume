@@ -13,7 +13,7 @@ double solution(double x) {
 	return exp(-x*x / 2.0);
 }
 
-void rhs(double t, double Y_0[], double R[]) {
+void rhs(double const t, double const Y_0[], double R[]) {
 	R[0] = -t * Y_0[0];
 }
 

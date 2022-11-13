@@ -440,14 +440,12 @@ double central_difference(double (*f)(double), double h, double x) {
 
 
 
-void eulerstep(double t, double dt, double Y[], void (*rhs)(double t, double Y_0[], double R[]), int n_eq) {
-	double * R;
-	R = new double[n_eq];
+void eulerstep(double const t, double const dt, double Y[], void (*rhs)(double const t, double const Y_0[], double R[]), int const n_eq) {
+	double R[n_eq];
 	rhs(t, Y, R);
 	for (int i = 0; i < n_eq; i++) {
 		Y[i] += dt * R[i];
 	}
-	delete[] R;
 }
 
 void rungekutta2(double t, double h, double Y[], void (*rhs)(double t, double Y_0[], double R[]), int n_eq) {
