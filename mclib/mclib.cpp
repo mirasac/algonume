@@ -448,50 +448,34 @@ void eulerstep(double const t, double const dt, double Y[], void (*rhs)(double c
 	}
 }
 
-void rungekutta2(double t, double h, double Y[], void (*rhs)(double t, double Y_0[], double R[]), int n_eq) {
-	double * R, * k_1, * k_2;
-	R = new double[n_eq];
-	k_1 = new double[n_eq];
-	k_2 = new double[n_eq];
+void rungekutta2(double const t, double const dt, double Y[], void (*rhs)(double const t, double const Y_0[], double R[]), int const n_eq) {
+	double R[n_eq], k_1[n_eq], k_2[n_eq];
 	rhs(t, Y, k_1);
 	for (int i = 0; i < n_eq; i++) {
-		R[i] = Y[i] + 0.5 * h * k_1[i];
+		R[i] = Y[i] + 0.5 * dt * k_1[i];
 	}
-	rhs(t + 0.5 * h, R, k_2);
+	rhs(t + 0.5 * dt, R, k_2);
 	for (int i = 0; i < n_eq; i++) {
-		Y[i] = Y[i] + h * k_2[i];
+		Y[i] = Y[i] + dt * k_2[i];
 	}
-	delete[] R;
-	delete[] k_1;
-	delete[] k_2;
 }
 
-void rungekutta4(double t, double h, double Y[], void (*rhs)(double t, double Y_0[], double R[]), int n_eq) {
-	double * R, * k_1, * k_2, * k_3, * k_4;
-	R = new double[n_eq];
-	k_1 = new double[n_eq];
-	k_2 = new double[n_eq];
-	k_3 = new double[n_eq];
-	k_4 = new double[n_eq];
+void rungekutta4(double const t, double const dt, double Y[], void (*rhs)(double const t, double const Y_0[], double R[]), int const n_eq) {
+	double R[n_eq], k_1[n_eq], k_2[n_eq], k_3[n_eq], k_4[n_eq];
 	rhs(t, Y, k_1);
 	for (int i = 0; i < n_eq; i++) {
-		R[i] = Y[i] + 0.5 * h * k_1[i];
+		R[i] = Y[i] + 0.5 * dt * k_1[i];
 	}
-	rhs(t + 0.5 * h, R, k_2);
+	rhs(t + 0.5 * dt, R, k_2);
 	for (int i = 0; i < n_eq; i++) {
-		R[i] = Y[i] + 0.5 * h * k_2[i];
+		R[i] = Y[i] + 0.5 * dt * k_2[i];
 	}
-	rhs(t + 0.5 * h, R, k_3);
+	rhs(t + 0.5 * dt, R, k_3);
 	for (int i = 0; i < n_eq; i++) {
-		R[i] = Y[i] + h * k_3[i];
+		R[i] = Y[i] + dt * k_3[i];
 	}
-	rhs(t + h, R, k_4);
+	rhs(t + dt, R, k_4);
 	for (int i = 0; i < n_eq; i++) {
-		Y[i] = Y[i] + h / 6.0 * (k_1[i] + 2.0 * k_2[i] + 2.0 * k_3[i] + k_4[i]);
+		Y[i] = Y[i] + dt / 6.0 * (k_1[i] + 2.0 * k_2[i] + 2.0 * k_3[i] + k_4[i]);
 	}
-	delete[] R;
-	delete[] k_1;
-	delete[] k_2;
-	delete[] k_3;
-	delete[] k_4;
 }

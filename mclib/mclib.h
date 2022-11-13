@@ -228,8 +228,8 @@ n_eq : int
 */
 void eulerstep(double const t, double const dt, double Y[], void (*rhs)(double const t, double const Y_0[], double R[]), int const n_eq);
 
-void rungekutta2(double t, double h, double Y[], void (*rhs)(double t, double Y_0[], double R[]), int n_eq);
+void rungekutta2(double const t, double const dt, double Y[], void (*rhs)(double const t, double const Y_0[], double R[]), int const n_eq);
 
-void rungekutta4(double t, double h, double Y[], void (*rhs)(double t, double Y_0[], double R[]), int n_eq);
+void rungekutta4(double const t, double const dt, double Y[], void (*rhs)(double const t, double const Y_0[], double R[]), int const n_eq);
 
 #endif /* __MCLIB_H */
