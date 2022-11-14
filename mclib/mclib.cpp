@@ -479,3 +479,28 @@ void rungekutta4(double const t, double const dt, double Y[], void (*rhs)(double
 		Y[i] = Y[i] + dt / 6.0 * (k_1[i] + 2.0 * k_2[i] + 2.0 * k_3[i] + k_4[i]);
 	}
 }
+
+void verlet_position(double const dt, double X[], double V[], void (*a)(double const X_0[], double R[]), int const n_eq) {
+	double R[n_eq], X_half[n_eq];
+	for (int i = 0; i < n_eq; i++) {
+		X_half[i] = X[i] + 0.5 * dt * V[i];
+	}
+	a(X_half, R);
+	for (int i = 0; i < n_eq; i++) {
+		V[i] = V[i] + dt * R[i];
+		X[i] = X_half[i] + 0.5 * dt * V[i];
+	}
+}
+
+void verlet_velocity(double const dt, double X[], double V[], void (*a)(double const X_0[], double R[]), int const n_eq) {
+	double R[n_eq], V_half[n_eq];
+	a(X, R);
+	for (int i = 0; i < n_eq; i++) {
+		V_half[i] = V[i] + 0.5 * dt * R[i];
+		X[i] = X[i] + dt * V_half[i];
+	}
+	a(X, R);
+	for (int i = 0; i < n_eq; i++) {
+		V[i] = V_half[i] + 0.5 * dt * R[i];
+	}
+}

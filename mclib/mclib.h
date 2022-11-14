@@ -232,4 +232,14 @@ void rungekutta2(double const t, double const dt, double Y[], void (*rhs)(double
 
 void rungekutta4(double const t, double const dt, double Y[], void (*rhs)(double const t, double const Y_0[], double R[]), int const n_eq);
 
+/*
+Implementation of position-Verlet algorithm.
+*/
+void verlet_position(double const dt, double X[], double V[], void (*a)(double const X_0[], double R[]), int const n_eq);
+
+/*
+Implementation of velocity-Verlet algorithm. Function a is evaluated each step, it is not saved for the next step.
+*/
+void verlet_velocity(double const dt, double X[], double V[], void (*a)(double const X_0[], double R[]), int const n_eq);
+
 #endif /* __MCLIB_H */
