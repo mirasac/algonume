@@ -493,14 +493,14 @@ void verlet_position(double const dt, double X[], double V[], void (*a)(double c
 }
 
 void verlet_velocity(double const dt, double X[], double V[], void (*a)(double const X_0[], double R[]), int const n_eq) {
-	double R[n_eq], V_half[n_eq];
+	double R[n_eq];
 	a(X, R);
 	for (int i = 0; i < n_eq; i++) {
-		V_half[i] = V[i] + 0.5 * dt * R[i];
-		X[i] = X[i] + dt * V_half[i];
+		V[i] = V[i] + 0.5 * dt * R[i];
+		X[i] = X[i] + dt * V[i];
 	}
 	a(X, R);
 	for (int i = 0; i < n_eq; i++) {
-		V[i] = V_half[i] + 0.5 * dt * R[i];
+		V[i] = V[i] + 0.5 * dt * R[i];
 	}
 }
