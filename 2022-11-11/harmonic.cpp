@@ -29,7 +29,7 @@ int main() {
 	double const T = 2.0 * M_PI / global_omega;
 	int N;
 	double h, t, E_vv, E_rk2, t_min, t_max;
-	double X_vv[n_eq], V_vv[n_eq], Y_rk2[n_eq];
+	double X_vv[n_eq], V_vv[n_eq], Y_rk2[2*n_eq];
 	X_vv[0] = 1.0;
 	V_vv[0] = 0.0;
 	t_min = 0.0;
@@ -55,7 +55,7 @@ int main() {
 		// Runge-Kutta results.
 		plot_file << ' ' << Y_rk2[0] << ' ' << Y_rk2[1];
 		plot_file << ' ' << fabs(E(Y_rk2[0], Y_rk2[1]) - E_rk2) / E_rk2;
-		rungekutta2(t, h, Y_rk2, rhs, n_eq);
+		rungekutta2(t, h, Y_rk2, rhs, 2*n_eq);
 		plot_file << endl;
 	}
 	plot_file.close();
