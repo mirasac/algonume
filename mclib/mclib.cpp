@@ -504,3 +504,34 @@ void verlet_velocity(double const dt, double X[], double V[], void (*a)(double c
 		V[i] = V[i] + 0.5 * dt * R[i];
 	}
 }
+
+
+
+////////// Matrix algebra //////////
+
+
+
+void _mat_zero(double ** m, int const N_row, int const N_col) {
+	for (int i = 0; i < N_row; i++) {
+		for (int j = 0; j < N_col; j++) {
+			m[i][j] = 0.0;
+		}
+	}
+}
+
+void mat_zero(double ** m, int const N) {
+	_mat_zero(m, N, N);
+}
+
+void _mat_print(double ** m, int const N_row, int const N_col) {
+	for (int i = 0; i < N_row; i++) {
+		for (int j = 0; j < N_col; j++) {
+			cout << m[i][j] << ' ';
+		}
+		cout << endl;
+	}
+}
+
+void mat_print(double ** m, int const N) {
+	_mat_print(m, N, N);
+}

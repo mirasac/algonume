@@ -242,4 +242,14 @@ Implementation of velocity-Verlet algorithm. Function a is evaluated each step, 
 */
 void verlet_velocity(double const dt, double X[], double V[], void (*a)(double const X_0[], double R[]), int const n_eq);
 
+
+
+////////// Matrix algebra //////////
+
+
+
+void mat_zero(double ** m, int const N);
+
+void mat_print(double ** m, int const N);
+
 #endif /* __MCLIB_H */
