@@ -4,7 +4,7 @@
 #include <iostream>
 #include "../mclib/mclib.h"
 
-static double const global_x_m = 1.0;
+static double const global_x_m = -1.0;
 static double global_E = 0.5;
 
 double solution(double x) {
@@ -33,7 +33,7 @@ double residual(double E) {
 	epsilon = 1e-10;
 	x_a = -10.0;
 	x_b = 10.0;
-	D = 1.0;  // Test with sqrt(x_a*x_a + x_b*x_b) + epsilon.
+	D = 1.0;//sqrt(x_a*x_a + x_b*x_b) + epsilon;  // Commented his suggestion for the normalization.
 	// Forward integration.
 	dx = (global_x_m - x_a) / N;
 	Y[0] = solution(x_a);
@@ -111,6 +111,15 @@ int main() {
 	plot_file.close();
 	
 	// Point 3.
+	cout << "\nPoint 3" << endl;
+	int const n_intervals = 20;
+	int n_bracketing;
+	double const tollerance = 1e-6;
+	double E_L[n_intervals], E_R[n_intervals];
+	n_bracketing = bracketing(residual, E_min, E_max, n_intervals, E_L, E_R);
+	for (int n = 0; n < n_bracketing; n++) {
+		cout << bisection(residual, E_L[n], E_R[n], tollerance) << endl;
+	}
 	return 0;
 }
 
