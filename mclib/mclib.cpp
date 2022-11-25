@@ -575,7 +575,7 @@ double ** mat_multiply(double ** A, double ** B, int const N) {
 }
 */
 
-double * backsubstitution(double ** A, dobule * b, int const N) {
+double * backsubstitution(double ** A, double * b, int const N) {
 	double * x, tmp;
 	x = new double[N];
 	for (int i = N-1; i >= 0; i--) {
@@ -597,6 +597,7 @@ void mat_swap_rows(double ** A, int const N_col, int const j, int const k) {
 	}
 }
 
+/*
 // MC finire.
 void partial_pivoting(double ** A, double * b, int const N, int const k) {
 	// Search row with maximum value on column k.
@@ -604,6 +605,7 @@ void partial_pivoting(double ** A, double * b, int const N, int const k) {
 	// Swap rows.
 	mat_swap_rows(A, N, k, j_max);
 }
+*/
 
 double * gaussian_elimination(double ** A, double * b, int const N) {
 	double g;
@@ -620,6 +622,7 @@ double * gaussian_elimination(double ** A, double * b, int const N) {
 	return backsubstitution(A, b, N);
 }
 
+/*
 // MC finire.
 double * tridiagonal_solver(double d_inf[], double d[], double d_sup[], double b[], int const N) {
 	double * h, * p;
@@ -638,3 +641,4 @@ double * tridiagonal_solver(double d_inf[], double d[], double d_sup[], double b
 	// MC solve.
 	return x;
 }
+*/
