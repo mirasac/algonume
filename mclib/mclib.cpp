@@ -511,7 +511,22 @@ void verlet_velocity(double const dt, double X[], double V[], void (*a)(double c
 
 
 
-void _mat_zero(double ** m, int const N_row, int const N_col) {
+double ** mat_new(int const N_row, int const N_col) {
+	double ** m;
+	m = new double*[N_row];
+	m[0] = new double[N_row*N_col];
+	for (int i = 1; i < N_row; i++) {
+		m[i] = m[i-1] + N_col;
+	}
+	return m;
+}
+
+void mat_delete(double ** m) {
+	delete[] m[0];
+	delete[] m;
+}
+
+void mat_zero(double ** m, int const N_row, int const N_col) {
 	for (int i = 0; i < N_row; i++) {
 		for (int j = 0; j < N_col; j++) {
 			m[i][j] = 0.0;
@@ -519,19 +534,107 @@ void _mat_zero(double ** m, int const N_row, int const N_col) {
 	}
 }
 
+/*
 void mat_zero(double ** m, int const N) {
 	_mat_zero(m, N, N);
 }
+*/
 
-void _mat_print(double ** m, int const N_row, int const N_col) {
+void mat_cout(double ** m, int const N_row, int const N_col) {
 	for (int i = 0; i < N_row; i++) {
 		for (int j = 0; j < N_col; j++) {
-			cout << m[i][j] << ' ';
+			std::cout << std::setw(N_PRECISION_MAT) << std::right << m[i][j] << ' ';
 		}
-		cout << endl;
+		std::cout << std::endl;
 	}
 }
 
-void mat_print(double ** m, int const N) {
-	_mat_print(m, N, N);
+/*
+void mat_cout(double ** m, int const N) {
+	_mat_cout(m, N, N);
+}
+*/
+
+double ** mat_multiply(double ** A, double ** B, int const N_row_A, int const N_col_A, int const N_col_B) {
+	double ** AB;
+	AB = mat_new(N_row_A, N_col_B);
+	for (int i = 0; i < N_row_A; i++) {
+	for (int j = 0; j < N_col_B; j++) {
+		AB[i][j] = 0.0;
+		for (int k = 0; k < N_col_A; k++) {
+			AB[i][j] += A[i][k] * B[k][j];
+		}
+	}
+	}
+	return AB;
+}
+
+/*
+double ** mat_multiply(double ** A, double ** B, int const N) {
+	return _mat_multiply(A, B, N, N, N);
+}
+*/
+
+double * backsubstitution(double ** A, dobule * b, int const N) {
+	double * x, tmp;
+	x = new double[N];
+	for (int i = N-1; i >= 0; i--) {
+		tmp = b[i];
+		for (int j = N-1; j > i; j--) {
+			tmp -= x[j] * A[i][j];
+		}
+		x[i] = tmp / A[i][i];
+	}
+	return x;
+}
+
+void mat_swap_rows(double ** A, int const N_col, int const j, int const k) {
+	double tmp;
+	for (int i = 0; i < N_col; i++) {
+		tmp = A[j][i];
+		A[j][i] = A[k][i];
+		A[k][i] = tmp;
+	}
+}
+
+// MC finire.
+void partial_pivoting(double ** A, double * b, int const N, int const k) {
+	// Search row with maximum value on column k.
+	
+	// Swap rows.
+	mat_swap_rows(A, N, k, j_max);
+}
+
+double * gaussian_elimination(double ** A, double * b, int const N) {
+	double g;
+	for (int k = 0; k <= N-2; k++) {
+		for (int i = k+1; i <= N-1; i++) {
+			g = A[i][k] / A[k][k];
+			for (int j = k+1; j <= N-1; j++) {
+				A[i][j] -= g * A[k][j];
+			}
+			A[i][k] = 0.0;
+			b[i] -= g * b[k];
+		}
+	}
+	return backsubstitution(A, b, N);
+}
+
+// MC finire.
+double * tridiagonal_solver(double d_inf[], double d[], double d_sup[], double b[], int const N) {
+	double * h, * p;
+	h = new double[N];
+	p = new double[N];
+	h[0] = d_sup[0] / d[0];
+	b[0] = b[0] / d[0];
+	d_inf[0] = 0.0;  // Value not used.
+	d_sup[N-1] = 0.0;  // Value not used.
+	for (int i = 0; i <= N-2; i++) {
+		h[i] = d_sup[i] / (d[i] - d_inf[i] * h[i-1]);
+		b[i] = (b[i] - d_inf[i] * b[i-1]) / (d[i] - d_inf[i] * h[i-1]);
+	}
+	d[N-1] = 1.0;
+	b[N-1] = (b[N-1] - d_inf[N-1] * b[N-2]) / ();
+	// MC solve.
+	return x;
 }

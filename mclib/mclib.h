@@ -2,9 +2,11 @@
 #define __MCLIB_H
 
 #include <cmath>
+#include <iomanip>
 #include <iostream>
 
 #define N_PRECISION 12
+#define N_PRECISION_MAT (N_PRECISION + 2)
 #define FLG_DEBUG 0
 
 
@@ -244,12 +246,39 @@ void verlet_velocity(double const dt, double X[], double V[], void (*a)(double c
 
 
 
-////////// Matrix algebra //////////
+////////// Matrices //////////
 
 
 
-void mat_zero(double ** m, int const N);
+double ** mat_new(int const N_row, int const N_col);
 
-void mat_print(double ** m, int const N);
+void mat_delete(double ** m);
+
+void mat_zero(double ** m, int const N_row, int const N_col);
+
+//void mat_zero(double ** m, int const N);
+
+void mat_cout(double ** m, int const N_row, int const N_col);
+
+//void mat_cout(double ** m, int const N);
+
+double ** mat_multiply(double ** A, double ** B, int const N_row_A, int const N_col_A, int const N_col_B);
+
+//double ** mat_multiply(double ** A, double ** B, int const N);
+
+/*
+Swap rows j and k of matrix A.
+*/
+void mat_swap_rows(double ** A, int const N_col, int const j, int const k);
+
+/*
+Return the vector of solutions.
+*/
+double * gaussian_elimination(double ** A, double * b, int const N);
+
+/*
+Return the vector of solutions.
+*/
+double * tridiagonal_solver(double d_inf[], double d[], double d_sup[], double b[], int const N);
 
 #endif /* __MCLIB_H */
