@@ -28,7 +28,7 @@ double residual(double E) {
 	global_E = E;
 	int const N = 800;
 	int const n_eq = 2;
-	double x_a, x_b, x, dx, D, Y_L, Y_L_1, Y_R, Y_R_1, A, B;
+	double x_a, x_b, x, dx, D, Y_L, Y_L_1, Y_R, Y_R_1, A, B, epsilon;
 	double Y[n_eq];
 	x_a = -10.0;
 	x_b = 10.0;
@@ -54,7 +54,8 @@ double residual(double E) {
 	Y_R_1 = Y[1];
 	A = Y_L_1 * Y_R;
 	B = Y_R_1 * Y_L;
-	D = sqrt(A*A + B*B);
+	epsilon = 1e-9;  // Professor's suggestion.
+	D = sqrt(A*A + B*B) + epsilon;
 	return (A - B) / D;
 }
 
@@ -62,13 +63,13 @@ int main() {
 	using namespace std;
 	cout << setprecision(N_PRECISION);
 	int const n_eq = 2;
+	int const N = 800;
 	double x_a, x_b, x, dx;
 	double Y[n_eq];
 	ofstream plot_file;
 	
 	// Point 1.
 	cout << "Point 1" << endl;
-	int const N = 800;
 	plot_file.open("qho.dat");
 	plot_file << setprecision(N_PRECISION) << scientific;
 	plot_file << "x psi(x)" << endl;
@@ -103,7 +104,7 @@ int main() {
 	double E, E_min, E_max, dE;
 	E_min = 0.0;
 	E_max = 5.0;
-	dE = (E_max - E_min) / N;
+	dE = (E_max - E_min) / N;  // One way to increase accuracy is to have non constant dE varying with function slope.
 	plot_file.open("qho_residual.dat");
 	plot_file << setprecision(N_PRECISION) << scientific;
 	plot_file << "E residual(E)" << endl;
