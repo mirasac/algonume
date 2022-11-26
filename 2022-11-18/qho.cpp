@@ -28,12 +28,10 @@ double residual(double E) {
 	global_E = E;
 	int const N = 800;
 	int const n_eq = 2;
-	double x_a, x_b, x, dx, D, epsilon, Y_L, Y_L_1, Y_R, Y_R_1;
+	double x_a, x_b, x, dx, D, Y_L, Y_L_1, Y_R, Y_R_1, A, B;
 	double Y[n_eq];
-	epsilon = 1e-10;
 	x_a = -10.0;
 	x_b = 10.0;
-	D = 1.0;//sqrt(x_a*x_a + x_b*x_b) + epsilon;  // Commented his suggestion for the normalization.
 	// Forward integration.
 	dx = (global_x_m - x_a) / N;
 	Y[0] = solution(x_a);
@@ -54,7 +52,10 @@ double residual(double E) {
 	}
 	Y_R = Y[0];
 	Y_R_1 = Y[1];
-	return (Y_L_1 * Y_R - Y_R_1 * Y_L) / D;
+	A = Y_L_1 * Y_R;
+	B = Y_R_1 * Y_L;
+	D = sqrt(A*A + B*B);
+	return (A - B) / D;
 }
 
 int main() {
@@ -66,6 +67,7 @@ int main() {
 	ofstream plot_file;
 	
 	// Point 1.
+	cout << "Point 1" << endl;
 	int const N = 800;
 	plot_file.open("qho.dat");
 	plot_file << setprecision(N_PRECISION) << scientific;
@@ -94,9 +96,11 @@ int main() {
 		rungekutta4(x, dx, Y, rhs, n_eq);
 	}
 	plot_file.close();
+	cout << "Plot file generated" << endl;
 	
 	// Point 2.
-	double E, E_min, E_max, dE, res;
+	cout << "\nPoint 2" << endl;
+	double E, E_min, E_max, dE;
 	E_min = 0.0;
 	E_max = 5.0;
 	dE = (E_max - E_min) / N;
@@ -105,14 +109,14 @@ int main() {
 	plot_file << "E residual(E)" << endl;
 	for (int n = 0; n <= N; n++) {
 		E = E_min + n * dE;
-		res = residual(E);
-		plot_file << E << ' ' << res << endl;
+		plot_file << E << ' ' << residual(E) << endl;
 	}
 	plot_file.close();
+	cout << "Plot file generated" << endl;
 	
 	// Point 3.
 	cout << "\nPoint 3" << endl;
-	int const n_intervals = 20;
+	int const n_intervals = 8;
 	int n_bracketing;
 	double const tollerance = 1e-6;
 	double E_L[n_intervals], E_R[n_intervals];
@@ -122,4 +126,3 @@ int main() {
 	}
 	return 0;
 }
-
