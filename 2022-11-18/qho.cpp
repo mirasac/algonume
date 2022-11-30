@@ -4,7 +4,7 @@
 #include <iostream>
 #include "../mclib/mclib.h"
 
-static double const global_x_m = -1.0;
+static double const global_x_m = -0.3;
 static double global_E = 0.5;
 
 double solution(double x) {
@@ -21,7 +21,7 @@ double V(double x) {
 
 void rhs(double const x, double const Y_0[], double R[]) {
 	R[0] = Y_0[1];
-	R[1] = -2.0 * (global_E - V(x)) * Y_0[0];
+	R[1] = 2.0 * (V(x) - global_E) * Y_0[0];
 }
 
 double residual(double E) {
