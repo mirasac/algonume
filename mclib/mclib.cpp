@@ -526,12 +526,16 @@ void mat_delete(double ** m) {
 	delete[] m;
 }
 
-void mat_zero(double ** m, int const N_row, int const N_col) {
+void mat_constant(double ** m, double constant, int const N_row, int const N_col) {
 	for (int i = 0; i < N_row; i++) {
 		for (int j = 0; j < N_col; j++) {
-			m[i][j] = 0.0;
+			m[i][j] = constant;
 		}
 	}
+}
+
+void mat_zero(double ** m, int const N_row, int const N_col) {
+	mat_constant(m, 0.0, N_row, N_col);
 }
 
 /*
@@ -636,8 +640,6 @@ double * tridiagonal_solver(double d_inf[], double d[], double d_sup[], double b
 		h[i] = d_sup[i] / (d[i] - d_inf[i] * h[i-1]);
 		p[i] = (b[i] - d_inf[i] * p[i-1]) / (d[i] - d_inf[i] * h[i-1]);
 	}
-	//d[N-1] = 1.0;
-	//b[N-1] = (b[N-1] - d_inf[N-1] * b[N-2]) / ();
 	x[N-1] = p[N-1];
 	for (int i = N-2; i >= 0; i--) {
 		x[i] = p[i] - h[i] * x[i+1];
@@ -645,4 +647,19 @@ double * tridiagonal_solver(double d_inf[], double d[], double d_sup[], double b
 	delete[] h;
 	delete[] p;
 	return x;
+}
+
+
+
+////////// Elliptic PDE integration //////////
+
+
+
+// MC simplified version with h = dx = dy.
+void gauss_seidel(double ** m, double ** S, double h, int const N_row, int const N_col) {
+	for (int i = 1; i < N_row - 1; i++) {
+	for (int j = 1; j < N_col - 1; j++) {
+		m[i][j] = (m[i+1][j] + m[i-1][j] + m[i][j+1] + m[i][j-1] - h*h * S[i][j]) / 4.0;
+	}
+	}
 }

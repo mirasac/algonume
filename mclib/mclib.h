@@ -254,6 +254,8 @@ double ** mat_new(int const N_row, int const N_col);
 
 void mat_delete(double ** m);
 
+void mat_constant(double ** m, double constant, int const N_row, int const N_col);
+
 void mat_zero(double ** m, int const N_row, int const N_col);
 
 //void mat_zero(double ** m, int const N);
@@ -280,5 +282,13 @@ double * gaussian_elimination(double ** A, double * b, int const N);
 Return the vector of solutions.
 */
 double * tridiagonal_solver(double d_inf[], double d[], double d_sup[], double b[], int const N);
+
+
+
+////////// Elliptic PDE integration //////////
+
+
+
+void gauss_seidel(double ** m, double ** S, double h, int const N_row, int const N_col);
 
 #endif /* __MCLIB_H */
