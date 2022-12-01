@@ -622,23 +622,27 @@ double * gaussian_elimination(double ** A, double * b, int const N) {
 	return backsubstitution(A, b, N);
 }
 
-/*
-// MC finire.
 double * tridiagonal_solver(double d_inf[], double d[], double d_sup[], double b[], int const N) {
-	double * h, * p;
+	double * h, * p, * x;
 	h = new double[N];
 	p = new double[N];
+	x = new double[N];
 	h[0] = d_sup[0] / d[0];
-	b[0] = b[0] / d[0];
-	d_inf[0] = 0.0;  // Value not used.
-	d_sup[N-1] = 0.0;  // Value not used.
-	for (int i = 0; i <= N-2; i++) {
+	p[0] = b[0] / d[0];
+	//d_inf[0] = 0.0;  // Unused value.
+	//d_sup[N-1] = 0.0;  // Unused value.
+	//h[N-1] = 0.0;  // Unused value.
+	for (int i = 1; i < N; i++) {
 		h[i] = d_sup[i] / (d[i] - d_inf[i] * h[i-1]);
-		b[i] = (b[i] - d_inf[i] * b[i-1]) / (d[i] - d_inf[i] * h[i-1]);
+		p[i] = (b[i] - d_inf[i] * p[i-1]) / (d[i] - d_inf[i] * h[i-1]);
 	}
-	d[N-1] = 1.0;
-	b[N-1] = (b[N-1] - d_inf[N-1] * b[N-2]) / ();
-	// MC solve.
+	//d[N-1] = 1.0;
+	//b[N-1] = (b[N-1] - d_inf[N-1] * b[N-2]) / ();
+	x[N-1] = p[N-1];
+	for (int i = N-2; i >= 0; i--) {
+		x[i] = p[i] - h[i] * x[i+1];
+	}
+	delete[] h;
+	delete[] p;
 	return x;
 }
-*/
