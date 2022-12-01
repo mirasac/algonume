@@ -507,7 +507,7 @@ void verlet_velocity(double const dt, double X[], double V[], void (*a)(double c
 
 
 
-////////// Matrix algebra //////////
+////////// Matrices //////////
 
 
 
@@ -538,12 +538,6 @@ void mat_zero(double ** m, int const N_row, int const N_col) {
 	mat_constant(m, 0.0, N_row, N_col);
 }
 
-/*
-void mat_zero(double ** m, int const N) {
-	_mat_zero(m, N, N);
-}
-*/
-
 void mat_cout(double ** m, int const N_row, int const N_col) {
 	for (int i = 0; i < N_row; i++) {
 		for (int j = 0; j < N_col; j++) {
@@ -552,12 +546,6 @@ void mat_cout(double ** m, int const N_row, int const N_col) {
 		std::cout << std::endl;
 	}
 }
-
-/*
-void mat_cout(double ** m, int const N) {
-	_mat_cout(m, N, N);
-}
-*/
 
 double ** mat_multiply(double ** A, double ** B, int const N_row_A, int const N_col_A, int const N_col_B) {
 	double ** AB;
@@ -572,12 +560,6 @@ double ** mat_multiply(double ** A, double ** B, int const N_row_A, int const N_
 	}
 	return AB;
 }
-
-/*
-double ** mat_multiply(double ** A, double ** B, int const N) {
-	return _mat_multiply(A, B, N, N, N);
-}
-*/
 
 double * backsubstitution(double ** A, double * b, int const N) {
 	double * x, tmp;
@@ -601,22 +583,33 @@ void mat_swap_rows(double ** A, int const N_col, int const j, int const k) {
 	}
 }
 
-/*
-// MC finire.
 void partial_pivoting(double ** A, double * b, int const N, int const k) {
-	// Search row with maximum value on column k.
-	
-	// Swap rows.
-	mat_swap_rows(A, N, k, j_max);
+	if (fabs(A[k][k]) <= 1e-12) {
+		// Search row with maximum value on column k.
+		int i_max = k;
+		double a_max = fabs(A[k][k]);
+		for (int i = k + 1; i < N; i++) {
+			if (fabs(A[i][k]) > a_max) {
+				a_max = fabs(A[i][k]);
+				i_max = i;
+			}
+		}
+		// Swap rows.
+		mat_swap_rows(A, N, k, i_max);
+		double tmp;
+		tmp = b[k];
+		b[k] = b[i_max];
+		b[i_max] = tmp;
+	}
 }
-*/
 
 double * gaussian_elimination(double ** A, double * b, int const N) {
 	double g;
 	for (int k = 0; k <= N-2; k++) {
-		for (int i = k+1; i <= N-1; i++) {
+		partial_pivoting(A, b, N, k);
+		for (int i = k + 1; i <= N - 1; i++) {
 			g = A[i][k] / A[k][k];
-			for (int j = k+1; j <= N-1; j++) {
+			for (int j = k + 1; j <= N - 1; j++) {
 				A[i][j] -= g * A[k][j];
 			}
 			A[i][k] = 0.0;
@@ -633,9 +626,6 @@ double * tridiagonal_solver(double d_inf[], double d[], double d_sup[], double b
 	x = new double[N];
 	h[0] = d_sup[0] / d[0];
 	p[0] = b[0] / d[0];
-	//d_inf[0] = 0.0;  // Unused value.
-	//d_sup[N-1] = 0.0;  // Unused value.
-	//h[N-1] = 0.0;  // Unused value.
 	for (int i = 1; i < N; i++) {
 		h[i] = d_sup[i] / (d[i] - d_inf[i] * h[i-1]);
 		p[i] = (b[i] - d_inf[i] * p[i-1]) / (d[i] - d_inf[i] * h[i-1]);
@@ -655,7 +645,6 @@ double * tridiagonal_solver(double d_inf[], double d[], double d_sup[], double b
 
 
 
-// MC simplified version with h = dx = dy.
 void gauss_seidel(double ** m, double ** S, double h, int const N_row, int const N_col) {
 	for (int i = 1; i < N_row - 1; i++) {
 	for (int j = 1; j < N_col - 1; j++) {

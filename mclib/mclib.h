@@ -258,15 +258,9 @@ void mat_constant(double ** m, double constant, int const N_row, int const N_col
 
 void mat_zero(double ** m, int const N_row, int const N_col);
 
-//void mat_zero(double ** m, int const N);
-
 void mat_cout(double ** m, int const N_row, int const N_col);
 
-//void mat_cout(double ** m, int const N);
-
 double ** mat_multiply(double ** A, double ** B, int const N_row_A, int const N_col_A, int const N_col_B);
-
-//double ** mat_multiply(double ** A, double ** B, int const N);
 
 /*
 Swap rows j and k of matrix A.
@@ -274,7 +268,7 @@ Swap rows j and k of matrix A.
 void mat_swap_rows(double ** A, int const N_col, int const j, int const k);
 
 /*
-Return the vector of solutions.
+Return the vector of solutions. Partial pivoting is performed for diagonal values equal to 0.0 within a tolerance of 1e-12.
 */
 double * gaussian_elimination(double ** A, double * b, int const N);
 
@@ -289,6 +283,9 @@ double * tridiagonal_solver(double d_inf[], double d[], double d_sup[], double b
 
 
 
+/*
+Simplified version with h = dx = dy.
+*/
 void gauss_seidel(double ** m, double ** S, double h, int const N_row, int const N_col);
 
 #endif /* __MCLIB_H */
