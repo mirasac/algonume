@@ -268,6 +268,11 @@ Swap rows j and k of matrix A.
 void mat_swap_rows(double ** A, int const N_col, int const j, int const k);
 
 /*
+Copy values of matrix source into matrix dest at the same position. Matrices must have same size.
+*/
+void mat_copy(double ** source, double ** dest, int const N_row, int const N_col);
+
+/*
 Return the vector of solutions. Partial pivoting is performed for diagonal values equal to 0.0 within a tolerance of 1e-12.
 */
 double * gaussian_elimination(double ** A, double * b, int const N);
@@ -286,6 +291,16 @@ double * tridiagonal_solver(double d_inf[], double d[], double d_sup[], double b
 /*
 Simplified version with h = dx = dy.
 */
-void gauss_seidel(double ** m, double ** S, double h, int const N_row, int const N_col);
+void jacobi(double ** m, double ** S, double const h, int const N_row, int const N_col);
+
+/*
+Simplified version with h = dx = dy.
+*/
+void gauss_seidel(double ** m, double ** S, double const h, int const N_row, int const N_col);
+
+/*
+Simplified version with h = dx = dy.
+*/
+void successive_over_relaxation(double ** m, double ** S, double const h, double const omega, int const N_row, int const N_col);
 
 #endif /* __MCLIB_H */

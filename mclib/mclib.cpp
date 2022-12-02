@@ -561,6 +561,23 @@ double ** mat_multiply(double ** A, double ** B, int const N_row_A, int const N_
 	return AB;
 }
 
+void mat_swap_rows(double ** A, int const N_col, int const j, int const k) {
+	double tmp;
+	for (int i = 0; i < N_col; i++) {
+		tmp = A[j][i];
+		A[j][i] = A[k][i];
+		A[k][i] = tmp;
+	}
+}
+
+void mat_copy(double ** source, double ** dest, int const N_row, int const N_col) {
+	for (int i = 0; i < N_row; i++) {
+	for (int j = 0; j < N_col; j++) {
+		dest[i][j] = source[i][j];
+	}
+	}
+}
+
 double * backsubstitution(double ** A, double * b, int const N) {
 	double * x, tmp;
 	x = new double[N];
@@ -572,15 +589,6 @@ double * backsubstitution(double ** A, double * b, int const N) {
 		x[i] = tmp / A[i][i];
 	}
 	return x;
-}
-
-void mat_swap_rows(double ** A, int const N_col, int const j, int const k) {
-	double tmp;
-	for (int i = 0; i < N_col; i++) {
-		tmp = A[j][i];
-		A[j][i] = A[k][i];
-		A[k][i] = tmp;
-	}
 }
 
 void partial_pivoting(double ** A, double * b, int const N, int const k) {
@@ -645,10 +653,30 @@ double * tridiagonal_solver(double d_inf[], double d[], double d_sup[], double b
 
 
 
-void gauss_seidel(double ** m, double ** S, double h, int const N_row, int const N_col) {
-	for (int i = 1; i < N_row - 1; i++) {
-	for (int j = 1; j < N_col - 1; j++) {
+void jacobi(double ** m, double ** S, double const h, int const N_row, int const N_col) {
+	double ** m_tmp;
+	m_tmp = mat_new(N_row, N_col);
+	for (int i = 1; i <= N_row - 2; i++) {
+	for (int j = 1; j <= N_col - 2; j++) {
+		m_tmp[i][j] = (m[i+1][j] + m[i-1][j] + m[i][j+1] + m[i][j-1] - h*h * S[i][j]) / 4.0;
+	}
+	}
+	mat_copy(m_tmp, m, N_row, N_col);
+	mat_delete(m_tmp);
+}
+
+void gauss_seidel(double ** m, double ** S, double const h, int const N_row, int const N_col) {
+	for (int i = 1; i <= N_row - 2; i++) {
+	for (int j = 1; j <= N_col - 2; j++) {
 		m[i][j] = (m[i+1][j] + m[i-1][j] + m[i][j+1] + m[i][j-1] - h*h * S[i][j]) / 4.0;
+	}
+	}
+}
+
+void successive_over_relaxation(double ** m, double ** S, double const h, double const omega, int const N_row, int const N_col) {
+	for (int i = 1; i <= N_row - 2; i++) {
+	for (int j = 1; j <= N_col - 2; j++) {
+		m[i][j] = (1.0 - omega) * m[i][j] + omega / 4.0 * (m[i-1][j] + m[i+1][j] + m[i][j-1] + m[i][j+1] - h*h * S[i][j]);
 	}
 	}
 }
