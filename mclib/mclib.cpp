@@ -656,10 +656,21 @@ double * tridiagonal_solver(double d_inf[], double d[], double d_sup[], double b
 void jacobi(double ** m, double ** S, double const h, int const N_row, int const N_col) {
 	double ** m_tmp;
 	m_tmp = mat_new(N_row, N_col);
+	m_tmp[0][0] = m[0][0];
+	m_tmp[0][N_col-1] = m[0][N_col-1];
+	m_tmp[N_row-1][0] = m[N_row-1][0];
+	m_tmp[N_row-1][N_col-1] = m[N_row-1][N_col-1];
 	for (int i = 1; i <= N_row - 2; i++) {
-	for (int j = 1; j <= N_col - 2; j++) {
-		m_tmp[i][j] = (m[i+1][j] + m[i-1][j] + m[i][j+1] + m[i][j-1] - h*h * S[i][j]) / 4.0;
-	}
+		m_tmp[i][0] = m[i][0];
+		m_tmp[i][N_col-1] = m[i][N_col-1];
+		for (int j = 1; j <= N_col - 2; j++) {
+			// Execute copy of y boundary conditions only one time.
+			if (i == 1) {
+				m_tmp[0][j] = m[0][j];
+				m_tmp[N_row-1][j] = m[N_row-1][j];
+			}
+			m_tmp[i][j] = (m[i+1][j] + m[i-1][j] + m[i][j+1] + m[i][j-1] - h*h * S[i][j]) / 4.0;
+		}
 	}
 	mat_copy(m_tmp, m, N_row, N_col);
 	mat_delete(m_tmp);

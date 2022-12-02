@@ -289,17 +289,17 @@ double * tridiagonal_solver(double d_inf[], double d[], double d_sup[], double b
 
 
 /*
-Simplified version with h = dx = dy.
+Simplified version with h = dx = dy. Set to work with Dirichlet boundary conditions at the border of the grid.
 */
 void jacobi(double ** m, double ** S, double const h, int const N_row, int const N_col);
 
 /*
-Simplified version with h = dx = dy.
+Simplified version with h = dx = dy. Set to work with Dirichlet boundary conditions at the border of the grid.
 */
 void gauss_seidel(double ** m, double ** S, double const h, int const N_row, int const N_col);
 
 /*
-Simplified version with h = dx = dy.
+Simplified version with h = dx = dy. Set to work with Dirichlet boundary conditions at the border of the grid.
 */
 void successive_over_relaxation(double ** m, double ** S, double const h, double const omega, int const N_row, int const N_col);
 
