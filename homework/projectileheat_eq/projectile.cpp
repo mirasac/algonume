@@ -3,7 +3,7 @@ MC things to do before PROD:
 - Simplify fractions.
 - Put meaningful comments and remove useless ones.
 - Remove useless global constants.
-- It seems that my bisection function has low accuracy, find why.
+- It seems that my bisection function has low accuracy, find why. A reason is the relatively low number of points x which I use for the integration. Another problem is the slow convergence to the correct results when incrementing the number of points x, probably due to a propagation of errors in bisection that may originate from the implementation of bisection which calls more times the functio, which is residual in this case, hence the number of internal calculations is high.
 */
 
 #include <cmath>
