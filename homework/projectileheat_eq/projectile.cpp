@@ -19,6 +19,7 @@ MC things to do before PROD:
 #undef N_PRECISION
 #endif /* N_PRECISION */
 
+#define HOMEWORK_NAME "projectile"
 #define N_PRECISION 12
 #define TOLERANCE 1e-7
 
@@ -39,7 +40,7 @@ int main() {
 	using namespace std;
 	cout << setprecision(N_PRECISION) << scientific;
 	int const n_eq = 3;
-	int const  n_x = 100;  // MC number of points.
+	int const n_x = 1000;  // MC number of points.
 	double const dx = (global_L - global_x_0) / (n_x - 1);
 	double x;
 	double phi_0, phi_1;  // [rad]
@@ -49,13 +50,16 @@ int main() {
 	#ifndef PROD
 	// Choose graphically the intervals of phi where phi_0 and phi_1 are searched.
 	int const n_phi = 10;  // Number of intervals.
-	double phi, dphi, phi_min, phi_max, phi_prev;  // [rad]
+	double phi, dphi, phi_min, phi_max;  // [rad]
 	double Y[n_eq];
-	phi_min = 0.0;
+	phi_min = TOLERANCE;
+	//phi_max = (1.0) * M_PI / 2.0;  // Old maximum angle, there are NaNs.
 	phi_max = (1.0 - TOLERANCE) * M_PI / 2.0;  // Old maximum angle.
 	// MC from 65 there is divergence of tan and discontinuity of phi'=dphi/dx, it is when is reached phi < -pi/2. Find the value.
+	// MC contnuare.
+	//phi_max = 1023.0 / 1024.0 * M_PI / 2.0; //phi_max = 85 * M_PI / 180.0;
 	dphi = (phi_max - phi_min) / n_phi;
-	plot_file.open("projectile_noprod_search.dat");
+	plot_file.open(HOMEWORK_NAME "_noprod_search.dat");
 	plot_file << setprecision(N_PRECISION) << scientific;
 	plot_file << "x y(x) v(x) phi(x)" << endl;
 	for (int i_phi = 0; i_phi <= n_phi; i_phi++) {
@@ -67,9 +71,8 @@ int main() {
 		for (int i_x = 0 ; i_x < n_x; i_x++) {
 			x = global_x_0 + i_x * dx;
 			plot_file << x << ' ' << Y[0] << ' ' << Y[1] << ' ' << Y[2] << endl;
-			phi_prev = Y[2];
-			rungekutta4(x, dx, Y, rhs, n_eq);
-			//if (phi_prev * Y[2] < 0.0) break;  // Useful to avoid divergence to infinity of the trajectory.
+			rungekutta2(x, dx, Y, rhs, n_eq);
+			//if (Y[2] <= -M_PI_2) break;  // Useful to avoid divergence to infinity of the trajectory.
 		}
 		plot_file << '\n' << endl;
 	}
@@ -90,7 +93,7 @@ int main() {
 	Y_1[0] = global_y_0;  // y [m]
 	Y_1[1] = global_v_0;  // v [m / s]
 	Y_1[2] = phi_1;  // phi [rad]
-	plot_file.open("projectile.dat");
+	plot_file.open(HOMEWORK_NAME ".dat");
 	plot_file << setprecision(N_PRECISION) << scientific;
 	plot_file << "x y_0(x) y_1(x)" << endl;
 	for (int i_x = 0; i_x < n_x; i_x++) {
