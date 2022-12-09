@@ -649,6 +649,24 @@ double * tridiagonal_solver(double d_inf[], double d[], double d_sup[], double b
 	return x;
 }
 
+void tridiagonal_solver_2(double d_inf[], double d[], double d_sup[], double b[], double x[], int const N) {
+	double * h, * p;
+	h = new double[N];
+	p = new double[N];
+	h[0] = d_sup[0] / d[0];
+	p[0] = b[0] / d[0];
+	for (int i = 1; i < N; i++) {
+		h[i] = d_sup[i] / (d[i] - d_inf[i] * h[i-1]);
+		p[i] = (b[i] - d_inf[i] * p[i-1]) / (d[i] - d_inf[i] * h[i-1]);
+	}
+	x[N-1] = p[N-1];
+	for (int i = N-2; i >= 0; i--) {
+		x[i] = p[i] - h[i] * x[i+1];
+	}
+	delete[] h;
+	delete[] p;
+}
+
 
 
 ////////// Elliptic PDE integration //////////

@@ -282,6 +282,11 @@ Return the vector of solutions.
 */
 double * tridiagonal_solver(double d_inf[], double d[], double d_sup[], double b[], int const N);
 
+/*
+Array x is the vector of solutions.
+*/
+void tridiagonal_solver_2(double d_inf[], double d[], double d_sup[], double b[], double x[], int const N);
+
 
 
 ////////// Elliptic PDE integration //////////
