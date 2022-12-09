@@ -22,8 +22,8 @@ int main() {
 	using namespace std;
 	cout << setprecision(N_PRECISION) << scientific;
 	// Parameters.
-	int const N_x = 256;  // Number of spatial points.
-	int const N_t = 100;  // Number of temporal intervals.
+	int const N_x = 256;
+	int const N_t = 100;
 	double const t_e = 0.1;
 	double const x_b = -1.0;
 	double const x_e = 1.0;
