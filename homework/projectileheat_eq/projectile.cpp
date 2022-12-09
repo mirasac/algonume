@@ -20,12 +20,12 @@ MC things to do before PROD:
 #endif /* N_PRECISION */
 
 #define HOMEWORK_NAME "projectile"
-#define N_PRECISION 12
 #define TOLERANCE 1e-7
+#define N_PRECISION 8
 
 /* Global variables */
 static double const global_g = 9.81;
-static double const global_C = 0.1;
+static double const global_C = 0.0;
 static double const global_v_0 = 18.0;
 static double const global_x_0 = 0.0;
 static double const global_L = 10.0;
@@ -77,13 +77,34 @@ int main() {
 		plot_file << '\n' << endl;
 	}
 	plot_file.close();
+
+	// Show plot of residuals.
+	phi_min = 1.55;//70 * M_PI / 180.0;
+	dphi = (phi_max - phi_min) / 1000;
+	plot_file.open(HOMEWORK_NAME "_noprod_residual.dat");
+	plot_file << setprecision(N_PRECISION) << scientific;
+	plot_file << "x y(x) v(x) phi(x)" << endl;
+	for (int i_phi = 0; i_phi <= 1000; i_phi++) {
+		phi = phi_min + i_phi * dphi;
+		plot_file << phi << ' ' << residual(phi) << endl;
+	}
+	plot_file.close();
 	#endif /* PROD */
 	
 	// Find initial shooting angles.
-	phi_0 = bisection(residual, 3.0 * M_PI / 30.0, 4.0 * M_PI / 30.0, TOLERANCE);
-	phi_1 = bisection(residual, 8.0 * M_PI / 30.0, 9.0 * M_PI / 30.0, TOLERANCE);
+	//phi_0 = bisection(residual, 3.0 * M_PI / 30.0, 4.0 * M_PI / 30.0, TOLERANCE);
+	//phi_1 = bisection(residual, 8.0 * M_PI / 30.0, 9.0 * M_PI / 30.0, TOLERANCE);
 	cout << "phi_0 = " << phi_0 / M_PI * 180.0 << " deg" << endl;
 	cout << "phi_1 = " << phi_1 / M_PI * 180.0 << " deg" << endl;
+
+	// MC I try with bracketing.
+	int const n = 100;
+	int nr;
+	double pl[n], pr[n];
+	nr = bracketing(residual, TOLERANCE, (1.0 - TOLERANCE) * M_PI / 2.0, n, pl, pr);
+	for (int i = 0; i < nr; i++) {
+		cout << pl[i] << ' ' << pr[i] << ' ' << 180.0 / M_PI * bisection(residual, pl[i], pr[i], TOLERANCE) << endl;
+	}
 	
 	// Save points of trajectories to file.
 	// Initial values.
@@ -102,6 +123,21 @@ int main() {
 		rungekutta4(x, dx, Y_0, rhs, n_eq);
 		rungekutta4(x, dx, Y_1, rhs, n_eq);
 	}
+
+	#ifndef PROD
+	// Analytical results for initial shooting angles in free fall.
+	double const tmp_arg = global_g * global_L / (global_v_0*global_v_0);
+	double phi_rad;
+	cout << "Analytical results" << endl;
+	phi_rad = 0.5 * asin(tmp_arg);
+	cout << "arcsin phi_0" << phi_rad << " rad " << 180.0 / M_PI * phi_rad << " deg" << endl;
+	phi_rad = M_PI / 2.0 - 0.5 * asin(tmp_arg);
+	cout << "arcsin phi_1" << phi_rad << " rad " << 180.0 / M_PI * phi_rad << " deg" << endl;
+	phi_rad = atan((1.0 - sqrt(1.0 - tmp_arg*tmp_arg)) / (tmp_arg * global_L));
+	cout << "arctan (-) " << phi_rad << " rad " << 180.0 / M_PI * phi_rad << " deg" << endl;
+	phi_rad = atan((1.0 + sqrt(1.0 - tmp_arg*tmp_arg)) / (tmp_arg * global_L));
+	cout << "arctan (+) " << phi_rad << " rad " << 180.0 / M_PI * phi_rad << " deg" << endl;
+	#endif /* PROD */
 	
 	// Teardown.
 	plot_file.close();
@@ -116,7 +152,7 @@ void rhs(double const x, double const Y[], double R[]) {
 
 double residual(double phi) {
 	int const n_eq = 3;
-	int const n_x = 100;
+	int const n_x = 1000;
 	double const dx = (global_L - global_x_0) / (n_x - 1);
 	double x;
 	double Y[n_eq];
