@@ -43,19 +43,22 @@ int main() {
 	double const alpha = global_k * dt / (dx*dx);
 	double const theta = 0.5;
 	double x, t;
-	double d_inf[N_x-2], d[N_x-2], d_sup[N_x-2], b[N_x-2], * T;
+	double d_inf[N_x], d[N_x], d_sup[N_x], b[N_x], T[N_x], * T_tmp;
 	ofstream plot_file;
 	// Set tridiagonal matrix coefficients.
-	for (int i_x = 0; i_x <= N_x-3; i_x++) {
+	for (int i_x = 0; i_x < N_x; i_x++) {
 		d_inf[i_x] = - alpha * theta;
 		d[i_x] = 2.0 * alpha * theta + 1.0;
 		d_sup[i_x] = - alpha * theta;
 	}
 	// Set initial values.
-	T = new double[N_x-2];
-	for (int i_x = 0; i_x <= N_x - 3; i_x++) {
-		x = x_b + (i_x + 1) * dx;
+	T_tmp = new double[N_x-2];
+	T[0] = f_L(0.0);
+	T[N_x-1] = f_R(0.0);
+	for (int i_x = 1; i_x <= N_x - 2; i_x++) {
+		x = x_b + i_x * dx;
 		T[i_x] = T_0(x);
+		T_tmp[i_x] = T[i_x];
 	}
 	plot_file.open(HOMEWORK_NAME ".dat");
 	plot_file << setprecision(N_PRECISION) << scientific;
@@ -93,15 +96,17 @@ int main() {
 		}
 		// Loop over space at fixed time step.
 		b[0] = alpha * (1.0 - theta) * f_L(0.0) + (1.0 - 2.0 * alpha * (1.0 - theta)) * T[0] + alpha * (1.0 - theta) * T[1];
-		for (int i_x = 1; i_x <= N_x - 4; i_x++) {
+		for (int i_x = 1; i_x <= N_x - 2; i_x++) {
+			T[i_x] = T_tmp[i_x-1];
 			b[i_x] = alpha * (1.0 - theta) * T[i_x-1] + (1.0 - 2.0 * alpha * (1.0 - theta)) * T[i_x] + alpha * (1.0 - theta) * T[i_x+1];
 		}
-		b[N_x-3] = alpha * (1.0 - theta) * T[N_x-4] + (1.0 - 2.0 * alpha * (1.0 - theta)) * T[N_x-3] + alpha * (1.0 - theta) * f_R(0.0);
+		b[N_x-1] = alpha * (1.0 - theta) * T[N_x-2] + (1.0 - 2.0 * alpha * (1.0 - theta)) * T[N_x-1] + alpha * (1.0 - theta) * f_R(0.0);
 		delete[] T;
-		T = tridiagonal_solver(d_inf, d, d_sup, b, N_x-2);
+		T_tmp = tridiagonal_solver(d_inf, d, d_sup, b, N_x-2);
 	}
 	// Plot values at desired times.
 	// Tear down.
+	delete[] T;
 	delete[] T;
 	plot_file.close();
 	return 0;
