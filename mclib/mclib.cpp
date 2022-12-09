@@ -254,33 +254,35 @@ double multiquad(double (*f)(double x, double y), double a, double b, int N, int
 
 
 
-// MC one can improve this function avoiding multiple calls to f by saving the values in a variable.
 double bisection(double (*f)(double x), double a, double b, double tollerance) {
-	if (!check_intermediate_value(f, a, b)) {
+	double f_m, f_prev;
+	f_prev = f(a);
+	if (f_prev * f(b) > 0.0) {
 		std::cout << "Function f, assumed continuous, does not have zeros in interval [" << a << ", " << b << "]";
 		exit(1);
 	}
-	double x_0;
+	double x_m;
 	#if FLG_DEBUG
 	int k = 0;
 	#endif /* FLG_DEBUG */
 	do {
-		x_0 = (a + b) / 2.0;
+		x_m = (a + b) / 2.0;
+		f_m = f(x_m);
 		#if FLG_DEBUG
 		++k;
-		std::cout << "Bisection(): k = " << k << "; [a,b] = [" << a << ", " << b << "]; xm = " << x_0 << "; dx = " << b - a << "; fm = " << f(x_0) << std::endl;
+		std::cout << "Bisection(): k = " << k << "; [a,b] = [" << a << ", " << b << "]; xm = " << x_m << "; dx = " << b - a << "; fm = " << f_m << std::endl;
 		#endif /* FLG_DEBUG */
-		if (check_intermediate_value(f, a, x_0)) {
-			b = x_0;
+		if (f_prev * f_m <= 0.0) {
+			b = x_m;
 		} else {
-			a = x_0;
+			a = x_m;
 		}
 	} while (fabs(b - a) > tollerance);
 	#if FLG_DEBUG
 	++k;
 	std::cout << "Bisection(): k = " << k << "; [a,b] = [" << a << ", " << b << "]; xm = " << x_0 << "; dx = " << b - a << "; fm = " << f(x_0) << std::endl;
 	#endif /* FLG_DEBUG */
-	return x_0;
+	return x_m;
 }
 
 double falseposition(double (*f)(double x), double a, double b, double tollerance) {
