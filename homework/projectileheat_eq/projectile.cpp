@@ -1,12 +1,3 @@
-/*
-MC things to do before PROD:
-- Simplify fractions.
-- Put meaningful comments and remove useless ones.
-- Remove useless global constants or restrict their scope.
-- It seems that my bisection function has low accuracy, find why. A reason is the relatively low number of points x which I use for the integration. Another problem is the slow convergence to the correct results when incrementing the number of points x, probably due to a propagation of errors in bisection that may originate from the implementation of bisection which calls more times the functio, which is residual in this case, hence the number of internal calculations is high.
-- Remove comments with units of measurement from code for PROD.
-*/
-
 #include <cmath>
 #include <fstream>
 #include <iomanip>
@@ -43,7 +34,7 @@ int main() {
 	int const n_x = 1025;
 	double const dx = (global_L - global_x_0) / (n_x - 1);
 	double x;
-	double phi_0, phi_1;  // [rad]
+	double phi_0, phi_1;  // Unit of measurement: radian.
 	double Y_0[n_eq], Y_1[n_eq];
 	ofstream plot_file;
 	
@@ -90,12 +81,15 @@ int main() {
 	#endif /* PROD */
 	
 	// Find initial shooting angles.
-	phi_0 = bisection(residual, 2.0 * M_PI / 24.0, 4.0 * M_PI / 24.0, TOLERANCE);
-	phi_1 = bisection(residual, 7.0 * M_PI / 24.0, 8.0 * M_PI / 24.0, TOLERANCE);
+	phi_0 = bisection(residual, M_PI / 12.0, M_PI / 8.0, TOLERANCE);
+	phi_1 = bisection(residual, 7.0 * M_PI / 24.0, M_PI / 3.0, TOLERANCE);
 	cout << "phi_0 = " << 180.0 / M_PI * phi_0 << " deg" << endl;
 	cout << "phi_1 = " << 180.0 / M_PI * phi_1 << " deg" << endl;
 
 	#ifndef PROD
+	// Check relative error.
+	cout << fabs(180.0 / M_PI * (phi_0 + phi_1) - 90) / TOLERANCE << endl;
+
 	// Check using bracketing.
 	int const n = 128;
 	int n_bracketing;
@@ -106,13 +100,13 @@ int main() {
 	}
 	#endif /* PROD */
 	
-	// Save points of trajectories to file.
-	Y_0[0] = global_y_0;  // y [m]
-	Y_0[1] = global_v_0;  // v [m / s]
-	Y_0[2] = phi_0;  // phi [rad]
-	Y_1[0] = global_y_0;  // y [m]
-	Y_1[1] = global_v_0;  // v [m / s]
-	Y_1[2] = phi_1;  // phi [rad]
+	// Evaluate trajectories and save points to file.
+	Y_0[0] = global_y_0;  // Physical quantity y [m]
+	Y_0[1] = global_v_0;  // Physical quantity v [m / s]
+	Y_0[2] = phi_0;  // Physical quantity phi [rad]
+	Y_1[0] = global_y_0;  // Physical quantity y [m]
+	Y_1[1] = global_v_0;  // Physical quantity v [m / s]
+	Y_1[2] = phi_1;  // Physical quantity phi [rad]
 	plot_file.open(HOMEWORK_NAME ".dat");
 	plot_file << setprecision(N_PRECISION) << scientific;
 	plot_file << "x y_0(x) y_1(x)" << endl;
@@ -156,9 +150,9 @@ double residual(double phi) {
 	double const dx = (global_L - global_x_0) / (n_x - 1);
 	double x;
 	double Y[n_eq];
-	Y[0] = global_y_0;  // y [m]
-	Y[1] = global_v_0;  // v [m / s]
-	Y[2] = phi;  // phi [rad]
+	Y[0] = global_y_0;  // Physical quantity y [m]
+	Y[1] = global_v_0;  // Physical quantity v [m / s]
+	Y[2] = phi;  // Physical quantity phi [rad]
 	for (int i_x = 0 ; i_x < n_x; i_x++) {
 		x = global_x_0 + i_x * dx;
 		rungekutta4(x, dx, Y, rhs, n_eq);
