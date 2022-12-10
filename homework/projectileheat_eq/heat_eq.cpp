@@ -5,11 +5,13 @@
 
 // Do not copy into report.
 #include "../../mclib/mclib.h"
+#define PROD
 #ifdef N_PRECISION
 #undef N_PRECISION
 #endif /* N_PRECISION */
 
 #define HOMEWORK_NAME "heat_eq"
+#define TOLERANCE 1e-7
 #define N_PRECISION 9
 
 /* Function prototypes */
@@ -34,6 +36,10 @@ int main() {
 	double const alpha = k * dt / (dx*dx);
 	double const c_1 = - alpha * theta;
 	double const c_2 = 1.0 - 2.0 * c_1;
+	#ifndef PROD
+	cout << "c_1 = " << c_1 << endl;
+	cout << "c_2 = " << c_2 << endl;
+	#endif /* PROD */
 	// Variables.
 	double t;
 	double x[N_x], d_inf[N_x], d[N_x], d_sup[N_x], b[N_x], T[N_x];
@@ -69,10 +75,10 @@ int main() {
 		}
 		// Assign values to constant terms of the linear system.
 		for (int i = 1; i <= N_x - 2; i++) {
-			b[i] = (alpha + c_1) * T[i-1] + (c_2 - 2.0 * alpha) * T[i] + (alpha + c_1) * T[i+1];
+			b[i] = (alpha + c_1) * (T[i-1] + T[i+1]) + (c_2 - 2.0 * alpha) * T[i];
 		}
-		b[1] -= d_inf[0] * f_L(t + dt);
-		b[N_x-2] -= d_sup[N_x-1] * f_R(t + dt);
+		b[1] -= c_1 * f_L(t + dt);
+		b[N_x-2] -= c_1 * f_R(t + dt);
 		// Evaluate T(x) at next time step.
 		tridiagonal_solver_2(d_inf+1, d+1, d_sup+1, b+1, T+1, N_x-2);
 	}
