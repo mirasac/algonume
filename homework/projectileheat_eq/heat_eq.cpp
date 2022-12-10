@@ -10,7 +10,7 @@
 #endif /* N_PRECISION */
 
 #define HOMEWORK_NAME "heat_eq"
-#define N_PRECISION 8
+#define N_PRECISION 9
 
 /* Function prototypes */
 double T_0(double x);

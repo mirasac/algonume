@@ -2,7 +2,7 @@
 MC things to do before PROD:
 - Simplify fractions.
 - Put meaningful comments and remove useless ones.
-- Remove useless global constants.
+- Remove useless global constants or restrict their scope.
 - It seems that my bisection function has low accuracy, find why. A reason is the relatively low number of points x which I use for the integration. Another problem is the slow convergence to the correct results when incrementing the number of points x, probably due to a propagation of errors in bisection that may originate from the implementation of bisection which calls more times the functio, which is residual in this case, hence the number of internal calculations is high.
 - Remove comments with units of measurement from code for PROD.
 */
@@ -14,18 +14,18 @@ MC things to do before PROD:
 
 // Do not copy into report.
 #include "../../mclib/mclib.h"
-//#define PROD
+#define PROD
 #ifdef N_PRECISION
 #undef N_PRECISION
 #endif /* N_PRECISION */
 
 #define HOMEWORK_NAME "projectile"
 #define TOLERANCE 1e-7
-#define N_PRECISION 8
+#define N_PRECISION 9
 
 /* Global variables */
 static double const global_g = 9.81;
-static double const global_C = 0.0;
+static double const global_C = 0.1;
 static double const global_v_0 = 18.0;
 static double const global_x_0 = 0.0;
 static double const global_L = 10.0;
@@ -40,7 +40,7 @@ int main() {
 	using namespace std;
 	cout << setprecision(N_PRECISION) << scientific;
 	int const n_eq = 3;
-	int const n_x = 1000;  // MC number of points.
+	int const n_x = 1000;  // MC number of spatial points.
 	double const dx = (global_L - global_x_0) / (n_x - 1);
 	double x;
 	double phi_0, phi_1;  // [rad]
@@ -49,19 +49,17 @@ int main() {
 	
 	#ifndef PROD
 	// Choose graphically the intervals of phi where phi_0 and phi_1 are searched.
-	int const n_phi = 10;  // Number of intervals.
+	int n_phi = 8;  // Number of intervals.
 	double phi, dphi, phi_min, phi_max;  // [rad]
 	double Y[n_eq];
 	phi_min = TOLERANCE;
-	//phi_max = (1.0) * M_PI / 2.0;  // Old maximum angle, there are NaNs.
-	phi_max = (1.0 - TOLERANCE) * M_PI / 2.0;  // Old maximum angle.
+	phi_max = (1.0 - TOLERANCE) * M_PI / 2.0;  // Old maximum angle, divergence of trajectory arises due to numerical procedure.
 	// MC from 65 there is divergence of tan and discontinuity of phi'=dphi/dx, it is when is reached phi < -pi/2. Find the value.
-	// MC contnuare.
-	//phi_max = 1023.0 / 1024.0 * M_PI / 2.0; //phi_max = 85 * M_PI / 180.0;
+	phi_max = M_PI / 3.0;  // New maximum angle, before divergence is displayed.
 	dphi = (phi_max - phi_min) / n_phi;
 	plot_file.open(HOMEWORK_NAME "_noprod_search.dat");
 	plot_file << setprecision(N_PRECISION) << scientific;
-	plot_file << "x y(x) v(x) phi(x)" << endl;
+	//plot_file << "x y(x) v(x) phi(x)" << endl;  // Commented out because not good for gnuplot's index command.
 	for (int i_phi = 0; i_phi <= n_phi; i_phi++) {
 		phi = phi_min + i_phi * dphi;
 		// Initial values.
@@ -72,19 +70,19 @@ int main() {
 			x = global_x_0 + i_x * dx;
 			plot_file << x << ' ' << Y[0] << ' ' << Y[1] << ' ' << Y[2] << endl;
 			rungekutta2(x, dx, Y, rhs, n_eq);
-			//if (Y[2] <= -M_PI_2) break;  // Useful to avoid divergence to infinity of the trajectory.
+			//if (Y[2] <= -M_PI_2) break;  // Useful to avoid plotting the divergence.
 		}
 		plot_file << '\n' << endl;
 	}
 	plot_file.close();
 
 	// Show plot of residuals.
-	phi_min = 1.55;//70 * M_PI / 180.0;
-	dphi = (phi_max - phi_min) / 1000;
+	n_phi = 1000;
+	dphi = (phi_max - phi_min) / n_phi;
 	plot_file.open(HOMEWORK_NAME "_noprod_residual.dat");
 	plot_file << setprecision(N_PRECISION) << scientific;
 	plot_file << "x y(x) v(x) phi(x)" << endl;
-	for (int i_phi = 0; i_phi <= 1000; i_phi++) {
+	for (int i_phi = 0; i_phi <= n_phi; i_phi++) {
 		phi = phi_min + i_phi * dphi;
 		plot_file << phi << ' ' << residual(phi) << endl;
 	}
@@ -92,22 +90,23 @@ int main() {
 	#endif /* PROD */
 	
 	// Find initial shooting angles.
-	//phi_0 = bisection(residual, 3.0 * M_PI / 30.0, 4.0 * M_PI / 30.0, TOLERANCE);
-	//phi_1 = bisection(residual, 8.0 * M_PI / 30.0, 9.0 * M_PI / 30.0, TOLERANCE);
-	cout << "phi_0 = " << phi_0 / M_PI * 180.0 << " deg" << endl;
-	cout << "phi_1 = " << phi_1 / M_PI * 180.0 << " deg" << endl;
+	phi_0 = bisection(residual, 2.0 * M_PI / 24.0, 4.0 * M_PI / 24.0, TOLERANCE);
+	phi_1 = bisection(residual, 7.0 * M_PI / 24.0, 8.0 * M_PI / 24.0, TOLERANCE);
+	cout << "phi_0 = " << 180.0 / M_PI * phi_0 << " deg" << endl;
+	cout << "phi_1 = " << 180.0 / M_PI * phi_1 << " deg" << endl;
 
-	// MC I try with bracketing.
-	int const n = 100;
-	int nr;
-	double pl[n], pr[n];
-	nr = bracketing(residual, TOLERANCE, (1.0 - TOLERANCE) * M_PI / 2.0, n, pl, pr);
-	for (int i = 0; i < nr; i++) {
-		cout << pl[i] << ' ' << pr[i] << ' ' << 180.0 / M_PI * bisection(residual, pl[i], pr[i], TOLERANCE) << endl;
+	#ifndef PROD
+	// Check using bracketing.
+	int const n = 128;
+	int n_bracketing;
+	double phi_L[n], phi_R[n];
+	n_bracketing = bracketing(residual, phi_min, phi_max, n, phi_L, phi_R);
+	for (int i = 0; i < n_bracketing; i++) {
+		cout << '[' << phi_L[i] << " rad, " << phi_R[i] << " rad]: " << 180.0 / M_PI * bisection(residual, phi_L[i], phi_R[i], TOLERANCE) << " deg" << endl;
 	}
+	#endif /* PROD */
 	
 	// Save points of trajectories to file.
-	// Initial values.
 	Y_0[0] = global_y_0;  // y [m]
 	Y_0[1] = global_v_0;  // v [m / s]
 	Y_0[2] = phi_0;  // phi [rad]
@@ -130,9 +129,10 @@ int main() {
 	double phi_rad;
 	cout << "Analytical results" << endl;
 	phi_rad = 0.5 * asin(tmp_arg);
-	cout << "arcsin phi_0" << phi_rad << " rad " << 180.0 / M_PI * phi_rad << " deg" << endl;
+	cout << "arcsin phi_0 " << phi_rad << " rad " << 180.0 / M_PI * phi_rad << " deg" << endl;
 	phi_rad = M_PI / 2.0 - 0.5 * asin(tmp_arg);
-	cout << "arcsin phi_1" << phi_rad << " rad " << 180.0 / M_PI * phi_rad << " deg" << endl;
+	cout << "arcsin phi_1 " << phi_rad << " rad " << 180.0 / M_PI * phi_rad << " deg" << endl;
+	// MC this does not work, don't know why.
 	phi_rad = atan((1.0 - sqrt(1.0 - tmp_arg*tmp_arg)) / (tmp_arg * global_L));
 	cout << "arctan (-) " << phi_rad << " rad " << 180.0 / M_PI * phi_rad << " deg" << endl;
 	phi_rad = atan((1.0 + sqrt(1.0 - tmp_arg*tmp_arg)) / (tmp_arg * global_L));

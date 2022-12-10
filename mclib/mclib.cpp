@@ -255,33 +255,40 @@ double multiquad(double (*f)(double x, double y), double a, double b, int N, int
 
 
 double bisection(double (*f)(double x), double a, double b, double tollerance) {
-	double f_m, f_prev;
+	double f_prev, f_m, x_m;
+	// Preliminary tests on boundaries are performed.
 	f_prev = f(a);
-	if (f_prev * f(b) > 0.0) {
+	f_m = f(b);
+	if (fabs(f_prev) <= tollerance) {
+		x_m = a;
+	} else if (fabs(f_m) <= tollerance) {
+		x_m = b;
+	} else if (f_prev * f_m > 0.0) {
 		std::cout << "Function f, assumed continuous, does not have zeros in interval [" << a << ", " << b << "]";
 		exit(1);
-	}
-	double x_m;
-	#if FLG_DEBUG
-	int k = 0;
-	#endif /* FLG_DEBUG */
-	do {
-		x_m = (a + b) / 2.0;
-		f_m = f(x_m);
+	} else {
+		#if FLG_DEBUG
+		int k = 0;
+		#endif /* FLG_DEBUG */
+		do {
+			x_m = (a + b) / 2.0;
+			f_m = f(x_m);
+			#if FLG_DEBUG
+			++k;
+			std::cout << "Bisection(): k = " << k << "; [a,b] = [" << a << ", " << b << "]; xm = " << x_m << "; dx = " << b - a << "; fm = " << f_m << std::endl;
+			#endif /* FLG_DEBUG */
+			if (f_prev * f_m <= 0.0) {
+				b = x_m;
+			} else {
+				a = x_m;
+				f_prev = f_m;
+			}
+		} while (fabs(b - a) > tollerance);
 		#if FLG_DEBUG
 		++k;
-		std::cout << "Bisection(): k = " << k << "; [a,b] = [" << a << ", " << b << "]; xm = " << x_m << "; dx = " << b - a << "; fm = " << f_m << std::endl;
+		std::cout << "Bisection(): k = " << k << "; [a,b] = [" << a << ", " << b << "]; xm = " << x_0 << "; dx = " << b - a << "; fm = " << f(x_0) << std::endl;
 		#endif /* FLG_DEBUG */
-		if (f_prev * f_m <= 0.0) {
-			b = x_m;
-		} else {
-			a = x_m;
-		}
-	} while (fabs(b - a) > tollerance);
-	#if FLG_DEBUG
-	++k;
-	std::cout << "Bisection(): k = " << k << "; [a,b] = [" << a << ", " << b << "]; xm = " << x_0 << "; dx = " << b - a << "; fm = " << f(x_0) << std::endl;
-	#endif /* FLG_DEBUG */
+	}
 	return x_m;
 }
 
