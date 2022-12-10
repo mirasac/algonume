@@ -40,7 +40,7 @@ int main() {
 	using namespace std;
 	cout << setprecision(N_PRECISION) << scientific;
 	int const n_eq = 3;
-	int const n_x = 1000;  // MC number of spatial points.
+	int const n_x = 1025;
 	double const dx = (global_L - global_x_0) / (n_x - 1);
 	double x;
 	double phi_0, phi_1;  // [rad]
@@ -77,7 +77,7 @@ int main() {
 	plot_file.close();
 
 	// Show plot of residuals.
-	n_phi = 1000;
+	n_phi = 1024;
 	dphi = (phi_max - phi_min) / n_phi;
 	plot_file.open(HOMEWORK_NAME "_noprod_residual.dat");
 	plot_file << setprecision(N_PRECISION) << scientific;
@@ -152,7 +152,7 @@ void rhs(double const x, double const Y[], double R[]) {
 
 double residual(double phi) {
 	int const n_eq = 3;
-	int const n_x = 1000;
+	int const n_x = 1025;
 	double const dx = (global_L - global_x_0) / (n_x - 1);
 	double x;
 	double Y[n_eq];

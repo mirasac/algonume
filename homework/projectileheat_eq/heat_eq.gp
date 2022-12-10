@@ -14,6 +14,7 @@ set yrange[0.99:1.5]
 set ytic font ",9"
 set mytics 10
 
-plot "heat_eq.dat" index 0 title "t = 0.05" lc rgb "blue" pt 1 ps 1, \
-	"heat_eq.dat" index 1 title "t = 0.1" lc rgb "red" pt 1 ps 1
-
+plot "heat_eq.dat" index 0 notitle lc rgb "blue" pt 7 ps 0.1, \
+	"" using (NaN) title "t = 0.05" lc rgb "blue" pt 7 ps 1, \
+	"heat_eq.dat" index 1 notitle lc rgb "red" pt 7 ps 0.1, \
+	"" using (NaN) title "t = 0.1" lc rgb "red" pt 7 ps 1
