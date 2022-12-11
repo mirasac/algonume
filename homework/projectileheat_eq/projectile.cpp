@@ -126,11 +126,10 @@ int main() {
 	cout << "arcsin phi_0 " << phi_rad << " rad " << 180.0 / M_PI * phi_rad << " deg" << endl;
 	phi_rad = M_PI / 2.0 - 0.5 * asin(tmp_arg);
 	cout << "arcsin phi_1 " << phi_rad << " rad " << 180.0 / M_PI * phi_rad << " deg" << endl;
-	// MC this does not work, don't know why.
-	phi_rad = atan((1.0 - sqrt(1.0 - tmp_arg*tmp_arg)) / (tmp_arg * global_L));
-	cout << "arctan (-) " << phi_rad << " rad " << 180.0 / M_PI * phi_rad << " deg" << endl;
-	phi_rad = atan((1.0 + sqrt(1.0 - tmp_arg*tmp_arg)) / (tmp_arg * global_L));
-	cout << "arctan (+) " << phi_rad << " rad " << 180.0 / M_PI * phi_rad << " deg" << endl;
+	phi_rad = atan((1.0 - sqrt(1.0 - tmp_arg*tmp_arg)) / tmp_arg);
+	cout << "arctan phi_0 " << phi_rad << " rad " << 180.0 / M_PI * phi_rad << " deg" << endl;
+	phi_rad = atan((1.0 + sqrt(1.0 - tmp_arg*tmp_arg)) / tmp_arg);
+	cout << "arctan phi_1 " << phi_rad << " rad " << 180.0 / M_PI * phi_rad << " deg" << endl;
 	#endif /* PROD */
 	
 	// Teardown.
