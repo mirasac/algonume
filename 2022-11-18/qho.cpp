@@ -119,11 +119,11 @@ int main() {
 	cout << "\nPoint 3" << endl;
 	int const n_intervals = 8;
 	int n_bracketing;
-	double const tollerance = 1e-6;
+	double const tolerance = 1e-6;
 	double E_L[n_intervals], E_R[n_intervals];
 	n_bracketing = bracketing(residual, E_min, E_max, n_intervals, E_L, E_R);
 	for (int n = 0; n < n_bracketing; n++) {
-		cout << bisection(residual, E_L[n], E_R[n], tollerance) << endl;
+		cout << bisection(residual, E_L[n], E_R[n], tolerance) << endl;
 	}
 	return 0;
 }

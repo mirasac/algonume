@@ -22,13 +22,13 @@ double function2(double x) {
 double simpsonquad(double (*f)(double x), double a, double b, int N);
 double gaussquad(double (*f)(double x), double a, double b, int N, int Ng);
 
-int testquad(double (*q)(double (*f)(double x), double a, double b, int N), double (*f)(double x), double a, double b, double tollerance);
+int testquad(double (*q)(double (*f)(double x), double a, double b, int N), double (*f)(double x), double a, double b, double tolerance);
 
 int main() {
 	// Setup.
 	using namespace std;
 	int N, Ng;
-	double a, b, tollerance, I;
+	double a, b, tolerance, I;
 	a = 0.0;
 	b = 3.0;
 	
@@ -110,7 +110,7 @@ double simpsonquad(double (*f)(double x), double a, double b, int N) {
 	return s_n * dx / 3.0;
 }
 
-int testquad(double (*q)(double (*f)(double x), double a, double b, int N), double (*f)(double x), double a, double b, double tollerance) {
+int testquad(double (*q)(double (*f)(double x), double a, double b, int N), double (*f)(double x), double a, double b, double tolerance) {
 	orderinterval(&a, &b);
 	int N = 2;
 	double t_0, t, err;
@@ -120,7 +120,7 @@ int testquad(double (*q)(double (*f)(double x), double a, double b, int N), doub
 		t = q(f, a, b, N);
 		err = fabs(t - t_0);
 		t_0 = t;
-	} while (err > tollerance);
+	} while (err > tolerance);
 	return N;
 }
 

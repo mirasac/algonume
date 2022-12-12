@@ -42,13 +42,13 @@ double simpsonquad(double (*f)(double x), double a, double b, int N);
 double gaussquad(double (*f)(double x), double a, double b, int N, int Ng);
 double multiquad(double (*f)(double x, double y), double a, double b, int N, int Ng);
 
-int testquad(double (*q)(double (*f)(double x), double a, double b, int N), double (*f)(double x), double a, double b, double tollerance);
+int testquad(double (*q)(double (*f)(double x), double a, double b, int N), double (*f)(double x), double a, double b, double tolerance);
 
 int main() {
 	// Setup.
 	using namespace std;
 	int N, Ng;
-	double a, b, tollerance, I, err, tmp;
+	double a, b, tolerance, I, err, tmp;
 	a = -1.0;
 	b = 1.0;
 	
@@ -64,13 +64,13 @@ int main() {
 	// Second part.
 	N = 1;
 	I = 0.0;
-	tollerance = 1e-5;
+	tolerance = 1e-5;
 	do {
 		++N;
 		tmp = multiquad(function2d2, a, b, N, 4);
 		err = fabs(I - tmp);
 		I = tmp;
-	} while (err <= tollerance);
+	} while (err <= tolerance);
 	cout << "Are needed N = " << N << " intervals" << endl;
 	
 	return 0;
@@ -140,7 +140,7 @@ double simpsonquad(double (*f)(double x), double a, double b, int N) {
 	return s_n * dx / 3.0;
 }
 
-int testquad(double (*q)(double (*f)(double x), double a, double b, int N), double (*f)(double x), double a, double b, double tollerance) {
+int testquad(double (*q)(double (*f)(double x), double a, double b, int N), double (*f)(double x), double a, double b, double tolerance) {
 	orderinterval(&a, &b);
 	int N = 2;
 	double t_0, t, err;
@@ -150,7 +150,7 @@ int testquad(double (*q)(double (*f)(double x), double a, double b, int N), doub
 		t = q(f, a, b, N);
 		err = fabs(t - t_0);
 		t_0 = t;
-	} while (err > tollerance);
+	} while (err > tolerance);
 	return N;
 }
 

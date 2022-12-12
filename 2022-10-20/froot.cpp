@@ -26,38 +26,38 @@ double function3(double x) {
 
 int main() {
 	using namespace std;
-	double a, b, tollerance;
+	double a, b, tolerance;
 
 	cout << "Practice session #1" << endl;
 	a = -1.0;
 	b = 1.0;
-	tollerance = 1e-7;
-	bisection(function, a, b, tollerance);
-	falseposition(function, a, b, tollerance);
+	tolerance = 1e-7;
+	bisection(function, a, b, tolerance);
+	falseposition(function, a, b, tolerance);
 
 	cout << endl << "Practice session #2" << endl;
-	secant(function, a, b, tollerance);
-	newtonraphson(function, function_1, a, b, tollerance);
+	secant(function, a, b, tolerance);
+	newtonraphson(function, function_1, a, b, tolerance);
 	
 	cout << endl << "Practice session #3" << endl;
 	double c[ORDER];
 	a = -5.0;
 	b = 0.0;
-	tollerance = 1e-8;
+	tolerance = 1e-8;
 	c[3] = 1.0;
 	c[2] = -3.0;
 	c[1] = 1.0;
 	c[0] = 5.0;
-	newtonraphson_poly(polynomial, ORDER, c, a, b, tollerance);
+	newtonraphson_poly(polynomial, ORDER, c, a, b, tolerance);
 	
 	cout << endl << "Practice session #4" << endl;
 	a = 0.0;
 	b = 2.0;
-	tollerance = 1e-7;
-	bisection(function2, a, b, tollerance);
-	falseposition(function2, a, b, tollerance);
-	secant(function2, a, b, tollerance);
-	newtonraphson(function2, function2_1, a, b, tollerance);
+	tolerance = 1e-7;
+	bisection(function2, a, b, tolerance);
+	falseposition(function2, a, b, tolerance);
+	secant(function2, a, b, tolerance);
+	newtonraphson(function2, function2_1, a, b, tolerance);
 	
 	cout << endl << "Practice session #5" << endl;
 	a = -10.0;
@@ -67,7 +67,7 @@ int main() {
 	int N;
 	N = bracketing(function3, a, b, NUM_INTERVALS_5, x_L, x_R);
 	for (int n = 0; n < N; n++) {
-		cout << "Root #" << n + 1 << "(bisection): " << bisection(function3, x_L[n], x_R[n], tollerance) << endl;
+		cout << "Root #" << n + 1 << "(bisection): " << bisection(function3, x_L[n], x_R[n], tolerance) << endl;
 	}
 }
 

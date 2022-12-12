@@ -95,11 +95,11 @@ int main() {
 	plot_file.close();
 	
 	// Point 3.
-	double s_0, tollerance;
-	tollerance = 1e-6;
+	double s_0, tolerance;
+	tolerance = 1e-6;
 	s_min = 0.4;  // Chosen graphically.
 	s_max = 0.6;  // Chosen graphically.
-	s_0 = bisection(residual, s_min, s_max, tollerance);
+	s_0 = bisection(residual, s_min, s_max, tolerance);
 	cout << "Zero of residual function is " << s_0 << endl;
 	
 	// Point 4.

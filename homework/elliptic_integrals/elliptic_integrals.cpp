@@ -13,7 +13,7 @@
 
 #define HOMEWORK_NAME "elliptic_integrals"
 #define N_PRECISION 8
-#define TOLLERANCE 1e-7
+#define TOLERANCE 1e-7
 #define N_GAUSSPOINTS 4
 
 /* Global variables */
@@ -67,7 +67,7 @@ double h_3(double phi) {
 	return h_2(phi) + delta_phi * g2(global_phi_c) / 6.0 * delta_phi*delta_phi;
 }
 
-int testquad(double (*q)(double (*f)(double x), double a, double b, int N), double (*f)(double x), double a, double b, double tollerance) {
+int testquad(double (*q)(double (*f)(double x), double a, double b, int N), double (*f)(double x), double a, double b, double tolerance) {
 	orderinterval(&a, &b);
 	int N = 2;
 	double t_0, t, err;
@@ -77,11 +77,11 @@ int testquad(double (*q)(double (*f)(double x), double a, double b, int N), doub
 		t = q(f, a, b, N);
 		err = fabs(t - t_0);
 		t_0 = t;
-	} while (err > tollerance);
+	} while (err > tolerance);
 	return N;
 }
 
-int testgaussquad(double (*q)(double (*f)(double x), double a, double b, int N), double (*f)(double x), double a, double b, double tollerance) {
+int testgaussquad(double (*q)(double (*f)(double x), double a, double b, int N), double (*f)(double x), double a, double b, double tolerance) {
 	orderinterval(&a, &b);
 	int N;
 	double t_0, t, err;
@@ -92,7 +92,7 @@ int testgaussquad(double (*q)(double (*f)(double x), double a, double b, int N),
 		err = fabs(t - t_0);
 		t_0 = t;
 		++N;
-	} while (err > tollerance);
+	} while (err > tolerance);
 	return N - 1;
 }
 
@@ -123,7 +123,7 @@ int main() {
 	cout << "Trapezioidal: T = " << T << endl;
 	T = 4.0 * simpsonquad(g, a, b, N);
 	cout << "Simpson: T = " << T << endl;
-	cout << "N for Gauss: " << testgaussquad(mygauss, g, a, b, TOLLERANCE) << endl;
+	cout << "N for Gauss: " << testgaussquad(mygauss, g, a, b, TOLERANCE) << endl;
 	#endif /* PROD */
 	T = 4.0 * gaussquad(g, a, b, 5, N_GAUSSPOINTS);
 	cout << "Gauss: T = " << T << endl;
@@ -147,7 +147,7 @@ int main() {
 	T = 4.0 * simpsonquad(g, a, b, N);
 	sigma_T_approx = fabs(T_approx / T - 1.0);
 	cout << "Simpson: sigma[T_approx] = " << sigma_T_approx << endl;
-	cout << "N for Gauss: " << testgaussquad(mygauss, g, a, b, TOLLERANCE) << endl;
+	cout << "N for Gauss: " << testgaussquad(mygauss, g, a, b, TOLERANCE) << endl;
 	T = 4.0 * gaussquad(g, a, b, 5, N_GAUSSPOINTS);
 	#endif /* PROD */
 	sigma_T_approx = fabs(T_approx / T - 1.0);
@@ -186,16 +186,16 @@ int main() {
 	for (int i = 0; i <= 300; ++i) {
 		global_t = i * t_step;
 		file_plot << global_t;
-		phi_t = bisection(h, a, b, TOLLERANCE);
+		phi_t = bisection(h, a, b, TOLERANCE);
 		file_plot << ' ' << phi_t;
-		phi_t = newtonraphson(h, g, a, b, TOLLERANCE);
+		phi_t = newtonraphson(h, g, a, b, TOLERANCE);
 		file_plot << ' ' << phi_t;
 		#ifndef PROD
-		phi_t = bisection(h_1, a, b, TOLLERANCE);
+		phi_t = bisection(h_1, a, b, TOLERANCE);
 		file_plot << ' ' << phi_t;
-		phi_t = bisection(h_2, a, b, TOLLERANCE);
+		phi_t = bisection(h_2, a, b, TOLERANCE);
 		file_plot << ' ' << phi_t;
-		phi_t = bisection(h_3, a, b, TOLLERANCE);
+		phi_t = bisection(h_3, a, b, TOLERANCE);
 		file_plot << ' ' << phi_t;
 		#endif /* PROD */
 		file_plot << endl;

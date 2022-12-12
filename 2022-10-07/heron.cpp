@@ -7,7 +7,7 @@ Use fabs for float absolute value.
 #include <iomanip>
 
 #define PRECISION 12
-#define TOLLERANCE 1e-9
+#define TOLERANCE 1e-9
 
 float iteration(float x, float S) {
 	return 0.5 * (x + S / x);
@@ -35,7 +35,7 @@ int main() {
 		err = fabs(y - x);
 		cout << "x = " << y << " err = " << err << endl;
 		x = y;
-	} while (err > TOLLERANCE);
+	} while (err > TOLERANCE);
 	
 	// Final messages.
 	cout << "The SQRT of " << S << " is : " << x << endl;

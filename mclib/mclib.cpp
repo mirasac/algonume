@@ -254,14 +254,14 @@ double multiquad(double (*f)(double x, double y), double a, double b, int N, int
 
 
 
-double bisection(double (*f)(double x), double a, double b, double tollerance) {
+double bisection(double (*f)(double x), double a, double b, double tolerance) {
 	double f_prev, f_m, x_m;
 	// Preliminary tests on boundaries are performed.
 	f_prev = f(a);
 	f_m = f(b);
-	if (fabs(f_prev) <= tollerance) {
+	if (fabs(f_prev) <= tolerance) {
 		x_m = a;
-	} else if (fabs(f_m) <= tollerance) {
+	} else if (fabs(f_m) <= tolerance) {
 		x_m = b;
 	} else if (f_prev * f_m > 0.0) {
 		std::cout << "Function f, assumed continuous, does not have zeros in interval [" << a << ", " << b << "]";
@@ -283,7 +283,7 @@ double bisection(double (*f)(double x), double a, double b, double tollerance) {
 				a = x_m;
 				f_prev = f_m;
 			}
-		} while (fabs(b - a) > tollerance);
+		} while (fabs(b - a) > tolerance);
 		#if FLG_DEBUG
 		++k;
 		std::cout << "Bisection(): k = " << k << "; [a,b] = [" << a << ", " << b << "]; xm = " << x_0 << "; dx = " << b - a << "; fm = " << f(x_0) << std::endl;
@@ -292,7 +292,7 @@ double bisection(double (*f)(double x), double a, double b, double tollerance) {
 	return x_m;
 }
 
-double falseposition(double (*f)(double x), double a, double b, double tollerance) {
+double falseposition(double (*f)(double x), double a, double b, double tolerance) {
 	orderinterval(&a, &b);
 	if (!check_intermediate_value(f, a, b)) {
 		std::cout << "Function f, assumed continuous, does not have zeros in interval [" << a << ", " << b << "]";
@@ -304,7 +304,7 @@ double falseposition(double (*f)(double x), double a, double b, double tolleranc
 	#endif /* FLG_DEBUG */
 	f_a = f(a);
 	f_b = f(b);
-	while (b - a >= tollerance) {
+	while (b - a >= tolerance) {
 		x_m = (f_a * b - f_b * a) / (f_a - f_b);
 		f_m = f(x_m);
 		#if FLG_DEBUG
@@ -322,7 +322,7 @@ double falseposition(double (*f)(double x), double a, double b, double tolleranc
 	return x_m;
 }
 
-double secant(double (*f)(double x), double a, double b, double tollerance) {
+double secant(double (*f)(double x), double a, double b, double tolerance) {
 	double x_0, x_prev, f_0, f_prev;
 	#if FLG_DEBUG
 	int k = 0;
@@ -339,7 +339,7 @@ double secant(double (*f)(double x), double a, double b, double tollerance) {
 		++k;
 		std::cout << "Secant(): k = " << k << "; xc = " << x_0 << "; dx = " << x_0 - x_prev << std::endl;
 		#endif /* FLG_DEBUG */
-	} while(fabs(x_0 - x_prev) >= tollerance);
+	} while(fabs(x_0 - x_prev) >= tolerance);
 	#if FLG_DEBUG
 	++k;
 	std::cout << "Secant(): k = " << k << "; xc = " << x_0 << "; dx = " << x_prev - x_0 << std::endl;
@@ -348,7 +348,7 @@ double secant(double (*f)(double x), double a, double b, double tollerance) {
 	return x_0;
 }
 
-double newtonraphson(double (*f)(double x), double (*f1)(double x), double a, double b, double tollerance) {
+double newtonraphson(double (*f)(double x), double (*f1)(double x), double a, double b, double tolerance) {
 	orderinterval(&a, &b);
 	double x_prev, x_0, f_0;
 	#if FLG_DEBUG
@@ -363,7 +363,7 @@ double newtonraphson(double (*f)(double x), double (*f1)(double x), double a, do
 		++k;
 		std::cout << "Newton(): k = " << k << "; xc = " << x_0 << "; dx = " << x_0 - x_prev << std::endl;
 		#endif /* FLG_DEBUG */
-	} while (fabs(x_0 - x_prev) >= tollerance);
+	} while (fabs(x_0 - x_prev) >= tolerance);
 	#if FLG_DEBUG
 	++k;
 	std::cout << "Newton(): k = " << k << "; xc = " << x_0 << "; dx = " << x_prev - x_0 << std::endl;
@@ -372,7 +372,7 @@ double newtonraphson(double (*f)(double x), double (*f1)(double x), double a, do
 	return x_0;
 }
 
-double newtonraphson_poly(double (*p)(int n, double c[], double x), int n, double c[], double a, double b, double tollerance) {
+double newtonraphson_poly(double (*p)(int n, double c[], double x), int n, double c[], double a, double b, double tolerance) {
 	orderinterval(&a, &b);
 	double x_prev, x_0, f_0, f1;
 	double * c1;
@@ -391,7 +391,7 @@ double newtonraphson_poly(double (*p)(int n, double c[], double x), int n, doubl
 		++k;
 		std::cout << "Newton(): k = " << k << "; xc = " << x_0 << "; dx = " << x_0 - x_prev << std::endl;
 		#endif /* FLG_DEBUG */
-	} while (fabs(x_0 - x_prev) >= tollerance);
+	} while (fabs(x_0 - x_prev) >= tolerance);
 	#if FLG_DEBUG
 	++k;
 	std::cout << "Newton(): k = " << k << "; xc = " << x_0 << "; dx = " << x_prev - x_0 << std::endl;

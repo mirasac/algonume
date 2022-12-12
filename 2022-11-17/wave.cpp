@@ -79,11 +79,11 @@ int main() {
 	
 	// Point 3.
 	cout << "\nPoint 3" << endl;
-	double k_min, k_max, tollerance;
-	tollerance = 1e-6;
+	double k_min, k_max, tolerance;
+	tolerance = 1e-6;
 	k_min = 3.0;  // Found graphically
 	k_max = 4.0;  // Found graphically.
-	cout << bisection(residual, k_min, k_max, tollerance) << endl;
+	cout << bisection(residual, k_min, k_max, tolerance) << endl;
 	
 	// Point 4.
 	cout << "\nPoint 4" << endl;
@@ -94,7 +94,7 @@ int main() {
 	k_max = 20.0;
 	n_brack = bracketing(residual, k_min, k_max, n_brack_max, k_L, k_R);
 	for (int n = 0; n < n_brack; n++) {
-		cout << bisection(residual, k_L[n], k_R[n], tollerance) << endl;
+		cout << bisection(residual, k_L[n], k_R[n], tolerance) << endl;
 	}
 	return 0;
 }

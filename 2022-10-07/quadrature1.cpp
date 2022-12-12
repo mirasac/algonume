@@ -19,34 +19,34 @@ double midpointquad(double (*f)(double x), double a, double b, int N);
 double trapezioidalquad(double (*f)(double x), double a, double b, int N);
 double simpsonquad(double (*f)(double x), double a, double b, int N);
 
-int testquad(double (*q)(double (*f)(double x), double a, double b, int N), double (*f)(double x), double a, double b, double tollerance);
+int testquad(double (*q)(double (*f)(double x), double a, double b, int N), double (*f)(double x), double a, double b, double tolerance);
 
 int main() {
 	// Setup.
 	using namespace std;
 	int N;
-	double a, b, tollerance, I;
+	double a, b, tolerance, I;
 	a = 0.0;
 	b = 1.0;
-	tollerance = 1e-5;
+	tolerance = 1e-5;
 	
 	// Test rectangular quadrature.
-	N = testquad(rectangualquad, function, a, b, tollerance);
+	N = testquad(rectangualquad, function, a, b, tolerance);
 	I = rectangualquad(function, a, b, N);
 	cout << "Rectangular: " << I << "; N = " << N << endl;
 	
 	// Test midpoint quadrature.
-	N = testquad(midpointquad, function, a, b, tollerance);
+	N = testquad(midpointquad, function, a, b, tolerance);
 	I = midpointquad(function, a, b, N);
 	cout << "Midpoint: " << I << "; N = " << N << endl;
 	
 	// Test trapezioidal quadrature.
-	N = testquad(trapezioidalquad, function, a, b, tollerance);
+	N = testquad(trapezioidalquad, function, a, b, tolerance);
 	I = trapezioidalquad(function, a, b, N);
 	cout << "Trapezioidal: " << I << "; N = " << N << endl;
 	
 	// Test simpson quadrature.
-	N = testquad(simpsonquad, function, a, b, tollerance);
+	N = testquad(simpsonquad, function, a, b, tolerance);
 	I = simpsonquad(function, a, b, N);
 	cout << "Simpson: " << I << "; N = " << N << endl;
 	return 0;
@@ -136,7 +136,7 @@ double simpsonquad(double (*f)(double x), double a, double b, int N) {
 	return s_n * dx / 3.0;
 }
 
-int testquad(double (*q)(double (*f)(double x), double a, double b, int N), double (*f)(double x), double a, double b, double tollerance) {
+int testquad(double (*q)(double (*f)(double x), double a, double b, int N), double (*f)(double x), double a, double b, double tolerance) {
 	orderinterval(&a, &b);
 	int N = 2;
 	double t_0, t, err;
@@ -146,7 +146,7 @@ int testquad(double (*q)(double (*f)(double x), double a, double b, int N), doub
 		t = q(f, a, b, N);
 		err = fabs(t - t_0);
 		t_0 = t;
-	} while (err > tollerance);
+	} while (err > tolerance);
 	return N;
 }
 
