@@ -15,4 +15,6 @@ lib: ${LIB}.cpp ${LIB}.h
 	g++ ${CPPFLAGS} -c ${LIB}.cpp -o ${LIB}.o
 
 clean:
-	rm *.o *.out *.dat
+	find . -name "*.o" -type f -delete
+	find . -name "*.out" -type f -delete
+	find . -name "*.dat" -type f -delete
