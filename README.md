@@ -9,20 +9,26 @@ This repository exists just as an effective way to save the code while the exerc
 
 ### Chapters
 Course topics are grouped in chapters as shown on the course web page. A chapter can span more lessons, so the following is the agenda:
-- 2022-09-29 - Chapter 1
-- 2022-09-30 - Chapter 1
-- 2022-10-06 - Chapter 2
-- 2022-10-07 - Chapter 2, chapter 3
-- 2022-10-13 - Chapter 3
-- 2022-10-14 - Chapter 3
-- 2022-10-20 - Chapter 5
-- 2022-10-21 - Chapter 5
-- 2022-10-27 - Chapter 5
-- 2022-10-28 - Chapter 6
-- 2022-11-03 - Chapter 4
-- 2022-11-04 - Chapter 4, chapter 7
-- 2022-11-10 - Chapter 7
-- 2022-11-11 - Chapter 7
+1. 2022-09-29 - Chapter 1
+2. 2022-09-30 - Chapter 1
+3. 2022-10-06 - Chapter 2
+4. 2022-10-07 - Chapter 2, chapter 3
+5. 2022-10-13 - Chapter 3
+6. 2022-10-14 - Chapter 3
+7. 2022-10-20 - Chapter 5
+8. 2022-10-21 - Chapter 5
+9. 2022-10-27 - Chapter 5
+10. 2022-10-28 - Chapter 6
+11. 2022-11-03 - Chapter 4
+12. 2022-11-04 - Chapter 4, chapter 7
+13. 2022-11-10 - Chapter 7
+14. 2022-11-11 - Chapter 7
+15. 2022-11-17 - Chapter 8
+16. 2022-11-18 - Chapter 8
+17. 2022-11-24 - Chapter 9
+18. 2022-11-25 - Chapter 9
+19. 2022-12-01 - Chapter 10
+20. 2022-12-02 - Chapter 10
 
 ## Repository structure
 Files and exercises used in each lesson are contained in folders named with the day of the relative lesson in [ISO format](https://en.wikipedia.org/wiki/ISO_8601#Dates) for calendar dates, with dashes.
