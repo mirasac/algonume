@@ -439,22 +439,18 @@ int main() {
 	do {
 		++c;
 		epsilon = 0.0;
-		// Successive over relaxation internal loop is modified to implement Von Neumann boundary conditions and the new formula for the residual.
+		// Successive over relaxation internal loop is modified to add the new formula for the residual.
 		for (int i = 1; i <= NX - 2; i++) {
 			for (int j = 1; j <= NY - 2; j++) {
 				phi_prev = phi[i][j];
 				// Notice that these formulas are valid for dx = dy.
-				if (i == 1) {
-					phi[i][j] = ( (1.0 - omega) * phi[i][j] + omega / 4.0 * (phi[i+1][j] + phi[i][j-1] + phi[i][j+1] - dx*dx * S[i][j]) ) / (1.0 - omega / 4.0);  // Derivative value is 0.
-				} else if (i == NX - 2) {
-					phi[i][j] = ( (1.0 - omega) * phi[i][j] + omega / 4.0 * (phi[i-1][j] + 3.0 * dx + phi[i][j-1] + phi[i][j+1] - dx*dx * S[i][j]) ) / (1.0 - omega / 4.0);
-				} else {
-					phi[i][j] = (1.0 - omega) * phi[i][j] + omega / 4.0 * (phi[i-1][j] + phi[i+1][j] + phi[i][j-1] + phi[i][j+1] - dx*dx * S[i][j]);
-				}
+				phi[i][j] = (1.0 - omega) * phi[i][j] + omega / 4.0 * (phi[i-1][j] + phi[i+1][j] + phi[i][j-1] + phi[i][j+1] - dx*dx * S[i][j]);
 				// Evaluate residual.
 				epsilon += fabs(phi[i][j] - phi_prev) * dx * dy;
 			}
 		}
+		// Reset boundary conditions.
+		set_boundary_conditions(phi, x, y, dx);
 	} while (epsilon > tolerance);
 	--c;
 	cout << ", solved in " << c << " iterations";
