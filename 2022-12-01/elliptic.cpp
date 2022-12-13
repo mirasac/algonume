@@ -410,6 +410,7 @@ int main() {
 	#if PRACTICE_SESSION == 3
 	
 	cout << "Practice session #3" << endl;
+	double phi_prev;
 	// Grid preparation.
 	x_min = 0.0;
 	x_max = 2.0;
@@ -423,10 +424,101 @@ int main() {
 	for (int j = 0; j < NY; j++) {
 		y[j] = y_min + j * dy;
 	}
+
+	// Solve with Jacobi method.
+	cout << "Jacobi";
+	double ** phi_tmp;
+	phi_tmp = mat_new(NX, NY);
+	phi = mat_new(NX, NY);
+	S = mat_new(NX, NY);
+	// Assign initial values and boundary conditions at the grid boundaries.
+	mat_zero(phi_tmp, NX, NY);
+	mat_zero(phi, NX, NY);
+	set_boundary_conditions(phi, x, y, dx);
+	mat_zero(S, NX, NY);
+	// Find solution.
+	c = 0;
+	do {
+		++c;
+		epsilon = 0.0;
+		// Jacobi loop is modified to add the new formula for the residual.
+		for (int i = 1; i <= NX - 2; i++) {
+			for (int j = 1; j <= NY - 2; j++) {
+				// Notice that these formulas are valid for dx = dy.
+				phi_tmp[i][j] = (phi[i+1][j] + phi[i-1][j] + phi[i][j+1] + phi[i][j-1] - dx*dx * S[i][j]) / 4.0;
+				// Evaluate residual.
+				epsilon += fabs(phi_tmp[i][j] - phi[i][j]) * dx * dy;
+			}
+		}
+		mat_copy(phi_tmp, phi, NX, NY);
+		// Reset boundary conditions.
+		set_boundary_conditions(phi, x, y, dx);
+	} while (epsilon > tolerance);
+	--c;
+	cout << ", solved in " << c << " iterations";
+	// Print results on file.
+	plot_file.open("elliptic_3_jacobi.dat");
+	plot_file << fixed << setprecision(N_PRECISION);
+	plot_file << "x y phi(x,y)" << endl;
+	for (int j = 0; j < NY; j++) {
+		for (int i = 0; i < NX; i++) {
+			plot_file << x[i] << ' ' << y[j] << ' ' << phi[i][j] << endl;
+		}
+		plot_file << endl;
+	}
+	cout << ", file printed" << endl;
+	// Clean up.
+	plot_file.close();
+	mat_delete(phi_tmp);
+	mat_delete(phi);
+	mat_delete(S);
+
+	// Solve with Gauss-Seidel method.
+	cout << "Gauss-Seidel";
+	phi = mat_new(NX, NY);
+	S = mat_new(NX, NY);
+	// Assign initial values and boundary conditions at the grid boundaries.
+	mat_zero(phi, NX, NY);
+	set_boundary_conditions(phi, x, y, dx);
+	mat_zero(S, NX, NY);
+	// Find solution.
+	c = 0;
+	do {
+		++c;
+		epsilon = 0.0;
+		// Gauss-Seidel loop is modified to add the new formula for the residual.
+		for (int i = 1; i <= NX - 2; i++) {
+			for (int j = 1; j <= NY - 2; j++) {
+				phi_prev = phi[i][j];
+				// Notice that these formulas are valid for dx = dy.
+				phi[i][j] = (phi[i+1][j] + phi[i-1][j] + phi[i][j+1] + phi[i][j-1] - dx*dx * S[i][j]) / 4.0;
+				// Evaluate residual.
+				epsilon += fabs(phi[i][j] - phi_prev) * dx * dy;
+			}
+		}
+		// Reset boundary conditions.
+		set_boundary_conditions(phi, x, y, dx);
+	} while (epsilon > tolerance);
+	--c;
+	cout << ", solved in " << c << " iterations";
+	// Print results on file.
+	plot_file.open("elliptic_3_gauss_seidel.dat");
+	plot_file << fixed << setprecision(N_PRECISION);
+	plot_file << "x y phi(x,y)" << endl;
+	for (int j = 0; j < NY; j++) {
+		for (int i = 0; i < NX; i++) {
+			plot_file << x[i] << ' ' << y[j] << ' ' << phi[i][j] << endl;
+		}
+		plot_file << endl;
+	}
+	cout << ", file printed" << endl;
+	// Clean up.
+	plot_file.close();
+	mat_delete(phi);
+	mat_delete(S);
 	
 	// Solve with successive over relaxation method.
 	cout << "SOR";
-	double sigma, phi_prev;
 	omega = 2.0 / (1.0 + M_PI / NX);
 	phi = mat_new(NX, NY);
 	S = mat_new(NX, NY);
