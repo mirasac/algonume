@@ -118,13 +118,16 @@ double residual(double ** phi, double ** S, double dx, double dy) {
 #define NX 129
 #define NY 65
 
-void set_boundary_conditions(double ** phi, double x[], double y[]) {
+void set_boundary_conditions(double ** phi, double x[], double y[], double dx) {
 	for (int i = 0; i < NX; i++) {
-		// Strictly this condition is not necessary because conditions apply to the entire domain of x anyway.
-		if (x[i] >= 0 && x[i] <= 2.0) {
-			phi[i][0] = 0.0;
-			phi[i][NY-1] = 2.0 - x[i];
-		}
+		// Dirichlet boundary conditions.
+		phi[i][0] = 0.0;
+		phi[i][NY-1] = 2.0 - x[i];
+	}
+	for (int j = 1; j <= NY - 2; j++) {
+		// Von Neumann boundary conditions.
+		phi[0][j] = phi[1][j];  // Derivative value is 0;
+		phi[NX-1][j] = phi[NX-2][j] + 3.0 * dx;
 	}
 }
 
@@ -429,7 +432,7 @@ int main() {
 	S = mat_new(NX, NY);
 	// Assign initial values and boundary conditions at the grid boundaries.
 	mat_zero(phi, NX, NY);
-	set_boundary_conditions(phi, x, y);
+	set_boundary_conditions(phi, x, y, dx);
 	mat_zero(S, NX, NY);
 	// Find solution.
 	c = 0;
@@ -442,11 +445,9 @@ int main() {
 				phi_prev = phi[i][j];
 				// Notice that these formulas are valid for dx = dy.
 				if (i == 1) {
-					sigma = 0.0;
-					phi[i][j] = ( (1.0 - omega) * phi[i][j] + omega / 4.0 * (-dx * sigma + phi[i+1][j] + phi[i][j-1] + phi[i][j+1] - dx*dx * S[i][j]) ) / (1.0 - omega / 4.0);
+					phi[i][j] = ( (1.0 - omega) * phi[i][j] + omega / 4.0 * (phi[i+1][j] + phi[i][j-1] + phi[i][j+1] - dx*dx * S[i][j]) ) / (1.0 - omega / 4.0);  // Derivative value is 0.
 				} else if (i == NX - 2) {
-					sigma = 3.0;
-					phi[i][j] = ( (1.0 - omega) * phi[i][j] + omega / 4.0 * (phi[i-1][j] + dx * sigma + phi[i][j-1] + phi[i][j+1] - dx*dx * S[i][j]) ) / (1.0 - omega / 4.0);
+					phi[i][j] = ( (1.0 - omega) * phi[i][j] + omega / 4.0 * (phi[i-1][j] + 3.0 * dx + phi[i][j-1] + phi[i][j+1] - dx*dx * S[i][j]) ) / (1.0 - omega / 4.0);
 				} else {
 					phi[i][j] = (1.0 - omega) * phi[i][j] + omega / 4.0 * (phi[i-1][j] + phi[i+1][j] + phi[i][j-1] + phi[i][j+1] - dx*dx * S[i][j]);
 				}
