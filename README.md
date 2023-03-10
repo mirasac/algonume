@@ -40,5 +40,3 @@ I use VS Code as visual text editor, which I installed on the VM.
 
 ### Failed attempts
 I tried to use WSL2 and install all the request software there, including [gnuplot](http://www.gnuplot.info/), which is used for the graphical part of programs we write. To display the plots created by gnuplot on the WSL2 side, a [X11 server](https://sourceforge.net/projects/xming/) on Windows was needed and I tried to install it following [this guide](https://blog.karatos.in/a?ID=01700-6d257862-8225-4d2a-b4cd-140b2fba8020), but it did not work.
-
-## Chapters
