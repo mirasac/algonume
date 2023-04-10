@@ -1,10 +1,30 @@
-\documentclass[draft,10pt]{article}
+\documentclass[a4paper,10pt,draft]{article}
+%\usepackage[T1]{fontenc}
+%\usepackage[utf8]{inputenc}
+%\usepackage[english]{babel}
 \usepackage{amsmath}
 \usepackage{amssymb}
+%\usepackage{mathtools}
 \usepackage{physics}
 \usepackage{listings}
+%\usepackage{booktabs}
+%\usepackage{tabularx}
+%\usepackage{caption}
+%\usepackage{varioref}
 \usepackage{graphicx}
 \usepackage{xcolor}
+%\usepackage{hyperref}
+%\usepackage{subcaption}
+%\usepackage[style=ieee,backend=biber]{biblatex}
+%\usepackage{subfiles}
+
+%\sisetup{group-digits=integer,separate-uncertainty,per-mode=fraction}
+%\graphicspath{{./figures/}}
+%\DeclareGraphicsExtensions{.pdf,.jpg,.png}
+%\captionsetup{tableposition=top,figureposition=bottom,font=footnotesize,format=hang,subrefformat=parens}
+%\hypersetup{hidelinks}
+%\raggedbottom
+%\addbibresource{bibliography.bib}
 
 \definecolor{Blue}{rgb}{0.2,0.2,0.9}
 \definecolor{Green}{rgb}{0,0.6,0}
@@ -32,11 +52,14 @@
 }
 \lstset{style=mystyle}
 
+\begin{document}
 \title{Project / Homework Title}
 \author{Marco Casari}
 \date{\today}
-
-\begin{document}
 \maketitle
 
+\tableofcontents % MC check with requirements if TOC is needed.
+\newpage
+
+%\printbibliography[heading=bibintoc]
 \end{document}
