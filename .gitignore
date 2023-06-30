@@ -1,4 +1,13 @@
+# C files
 **.o
 **.out
+
+# Other
 **.vscode
 **.dat
+
+# LaTeX
+project/report/*.log
+
+# Folder for temporary files
+project/gitignore/
