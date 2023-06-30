@@ -1,16 +1,20 @@
-\documentclass[draft,10pt]{article}
+\documentclass[10pt,a4paper,draft]{article}
 \usepackage{amsmath}
 \usepackage{amssymb}
-\usepackage{physics}
+\usepackage[style=ieee,backend=biber]{biblatex}
+\usepackage{hyperref}
 \usepackage{listings}
 \usepackage{graphicx}
 \usepackage{xcolor}
 
+\addbibresource{bibliography.bib}
+\hypersetup{hidelinks}
 \definecolor{Blue}{rgb}{0.2,0.2,0.9}
 \definecolor{Green}{rgb}{0,0.6,0}
 \definecolor{Gray}{rgb}{0.5,0.5,0.5}
 \definecolor{Purple}{rgb}{0.58,0,0.82}
 \definecolor{background}{rgb}{0.98,0.98,0.95}
+\raggedbottom
 
 \lstdefinestyle{mystyle}{
     backgroundcolor=\color{background},
@@ -39,4 +43,5 @@
 \begin{document}
 \maketitle
 
+\printbibliography[heading=bibintoc]
 \end{document}
