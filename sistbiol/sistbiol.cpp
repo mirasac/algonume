@@ -1,3 +1,11 @@
+/*
+Pipeline to execute the program from terminal, CWD is root of algonume repo.
+make MAIN=sistbiol/sistbiol
+sistbiol/sistbiol.out
+gnuplot
+plot "sistbiol_solution.dat" using 2:3 index 0
+*/
+
 #include <cmath>
 #include <cstdio>
 #include <fstream>
@@ -27,11 +35,11 @@ void rhs(double const t, double const Y_0[], double R[]) {
 	double omega_3 = pow(v * Y_0[4], global_gamma_1);
 	double omega_4 = pow(Y_0[3], global_gamma_2);
 	// Equations.
-	R[0] = global_alpha_1 * (1.0 - Y_0[0]) - global_beta_1 * Y_0[0] * omega_1 / (global_K_1 * omega_1);
-	R[1] = global_alpha_2 * (1.0 - Y_0[1]) - global_beta_2 * Y_0[1] * omega_2 / (global_K_2 * omega_2);
+	R[0] = global_alpha_1 * (1.0 - Y_0[0]) - global_beta_1 * Y_0[0] * omega_1 / (global_K_1 + omega_1);
+	R[1] = global_alpha_2 * (1.0 - Y_0[1]) - global_beta_2 * Y_0[1] * omega_2 / (global_K_2 + omega_2);
 	R[2] = v;
-	R[3] = global_alpha_1 * (1.0 - Y_0[3]) - global_beta_1 * omega_3 / (global_K_1 * omega_3);
-	R[4] = global_alpha_2 * (1.0 - Y_0[4]) - global_beta_2 * omega_4 / (global_K_2 * omega_4);
+	R[3] = global_alpha_1 * (1.0 - Y_0[3]) - global_beta_1 * omega_3 / (global_K_1 + omega_3);
+	R[4] = global_alpha_2 * (1.0 - Y_0[4]) - global_beta_2 * omega_4 / (global_K_2 + omega_4);
 }
 
 int main() {
@@ -53,7 +61,7 @@ int main() {
 	dt = (t_max - t_min) / N_STEP;
 	plot_file.open("sistbiol_solution.dat");
 	plot_file << setprecision(N_PRECISION) << scientific;
-	plot_file << "t x(t) y(t) x_hill(t) y_hill(t)" << endl;
+			plot_file << "t x(t) y(t) x_hill(t) y_hill(t)" << endl;
 	for (int i_x = 0; i_x <= N_INIT; i_x++) {
 		x_0 = i_x * dx;
 		for (int i_y = 0; i_y <= N_INIT; i_y++) {
