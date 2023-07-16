@@ -13,8 +13,9 @@ load "sistbiol/sistbiol.gp"
 #include <iostream>
 #include "../mclib/mclib.h"
 
-#define N_INIT 20
-#define N_STEP 10
+#define SPEEDUP
+#define N_INIT 40
+#define N_STEP 50
 
 /* Global variables */
 static double const global_alpha_1 = 1.0;
@@ -50,6 +51,7 @@ int main() {
 	double const x_max = 1.0;
 	double const y_min = 0.0;
 	double const y_max = 1.0;
+	double const threshold_plot = 0.05;
 	double dx, x_0, dy, y_0;
 	double t_min, t_max, dt, t;
 	double Y[n_eq];
@@ -57,7 +59,7 @@ int main() {
 	dx = (x_max - x_min) / N_INIT;
 	dy = (y_max - y_min) / N_INIT;
 	t_min = 0.0;
-	t_max = 100.0;
+	t_max = 1.0;
 	dt = (t_max - t_min) / N_STEP;
 	plot_file.open("sistbiol.dat");
 	plot_file << setprecision(N_PRECISION) << scientific;
@@ -76,6 +78,16 @@ int main() {
 				t = i_t * dt;
 				plot_file << t << ' ' << Y[0] << ' ' << Y[1] << ' ' << Y[3] << ' ' << Y[4] << endl;
 				eulerstep(t, dt, Y, rhs, n_eq);
+				#ifdef SPEEDUP
+				if (
+					(Y[0] < x_min - threshold_plot || Y[0] > x_max + threshold_plot) &&
+					(Y[1] < y_min - threshold_plot || Y[1] > y_max + threshold_plot) &&
+					(Y[3] < x_min - threshold_plot || Y[3] > x_max + threshold_plot) &&
+					(Y[4] < y_min - threshold_plot || Y[4] > y_max + threshold_plot)
+				) {
+					break;
+				}
+				#endif /* SPEEDUP */
 			}
 			plot_file << '\n' << endl;
 		}
