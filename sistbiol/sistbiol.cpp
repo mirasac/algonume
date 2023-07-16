@@ -1,9 +1,9 @@
 /*
-Pipeline to execute the program from terminal, CWD is root of algonume repo.
+Pipeline to execute the program from terminal, CWD is root of algonume repo:
 make MAIN=sistbiol/sistbiol
 sistbiol/sistbiol.out
 gnuplot
-plot "sistbiol_solution.dat" using 2:3 index 0
+load "sistbiol/sistbiol.gp"
 */
 
 #include <cmath>
@@ -59,8 +59,9 @@ int main() {
 	t_min = 0.0;
 	t_max = 100.0;
 	dt = (t_max - t_min) / N_STEP;
-	plot_file.open("sistbiol_solution.dat");
+	plot_file.open("sistbiol.dat");
 	plot_file << setprecision(N_PRECISION) << scientific;
+	plot_file << "# t x(t) y(t) x_hill(t) y_hill(t)" << endl;
 	Y[2] = global_v;  // Workaround to pass values to the RHS of the equation during the function call.
 	for (int i_x = 0; i_x <= N_INIT; i_x++) {
 		x_0 = i_x * dx;
@@ -70,7 +71,7 @@ int main() {
 			Y[1] = y_0;
 			Y[3] = x_0;
 			Y[4] = y_0;
-			plot_file << "t x(t) y(t) x_hill(t) y_hill(t)" << endl;
+			plot_file << '(' << x_0 << ", " << y_0 << ')' << endl;
 			for (int i_t = 0; i_t <= N_STEP; i_t++) {
 				t = i_t * dt;
 				plot_file << t << ' ' << Y[0] << ' ' << Y[1] << ' ' << Y[3] << ' ' << Y[4] << endl;
