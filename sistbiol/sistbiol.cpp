@@ -61,16 +61,16 @@ int main() {
 	dt = (t_max - t_min) / N_STEP;
 	plot_file.open("sistbiol_solution.dat");
 	plot_file << setprecision(N_PRECISION) << scientific;
-			plot_file << "# t x(t) y(t) x_hill(t) y_hill(t)" << endl;
+	Y[2] = global_v;  // Workaround to pass values to the RHS of the equation during the function call.
 	for (int i_x = 0; i_x <= N_INIT; i_x++) {
 		x_0 = i_x * dx;
 		for (int i_y = 0; i_y <= N_INIT; i_y++) {
 			y_0 = i_y * dy;
 			Y[0] = x_0;
 			Y[1] = y_0;
-			Y[2] = global_v;  // MC potrei metterlo fuori dai cicli essendo costante, ma lo tengo qui per sicurezza.
 			Y[3] = x_0;
 			Y[4] = y_0;
+			plot_file << "t x(t) y(t) x_hill(t) y_hill(t)" << endl;
 			for (int i_t = 0; i_t <= N_STEP; i_t++) {
 				t = i_t * dt;
 				plot_file << t << ' ' << Y[0] << ' ' << Y[1] << ' ' << Y[3] << ' ' << Y[4] << endl;
