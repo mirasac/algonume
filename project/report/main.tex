@@ -1,58 +1,60 @@
 \documentclass[a4paper,10pt,draft]{article}
-%\usepackage[T1]{fontenc}
-%\usepackage[utf8]{inputenc}
-%\usepackage[english]{babel}
+
+% Packages.
+\usepackage[T1]{fontenc}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage[style=ieee,backend=biber]{biblatex}
+%\usepackage{booktabs}
+%\usepackage{caption}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{listings}
 %\usepackage{mathtools}
 %\usepackage{physics}
 \usepackage{siunitx}
-\usepackage{listings}
-%\usepackage{booktabs}
-%\usepackage{tabularx}
-%\usepackage{caption}
-%\usepackage{varioref}
-\usepackage{graphicx}
-\usepackage{xcolor}
-\usepackage{hyperref}
 %\usepackage{subcaption}
-\usepackage[style=ieee,backend=biber]{biblatex}
 %\usepackage{subfiles}
+%\usepackage{tabularx}
+%\usepackage{varioref}
+\usepackage{xcolor}
 
-\sisetup{group-digits=integer,separate-uncertainty,per-mode=fraction}
-%\graphicspath{{./figures/}}
-%\DeclareGraphicsExtensions{.pdf,.jpg,.png}
+% Packages settings.
+\addbibresource{bibliography.bib}
 %\captionsetup{tableposition=top,figureposition=bottom,font=footnotesize,format=hang,subrefformat=parens}
 \hypersetup{hidelinks}
-%\raggedbottom
-\addbibresource{bibliography.bib}
+%\DeclareGraphicsExtensions{.pdf,.jpg,.png}
+\graphicspath{{./figures/}}
+\sisetup{group-digits=integer,separate-uncertainty,per-mode=fraction}
+
+% Customizations.
 \definecolor{Blue}{rgb}{0.2,0.2,0.9}
 \definecolor{Green}{rgb}{0,0.6,0}
 \definecolor{Gray}{rgb}{0.5,0.5,0.5}
 \definecolor{Purple}{rgb}{0.58,0,0.82}
 \definecolor{background}{rgb}{0.98,0.98,0.95}
-\raggedbottom
-
 \lstdefinestyle{mystyle}{
-    backgroundcolor=\color{background},
-    commentstyle=\color{Green},
-    keywordstyle=\color{Blue},
-    numberstyle=\tiny\color{Gray},
-    stringstyle=\color{Purple},
-    basicstyle=\ttfamily\footnotesize,
-    breakatwhitespace=false,
-    breaklines=true,
-    captionpos=b,
-    keepspaces=true,
-    numbers=left,
-    numbersep=5pt,
-    showspaces=false,
-    showstringspaces=false,
-    showtabs=false,
-    tabsize=2
+  backgroundcolor=\color{background},
+  commentstyle=\color{Green},
+  keywordstyle=\color{Blue},
+  numberstyle=\tiny\color{Gray},
+  stringstyle=\color{Purple},
+  basicstyle=\ttfamily\footnotesize,
+  breakatwhitespace=false,
+  breaklines=true,
+  captionpos=b,
+  keepspaces=true,
+  numbers=left,
+  numbersep=5pt,
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  tabsize=2
 }
 \lstset{style=mystyle}
+\raggedbottom
 
+% Document.
 \begin{document}
 \title{Project / Homework Title}
 \author{Marco Casari}

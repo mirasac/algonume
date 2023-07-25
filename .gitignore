@@ -7,7 +7,10 @@
 **.dat
 
 # LaTeX
-project/report/*.log
+project/report/main.*
+!project/report/*.tex
+!project/report/*.bib
+!project/report/*.pdf
 
 # Folder for temporary files
 project/gitignore/
