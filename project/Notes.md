@@ -5,7 +5,8 @@
 - Try to set the number of atmospheric layers in the RCM as a constant, so that the software can be easily adapted for a multi layer analysis.
 
 # General
-- I need probably to create skew-T plots in Gnuplot, find how. I can resort to drwaing many curves with some kind of transparency to simulate the skew-plot lines at last. Some kind of change of variables is probably needed beacuase in this case axes are still cartesian. Also search for the implementation of class metpy.plots.SkewT for help.
+- I need probably to create skew-T plots in Gnuplot, find how. I can resort to drwaing many curves with some kind of transparency to simulate the skew-plot lines at last. Some kind of change of variables is probably needed because in this case axes are still cartesian. Also search for the implementation of class metpy.plots.SkewT for help.
+- Use the sigma adimensional pressure variable to represent heights.
 
 # Questions
 - What is temperature profile instability.
