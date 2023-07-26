@@ -27,7 +27,7 @@
 \graphicspath{{./figures/}}
 \sisetup{group-digits=integer,separate-uncertainty,per-mode=fraction}
 
-% Customizations.
+% Customization.
 \definecolor{Blue}{rgb}{0.2,0.2,0.9}
 \definecolor{Green}{rgb}{0,0.6,0}
 \definecolor{Gray}{rgb}{0.5,0.5,0.5}
@@ -52,21 +52,24 @@
   tabsize=2
 }
 \lstset{style=mystyle}
+
+\newcommand{\cpp}{C++}
+
 \raggedbottom
 
 % Document.
-\begin{abstract}
-% MC abstract.
-\end{abstract}
-
 \begin{document}
-\title{Project / Homework Title}
+\title{Project / Homework Title} % MC choose title.
 \author{Marco Casari}
 \date{\today}
 \maketitle
 
-\tableofcontents % MC check with requirements if TOC is needed.
-\newpage
+\begin{abstract}
+  % MC abstract.
+\end{abstract}
+
+%\tableofcontents
+%\newpage
 
 \section{Introduction}
 % MC the aim of this project is presented.
@@ -86,11 +89,12 @@
 \appendix
 
 \section{Source code}
-In this section the C++ code used to obtain the results presented in this work is shown and commented.
+In this section the \cpp\ code used to obtain the results presented in this work is shown and commented.
 % MC show the whole source code, splitted in sections.
 
 \subsection{Classes}
 % MC show and comment the source code for the used classes.
 
+%\newpage % MC probably not needed.
 \printbibliography[heading=bibintoc]
 \end{document}
