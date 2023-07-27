@@ -5,10 +5,13 @@
 - Try to set the number of atmospheric layers in the RCM as a constant, so that the software can be easily adapted for a multi layer analysis.
 - Structures or classes? In C++ there is no difference in efficiency, just in the default visibility of members.
 - Atmospheric layers and their thickness can be stored in an array each, with size fixed a priori by a constant N_LAYERS. The program should adapt automatically to the chosen number of layers.
+- A class for atmospheric layers, where the values are functions depending on the spectral propertries (e.g. albedo depending on the wavelength).
 
 # General
 - I need probably to create skew-T plots in Gnuplot, find how. I can resort to drwaing many curves with some kind of transparency to simulate the skew-plot lines at last. Some kind of change of variables is probably needed because in this case axes are still cartesian. Also search for the implementation of class metpy.plots.SkewT for help.
 - Use the sigma adimensional pressure variable to represent heights.
+- Introduce spectral dependence in albedo values for each layer surface.
+- TTAPS-I works on visible wavelength of 550 nm.
 
 # Questions
 - What is temperature profile instability.
