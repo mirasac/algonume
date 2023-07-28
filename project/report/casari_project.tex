@@ -1,4 +1,4 @@
-\documentclass[a4paper,10pt,draft]{article}
+\documentclass[a4paper,10pt,draft,twocolumn]{article}
 
 % Packages.
 \usepackage[T1]{fontenc}
@@ -78,13 +78,21 @@
 %\section{Materials}
 
 \section{Methods}
+% MC explain the atmosphere model: vertical column where each layer present quantities averaged over the global atmosphere.
 % MC explain the subdivision between the radiative part and the convective part.
 % MC distinguish in appropriate subsections the treatment of shortwave and longwave radiations and radiation scattering vs absorption.
+% MC describe conventions used in this work.
+The definition of wavenumber $\nu = \frac{1}{\lambda}$ is used in this work, where $\lambda$ is the wavelenght.
 
 \subsection{Longwave radiation}
-Scattering of solar radiation at high wavelength $\lambda \geq \SI{4}{\micro\metre}$ is negligible with respect to absorption in atmosphere, moreover radiation at these wavelenghts has lower intensities than radiation emitted by Earth's surface and atmosphere. For these reasons longwave radiation is considered to be emitted only by Earth's surface and atmosphere.\cite[468]{https://doi.org/10.1029/RG016i004p00465}
+At wavelengths $\lambda \geq \SI{4}{\micro\metre}$, solar radiation has lower intensities than radiation emitted by Earth's surface and atmosphere at the same wavelengths. Moreover, it presents negligible scattering in atmosphere with respect to absorption. For these reasons longwave radiation is considered to be emitted only by Earth's surface and atmosphere.\cite[468]{ramanathan}
+
+% MC continue with formulae.
 
 \subsection{Shortwave radiation}
+At wavelengths $\lambda < \SI{4}{\micro\metre}$, solar radiation has much greater intensity than radiation emitted from Earth's surface and atmosphere. Both scattering and absorption by gases, aerosols and clouds of atmosphere dissipates solar radiation.\cite[469]{ramanathan}
+
+% MC continue with formulae.
 
 \subsection{Numerical approach} % MC maybe change title.
 % MC convert the problem and the physical formulae into the numerical algorithms and functions to solve it.
