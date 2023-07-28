@@ -7,7 +7,7 @@
 **.dat
 
 # LaTeX
-project/report/main.*
+project/report/casari_project.*
 !project/report/*.tex
 !project/report/*.bib
 !project/report/*.pdf

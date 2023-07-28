@@ -1,4 +1,4 @@
-MAIN=main
+MAIN=casari_project
 
 all: main bibliography
 	pdflatex ${MAIN}.tex
