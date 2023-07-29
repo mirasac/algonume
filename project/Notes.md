@@ -12,6 +12,8 @@
 - Use the sigma adimensional pressure variable to represent heights.
 - Introduce spectral dependence in albedo values for each layer surface.
 - TTAPS-I works on visible wavelength of 550 nm.
+- Gravitational acceleration is not constant and depends also on the altitude. Discuss why I take a constant value, or discuss the parametrization I choose if I take a non-constant value.
+- Distinguish thorougly simulation time and computation time.
 
 # Questions
 - What is temperature profile instability.
