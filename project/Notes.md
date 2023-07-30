@@ -14,6 +14,7 @@
 - TTAPS-I works on visible wavelength of 550 nm.
 - Gravitational acceleration is not constant and depends also on the altitude. Discuss why I take a constant value, or discuss the parametrization I choose if I take a non-constant value.
 - Distinguish thorougly simulation time and computation time.
+- Data file format for output values is set as shown in the [official Gnuplot documentation](http://gnuplot.info/docs_5.5/loc17750.html) but it is different from what suggested by Professor's (i.e. y variable fixed in each block), so I might change the format.
 
 # Questions
 - What is temperature profile instability.

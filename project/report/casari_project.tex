@@ -102,9 +102,7 @@ A lower complexity parametrisation is adopted instead, where the atmosphere is d
 \subsection{Numerical approach} % MC maybe change title.
 % MC convert the problem and the physical formulae into the numerical algorithms and functions to solve it.
 % MC show and describe formulae.
-Euler's method is used to solve the Ordinary Differential Equation (ODE) for the time-dependant temperature function.\cite[472]{ramanathan} A solution for each atmospheric layer is evaluated, hence the resulting values are triplets of temperature, altitude (i.e. proxy for the atmospheric layer) and time (i.e. simulation time).
-
-% MC maybe add excerpt of the gnuplot file.
+Euler's method is used to solve the Ordinary Differential Equation (ODE) for the time-dependant temperature function.\cite[472]{ramanathan} A solution for each atmospheric layer is evaluated, hence the resulting values are triplets of temperature, altitude (i.e. proxy for the atmospheric layer) and time (i.e. simulation time). Further information on storage and plotting of data are presented in Section~\ref{sec:Plotting}.
 
 \section{Results}
 % MC explain briefly how to read a skew-T plot.
@@ -128,6 +126,28 @@ In this section the \cpp\ code used to obtain the results presented in this work
 
 \subsection{Classes}
 % MC show and comment the source code for the used classes.
+
+\section{Supplementary information}
+
+\subsection{Plotting}
+\label{sec:Plotting}
+Software Gnuplot is used to generate plots shown in this work. Output values from the simulation are stored in a DAT file with the following structure, line spacing between data blocks is important:
+\begin{verbatim}
+t[0]       P[0]       T[0][0]
+...        ...        ...
+t[0]       P[N_P - 1] T[0][N_P - 1]
+
+t[1]       P[0]       T[1][0]
+...        ...        ...
+t[1]       P[N_P - 1] T[1][N_P - 1]
+
+...
+
+t[N_t - 1] P[0]       T[N_t - 1][0]
+...        ...        ...
+t[N_t - 1] P[N_P - 1] T[N_t - 1][N_P - 1]
+\end{verbatim}
+Value \verb|N_t| is not fixed a priori since it is the number of temporal steps needed to reach convergence, instead \verb|N_P| is the number of atmospheric layers.
 
 \newpage
 \printbibliography[heading=bibintoc]
