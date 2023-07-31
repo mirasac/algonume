@@ -86,11 +86,24 @@
 % MC describe conventions used in this work.
 
 \subsection{Hypotheses and conventions}
+\label{sec:Hypotheses and conventions}
 To simplify some calculations for radiative fluxes, the definition of wavenumber $\nu = \frac{1}{\lambda}$ is used in this work, where $\lambda$ is the wavelenght.
+
+Specific gas constant is used in thermodynamical relations, which is defined as the gas constant divided by the gas molar mass. In this work the symbol $R$ is used for the specific gas constant.
 
 Some assumptions are made on the dynamical state and the composition of Earth's atmosphere. 
 % MC do I need to use the International Standard Atmosphere? It is not a good choice since its temperature profile is already fixed. But I can take it as reference for other parametrizations.
-Air parcels are supposed to be in hydrostatic equilibrium, with each component obeying the ideal gas law. Gravitational acceleration is constant (cfr. Table~\ref{tab:constants} for values).
+Gravitational acceleration is constant (cfr. Table~\ref{tab:constants} for values). Air parcels are supposed to be in hydrostatic equilibrium,
+\begin{equation}
+  \label{eq:hydrostatic_equilibrium}
+  \dd P = -\rho g \dd z
+\end{equation}
+with each component obeying the ideal gas law
+\begin{equation}
+  \label{eq:ideal_gas_law}
+  P = \rho R T
+\end{equation}
+where $\rho = \frac{m}{V}$ is the volumetric mass density of the air parcel.
 
 % MC put constants in a table, not in the appendix since it is part of the necessary data. This table has headers: symbol, value, unit of measure, notes.
 
@@ -162,16 +175,26 @@ Value \verb|N_t| is not fixed a priori since it is the number of temporal steps 
 In this appendix mathematical derivations of some ancillary results and formulae used in the main text are explicitly shown.
 
 \subsection{Relation between pressure and altitude}
-A general result regarding planetary atmosphere is that atmospheric pressure decreases with increasing altitude. Theoretical relations which approximate this behaviour can be obtained.
+A general result regarding planetary atmosphere is that atmospheric pressure decreases with increasing altitude. Theoretical relations which approximate this behaviour can be obtained. Hypotheses considered in Section~\ref{sec:Hypotheses and conventions} are valid.
 
-Pressure $P$ depends linearly from altitude $z$ if density is assumed constant:
-\begin{equation}
-  \dd P = -\rho g \dd z \impliedby P(z) = P_0 - \rho g (z - z_0)
+If density is assumed constant, equation~\eqref{eq:hydrostatic_equilibrium} can be solved easily resulting in a linear dependence of pressure $P$ on altitude $z$, % MC normalize how I refere to sections and equations.
+\begin{equation*}
+  P(z) = P_0 - \rho g (z - z_0)
   \quad ,
-\end{equation}
-and point $(z_0, P_0)$ is a reference point in the atmosphere.
+\end{equation*}
+where $(z_0, P_0)$ is a reference point inside the atmosphere.
 
 % MC here derivation for: non-constant density, ideal gas law and constant temperature.
+If density is not constant, its expression is given by the ideal gas law (cfr. equation~\eqref{eq:ideal_gas_law}):
+\begin{equation}
+  \label{eq:non-constant_pressure}
+  \rho = \frac{P}{R T}
+  \quad .
+\end{equation}
+If temperature $T$ is assumed constant, equation~\eqref{eq:hydrostatic equilibrium} results in:
+\begin{equation*}
+  \dd P = -\frac{P g}{R T} \dd z \iff \frac{\dd P}{P} = -\frac{g}{R T} \dd z \impliedby % MC continue with primitives and final result.
+\end{equation*}
 
 % MC here derivation for: non-constant density, ideal gas law and constant lapse rate.
 
