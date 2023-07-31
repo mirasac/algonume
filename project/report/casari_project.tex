@@ -96,7 +96,7 @@ Some assumptions are made on the dynamical state and the composition of Earth's 
 Gravitational acceleration is constant (cfr. Table~\ref{tab:constants} for values). Air parcels are supposed to be in hydrostatic equilibrium,
 \begin{equation}
   \label{eq:hydrostatic_equilibrium}
-  \dd P = -\rho g \dd z
+  \dd P = - \rho g \dd z
 \end{equation}
 with each component obeying the ideal gas law
 \begin{equation}
@@ -177,26 +177,41 @@ In this appendix mathematical derivations of some ancillary results and formulae
 \subsection{Relation between pressure and altitude}
 A general result regarding planetary atmosphere is that atmospheric pressure decreases with increasing altitude. Theoretical relations which approximate this behaviour can be obtained. Hypotheses considered in Section~\ref{sec:Hypotheses and conventions} are valid.
 
-If density is assumed constant, equation~\eqref{eq:hydrostatic_equilibrium} can be solved easily resulting in a linear dependence of pressure $P$ on altitude $z$, % MC normalize how I refere to sections and equations.
-\begin{equation*}
+If density is assumed constant, equation~\eqref{eq:hydrostatic_equilibrium} can be solved easily resulting in a linear dependence of pressure $P$ on altitude $z$, % MC normalize the way I refere to sections and equations.
+\begin{equation}
+  \label{eq:pressure_constant_density}
   P(z) = P_0 - \rho g (z - z_0)
   \quad ,
-\end{equation*}
+\end{equation}
 where $(z_0, P_0)$ is a reference point inside the atmosphere.
 
-% MC here derivation for: non-constant density, ideal gas law and constant temperature.
-If density is not constant, its expression is given by the ideal gas law (cfr. equation~\eqref{eq:ideal_gas_law}):
+If density is not constant its expression is given by the ideal gas law (cfr. equation~\eqref{eq:ideal_gas_law}) and, assuming constant temperature $T$, equation~\eqref{eq:hydrostatic_equilibrium} results in:
 \begin{equation}
-  \label{eq:non-constant_pressure}
-  \rho = \frac{P}{R T}
+  \label{eq:pressure_constant_temperature}
+  \begin{split}
+    & \dd P = - \frac{P g}{R T} \dd z \iff \\
+    \iff & \frac{\dd P}{P} = - \frac{g}{R T} \dd z \impliedby \\
+    \impliedby & \ln(P') \bigg|_{P_0}^{P(z)} = - \frac{g}{R T} z' \bigg|_{z_0}^{z} \iff \\
+    \iff & P(z) = P_0 \exp{\bigg( - \frac{g}{R T} (z - z_0) \bigg)}
+    \quad .
+  \end{split}
+\end{equation}
+This relation is not meaningful, since the aim of the work is to derive the non-constant temperature profile of the atmosphere. However, it can be used inside atmospheric layers where the temperature is considered constant.
+
+A better approximation assumes non-constant density and constant lapse rate $\Gamma$, hence temperature depends linearly on altitude:
+\begin{equation}
+  \label{eq:constant_lapse_rate}
+  \Gamma = - \frac{\dd T}{\dd z} \iff T(z) = T_0 - \Gamma (z - z_0)
   \quad .
 \end{equation}
-If temperature $T$ is assumed constant, equation~\eqref{eq:hydrostatic equilibrium} results in:
-\begin{equation*}
-  \dd P = -\frac{P g}{R T} \dd z \iff \frac{\dd P}{P} = -\frac{g}{R T} \dd z \impliedby % MC continue with primitives and final result.
-\end{equation*}
-
-% MC here derivation for: non-constant density, ideal gas law and constant lapse rate.
+With these assumptions and the density rewritten through the ideal gas law \eqref{eq:ideal_gas_law}, equation~\eqref{eq:hydrostatic_equilibrium} becomes
+\begin{equation}
+  \label{eq:pressure_constant_lapse_rate}
+  \begin{split}
+    & \dd P = - \frac{P g}{R} \frac{1}{T_0 - \Gamma (z - z_0)} \dd z \iff \\
+  \end{split}
+\end{equation}
+% MC choose a better format for splitted equations.
 
 % MC here thoughts on derivation 3 used with empirical technique for convective adjustment and using a piecewise constant lapse rate.
 
