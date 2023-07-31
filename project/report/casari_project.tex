@@ -54,6 +54,7 @@
 \lstset{style=mystyle}
 
 \newcommand{\cpp}{C++}
+\newcommand{\dd}{\mathop{}\!\mathrm{d}}
 
 \raggedbottom
 
@@ -83,7 +84,15 @@
 % MC explain the subdivision between the radiative part and the convective part.
 % MC distinguish in appropriate subsections the treatment of shortwave and longwave radiations and radiation scattering vs absorption.
 % MC describe conventions used in this work.
-The definition of wavenumber $\nu = \frac{1}{\lambda}$ is used in this work, where $\lambda$ is the wavelenght.
+
+\subsection{Hypotheses and conventions}
+To simplify some calculations for radiative fluxes, the definition of wavenumber $\nu = \frac{1}{\lambda}$ is used in this work, where $\lambda$ is the wavelenght.
+
+Some assumptions are made on the dynamical state and the composition of Earth's atmosphere. 
+% MC do I need to use the International Standard Atmosphere? It is not a good choice since its temperature profile is already fixed. But I can take it as reference for other parametrizations.
+Air parcels are supposed to be in hydrostatic equilibrium, with each component obeying the ideal gas law. Gravitational acceleration is constant (cfr. Table~\ref{tab:constants} for values).
+
+% MC put constants in a table, not in the appendix since it is part of the necessary data. This table has headers: symbol, value, unit of measure, notes.
 
 \subsection{Longwave radiation}
 At wavelengths $\lambda \geq \SI{4}{\micro\metre}$, solar radiation has lower intensities than radiation emitted by Earth's surface and atmosphere at the same wavelengths. Moreover, it presents negligible scattering in atmosphere with respect to absorption. For these reasons longwave radiation is considered to be emitted only by Earth's surface and atmosphere.\cite[468]{ramanathan}
@@ -148,6 +157,25 @@ t[N_t - 1] P[0]       T[N_t - 1][0]
 t[N_t - 1] P[N_P - 1] T[N_t - 1][N_P - 1]
 \end{verbatim}
 Value \verb|N_t| is not fixed a priori since it is the number of temporal steps needed to reach convergence, instead \verb|N_P| is the number of atmospheric layers.
+
+\section{Mathematical derivations}
+In this appendix mathematical derivations of some ancillary results and formulae used in the main text are explicitly shown.
+
+\subsection{Relation between pressure and altitude}
+A general result regarding planetary atmosphere is that atmospheric pressure decreases with increasing altitude. Theoretical relations which approximate this behaviour can be obtained.
+
+Pressure $P$ depends linearly from altitude $z$ if density is assumed constant:
+\begin{equation}
+  \dd P = -\rho g \dd z \impliedby P(z) = P_0 - \rho g (z - z_0)
+  \quad ,
+\end{equation}
+and point $(z_0, P_0)$ is a reference point in the atmosphere.
+
+% MC here derivation for: non-constant density, ideal gas law and constant temperature.
+
+% MC here derivation for: non-constant density, ideal gas law and constant lapse rate.
+
+% MC here thoughts on derivation 3 used with empirical technique for convective adjustment and using a piecewise constant lapse rate.
 
 \newpage
 \printbibliography[heading=bibintoc]
