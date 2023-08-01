@@ -22,6 +22,7 @@
 - What is temperature profile instability.
 - What is lapse rate? Is the technical term of temperature in pressure-temperature plot?
 - How do I choose which formulae are suitable for specific wavelengths? Do I simply set a threshold on wavelenght value? I may also set the function as method of the class used to represent gases.
+- Why there is a pi multiplying the spectrally averaged plank function? Probably for the parametrizations I use it is not needed.
 
 # Keywords
 - Tracer continuity equation (cfr. https://clima.github.io/OceananigansDocumentation/v0.47.1/physics/navier_stokes_and_tracer_conservation/, https://getm.eu/files/GETM/doc/html/node78.html and https://climate.ucdavis.edu/ATM121/AtmosphericDynamics-Chapter01-Part03-Continuity.pdf).

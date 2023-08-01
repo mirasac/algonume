@@ -217,6 +217,56 @@ double gaussquad(double (*f)(double x), double a, double b, int N, int Ng) {
 	return sum;
 }
 
+double gaussquad2(double (*f)(double x, double p), double a, double b, int N, int Ng, double p) {
+	orderinterval(&a, &b);
+	double dx, a_n, b_n, r_n, sum, sum_n;
+	double * x, * w;
+	x = new double[Ng];
+	w = new double[Ng];
+	gaussianpoints(Ng, x, w);
+	dx = (b - a) / N;
+	sum = 0.0;
+	for (int n = 1; n <= N; n++) {
+		sum_n = 0.0;
+		a_n = a + (n - 1) * dx;
+		b_n = a + n * dx;
+		r_n = (b_n - a_n) / 2.0;
+		for (int i = 0; i < Ng; i++) {
+			sum_n += w[i] * f(r_n * x[i] + (b_n + a_n) / 2.0, p); 
+		}
+		sum_n = r_n * sum_n;
+		sum += sum_n;
+	}
+	delete[] x;
+	delete[] w;
+	return sum;
+}
+
+double gaussquadparam(double (*f)(double x, int cp, double p[]), double a, double b, int N, int Ng, int cp, double p[]) {
+	orderinterval(&a, &b);
+	double dx, a_n, b_n, r_n, sum, sum_n;
+	double * x, * w;
+	x = new double[Ng];
+	w = new double[Ng];
+	gaussianpoints(Ng, x, w);
+	dx = (b - a) / N;
+	sum = 0.0;
+	for (int n = 1; n <= N; n++) {
+		sum_n = 0.0;
+		a_n = a + (n - 1) * dx;
+		b_n = a + n * dx;
+		r_n = (b_n - a_n) / 2.0;
+		for (int i = 0; i < Ng; i++) {
+			sum_n += w[i] * f(r_n * x[i] + (b_n + a_n) / 2.0, cp, p); 
+		}
+		sum_n = r_n * sum_n;
+		sum += sum_n;
+	}
+	delete[] x;
+	delete[] w;
+	return sum;
+}
+
 double multiquad(double (*f)(double x, double y), double a, double b, int N, int Ng) {
 	orderinterval(&a, &b);
 	double dx, dy, x_i, y_i, a_n, b_n, r_n, sum, sum_x, sum_y, sum_n;
