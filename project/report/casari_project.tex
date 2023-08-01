@@ -196,24 +196,27 @@ If density is not constant its expression is given by the ideal gas law (cfr. eq
     \quad .
   \end{split}
 \end{equation}
-This relation is not meaningful, since the aim of the work is to derive the non-constant temperature profile of the atmosphere. However, it can be used inside atmospheric layers where the temperature is considered constant.
+This relation is not meaningful, since the aim of the work is to derive the non-constant temperature profile of the atmosphere. However, it can be used inside atmospheric layers where the temperature is considered constant (e.g. stratosphere).
 
-A better approximation assumes non-constant density and constant lapse rate $\Gamma$, hence temperature depends linearly on altitude:
+A better approximation assumes non-constant density and constant lapse rate $\Gamma$, hence temperature depends linearly on altitude,
 \begin{equation}
   \label{eq:constant_lapse_rate}
-  \Gamma = - \frac{\dd T}{\dd z} \iff T(z) = T_0 - \Gamma (z - z_0)
-  \quad .
+  \Gamma = - \frac{\dd T}{\dd z} \impliedby T(z) = T_0 - \Gamma (z - z_0)
+  \quad ,
 \end{equation}
-With these assumptions and the density rewritten through the ideal gas law \eqref{eq:ideal_gas_law}, equation~\eqref{eq:hydrostatic_equilibrium} becomes
+with $T_0$ temperature corresponding to reference altitude $z_0$. Using these assumptions and the density rewritten through the ideal gas law \eqref{eq:ideal_gas_law}, equation~\eqref{eq:hydrostatic_equilibrium} becomes
 \begin{equation}
   \label{eq:pressure_constant_lapse_rate}
   \begin{split}
-    & \dd P = - \frac{P g}{R} \frac{1}{T_0 - \Gamma (z - z_0)} \dd z \iff \\
+    & \dd P = - \frac{P g}{R T} \bigg( - \frac{\dd T}{\Gamma} \bigg) \iff \\
+    \iff & \frac{\dd P}{P} = \frac{g}{R \Gamma} \frac{\dd T}{T} \impliedby \\
+    \impliedby & \ln(P') \bigg|_{P_0}^{P(z)} = \frac{g}{R \Gamma} \ln(T') \bigg|_{T_0}^{T(z)} \iff \\
+    \iff & P(z) = P_0 \bigg( \frac{T_0 - \Gamma (z - z_0)}{T_0} \bigg)^\frac{g}{R \Gamma}
   \end{split}
 \end{equation}
 % MC choose a better format for splitted equations.
 
-% MC here thoughts on derivation 3 used with empirical technique for convective adjustment and using a piecewise constant lapse rate.
+Equation \eqref{eq:pressure_constant_lapse_rate} can be used also with a piecewise constant lapse rate in altitude intervals where it is not null, otherwise equation \eqref{eq:pressure_constant_temperature} is valid with appropriate boundary conditions to ensure continuity.
 
 \newpage
 \printbibliography[heading=bibintoc]
