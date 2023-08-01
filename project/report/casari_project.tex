@@ -127,7 +127,7 @@ A lower complexity parametrisation is adopted instead, where the atmosphere is d
 Euler's method is used to solve the Ordinary Differential Equation (ODE) for the time-dependant temperature function.\cite[472]{ramanathan} A solution for each atmospheric layer is evaluated, hence the resulting values are triplets of temperature, altitude (i.e. proxy for the atmospheric layer) and time (i.e. simulation time). Further information on storage and plotting of data are presented in Section~\ref{sec:Plotting}.
 
 % MC how many spectral bands have I chosen? Maybe list them in a table in the appendix with notes for each band to explain why I have chosen that band (e.g. to excite the vibro-rotational levels of some gases).
-Spectral bands are identified by two arrays: one listing the lower bound of each band, the other containing the width of each band. This choice simplify the use of functions for numerical integration.
+Spectral bands are identified by two arrays: one listing the lower bound of each band, the other containing the width of each band. This choice simplify the use of functions for numerical integration. Values related to spectral bands are stored as integers.
 
 \section{Results}
 % MC explain briefly how to read a skew-T plot.
@@ -172,7 +172,7 @@ t[N_t - 1] P[0]       T[N_t - 1][0]
 ...        ...        ...
 t[N_t - 1] P[N_P - 1] T[N_t - 1][N_P - 1]
 \end{verbatim}
-Value \verb|N_t| is not fixed a priori since it is the number of temporal steps needed to reach convergence, instead \verb|N_P| is the number of atmospheric layers.
+Value \verb|N_t| is not known a priori since it is the number of temporal steps needed to reach convergence, instead \verb|N_P| is the chosen number of atmospheric layers.
 
 \section{Mathematical derivations}
 In this appendix mathematical derivations of some ancillary results and formulae used in the main text are explicitly shown.
