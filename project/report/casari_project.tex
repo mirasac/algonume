@@ -55,6 +55,7 @@
 
 \newcommand{\cpp}{C++}
 \newcommand{\dd}{\mathop{}\!\mathrm{d}}
+\newcommand{\PTOA}{P_\mathrm{TOA}}
 
 \raggedbottom
 
@@ -76,15 +77,21 @@
 \section{Introduction}
 % MC the aim of this project is presented.
 % MC the physical background is presented.
+Planet Earth's climate dynamics can be studied with models of varying complexity depending on the subject of the study. Radiative-convective models (RCMs) provide an intermediate complexity approach to the simulation of climate, evaluating the atmospheric temperature profile in a vertical column where temperature is averaged over all latitudes and longitudes.
+
+The present work intends to study the atmospheric temeprature profile averaged on the Northern Hemisphere in presence of conditions 
 
 %\section{Materials}
 
 \section{Methods}
 % MC explain the atmosphere model: vertical column where each layer present quantities averaged over the global atmosphere.
+The RCM developed for the present work approximates the atmosphere as a vertical column divided in a given number of layers.
+% MC put the number of layers.
+
 % MC explain the subdivision between the radiative part and the convective part.
 % MC distinguish in appropriate subsections the treatment of shortwave and longwave radiations and radiation scattering vs absorption.
-% MC describe conventions used in this work.
 
+% MC describe conventions used in this work.
 \subsection{Hypotheses and conventions}
 \label{sec:Hypotheses and conventions}
 To simplify some calculations for radiative fluxes, the definition of wavenumber $\nu = \frac{1}{\lambda}$ is used in this work, where $\lambda$ is the wavelenght.
@@ -108,12 +115,14 @@ where $\rho = \frac{m}{V}$ is the volumetric mass density of the air parcel.
 % MC put constants in a table, not in the appendix since it is part of the necessary data. This table has headers: symbol, value, unit of measure, notes.
 
 \subsection{Longwave radiation}
-At wavelengths $\lambda \geq \SI{4}{\micro\metre}$, solar radiation has lower intensities than radiation emitted by Earth's surface and atmosphere at the same wavelengths. Moreover, it presents negligible scattering in atmosphere with respect to absorption. For these reasons longwave radiation is considered to be emitted only by Earth's surface and atmosphere.\cite[468]{ramanathan}
+% MC TTAPS-I: absorption of longwave radiation.
+At wavelengths $\lambda \geq \qty{4}{\micro\metre}$, solar radiation has lower intensities than radiation emitted by Earth's surface and atmosphere at the same wavelengths. Moreover, it presents negligible scattering in atmosphere with respect to absorption. For these reasons longwave radiation is considered to be emitted only by Earth's surface and atmosphere.\cite[468]{ramanathan}
 
 % MC continue with formulae.
 
 \subsection{Shortwave radiation}
-At wavelengths $\lambda < \SI{4}{\micro\metre}$, solar radiation has much greater intensity than radiation emitted from Earth's surface and atmosphere. Both scattering and absorption by gases, aerosols and clouds of atmosphere dissipates solar radiation.\cite[469]{ramanathan}
+% MC TTAPS-I: absorption and scattering of shortwave radiation.
+At wavelengths $\lambda < \qty{4}{\micro\metre}$, solar radiation has much greater intensity than radiation emitted from Earth's surface and atmosphere. Both scattering and absorption by gases, aerosols and clouds of atmosphere dissipates solar radiation.\cite[469]{ramanathan}
 
 Specific intensity of solar radiation can be expressed by a differential equation whose resolution is complex even applying approximations and numerical methods.\cite[469]{ramanathan}
 
@@ -121,9 +130,11 @@ A lower complexity parametrisation is adopted instead, where the atmosphere is d
 
 % MC continue with formulae.
 
-\subsection{Numerical approach} % MC maybe change title.
+\subsection{Numerical treatment}
 % MC convert the problem and the physical formulae into the numerical algorithms and functions to solve it.
 % MC show and describe formulae.
+% MC explain that the integration scheme is explicit since the evaulation is made at the same time step, not at the next time step. Probably it is better if the evaluation of fluxed is made implicitly to guarantee numerical stability.
+
 Euler's method is used to solve the Ordinary Differential Equation (ODE) for the time-dependant temperature function.\cite[472]{ramanathan} A solution for each atmospheric layer is evaluated, hence the resulting values are triplets of temperature, altitude (i.e. proxy for the atmospheric layer) and time (i.e. simulation time). Further information on storage and plotting of data are presented in Section~\ref{sec:Plotting}.
 
 % MC how many spectral bands have I chosen? Maybe list them in a table in the appendix with notes for each band to explain why I have chosen that band (e.g. to excite the vibro-rotational levels of some gases).
@@ -148,6 +159,12 @@ Spectral bands are identified by two arrays: one listing the lower bound of each
 \section{Source code}
 In this section the \cpp\ code used to obtain the results presented in this work is shown and commented.
 % MC show the whole source code, splitted in sections.
+
+% MC some thoughts about the development of the code.
+First, the parametrization of the vertical coordinate is chosen among three alternatives: altitude $z$ in \unit{\metre}, atmospheric pressure $P$ in \unit{\pascal}, coordinate $\sigma = \frac{P - \PTOA}{P_S - \PTOA}$ adimensional, with $\PTOA$ pressure at the top of the modelised atmosphere and $P_S$ pressure at the surface. One parametrisation can be written in term of another through a monotonic function (e.g. pressure decreases with altitude, cfr. Appendix~\ref{sec:Relation between pressure and altitude}). For the initial development the altitude $z$ is chosen as vertical coordinate because it is more intuitive, moreover plots in TTAPS-I are expressed in terms of both $z$ and $P$.
+
+Second, the atmospheric layers are configured. In TTAPS-I 20 layers are used (cfr. \cite[396]{NuclearWinterPhysics}) and they are numbered from the top of the atmosphere down as it is common in RCMs. The vertical coordinate refers to the center of each layer, with the excpetion of the last layer which is in direct contact with the surface and needs to be treated separately. % MC "Temperatures are calculated at the midpoints of the layers, and fluxes are computed at the layer boundaries."\cite[449]{Catling}
+Therefore two arrays are needed: one for the point and one with the corresponding layer thicknesses. Values are then assigned as double precision numbers. The value corresponding to the top of the atmosphere is set in a proper variable and a uniform distribution of layer thicknesses is assumed for ease.
 
 \subsection{Classes}
 % MC show and comment the source code for the used classes.
@@ -178,6 +195,7 @@ Value \verb|N_t| is not known a priori since it is the number of temporal steps 
 In this appendix mathematical derivations of some ancillary results and formulae used in the main text are explicitly shown.
 
 \subsection{Relation between pressure and altitude}
+\label{sec:Relation between pressure and altitude}
 A general result regarding planetary atmosphere is that atmospheric pressure decreases with increasing altitude. Theoretical relations which approximate this behaviour can be obtained. Hypotheses considered in Section~\ref{sec:Hypotheses and conventions} are valid.
 
 If density is assumed constant, equation~\eqref{eq:hydrostatic_equilibrium} can be solved easily resulting in a linear dependence of pressure $P$ on altitude $z$, % MC normalize the way I refere to sections and equations.

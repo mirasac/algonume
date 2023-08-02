@@ -7,6 +7,7 @@
 - Atmospheric layers and their thickness can be stored in an array each, with size fixed a priori by a constant N_LAYERS. The program should adapt automatically to the chosen number of layers.
 - A class for atmospheric layers, where the values are functions depending on the spectral propertries (e.g. albedo depending on the wavelength).
 - As flavour, do a routine in the main module where the spectral bands are evaluated automatically based on the studied gases, instead of specifying them manually in an array.
+- Where possible, use integer values.
 
 # General
 - I need probably to create skew-T plots in Gnuplot, find how. I can resort to drwaing many curves with some kind of transparency to simulate the skew-plot lines at last. Some kind of change of variables is probably needed because in this case axes are still cartesian. Also search for the implementation of class metpy.plots.SkewT for help.
