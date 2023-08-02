@@ -17,6 +17,7 @@
 - Distinguish thorougly simulation time and computation time.
 - Data file format for output values is set as shown in the [official Gnuplot documentation](http://gnuplot.info/docs_5.5/loc17750.html) but it is different from what suggested by Professor's (i.e. y variable fixed in each block), so I might change the format.
 - Before launching the simulation, normalize quantities to reduce their magnitudes and avoid numerical divergences (e.g. time normalized in units of 1 day).
+- Divide total solar irradiance by 4 due to combination of day-night cycle and distribution of total energy over a disk (i.e. S_0 * r * pi^2 / (4 * r * pi^2) = S_0 / 4) and again by 2 due to the choice to focus on the Northern Hemisphere and not only on the illuminated face of the Earth.
 
 # Questions
 - What is temperature profile instability.
