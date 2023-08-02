@@ -1,5 +1,5 @@
-#ifndef UTILITIES_H
-#define UTILITIES_H
+#ifndef FUNCTIONS_H
+#define FUNCTIONS_H
 
 #include <cmath>
 
@@ -13,4 +13,4 @@ double planck_law(double nu, double T);
 
 double planck_law_average(double nu, double dnu, double T);
 
-#endif /* UTILITIES_H */
+#endif /* FUNCTIONS_H */

@@ -1,19 +1,25 @@
 MAIN=main
 LIB=../../mclib/mclib
+OBJECTS=${MAIN}.o ${LIB}.o functions.o radiation.o
 
-dev: main lib
-	g++ ${CPPFLAGS} -o ${MAIN}.out ${MAIN}.o ${LIB}.o
+dev: ${OBJECTS}
+	g++ ${CPPFLAGS} -o ${MAIN}.out ${OBJECTS}
 
-prod: main lib
-	g++ ${CPPFLAGS} -DPROD -o ${MAIN}.out ${MAIN}.o ${LIB}.o
+prod: ${OBJECTS}
+	g++ ${CPPFLAGS} -DPROD -o ${MAIN}.out ${OBJECTS}
 
-main: ${MAIN}.cpp ${MAIN}.h ${LIB}.h 
+${MAIN}.o: ${MAIN}.cpp ${LIB}.h constants.h
 	g++ ${CPPFLAGS} -c ${MAIN}.cpp -o ${MAIN}.o
 
-lib: ${LIB}.cpp ${LIB}.h
+${LIB}.o: ${LIB}.cpp ${LIB}.h
 	g++ ${CPPFLAGS} -c ${LIB}.cpp -o ${LIB}.o
+
+functions.o: functions.cpp functions.h constants.h ${LIB}.o
+	g++ ${CPPFLAGS} -c functions.cpp -o functions.o
+
+radiation.o: radiation.cpp radiation.h constants.h functions.o
+	g++ ${CPPFLAGS} -c radiation.cpp -o radiation.o
 
 clean:
 	rm -f *.o
 	rm -f *.out
-	rm -f *.dat
