@@ -166,6 +166,9 @@ First, the parametrization of the vertical coordinate is chosen among three alte
 Second, the atmospheric layers are configured. In TTAPS-I 20 layers are used (cfr. \cite[396]{NuclearWinterPhysics}) and they are numbered from the top of the atmosphere down as it is common in RCMs. The vertical coordinate refers to the center of each layer, with the excpetion of the last layer which is in direct contact with the surface and needs to be treated separately. % MC "Temperatures are calculated at the midpoints of the layers, and fluxes are computed at the layer boundaries."\cite[449]{Catling}
 Therefore two arrays are needed: one for the point and one with the corresponding layer thicknesses. Values are then assigned as double precision numbers. The value corresponding to the top of the atmosphere is set in a proper variable and a uniform distribution of layer thicknesses is assumed for ease.
 
+% MC radiative fluxes are computed for each atmospheric layer.
+To reduce the computation load of radiative fluxes, only some spectral intervals are considered and they are specific to each atmospheric layer, since the available absorbing gases and aerosols differ among layers. First absorbers for each layer are stored in an array, then the spectral bandwitdhs needed for each layer are evaluated. Spectral bandwidths are expressed in terms of wavenumbers with unit \unit{\per\milli\metre} to reduce the magnitude of the values.
+
 \subsection{Classes}
 % MC show and comment the source code for the used classes.
 
