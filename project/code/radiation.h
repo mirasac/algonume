@@ -6,12 +6,14 @@
 
 struct absorber_t {
 	int n_nu;
-	double * nu; // [1 / mm]
-	double * delta_nu; // [1 / mm]
+	double * nu; // [1 / cm]
+	double * delta_nu; // [1 / cm]
 };
 
 double total_flux_longwave(double T, int n_nu, double nu[], double delta_nu[]);
 
 double flux_longwave(double T, double nu, double delta_nu);
+
+void delete_absorber(absorber_t absorber);
 
 #endif /* RADIATION_H */

@@ -12,3 +12,8 @@ double flux_longwave(double nu, double delta_nu, double T) {
 	double _return; // MC continue with parametrization of T(z, z').
 	return _return;
 }
+
+void delete_absorber(absorber_t absorber) {
+	delete[] absorber.nu;
+	delete[] absorber.delta_nu;
+}
