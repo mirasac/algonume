@@ -33,6 +33,16 @@ int main(int argc, char * argv[]) {
 	CO2.n_nu = 6;
 	CO2.delta_nu = new double[CO2.n_nu]; // MC bandwidths missing.
 	
+	// MC debug Planck function.
+	ofstream plot_file;
+	plot_file.open("MC.dat");
+	plot_file << fixed << setprecision(N_PRECISION);
+	plot_file << "#nu B(nu)" << endl;
+	for (int i = 0; i < CO2.n_nu; i++) {
+		plot_file << CO2.nu[i] << ' ' << planck_law(100.0 * CO2.nu[i], global_T_0) << endl;
+	}
+	plot_file.close();
+	
 	int * n_absorbers;
 	absorber_t ** absorbers;
 	n_absorbers = new int[n_layers];
