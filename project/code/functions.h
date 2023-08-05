@@ -15,7 +15,7 @@ Evaluate the spectral radiance of a blackbody for wavenumber nu [1 / m] and temp
 double planck_law_nu(double nu, double T);
 
 /*
-Evaluate the average net flux of a blackbody in the interval [nu, nu + dnu] with units [1 / m] and temperature T [K].
+Evaluate the average spectral radiance of a blackbody in the interval [nu, nu + dnu] and temperature T [K]. Wavenumbers are expressed in unit [1 / m].
 */
 double planck_law_nu_average(double nu, double dnu, double T);
 
