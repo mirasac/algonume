@@ -1,7 +1,8 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
-double const global_S = 1367; // [W / m^2]
+double const global_S = 1361; // [W / m^2]
+double const global_alpha = 0.306;
 double const global_g = 9.80665; // [m / s^2]
 double const global_P_0 = 100000; // [Pa]
 double const global_T_0 = 288.15; // [K]
