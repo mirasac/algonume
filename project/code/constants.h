@@ -13,5 +13,6 @@ int const global_nu_threshold = 250000; // [1 / m]
 double const global_h = 6.62607015e-34; // [J s]
 double const global_c = 299792458; // [m / s]
 double const global_k_B = 1.380649e-23; // [J / K]
+double const global_sigma = 5.670374419e-8; // [W / m^2 / K^4]
 
 #endif /* CONSTANTS_H */
