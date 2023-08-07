@@ -20,12 +20,14 @@
 - Data file format for output values is set as shown in the [official Gnuplot documentation](http://gnuplot.info/docs_5.5/loc17750.html) but it is different from what suggested by Professor's (i.e. y variable fixed in each block), so I might change the format.
 - Before launching the simulation, normalize quantities to reduce their magnitudes and avoid numerical divergences (e.g. time normalized in units of 1 day).
 - Divide total solar irradiance by 4 due to combination of day-night cycle and distribution of total energy over a disk (i.e. S_0 * r * pi^2 / (4 * r * pi^2) = S_0 / 4) and again by 2 due to the choice to focus on the Northern Hemisphere and not only on the illuminated face of the Earth.
+- Use optical depths and formulae for soot from TTAPS-II because reproducing the aerosol formation computational model presented in Turco 1979 goes beyond the purpose of this work.
 
 # Questions
 - What is temperature profile instability.
-- What is lapse rate? Is the technical term of temperature in pressure-temperature plot?
+- What is lapse rate? Is the technical term of temperature in pressure-temperature plot? Sort of: it is the variation of temperature with altitude and since altitude and pressure can be related quantitatively, it can be expressed also as variation with pressure.
 - How do I choose which formulae are suitable for specific wavelengths? Do I simply set a threshold on wavelenght value? I may also set the function as method of the class used to represent gases.
-- Why there is a pi multiplying the spectrally averaged plank function? Probably for the parametrizations I use it is not needed.
+- Why there is a pi multiplying the spectrally averaged plank function? Probably for the parametrizations I use it is not needed. It is needed, since it is the factor resulting from the integration in the solid angle of an hemisphere of Planck law for the azimuthal component of the solar beam.
+- Absorption (or more generally, exctintion) coefficients depend on temperature and pressure. How can I use them to approximate absorbtion in uniform layers of gases? I must assume that their variation with temperature and pressure is negligible with respect to the varying quantities I am evaluating.
 
 # Keywords
 - Tracer continuity equation (cfr. https://clima.github.io/OceananigansDocumentation/v0.47.1/physics/navier_stokes_and_tracer_conservation/, https://getm.eu/files/GETM/doc/html/node78.html and https://climate.ucdavis.edu/ATM121/AtmosphericDynamics-Chapter01-Part03-Continuity.pdf).
