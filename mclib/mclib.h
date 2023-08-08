@@ -260,6 +260,9 @@ void verlet_velocity(double const dt, double X[], double V[], void (*a)(double c
 
 
 
+/*
+Use fast matrix allocation mathod.
+*/
 double ** mat_new(int const N_row, int const N_col);
 
 void mat_delete(double ** m);

@@ -8,7 +8,7 @@
 #include "radiation.h"
 
 void set_layers_z_uniform(double z_S, double z_TOA, int n_layers, double z[], double delta_z[]);
-void set_absorbers_default(int n_layers, int n_absorbers[], absorber_t * absorbers[], absorber_t a1, absorber_t a2);
+void set_absorbers_uniform(int n_layers, int n_absorbers[], absorber_t * absorbers[], absorber_t a1, absorber_t a2);
 
 int main(int argc, char * argv[]) {
 	using namespace std;
@@ -37,7 +37,7 @@ int main(int argc, char * argv[]) {
 	absorber_t ** absorbers;
 	n_absorbers = new int[n_layers];
 	absorbers = new absorber_t*[n_layers];
-	set_absorbers_default(n_layers, n_absorbers, absorbers, H2O, CO2);
+	set_absorbers_uniform(n_layers, n_absorbers, absorbers, H2O, CO2);
 	
 	// Configure spectral bands.
 	int * n_bands;
@@ -51,9 +51,7 @@ int main(int argc, char * argv[]) {
 	delete_absorber(H2O);
 	delete_absorber(CO2);
 	delete[] n_absorbers;
-	for (int i = 0; i < n_layers; i++) {
-		delete[] absorbers[i];
-	}
+	delete[] absorbers[0];
 	delete[] absorbers;
 	
 	return 0;
@@ -68,9 +66,15 @@ void set_layers_z_uniform(double z_S, double z_TOA, int n_layers, double z[], do
 	}
 }
 
-void set_absorbers_default(int n_layers, int n_absorbers[], absorber_t * absorbers[], absorber_t a1, absorber_t a2) {
-	for (int i_layers = 0; i_layers < n_layers; i_layers++) {
-		absorbers[i_layers] = new absorber_t[]{a1, a2};
-		n_absorbers[i_layers] = 2;
+void set_absorbers_uniform(int n_layers, int n_absorbers[], absorber_t * absorbers[], absorber_t a1, absorber_t a2) {
+	n_absorbers[0] = 2;
+	absorbers[0] = new absorber_t[n_layers * n_absorbers[0]];
+	absorbers[0][0] = a1;
+	absorbers[0][1] = a2;
+	for (int i = 1; i < n_layers; i++) {
+		n_absorbers[i] = n_absorbers[0];
+		absorbers[i] = absorbers[0] + i * n_absorbers[0];
+		absorbers[i][0] = a1;
+		absorbers[i][1] = a2;
 	}
 }
