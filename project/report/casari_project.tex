@@ -99,7 +99,7 @@ To simplify some calculations for radiative fluxes, the definition of wavenumber
 Specific gas constant is used in thermodynamical relations, which is defined as the gas constant divided by the gas molar mass. In this work the symbol $R$ is used for the specific gas constant.
 
 Some assumptions are made on the dynamical state and the composition of Earth's atmosphere. 
-% MC do I need to use the International Standard Atmosphere? It is not a good choice since its temperature profile is already fixed. But I can take it as reference for other parametrizations.
+% MC do I need to use the International Standard Atmosphere? It is not a wise choice since its temperature profile is already fixed. But I can take it as reference for other parametrizations.
 Gravitational acceleration is constant (cfr. Table~\ref{tab:constants} for values). Air parcels are supposed to be in hydrostatic equilibrium,
 \begin{equation}
   \label{eq:hydrostatic_equilibrium}
@@ -112,7 +112,9 @@ with each component obeying the ideal gas law
 \end{equation}
 where $\rho = \frac{m}{V}$ is the volumetric mass density of the air parcel.
 
-% MC put constants in a table, not in the appendix since it is part of the necessary data. This table has headers: symbol, value, unit of measure, notes.
+% MC put constants in a table, not in the appendix since it is part of the data needed to understand the main text. This table has headers: symbol, value, unit of measure, notes (e.g. long name of the constant).
+
+% MC introduce the approximation where visible and UV radiation from the Sun and IR radiation from the Earth are uncorrelated in Earth's atmosphere (i.e. their spectral wavebands do not overlap), hence the fluxes of the two types of radiation are treated independently.
 
 \subsection{Longwave radiation}
 % MC TTAPS-I: absorption of longwave radiation.
@@ -241,6 +243,17 @@ with $T_0$ temperature corresponding to reference altitude $z_0$. Using these as
 % MC choose a better format for splitted equations.
 
 Equation \eqref{eq:pressure_constant_lapse_rate} can be used also with a piecewise constant lapse rate in altitude intervals where it is not null, otherwise equation \eqref{eq:pressure_constant_temperature} is valid with appropriate boundary conditions to ensure continuity.
+
+\subsection{Planck's law}
+\label{sec:Planck's law}
+Spectral radiance emitted by a blackbody is given by Planck's law
+\begin{equation}
+  B_\nu (\nu, T) = 2 h c^2 \nu^3 \frac{1}{e^\frac{h c \nu}{k_B T} - 1}
+  \quad ,
+\end{equation}
+where $\nu$ is the wavenumber following the notation used in this work (cfr. section~\ref{sec:Hypotheses and conventions}), $T$ in unit \unit{\kelvin} is the temperature of the emitting body and the other quantities are constants (cfr. table~\ref{tab:constants}).
+
+% MC show irradiance calculation.
 
 \newpage
 \printbibliography[heading=bibintoc]
