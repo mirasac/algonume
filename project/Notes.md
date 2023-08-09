@@ -44,3 +44,4 @@
 - Check verbal tenses and conjugations.
 - Remove all personal comments.
 - Remove unused appendices, maybe keep them as separate LaTeX source files and include only the ones needed.
+- Correct format issues related to composition of bibliography.

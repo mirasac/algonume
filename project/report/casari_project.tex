@@ -98,9 +98,9 @@ To simplify some calculations for radiative fluxes, the definition of wavenumber
 
 Specific gas constant is used in thermodynamical relations, which is defined as the gas constant divided by the gas molar mass. In this work the symbol $R$ is used for the specific gas constant.
 
-Some assumptions are made on the dynamical state and the composition of Earth's atmosphere. 
+Some assumptions are made on state and composition of Earth's atmosphere. 
 % MC do I need to use the International Standard Atmosphere? It is not a wise choice since its temperature profile is already fixed. But I can take it as reference for other parametrizations.
-Gravitational acceleration is constant (cfr. Table~\ref{tab:constants} for values). Air parcels are supposed to be in hydrostatic equilibrium,
+Gravitational acceleration $g$ is constant (cfr. Table~\ref{tab:constants} for values). Air parcels are supposed to be in hydrostatic equilibrium,
 \begin{equation}
   \label{eq:hydrostatic_equilibrium}
   \dd P = - \rho g \dd z
@@ -114,6 +114,7 @@ where $\rho = \frac{m}{V}$ is the volumetric mass density of the air parcel.
 
 % MC put constants in a table, not in the appendix since it is part of the data needed to understand the main text. This table has headers: symbol, value, unit of measure, notes (e.g. long name of the constant).
 
+Solar radiation is considered orthogonal to the plane which represents Earth's surface in the RCM. Constant solar irradiance $S_0$ is used in calculations.
 % MC introduce the approximation where visible and UV radiation from the Sun and IR radiation from the Earth are uncorrelated in Earth's atmosphere (i.e. their spectral wavebands do not overlap), hence the fluxes of the two types of radiation are treated independently.
 
 \subsection{Longwave radiation}
@@ -242,18 +243,38 @@ with $T_0$ temperature corresponding to reference altitude $z_0$. Using these as
 \end{equation}
 % MC choose a better format for splitted equations.
 
-Equation \eqref{eq:pressure_constant_lapse_rate} can be used also with a piecewise constant lapse rate in altitude intervals where it is not null, otherwise equation \eqref{eq:pressure_constant_temperature} is valid with appropriate boundary conditions to ensure continuity.
+Equation \eqref{eq:pressure_constant_lapse_rate} can be used also with a piecewise constant lapse rate in altitude intervals where it is not null. Otherwise, in altitude intervals where lapse rate is null, equation \eqref{eq:pressure_constant_temperature} is valid with appropriate boundary conditions to ensure continuity between layers.
 
-\subsection{Planck's law}
-\label{sec:Planck's law}
-Spectral radiance emitted by a blackbody is given by Planck's law
+\subsection{Radiometric quantities}
+\label{sec:Radiometric quantities}
+Refer to \cite{CIE} for more details on quantities reviewed in this section.
+
+Consider electromagnetic radiation emitted by a point source. The total emitted power is called \emph{radiant flux}, with unit \unit{\watt}. The density of radiant flux with respect to a solid angle in the direction of emission is called \emph{radiant intensity}, expressed in \unit{\watt\per\steradian}. When radiation interacts with a surface, i.e. it gets absorbed, transmitted or reflected, its radiant intensity distributed over the surface is measured through \emph{radiance} in \unit{\watt\per\square\metre\per\steradian}. If the area on which the radiation is incident is expressed through the solid angle it subtends, the integral of radiance over this solid angle is called \emph{irradiance}, expressed in \unit{\watt\per\square\metre}. Note that the coordinate system where the solid angles of radiant intensity and irradiance are defined may not be the same.
+
+% MC if needed make a consideration for the case where there is no source and only the radiation incident on a surface is considered.
+
+All previous quantities can be expressed as densities with respect to the wavelength or the wavenumber and the adjective \emph{spectral} is prefixed to their names. Their units are divided by the respective spectral quantity (e.g. spectral radiance with wavenumber in \unit{\per\centi\metre} has units \unit{\watt\per\metre\squared\centi\metre\per\steradian}).
+
+Spectral radiance of a blackbody is given by Planck's law
 \begin{equation}
+  \label{eq:blackbody_radiance}
   B_\nu (\nu, T) = 2 h c^2 \nu^3 \frac{1}{e^\frac{h c \nu}{k_B T} - 1}
   \quad ,
 \end{equation}
-where $\nu$ is the wavenumber following the notation used in this work (cfr. section~\ref{sec:Hypotheses and conventions}), $T$ in unit \unit{\kelvin} is the temperature of the emitting body and the other quantities are constants (cfr. table~\ref{tab:constants}).
+where $\nu$ is the wavenumber in unit \unit{\per\centi\metre} (cfr. notation in section~\ref{sec:Hypotheses and conventions}), $T$ in unit \unit{\kelvin} is the temperature of the emitting body and the other quantities are constants (cfr. table~\ref{tab:constants}).
 
-% MC show irradiance calculation.
+If the radiance is isotropic, i.e. it has not dependence on the direction of the radiation, the corresponding irradiance is proportional. For instance, if the radiation is absorbed by a hemispheric surface approximated by a blackbody, the spectral irradiance of the surface is
+\begin{equation}
+  \label{eq:blackbody_irradiance_hemisphere}
+  \begin{split}
+    & \int B_\nu (\nu, T) \dd \phi \sin(\theta) \dd \theta \cos(\theta) = \\
+    & = B_\nu (\nu, T) \int_0^{2\pi} \dd \phi \int_0^\frac{\pi}{2} \sin(\theta) \cos(\theta) \dd \theta = \\
+    & = 2 \pi B_\nu (\nu, T) \int_0^1 \sin(\theta) \dd(\sin(\theta)) = \\
+    & = 2 \pi B_\nu (\nu, T) \frac{1}{2} = \pi B_\nu (\nu, T)
+  \end{split}
+  \quad ,
+\end{equation}
+where spherical coordinates are used to describe the surface and the term $\cos(\theta)$ considers the component of radiation along the normal of the infinitesimal solid angle.
 
 \newpage
 \printbibliography[heading=bibintoc]

@@ -1,14 +1,14 @@
 MAIN=casari_project
 
-all: main bibliography
-	pdflatex ${MAIN}.tex
+all: ${MAIN}.pdf ${MAIN}.bbl
+
+${MAIN}.pdf: ${MAIN}.tex
 	pdflatex ${MAIN}.tex
 
-main: ${MAIN}.tex
-	pdflatex ${MAIN}.tex
-
-bibliography: bibliography.bib
+${MAIN}.bbl: bibliography.bib ${MAIN}.bcf
 	biber ${MAIN}
+	pdflatex ${MAIN}.tex
+	pdflatex ${MAIN}.tex
 
 clean:
 	rm -f *.aux
