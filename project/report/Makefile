@@ -1,11 +1,21 @@
 MAIN=casari_project
 
-all: ${MAIN}.pdf ${MAIN}.bbl
+.PHONY: all clean
 
-${MAIN}.pdf: ${MAIN}.tex
+${MAIN}.pdf: ${MAIN}.tex ${MAIN}.bbl
+	pdflatex ${MAIN}.tex
+	pdflatex ${MAIN}.tex
+	touch ${MAIN}.bbl
+	touch ${MAIN}.pdf
+
+${MAIN}.bbl: ${MAIN}.bcf bibliography.bib
+	biber ${MAIN}
+
+${MAIN}.bcf: ${MAIN}.tex
 	pdflatex ${MAIN}.tex
 
-${MAIN}.bbl: bibliography.bib ${MAIN}.bcf
+all: ${MAIN}.tex bibliography.bib
+	pdflatex ${MAIN}.tex
 	biber ${MAIN}
 	pdflatex ${MAIN}.tex
 	pdflatex ${MAIN}.tex

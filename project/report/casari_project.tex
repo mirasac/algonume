@@ -5,7 +5,7 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage[style=ieee,backend=biber]{biblatex}
-%\usepackage{booktabs}
+\usepackage{booktabs}
 %\usepackage{caption}
 \usepackage{hyperref}
 \usepackage{graphicx}
@@ -25,7 +25,7 @@
 \hypersetup{hidelinks}
 %\DeclareGraphicsExtensions{.pdf,.jpg,.png}
 \graphicspath{{./figures/}}
-\sisetup{group-digits=integer,separate-uncertainty,per-mode=fraction}
+\sisetup{group-digits=integer,separate-uncertainty,per-mode=symbol}
 
 % Customization.
 \definecolor{Blue}{rgb}{0.2,0.2,0.9}
@@ -82,25 +82,23 @@ Planet Earth's climate dynamics can be studied with models of varying complexity
 The present work intends to study the atmospheric temeprature profile averaged on the Northern Hemisphere in presence of conditions 
 
 %\section{Materials}
+% MC describe the tools used during the study. List the specifics and the references of the code. Maybe list the number of atmosphere layers.
 
 \section{Methods}
 % MC explain the atmosphere model: vertical column where each layer present quantities averaged over the global atmosphere.
 The RCM developed for the present work approximates the atmosphere as a vertical column divided in a given number of layers.
-% MC put the number of layers.
-
-% MC explain the subdivision between the radiative part and the convective part.
-% MC distinguish in appropriate subsections the treatment of shortwave and longwave radiations and radiation scattering vs absorption.
+% MC put the number of layers, here or in Methods.
 
 % MC describe conventions used in this work.
 \subsection{Hypotheses and conventions}
 \label{sec:Hypotheses and conventions}
 To simplify some calculations for radiative fluxes, the definition of wavenumber $\nu = \frac{1}{\lambda}$ is used in this work, where $\lambda$ is the wavelenght.
 
-Specific gas constant is used in thermodynamical relations, which is defined as the gas constant divided by the gas molar mass. In this work the symbol $R$ is used for the specific gas constant.
+Specific gas constant is used in thermodynamical relations, which is defined as the gas constant $R$ divided by the gas molar mass. Henceforth, the symbol $R_M$ is used for the specific gas constant.
 
 Some assumptions are made on state and composition of Earth's atmosphere. 
 % MC do I need to use the International Standard Atmosphere? It is not a wise choice since its temperature profile is already fixed. But I can take it as reference for other parametrizations.
-Gravitational acceleration $g$ is constant (cfr. Table~\ref{tab:constants} for values). Air parcels are supposed to be in hydrostatic equilibrium,
+Gravitational acceleration $g$ is constant. Air parcels are supposed to be in hydrostatic equilibrium,
 \begin{equation}
   \label{eq:hydrostatic_equilibrium}
   \dd P = - \rho g \dd z
@@ -108,14 +106,30 @@ Gravitational acceleration $g$ is constant (cfr. Table~\ref{tab:constants} for v
 with each component obeying the ideal gas law
 \begin{equation}
   \label{eq:ideal_gas_law}
-  P = \rho R T
+  P = \rho R_M T
 \end{equation}
 where $\rho = \frac{m}{V}$ is the volumetric mass density of the air parcel.
 
-% MC put constants in a table, not in the appendix since it is part of the data needed to understand the main text. This table has headers: symbol, value, unit of measure, notes (e.g. long name of the constant).
-
 Solar radiation is considered orthogonal to the plane which represents Earth's surface in the RCM. Constant solar irradiance $S_0$ is used in calculations.
+
 % MC introduce the approximation where visible and UV radiation from the Sun and IR radiation from the Earth are uncorrelated in Earth's atmosphere (i.e. their spectral wavebands do not overlap), hence the fluxes of the two types of radiation are treated independently.
+%\cite[42]{Catling}
+
+Data on constants used in this work are listed in table~\ref{tab:constants}.
+\begin{table*}[h]
+  \centering
+  \caption{Data on constants used in the present work.}
+  \label{tab:constants}
+  \begin{tabular}[b]{cccc}
+    \toprule
+    Symbol & Value                    & Unit                                           & Notes \\
+    \midrule
+    $R$      & \num{8.31446261815324} & \unit{\cubic\metre\pascal\per\kelvin\per\mole} &       \\
+    $g$      & \num{9.80665}          & \unit{\metre\per\square\second}                &       \\
+    $S_0$    & \num{1361}             & \unit{\watt\per\square\metre}                  &       \\
+    \bottomrule
+  \end{tabular}
+\end{table*}
 
 \subsection{Longwave radiation}
 % MC TTAPS-I: absorption of longwave radiation.
