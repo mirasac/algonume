@@ -99,6 +99,12 @@ Evaluate the integral of function f in the real interval [a, b] divided in N sub
 double rectangularquad(double (*f)(double x), double a, double b, int N);
 
 /*
+Evaluate the integral of function f with parameter p in the real interval [a, b] divided in N sub intervals using the rectangular quadrature.
+*/
+double rectangularquad(double (*f)(double x, double p), double a, double b, int N, double p);
+
+
+/*
 Evaluate the integral of function f in the real interval [a, b] divided in N sub intervals using the midpoint quadrature.
 */
 double midpointquad(double (*f)(double x), double a, double b, int N);
@@ -121,7 +127,7 @@ double gaussquad(double (*f)(double x), double a, double b, int N, int Ng);
 /*
 Evaluate the integral of function f with parameter p in the real interval [a, b] divided in N sub intervals using Gauss-Legendre quadrature.
 */
-double gaussquad2(double (*f)(double x, double p), double a, double b, int N, int Ng, double p);
+double gaussquad(double (*f)(double x, double p), double a, double b, int N, int Ng, double p);
 
 /*
 Evaluate the integral of function f with cp parameters stored in array p in the real interval [a, b] divided in N sub intervals using Gauss-Legendre quadrature.

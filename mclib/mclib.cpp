@@ -137,6 +137,18 @@ double rectangularquad(double (*f)(double x), double a, double b, int N) {
 	return s_n * dx;
 }
 
+double rectangularquad(double (*f)(double x, double p), double a, double b, int N, double p) {
+	orderinterval(&a, &b);
+	double dx, x_n, s_n;
+	dx = (b - a) / N;
+	s_n = 0.0;
+	for (int n = 0; n < N; n++) {
+		x_n = a + n * dx;
+		s_n += f(x_n, p);
+	}
+	return s_n * dx;
+}
+
 double midpointquad(double (*f)(double x), double a, double b, int N) {
 	orderinterval(&a, &b);
 	double dx, x_n, s_n;
@@ -192,7 +204,6 @@ double simpsonquad(double (*f)(double x), double a, double b, int N) {
 
 double gaussquad(double (*f)(double x), double a, double b, int N, int Ng) {
 	orderinterval(&a, &b);
-	// MC usare malloc o new per creare array con Ng parametro.
 	double dx, a_n, b_n, r_n, sum, sum_n;
 	double * x, * w;
 	x = new double[Ng];
@@ -211,13 +222,12 @@ double gaussquad(double (*f)(double x), double a, double b, int N, int Ng) {
 		sum_n = r_n * sum_n;
 		sum += sum_n;
 	}
-	// MC capire bene come funziona new - delete.
 	delete[] x;
 	delete[] w;
 	return sum;
 }
 
-double gaussquad2(double (*f)(double x, double p), double a, double b, int N, int Ng, double p) {
+double gaussquad(double (*f)(double x, double p), double a, double b, int N, int Ng, double p) {
 	orderinterval(&a, &b);
 	double dx, a_n, b_n, r_n, sum, sum_n;
 	double * x, * w;

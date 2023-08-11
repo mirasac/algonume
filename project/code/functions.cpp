@@ -11,5 +11,5 @@ double planck_law_lambda(double lambda, double T) {
 }
 
 double planck_law_nu_average(double nu, double dnu, double T) {
-	return gaussquad2(planck_law_nu, nu, nu + dnu, GAUSS_QUAD_INTERVALS, GAUSS_QUAD_POINTS, T) / dnu;
+	return gaussquad(planck_law_nu, nu, nu + dnu, GAUSS_QUAD_INTERVALS, GAUSS_QUAD_POINTS, T) / dnu;
 }

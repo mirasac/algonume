@@ -6,8 +6,8 @@
 #include "constants.h"
 #include "../../mclib/mclib.h"
 
-#define GAUSS_QUAD_POINTS 4
-#define GAUSS_QUAD_INTERVALS 10
+#define GAUSSQUAD_POINTS 2
+#define GAUSSQUAD_INTERVALS 100000
 
 /*
 Evaluate the spectral radiance of a blackbody for wavenumber nu [1 / m] and temperature T [K].
