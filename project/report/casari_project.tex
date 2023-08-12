@@ -110,10 +110,10 @@ with each component obeying the ideal gas law
 \end{equation}
 where $\rho = \frac{m}{V}$ is the volumetric mass density of the air parcel.
 
-Solar radiation is considered orthogonal to the plane which represents Earth's surface in the RCM. Constant solar irradiance $S_0$ is used in calculations.
+Solar radiation is considered orthogonal to the plane which represents Earth's surface in the RCM. Constant value $S_0$ for total solar irradiance is used in calculations.
 
-% MC introduce the approximation where visible and UV radiation from the Sun and IR radiation from the Earth are uncorrelated in Earth's atmosphere (i.e. their spectral wavebands do not overlap), hence the fluxes of the two types of radiation are treated independently.
-%\cite[42]{Catling}
+Solar spectral irradiance is peaked at about \qty{2e4}{\per\centi\metre}, in the ultraviolet (UV) and visible bandwidths, while spectral irradiance of Earth's surface is peaked at about \qty{1e3}{\per\centi\metre}, in the infrared (IR) bandwidth. Due to this difference, the spectrum can be splitted at the wavenumber where the the distributions intersect and the two resulting spectra can be treated indipendently. The overlap between the two distributions is neglected and an upper limit for the accuracy of this approximation can be quantified by the ratio between radiant intensities of Sun and Earth's surface in each spectra, when the sources are considered as blackbodies (i.e. when the emission is maximum). % MC continue with plot.
+%\cite[43]{Catling}
 
 Data on constants used in this work are listed in table~\ref{tab:constants}.
 \begin{table*}[h]
@@ -122,20 +122,15 @@ Data on constants used in this work are listed in table~\ref{tab:constants}.
   \label{tab:constants}
   \begin{tabular}[b]{cccc}
     \toprule
-    Symbol & Value                    & Unit                                           & Notes \\
+    Symbol           & Value                  & Unit                                           & Notes \\
     \midrule
-    $R$      & \num{8.31446261815324} & \unit{\cubic\metre\pascal\per\kelvin\per\mole} &       \\
-    $g$      & \num{9.80665}          & \unit{\metre\per\square\second}                &       \\
-    $S_0$    & \num{1361}             & \unit{\watt\per\square\metre}                  &       \\
+    $R$              & \num{8.31446261815324} & \unit{\cubic\metre\pascal\per\kelvin\per\mole} &       \\
+    $g$              & \num{9.80665}          & \unit{\metre\per\square\second}                &       \\
+    $S_0$            & \num{1361.0}             & \unit{\watt\per\square\metre}                  & Nominal total solar irradiance, from \cite{IAU} \\
+    $R_\mathrm{sun}$ & \num{6.957e8}          & \unit{\metre}                                  & Nominal solar radius, from \cite{IAU} \\
     \bottomrule
   \end{tabular}
 \end{table*}
-
-\subsection{Longwave radiation}
-% MC TTAPS-I: absorption of longwave radiation.
-At wavelengths $\lambda \geq \qty{4}{\micro\metre}$, solar radiation has lower intensities than radiation emitted by Earth's surface and atmosphere at the same wavelengths. Moreover, it presents negligible scattering in atmosphere with respect to absorption. For these reasons longwave radiation is considered to be emitted only by Earth's surface and atmosphere.\cite[468]{ramanathan}
-
-% MC continue with formulae.
 
 \subsection{Shortwave radiation}
 % MC TTAPS-I: absorption and scattering of shortwave radiation.
@@ -147,7 +142,13 @@ A lower complexity parametrisation is adopted instead, where the atmosphere is d
 
 % MC continue with formulae.
 
-\subsection{Numerical treatment}
+\subsection{Longwave radiation}
+% MC TTAPS-I: absorption of longwave radiation.
+At wavelengths $\lambda \geq \qty{4}{\micro\metre}$, solar radiation has lower intensities than radiation emitted by Earth's surface and atmosphere at the same wavelengths. Moreover, it presents negligible scattering in atmosphere with respect to absorption. For these reasons longwave radiation is considered to be emitted only by Earth's surface and atmosphere.\cite[468]{ramanathan}
+
+% MC continue with formulae.
+
+\subsection{Numerical treatment} % MC find better title.
 % MC convert the problem and the physical formulae into the numerical algorithms and functions to solve it.
 % MC show and describe formulae.
 % MC explain that the integration scheme is explicit since the evaulation is made at the same time step, not at the next time step. Probably it is better if the evaluation of fluxed is made implicitly to guarantee numerical stability.
@@ -272,7 +273,7 @@ All previous quantities can be expressed as densities with respect to the wavele
 Spectral radiance of a blackbody is given by Planck's law
 \begin{equation}
   \label{eq:blackbody_radiance}
-  B_\nu (\nu, T) = 2 h c^2 \nu^3 \frac{1}{e^\frac{h c \nu}{k_B T} - 1}
+  B_\nu (\nu, T) = 2 h c^2 \nu^5 \frac{1}{e^\frac{h c \nu}{k_B T} - 1}
   \quad ,
 \end{equation}
 where $\nu$ is the wavenumber in unit \unit{\per\centi\metre} (cfr. notation in section~\ref{sec:Hypotheses and conventions}), $T$ in unit \unit{\kelvin} is the temperature of the emitting body and the other quantities are constants (cfr. table~\ref{tab:constants}).

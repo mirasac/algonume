@@ -21,6 +21,7 @@
 - Tracer continuity equation (cfr. https://clima.github.io/OceananigansDocumentation/v0.47.1/physics/navier_stokes_and_tracer_conservation/, https://getm.eu/files/GETM/doc/html/node78.html and https://climate.ucdavis.edu/ATM121/AtmosphericDynamics-Chapter01-Part03-Continuity.pdf).
 
 # Code
+- This `M_PI * ratio*ratio * gaussquad(planck_law_nu, nu_min, nu_max, GAUSSQUAD_INTERVALS, GAUSSQUAD_POINTS, global_T_sun)` has a result not compatible with `ratio*ratio * global_sigma * global_T_sun*global_T_sun*global_T_sun*global_T_sun`. Probably it is a problem in the quadrature procedure applied to this function.
 
 ## Software engineering
 - A class for nuclear warheads.
@@ -39,9 +40,11 @@
 
 # Report
 - For section label markers I put the name of the section, case sensitive, after the string `sec:`. This way the marker could contain spaces, but this should not be a drawback since nowadays most packages managing labels support spaces in them. Another possible drawback is the length that some labels can reach. Instead the advantages are many: it is a consistent way to write meaningful labels for sections, labels get immediately fixed when section titles are changed (i.e. by using a find and replace tool in any editor).
+- Use nominal values then associate relative error to them.
 
 ## Release
 - Check verbal tenses and conjugations.
 - Remove all personal comments.
 - Remove unused appendices, maybe keep them as separate LaTeX source files and include only the ones needed.
 - Correct format issues related to composition of bibliography.
+- Align fields of tables.
