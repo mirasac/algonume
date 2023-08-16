@@ -1,11 +1,20 @@
 #!/bin/sh
 
 # Global variables and functions definition.
+FILENAME_SCRIPT='plot.sh'
 DEF_DIR_EXPORT='../report/figures'
+
+print_info() {
+	echo "${FILENAME_SCRIPT} INFO: $1"
+}
+
+print_error() {
+	echo "${FILENAME_SCRIPT} ERROR: $1"
+}
 
 print_usage() {
 	cat <<-EOF
-		plot.sh
+		${FILENAME_SCRIPT}
 		Create plot in a separate window using a specific gnuplot script.
 		
 		The first argument is mandatory and its value is used as basename for the gnuplot script.
@@ -18,7 +27,7 @@ print_usage() {
 basename="$1"
 if [ -z "${basename}" ]
 then
-	echo 'Error: the first argument is mandatory.'
+	print_error 'the first argument is mandatory'
 	print_usage
 else
 	basename_export="$2"
@@ -27,7 +36,7 @@ else
 	# Main plot command.
 	command="load '${basename}.gp'"
 
-	# Add commands to export to file.
+	# Add export commands.
 	if [ -n "${basename_export}" ]
 	then
 		if [ "${basename_export}" = 'export' ]
@@ -43,8 +52,6 @@ else
 		EOF
 		)
 	fi
-
-	echo "${command}"
 
 	# Launch gnuplot.
 	$(
