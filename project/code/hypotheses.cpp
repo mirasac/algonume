@@ -3,6 +3,7 @@
 #include <iomanip>
 #include <iostream>
 
+#include "configuration.h"
 #include "constants.h"
 #include "functions.h"
 #include "../../mclib/mclib.h"
@@ -25,7 +26,7 @@ int main(int argc, char * argv[]) {
 	nu_max = 1e7;
 	ratio = global_R_sun / global_au;
 	dnu = (nu_max - nu_min) / n_nu;
-	plot_file.open("spectral_irradiance.dat");
+	plot_file.open(DIR_DATA "/spectral_irradiance.dat");
 	plot_file << fixed << setprecision(N_PRECISION);
 	plot_file << "#nu I_sun I_earth" << endl;
 	for (int i = 0; i <= n_nu; i++) {

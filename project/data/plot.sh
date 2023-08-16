@@ -24,7 +24,6 @@ print_usage() {
 	EOF
 }
 
-
 basename="$1"
 if [ -z "${basename}" ]
 then

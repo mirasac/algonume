@@ -7,11 +7,12 @@ set key top right font v_font
 set logscale x
 set grid mxtics mytics
 
-set xlabel "Wavenumber [1 / cm]" font v_font
+set xlabel "$\nu / (\unit{\per\centi\metre})$" font v_font
 set xrange[9e1:1.5e5]
 set mxtics 10
 
-set ylabel "Spectral irradiance [W m / m^2]" font v_font
+set ylabel "$I / (\unit{\watt\metre\per\square\metre})$" font v_font
+set yrange[-5e5:4e7]
 set mytics 10
 
 plot "spectral_irradiance.dat" using 1:2 notitle lc rgb "blue" pt 7 ps 0.1, \
