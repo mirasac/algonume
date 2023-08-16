@@ -3,7 +3,6 @@
 # Global variables and functions definition.
 FILENAME_SCRIPT='plot.sh'
 DEF_DIR_EXPORT='../report/figures'
-BASENAME_LUA_TIKZ='gnuplot-lua-tikz'
 
 print_info() {
 	echo "${FILENAME_SCRIPT} INFO: $1"
@@ -24,6 +23,7 @@ print_usage() {
 	EOF
 }
 
+# Script body.
 basename="$1"
 if [ -z "${basename}" ]
 then
@@ -43,8 +43,8 @@ else
 		command=$(
 		cat <<-EOF
 			${command}
-			set terminal lua tikz latex color gparrows gppoints picenvironment latex createstyle
-			set output "${dir_export}/${basename_export}.tex"
+			set terminal cairolatex pdf input colourtext noheader color
+			set output '${dir_export}/${basename_export}.tex'
 			replot
 		EOF
 		)
@@ -56,26 +56,4 @@ else
 		${command}
 	EOF
 	)
-	
-	# Convert TikZ source to PDF figure.
-	if [ "${option}" = 'export' ]
-	then
-		filename_tmp_source="${dir_export}/${basename_export}.tmp"
-		# Create LaTeX source.
-		$(
-		cat <<-EOF > "${filename_tmp_source}"
-			\documentclass[tikz, border=0mm]{standalone}
-			\usepackage{${BASENAME_LUA_TIKZ}}
-			\begin{document}
-			\include{${basename_export}.tex}
-			\end{document}
-		EOF
-		)
-		# Convert LaTeX source to PDF figure.
-		pdflatex -cnf-line='main_memory = 10000000' -cnf-line='main_memory.pdflatex = 10000000' -output-directory="${dir_export}" "${filename_tmp_source}"
-		# Delete temporary files.
-		rm -f "${filename_tmp_source}*"
-		rm "${BASENAME_LUA_TIKZ}.tex"
-		rm "t-${BASENAME_LUA_TIKZ}.tex"
-	fi
 fi
