@@ -15,7 +15,7 @@ int main(int argc, char * argv[]) {
 	cout << scientific << setprecision(N_PRECISION);
 	
 	// Plot spectral irradiance of Sun and Earth's surfaces as blackbodies.
-	int const n_nu = 100000;
+	int const n_nu = 10000;
 	double nu_sun, nu_earth, nu, dnu, nu_min, nu_max, nu_intersection; // [1 / m]
 	double I_sun, I_earth; // [W / (m^2 m)]
 	double ratio;

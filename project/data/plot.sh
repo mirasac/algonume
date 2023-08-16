@@ -43,7 +43,7 @@ else
 		command=$(
 		cat <<-EOF
 			${command}
-			set terminal cairolatex pdf input colourtext noheader color
+			set terminal cairolatex pdf input colourtext noheader color size 14.85cm,10.5cm
 			set output '${dir_export}/${basename_export}.tex'
 			replot
 		EOF
