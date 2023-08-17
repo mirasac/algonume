@@ -7,11 +7,11 @@ FIGURE=figure
 .PHONY: all clean
 
 all:
-	make --directory=${DIR_CODE} MAIN=${MAIN}
-	(cd ${DIR_CODE}; ./${MAIN}.out)
-	(cd ${DIR_DATA}; sh plot.sh ${FIGURE} exportonly)
-	make --directory=${DIR_REPORT} MAIN=casari_project all
+	$(MAKE) --directory=${DIR_CODE} MAIN=${MAIN}
+	cd ${DIR_CODE} && ./${MAIN}.out
+	cd ${DIR_DATA} && sh plot.sh ${FIGURE} exportonly
+	$(MAKE) --directory=${DIR_REPORT} MAIN=casari_project all
 
 clean:
-	make --directory=${DIR_CODE} clean
-	make --directory=${DIR_REPORT} clean
+	$(MAKE) --directory=${DIR_CODE} clean
+	$(MAKE) --directory=${DIR_REPORT} clean
