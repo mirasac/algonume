@@ -16,8 +16,8 @@ int main(int argc, char * argv[]) {
 	
 	// Configure atmospheric layers.
 	int n_layers = 20;
-	double z_TOA, z_S; // [m]
-	double * z, * delta_z; // [m]
+	double z_TOA, z_S; // / m
+	double * z, * delta_z; // / m
 	z_TOA = 42000.0;
 	z_S = 0.0;
 	z = new double[n_layers];
@@ -41,8 +41,8 @@ int main(int argc, char * argv[]) {
 	
 	// Configure spectral bands.
 	int * n_bands;
-	double * nu, * delta_nu; // [1 / cm]
-	double dnu = 100.0; // [1 / cm]
+	double * nu, * delta_nu; // / (1 / cm)
+	double dnu = 100.0; // / (1 / cm)
 	// MC continue with three arrays for the bandwidth of each layer.
 	
 	// Clean up.

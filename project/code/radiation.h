@@ -6,8 +6,8 @@
 
 struct absorber_t {
 	int n_nu;
-	double * nu; // [1 / cm]
-	double * delta_nu; // [1 / cm]
+	double * nu; // / (1 / cm)
+	double * delta_nu; // / (1 / cm)
 };
 
 double total_flux_longwave(double T, int n_nu, double nu[], double delta_nu[]);

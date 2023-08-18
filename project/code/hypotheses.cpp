@@ -16,8 +16,8 @@ int main(int argc, char * argv[]) {
 	
 	// Plot spectral irradiance of Sun and Earth's surfaces as blackbodies.
 	int const n_nu = 10000;
-	double nu_sun, nu_earth, nu, dnu, nu_min, nu_max, nu_intersection; // [1 / m]
-	double I_sun, I_earth; // [W / (m^2 m)]
+	double nu_sun, nu_earth, nu, dnu, nu_min, nu_max, nu_intersection; // / (1 / m)
+	double I_sun, I_earth; // / (W m / m^2)
 	double ratio;
 	ofstream plot_file;
 	nu_sun = 2e6;
@@ -34,7 +34,7 @@ int main(int argc, char * argv[]) {
 		I_sun = (1.0 - global_alpha) * ratio*ratio * M_PI * planck_law_nu(nu, global_T_sun);
 		I_earth = M_PI * planck_law_nu(nu, global_T_earth);
 		I_sun /= 32.0; // Scale for better plot comparison.
-		nu /= 100.0; // Plot bandwidth in [1 / cm].
+		nu /= 100.0; // Plot bandwidth in unit 1 / cm.
 		plot_file << nu << ' ' << I_sun << ' ' << I_earth << '\n';
 	}
 	plot_file.close();

@@ -6,7 +6,7 @@
 \usepackage{amssymb}
 \usepackage[style=ieee,backend=biber]{biblatex}
 \usepackage{booktabs}
-%\usepackage{caption}
+%\usepackage[tableposition=top,figureposition=bottom,font=footnotesize,format=hang,subrefformat=parens]{caption}
 \usepackage{listings}
 %\usepackage{mathtools}
 %\usepackage{physics}
@@ -15,12 +15,10 @@
 %\usepackage{subfiles}
 %\usepackage{tabularx}
 %\usepackage{varioref}
-\usepackage{hyperref} % Load last.
+\usepackage[hidelinks]{hyperref} % Load last.
 
 % Packages settings.
 \addbibresource{bibliography.bib}
-%\captionsetup{tableposition=top,figureposition=bottom,font=footnotesize,format=hang,subrefformat=parens}
-\hypersetup{hidelinks}
 %\DeclareGraphicsExtensions{.pdf,.jpg,.png}
 \graphicspath{{./figures/}}
 
@@ -107,8 +105,9 @@ with each component obeying the ideal gas law
 \end{equation}
 where $\rho = \frac{m}{V}$ is the volumetric mass density of the air parcel.
 
-Sun's surface is approximated as an emitting blackbody. Solar radiation is considered orthogonal to the plane which represents Earth's surface in the RCM. Constant value $S_0$ for total solar irradiance is used in calculations. % MC continue.
+Sun's surface is approximated as an emitting blackbody. Solar radiation is considered orthogonal to the plane which represents Earth's surface in the RCM. Constant value $S_0$ for total solar irradiance is used in calculations.
 
+% MC check the following.
 Solar spectral irradiance is peaked in the ultraviolet (UV) and visible bandwidths, while spectral irradiance of Earth's surface is peaked in the infrared (IR) bandwidth. The difference between shapes of the distributions allows to split the spectrum at the intersection and to treat the two resulting spectra independently. The overlap between distributions is neglected.
 The accuracy of the approximation can be quantified by the ratio
 % MC complete hypothesis justification.
