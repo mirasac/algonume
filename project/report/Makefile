@@ -1,6 +1,6 @@
 MAIN=casari_project
 DIR_FIGURES=./figures
-FIGURES=${DIR_FIGURES}/spectral_irradiance.pdf
+FIGURES=${DIR_FIGURES}/spectral_irradiance.pdf ${DIR_FIGURES}/spectral_irradiance_log.pdf
 
 .PHONY: all all_figures clean
 
@@ -26,6 +26,9 @@ all_figures: ${FIGURES}
 
 ${DIR_FIGURES}/spectral_irradiance.pdf: ${DIR_FIGURES}/spectral_irradiance_input.tex ${DIR_FIGURES}/spectral_irradiance_input.pdf
 	sh standalone.sh spectral_irradiance ${DIR_FIGURES}
+
+${DIR_FIGURES}/spectral_irradiance_log.pdf: ${DIR_FIGURES}/spectral_irradiance_log_input.tex ${DIR_FIGURES}/spectral_irradiance_log_input.pdf
+	sh standalone.sh spectral_irradiance_log ${DIR_FIGURES}
 
 clean:
 	rm -f *.aux
