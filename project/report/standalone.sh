@@ -51,7 +51,7 @@ cat <<-EOF > "${filename_tmp}"
 EOF
 )
 
-# Compose standalone LaTeX source file.
+# Compose standalone LaTeX source file. Option -output-directory has the positive side effect to add the specified directory to the graphicspath.
 pdflatex -jobname="${basename_figure}" -output-directory="${dir_figure}" "${filename_tmp}"
 
 # Remove temporary files.
