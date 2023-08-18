@@ -4,9 +4,9 @@ DIR_REPORT=report
 MAIN=main
 FIGURE=figure
 
-.PHONY: all clean
+.PHONY: single_figure clean
 
-all:
+single_figure:
 	$(MAKE) --directory=${DIR_CODE} MAIN=${MAIN}
 	cd ${DIR_CODE} && ./${MAIN}.out
 	cd ${DIR_DATA} && sh plot.sh ${FIGURE} exportonly

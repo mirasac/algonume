@@ -7,17 +7,15 @@
 \usepackage[style=ieee,backend=biber]{biblatex}
 \usepackage{booktabs}
 %\usepackage{caption}
-\usepackage{hyperref}
-\usepackage{graphicx}
 \usepackage{listings}
 %\usepackage{mathtools}
 %\usepackage{physics}
-\usepackage{siunitx}
+\input{standalone_packages.tex}
 %\usepackage{subcaption}
 %\usepackage{subfiles}
 %\usepackage{tabularx}
 %\usepackage{varioref}
-\usepackage{xcolor}
+\usepackage{hyperref} % Load last.
 
 % Packages settings.
 \addbibresource{bibliography.bib}
@@ -25,7 +23,6 @@
 \hypersetup{hidelinks}
 %\DeclareGraphicsExtensions{.pdf,.jpg,.png}
 \graphicspath{{./figures/}}
-\sisetup{group-digits=integer,separate-uncertainty,per-mode=symbol}
 
 % Customization.
 \definecolor{Blue}{rgb}{0.2,0.2,0.9}
@@ -119,8 +116,7 @@ and an upper limit for the accuracy of this approximation can be quantified by t
 %\cite[43]{Catling}
 \begin{figure*}[h]
   \centering
-  %\includegraphics*[keepaspectratio=true,width=\textwidth]{./figures/spectral_irradiance}
-  \input{./figures/spectral_irradiance.tex}
+  \includegraphics*[keepaspectratio=true,width=0.95\textwidth]{spectral_irradiance}
   \caption{MC complete.}
   \label{fig:spectral_irradiance}
 \end{figure*}

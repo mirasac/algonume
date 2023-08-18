@@ -41,6 +41,7 @@
 # Report
 - For section label markers I put the name of the section, case sensitive, after the string `sec:`. This way the marker could contain spaces, but this should not be a drawback since nowadays most packages managing labels support spaces in them. Another possible drawback is the length that some labels can reach. Instead the advantages are many: it is a consistent way to write meaningful labels for sections, labels get immediately fixed when section titles are changed (i.e. by using a find and replace tool in any editor).
 - Use nominal values then associate relative error to them.
+- The chosen font size is 10pt everywhere. Set it automatically everywhere based on a single configuration file takes too much effort compared by setting it manually.
 
 ## Release
 - Check verbal tenses and conjugations.

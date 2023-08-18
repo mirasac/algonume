@@ -18,8 +18,8 @@ print_usage() {
 		Create plot using a specific gnuplot script.
 		
 		The first argument is mandatory and its value is used as basename for the gnuplot script.
-		If the second argument is specified, if its value is 'export' then the plot is also exported to a file with same basename of the gnuplot script, if its value is 'exportonly', the plot is not displayed in a separate window and only the export is performed, useful in systems which lack of GUI support. The default directory for the exported file is '${DEF_DIR_EXPORT}'.
-		If the third argument is specified, its value is used as directory for the exported file.
+		If the second argument is specified, if its value is 'export' then the plot is also exported to a file with same basename of the gnuplot script, if its value is 'exportonly', the plot is not displayed in a separate window and only the export is performed (e.g. useful in systems which lack of GUI support).
+		If the third argument is specified, its value is used as directory for the exported file, else the default directory is '${DEF_DIR_EXPORT}'.
 	EOF
 }
 
@@ -36,34 +36,34 @@ else
 	command="load '${basename}.gp'"
 	
 	# Add export commands.
-	if [ -n "${option}" ]
+	if [ "${option}" = 'export' ] || [ "${option}" = 'exportonly' ]
 	then
 		dir_export="${3:-${DEF_DIR_EXPORT}}"
 		basename_export="${basename}"
 		command_export=$(
 		cat <<-EOF
 			set terminal cairolatex pdf input colourtext noheader color size 14.85cm,10.5cm
-			set output '${dir_export}/${basename_export}.tex'
+			set output '${basename_export}_input.tex'
 		EOF
 		)
-	fi
-	if [ "${option}" = 'export' ]
-	then
-		command=$(
-		cat <<-EOF
-			${command}
-			${command_export}
-			replot
-		EOF
-		)
-	elif [ "${option}" = 'exportonly' ]
-	then
-		command=$(
-		cat <<-EOF
-			${command_export}
-			load '${basename}.gp'
-		EOF
-		)
+		if [ "${option}" = 'export' ]
+		then
+			command=$(
+			cat <<-EOF
+				${command}
+				${command_export}
+				replot
+			EOF
+			)
+		elif [ "${option}" = 'exportonly' ]
+		then
+			command=$(
+			cat <<-EOF
+				${command_export}
+				load '${basename}.gp'
+			EOF
+			)
+		fi
 	fi
 	
 	# Launch gnuplot.
@@ -72,4 +72,11 @@ else
 		${command}
 	EOF
 	)
+	
+	# Move exported files to the specified directory.
+	if [ "${option}" = 'export' ] || [ "${option}" = 'exportonly' ]
+	then
+		mv "${basename_export}_input.tex" "${dir_export}/${basename_export}_input.tex"
+		mv "${basename_export}_input.pdf" "${dir_export}/${basename_export}_input.pdf"
+	fi
 fi
