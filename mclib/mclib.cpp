@@ -120,16 +120,6 @@ double rectangularquad(double (*f)(double x), double a, double b, int N) {
 	double dx, x_n, s_n;
 	dx = (b - a) / N;
 	s_n = 0.0;
-	// My implementation.
-	/*
-	x_n = a;
-	for (int n = 1; n <= N: n++) {
-		s_n += f(x_n) * dx;
-		x_n += dx;
-	}
-	return s_n;
-	*/
-	// Better implementation because there are less repeated operations involved.
 	for (int n = 0; n < N; n++) {
 		x_n = a + n * dx;
 		s_n += f(x_n);
@@ -153,72 +143,54 @@ double midpointquad(double (*f)(double x), double a, double b, int N) {
 	orderinterval(&a, &b);
 	double dx, x_n, s_n;
 	dx = (b - a) / N;
-	x_n = a + dx / 2.0;
 	s_n = 0.0;
-	for (int n = 1; n <= N; n++) {
-		s_n += f(x_n) * dx;
-		x_n += dx;
+	for (int n = 0; n < N; n++) {
+		x_n = a + (n + 0.5) * dx;
+		s_n += f(x_n);
 	}
-	return s_n;
+	return s_n * dx;
 }
 
 double midpointquad(double (*f)(double x, double p), double a, double b, int N, double p) {
 	orderinterval(&a, &b);
 	double dx, x_n, s_n;
 	dx = (b - a) / N;
-	x_n = a + dx / 2.0;
 	s_n = 0.0;
-	for (int n = 1; n <= N; n++) {
-		s_n += f(x_n, p) * dx;
-		x_n += dx;
+	for (int n = 0; n < N; n++) {
+		x_n = a + (n + 0.5) * dx;
+		s_n += f(x_n, p);
 	}
-	return s_n;
+	return s_n * dx;
 }
 
 double trapezioidalquad(double (*f)(double x), double a, double b, int N) {
 	orderinterval(&a, &b);
-	double dx, x_n, s_n;
+	double dx, x_n, s_n, f_prev, f_n;
 	dx = (b - a) / N;
 	s_n = 0.0;
-	// My implementation, not wrong but inefficient because function f is called twice.
-	x_n = a;
+	f_prev = f(a);
 	for (int n = 1; n <= N; n++) {
-		s_n += (f(x_n) + f(x_n + dx)) / 2.0 * dx;
-		x_n += dx;
-	}
-	return s_n;
-	// Better implementation, f is called only N + 1 times.
-	// MC finire.
-	/*
-	for (int n = 0; n < N; n++) {
 		x_n = a + n * dx;
-		s_n = 
+		f_n = f(x_n);
+		s_n += f_prev + f_n;
+		f_prev = f_n;
 	}
-	return s_n * dx;
-	*/
+	return s_n * dx / 2.0;
 }
 
 double trapezioidalquad(double (*f)(double x, double p), double a, double b, int N, double p) {
 	orderinterval(&a, &b);
-	double dx, x_n, s_n;
+	double dx, x_n, s_n, f_prev, f_n;
 	dx = (b - a) / N;
 	s_n = 0.0;
-	// My implementation, not wrong but inefficient because function f is called twice.
-	x_n = a;
+	f_prev = f(a, p);
 	for (int n = 1; n <= N; n++) {
-		s_n += (f(x_n, p) + f(x_n + dx, p)) / 2.0 * dx;
-		x_n += dx;
-	}
-	return s_n;
-	// Better implementation, f is called only N + 1 times.
-	// MC finire.
-	/*
-	for (int n = 0; n < N; n++) {
 		x_n = a + n * dx;
-		s_n = 
+		f_n = f(x_n, p);
+		s_n += f_prev + f_n;
+		f_prev = f_n;
 	}
-	return s_n * dx;
-	*/
+	return s_n * dx / 2.0;
 }
 
 double simpsonquad(double (*f)(double x), double a, double b, int N) {
@@ -229,9 +201,8 @@ double simpsonquad(double (*f)(double x), double a, double b, int N) {
 	}
 	double dx, x_n, s_n;
 	dx = (b - a) / N;
-	//x_n = a + dx;
 	s_n = f(a) + f(b);
-	for (int n = 1; n <= N - 1; n++) {
+	for (int n = 1; n < N; n++) {
 		x_n = a + n * dx;
 		s_n += f(x_n) * 2.0 * (1 + n % 2);
 	}
@@ -246,9 +217,8 @@ double simpsonquad(double (*f)(double x, double p), double a, double b, int N, d
 	}
 	double dx, x_n, s_n;
 	dx = (b - a) / N;
-	//x_n = a + dx;
 	s_n = f(a, p) + f(b, p);
-	for (int n = 1; n <= N - 1; n++) {
+	for (int n = 1; n < N; n++) {
 		x_n = a + n * dx;
 		s_n += f(x_n, p) * 2.0 * (1 + n % 2);
 	}
