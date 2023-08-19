@@ -103,11 +103,15 @@ Evaluate the integral of function f with parameter p in the real interval [a, b]
 */
 double rectangularquad(double (*f)(double x, double p), double a, double b, int N, double p);
 
-
 /*
 Evaluate the integral of function f in the real interval [a, b] divided in N sub intervals using the midpoint quadrature.
 */
 double midpointquad(double (*f)(double x), double a, double b, int N);
+
+/*
+Evaluate the integral of function f with parameter p in the real interval [a, b] divided in N sub intervals using the midpoint quadrature.
+*/
+double midpointquad(double (*f)(double x, double p), double a, double b, int N, double p);
 
 /*
 Evaluate the integral of function f in the real interval [a, b] divided in N sub intervals using the trapezioidal quadrature.
@@ -115,9 +119,19 @@ Evaluate the integral of function f in the real interval [a, b] divided in N sub
 double trapezioidalquad(double (*f)(double x), double a, double b, int N);
 
 /*
+Evaluate the integral of function f with parameter p in the real interval [a, b] divided in N sub intervals using the trapezioidal quadrature.
+*/
+double trapezioidalquad(double (*f)(double x, double p), double a, double b, int N, double p);
+
+/*
 Evaluate the integral of function f in the real interval [a, b] divided in N sub intervals using the Simpson rule.
 */
 double simpsonquad(double (*f)(double x), double a, double b, int N);
+
+/*
+Evaluate the integral of function f with parameter p in the real interval [a, b] divided in N sub intervals using the Simpson rule.
+*/
+double simpsonquad(double (*f)(double x, double p), double a, double b, int N, double p);
 
 /*
 Evaluate the integral of function f in the real interval [a, b] divided in N sub intervals using Gauss-Legendre quadrature.
@@ -132,7 +146,7 @@ double gaussquad(double (*f)(double x, double p), double a, double b, int N, int
 /*
 Evaluate the integral of function f with cp parameters stored in array p in the real interval [a, b] divided in N sub intervals using Gauss-Legendre quadrature.
 */
-double gaussquadparam(double (*f)(double x, int cp, double p[]), double a, double b, int N, int Ng, int cp, double p[]);
+double gaussquad(double (*f)(double x, int cp, double p[]), double a, double b, int N, int Ng, int cp, double p[]);
 
 /*
 Evaluate the integral of function f in the real interval [a, b] x [a, b] each divided in N sub intervals using Gauss-Legendre quadrature.

@@ -162,6 +162,19 @@ double midpointquad(double (*f)(double x), double a, double b, int N) {
 	return s_n;
 }
 
+double midpointquad(double (*f)(double x, double p), double a, double b, int N, double p) {
+	orderinterval(&a, &b);
+	double dx, x_n, s_n;
+	dx = (b - a) / N;
+	x_n = a + dx / 2.0;
+	s_n = 0.0;
+	for (int n = 1; n <= N; n++) {
+		s_n += f(x_n, p) * dx;
+		x_n += dx;
+	}
+	return s_n;
+}
+
 double trapezioidalquad(double (*f)(double x), double a, double b, int N) {
 	orderinterval(&a, &b);
 	double dx, x_n, s_n;
@@ -171,6 +184,29 @@ double trapezioidalquad(double (*f)(double x), double a, double b, int N) {
 	x_n = a;
 	for (int n = 1; n <= N; n++) {
 		s_n += (f(x_n) + f(x_n + dx)) / 2.0 * dx;
+		x_n += dx;
+	}
+	return s_n;
+	// Better implementation, f is called only N + 1 times.
+	// MC finire.
+	/*
+	for (int n = 0; n < N; n++) {
+		x_n = a + n * dx;
+		s_n = 
+	}
+	return s_n * dx;
+	*/
+}
+
+double trapezioidalquad(double (*f)(double x, double p), double a, double b, int N, double p) {
+	orderinterval(&a, &b);
+	double dx, x_n, s_n;
+	dx = (b - a) / N;
+	s_n = 0.0;
+	// My implementation, not wrong but inefficient because function f is called twice.
+	x_n = a;
+	for (int n = 1; n <= N; n++) {
+		s_n += (f(x_n, p) + f(x_n + dx, p)) / 2.0 * dx;
 		x_n += dx;
 	}
 	return s_n;
@@ -198,6 +234,23 @@ double simpsonquad(double (*f)(double x), double a, double b, int N) {
 	for (int n = 1; n <= N - 1; n++) {
 		x_n = a + n * dx;
 		s_n += f(x_n) * 2.0 * (1 + n % 2);
+	}
+	return s_n * dx / 3.0;
+}
+
+double simpsonquad(double (*f)(double x, double p), double a, double b, int N, double p) {
+	orderinterval(&a, &b);
+	if (N % 2 != 0) {
+		std::cout << "Error: to apply the Simpson rule the number of intervals must be even" << std::endl;
+		exit(1);
+	}
+	double dx, x_n, s_n;
+	dx = (b - a) / N;
+	//x_n = a + dx;
+	s_n = f(a, p) + f(b, p);
+	for (int n = 1; n <= N - 1; n++) {
+		x_n = a + n * dx;
+		s_n += f(x_n, p) * 2.0 * (1 + n % 2);
 	}
 	return s_n * dx / 3.0;
 }
@@ -252,7 +305,7 @@ double gaussquad(double (*f)(double x, double p), double a, double b, int N, int
 	return sum;
 }
 
-double gaussquadparam(double (*f)(double x, int cp, double p[]), double a, double b, int N, int Ng, int cp, double p[]) {
+double gaussquad(double (*f)(double x, int cp, double p[]), double a, double b, int N, int Ng, int cp, double p[]) {
 	orderinterval(&a, &b);
 	double dx, a_n, b_n, r_n, sum, sum_n;
 	double * x, * w;
