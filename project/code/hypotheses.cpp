@@ -42,8 +42,8 @@ int main(int argc, char * argv[]) {
 	nu_intersection = secant(spectral_irradiance_diff, 2e5, 3e5, 1e-12) / 100.0;
 	cout << nu_intersection << endl; // MC debug.
 	
-	cout << (1.0 - global_alpha) * ratio*ratio * M_PI * gaussquad(planck_law_lambda, 1.0 / nu_max, 1.0 / nu_min, GAUSSQUAD_INTERVALS, GAUSSQUAD_POINTS, global_T_sun) << endl;
-	cout << (1.0 - global_alpha) * ratio*ratio * M_PI * gaussquad(planck_law_nu, nu_min, nu_max, GAUSSQUAD_INTERVALS, GAUSSQUAD_POINTS, global_T_sun) << endl;
+	cout << ratio*ratio * M_PI * gaussquad(planck_law_lambda, 1.0 / nu_max, 1.0 / nu_min, GAUSSQUAD_INTERVALS, GAUSSQUAD_POINTS, global_T_sun) << endl;
+	cout << ratio*ratio * M_PI * gaussquad(planck_law_nu, nu_min, nu_max, GAUSSQUAD_INTERVALS, GAUSSQUAD_POINTS, global_T_sun) << endl;
 	
 	// Evaluate overlap of spectral irradiances.
 	
