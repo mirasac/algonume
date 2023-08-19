@@ -89,7 +89,7 @@ The RCM developed for the present work approximates the atmosphere as a vertical
 \label{sec:Hypotheses and conventions}
 To simplify some calculations for radiative fluxes, the definition of wavenumber $\nu = \frac{1}{\lambda}$ is used in this work, where $\lambda$ is the wavelenght.
 
-Specific gas constant is used in thermodynamical relations, which is defined as the gas constant $R$ divided by the gas molar mass. Henceforth, the symbol $R_M$ is used for the specific gas constant.
+Specific gas constant is used in thermodynamical relations, which is defined as the gas constant $R$ divided by the gas molar mass. Henceforth, specific gas constant is represented with symbol $R_M$.
 
 Some assumptions are made on state and composition of Earth's atmosphere. 
 % MC do I need to use the International Standard Atmosphere? It is not a wise choice since its temperature profile is already fixed. But I can take it as reference for other parametrizations.
@@ -109,7 +109,7 @@ Sun's surface is approximated as an emitting blackbody. Solar radiation is consi
 
 % MC check the following.
 Solar spectral irradiance is peaked in the ultraviolet (UV) and visible bandwidths, while spectral irradiance of Earth's surface is peaked in the infrared (IR) bandwidth. The difference between shapes of the distributions allows to split the spectrum at the intersection and to treat the two resulting spectra independently. The overlap between distributions is neglected.
-The accuracy of the approximation can be quantified by the ratio
+The accuracy of the approximation can be quantified by the overlap between distributions considering the splitted spectra. Planck's law is used to evaluate the 
 % MC complete hypothesis justification.
 and an upper limit for the accuracy of this approximation can be quantified by the ratio between radiant intensities of Sun and Earth's surface in each spectra, when the sources are considered as blackbodies (i.e. when the emission is maximum).
 %\cite[43]{Catling}
@@ -278,10 +278,16 @@ All previous quantities can be expressed as densities with respect to the wavele
 Spectral radiance of a blackbody is given by Planck's law
 \begin{equation}
   \label{eq:blackbody_radiance}
-  B_\nu (\nu, T) = 2 h c^2 \nu^5 \frac{1}{e^\frac{h c \nu}{k_B T} - 1}
+  B_\nu (\nu, T) = 2 h c^2 \nu^3 \frac{1}{e^\frac{h c \nu}{k_B T} - 1}
   \quad ,
 \end{equation}
 where $\nu$ is the wavenumber in unit \unit{\per\centi\metre} (cfr. notation in section~\ref{sec:Hypotheses and conventions}), $T$ in unit \unit{\kelvin} is the temperature of the emitting body and the other quantities are constants (cfr. table~\ref{tab:constants}).
+Note that Planck's law has different form when it is expressed in terms of wavelength, due to its definition as density and the resulting change of variables:
+\begin{equation}
+  \label{eq:blackbody_radiance_lambda}
+  B_\lambda (\lambda, T) = \frac{2 h c^2}{\lambda^5} \frac{1}{e^\frac{h c}{\lambda k_B T} - 1}
+  \quad .
+\end{equation}
 
 If the radiance is isotropic, i.e. it has not dependence on the direction of the radiation, the corresponding irradiance is proportional. For instance, if the radiation is absorbed by a hemispheric surface approximated by a blackbody, the spectral irradiance of the surface is
 \begin{equation}

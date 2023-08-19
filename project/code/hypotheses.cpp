@@ -33,7 +33,6 @@ int main(int argc, char * argv[]) {
 		nu = nu_min + i * dnu;
 		I_sun = (1.0 - global_alpha) * ratio*ratio * M_PI * planck_law_nu(nu, global_T_sun);
 		I_earth = M_PI * planck_law_nu(nu, global_T_earth);
-		I_sun /= 32.0; // Scale for better plot comparison.
 		nu /= 100.0; // Plot bandwidth in unit 1 / cm.
 		plot_file << nu << ' ' << I_sun << ' ' << I_earth << '\n';
 	}
@@ -42,8 +41,8 @@ int main(int argc, char * argv[]) {
 	nu_intersection = secant(spectral_irradiance_diff, 2e5, 3e5, 1e-12) / 100.0;
 	cout << nu_intersection << endl; // MC debug.
 	
-	cout << ratio*ratio * M_PI * gaussquad(planck_law_lambda, 1.0 / nu_max, 1.0 / nu_min, GAUSSQUAD_INTERVALS, GAUSSQUAD_POINTS, global_T_sun) << endl;
-	cout << ratio*ratio * M_PI * gaussquad(planck_law_nu, nu_min, nu_max, GAUSSQUAD_INTERVALS, GAUSSQUAD_POINTS, global_T_sun) << endl;
+	cout << ratio*ratio * M_PI * gaussquad(planck_law_lambda, 1.0 / nu_max, 1.0 / nu_min, GAUSSQUAD_INTERVALS, 3, global_T_sun) << endl;
+	cout << ratio*ratio * M_PI * gaussquad(planck_law_nu, nu_min, nu_max, GAUSSQUAD_INTERVALS, 2, global_T_sun) << endl;
 	
 	// Evaluate overlap of spectral irradiances.
 	

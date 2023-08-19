@@ -13,7 +13,7 @@ set xrange[9e1:1.5e5]
 set mxtics 10
 
 set ylabel '$I / (\unit{\watt\metre\per\square\metre})$' font _font
-set yrange[1:1e8]
+set yrange[1e-10:1e-2]
 set mytics 10
 
 plot "spectral_irradiance.dat" using 1:2 notitle with lines lc rgb "blue", \
