@@ -74,7 +74,7 @@
 % MC the physical background is presented.
 Planet Earth's climate dynamics can be studied with models of varying complexity depending on the subject of the study. Radiative-convective models (RCMs) provide an intermediate complexity approach to the simulation of climate, evaluating the atmospheric temperature profile in a vertical column where temperature is averaged over all latitudes and longitudes.
 
-The present work intends to study the atmospheric temeprature profile averaged on the Northern Hemisphere in presence of conditions 
+The present work intends to study the atmospheric temperature profile averaged on the Northern Hemisphere in presence of conditions 
 
 %\section{Materials}
 % MC describe the tools used during the study. List the specifics and the references of the code. Maybe list the number of atmosphere layers.
@@ -87,7 +87,7 @@ The RCM developed for the present work approximates the atmosphere as a vertical
 % MC describe conventions used in this work.
 \subsection{Hypotheses and conventions}
 \label{sec:Hypotheses and conventions}
-To simplify some calculations for radiative fluxes, the definition of wavenumber $\nu = \frac{1}{\lambda}$ is used in this work, where $\lambda$ is the wavelenght.
+To simplify some calculations for radiative fluxes, the definition of wavenumber $\nu = \frac{1}{\lambda}$ is used in this work, where $\lambda$ is the wavelenght of the radiation.
 
 Specific gas constant is used in thermodynamical relations, which is defined as the gas constant $R$ divided by the gas molar mass. Henceforth, specific gas constant is represented with symbol $R_M$.
 
@@ -106,18 +106,7 @@ The average Earth's surface considered in the model is approximated as an emitti
 
 Sun's surface is approximated as an emitting blackbody with temperature $T_\text{sun}$. Solar radiation is considered orthogonal to the plane which represents Earth's surface in the RCM. Constant value $S_0$ for total solar irradiance is used in calculations.
 
-% MC check the following.
-Solar spectral irradiance is peaked in the ultraviolet (UV) and visible bandwidths, while spectral irradiance of Earth's surface is peaked in the infrared (IR) bandwidth. The difference between shapes of the distributions allows to split the spectrum at the intersection and to treat the two resulting spectra independently. The overlap between distributions is neglected.
-The accuracy of the approximation can be quantified by the overlap between distributions considering the splitted spectra. Planck's law is used to evaluate the 
-% MC complete hypothesis justification.
-and an upper limit for the accuracy of this approximation can be quantified by the ratio between radiant intensities of Sun and Earth's surface in each spectra, when the sources are considered as blackbodies (i.e. when the emission is maximum).
-%\cite[43]{Catling}
-\begin{figure*}[h]
-  \centering
-  \includegraphics*[keepaspectratio=true,width=0.95\textwidth]{spectral_irradiance}
-  \caption{MC complete.}
-  \label{fig:spectral_irradiance}
-\end{figure*}
+Solar spectral irradiance is peaked in the ultraviolet (UV) and visible bandwidths, while spectral irradiance of Earth's surface is peaked in the infrared (IR) bandwidth. This difference allows the division of the spectrum at the intersection of the curves and to treat the two resulting spectra independently. The overlap between curves is neglected. Accuracy of this approximation and value of wavenumber $\nu_t$ of the intersection point are discussed in section~\ref{sec:Division of the electromagnetic spectrum}.
 
 Data on constants used in this work are listed in table~\ref{tab:constants}.
 \begin{table*}[h]
@@ -175,6 +164,47 @@ Spectral bands are identified by two arrays: one listing the lower bound of each
 % MC sum up what I did and the results compared with article TTAPS-I.
 % MC if there is enough time, use the results and the comparison with TTAPS-I as model validation then gain some insights on the same results using the contemporary nuclear arsenal and compare with the modern version of TTAPS (i.e. Turco 2008, compare what is possible since it is made with a GCM).
 
+% MC after: check if *radiance should be written as spectral *radiance.
+\subsection{Division of the electromagnetic spectrum}
+\label{sec:Division of the electromagnetic spectrum}
+Spectral irradiances of Sun and Earth's surfaces are obtained from blackbody spectral radiance (cfr. appendix~\ref{sec:Radiometric quantities}). They are compared inside Earth's atmosphere, whose thickness is neglected with respect to the other spatial quantities involved in these calculations, hence the comparison is performed directly on Earth's surface. Given a generic coordinate system, attenuation of solar radiation is considered: spectral radiant intensity of Sun is obtained by multiplying the spectral radiance by the area of a spherical surface with radius $R_\text{sun}$, then the result is divided by the area of a spherical surface with radius \qty{1}{\astronomicalunit}. The resulting solar spectral irradiance is
+\begin{equation}
+  \label{eq:spectral_irradiance_sun}
+  I_\text{sun}(\nu) = (1 - \alpha) \left( \frac{R_\text{sun}}{\qty{1}{\astronomicalunit}} \right)^2 \pi B_\nu(\nu, T_\text{sun})
+\end{equation}
+while Earth's surface spectral irradiance is
+\begin{equation}
+  \label{eq:spectral_irradiance_earth}
+  I_\text{earth}(\nu) = \pi B_\nu(\nu, T_\text{earth})
+  \quad .
+\end{equation}
+
+% MC continue.
+% MC also add what is \alpha.
+Equations~\eqref{eq:spectral_irradiance_sun} and \eqref{eq:spectral_irradiance_earth} are shown in figure~\ref{fig:spectral_irradiance}, along with the point division and the intersection point is evaluated numerically (cfr. appendix~\ref{sec:Hypotheses}) and has value $\nu_t \approx \qty{2.156}{\per\centi\metre}$.
+\begin{figure*}[h]
+  \centering
+  \includegraphics*[keepaspectratio=true,width=0.95\textwidth]{spectral_irradiance}
+  \caption{MC complete.}
+  \label{fig:spectral_irradiance}
+\end{figure*}
+
+
+
+
+
+
+
+
+
+
+The accuracy of this approximation can be quantified by the overlap between curves in each of the two resulting spectra. The comparison is performed in Earth's atmosphereSun and earth are Both surfaces are backbodies, hence their radiance is described by Planck's law. Given any coordinate system, the comparison is performed at the point where Earth is located ( as a point source, cfr. appendix~\ref{sec:Radiometric quantities}), hence solar radiance is scaled by the 
+% MC complete hypothesis justification.
+and an upper limit for the accuracy of this approximation can be quantified by the ratio between radiant intensities of Sun and Earth's surface in each spectra, when the sources are considered as blackbodies (i.e. when the emission is maximum).
+%\cite[43]{Catling}
+
+
+
 %\section{Conclusion} % MC instead create a "Discussion and conclusion" section.
 
 \newpage
@@ -192,6 +222,10 @@ Therefore two arrays are needed: one for the point and one with the correspondin
 
 % MC radiative fluxes are computed for each atmospheric layer.
 To reduce the computation load of radiative fluxes, only some spectral intervals are considered and they are specific to each atmospheric layer, since the available absorbing gases and aerosols differ among layers. First absorbers for each layer are stored in an array, then the spectral bandwitdhs needed for each layer are evaluated. Spectral bandwidths are expressed in terms of wavenumbers with unit \unit{\per\centi\metre} to manage integer values or double precision values close to unity. For each chemical species the absorption intervals are identified by their width and central wavenumber, the former are obtained from the latter and using the exponential wide band model (cfr. \cite[360]{Modest}). These two values are stored in separate arrays.
+
+\subsection{Hypotheses} % MC find a more significant title.
+\label{sec:Hypotheses}
+% MC here insert code and discuss details (e.g. root finder used and why) from hypotheses.cpp.
 
 \subsection{Classes}
 % MC show and comment the source code for the used classes.

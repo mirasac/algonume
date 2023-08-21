@@ -9,6 +9,7 @@
 #include "../../mclib/mclib.h"
 
 double spectral_irradiance_diff(double nu);
+double spectral_irradiance_diff1(double nu);
 
 int main(int argc, char * argv[]) {
 	using namespace std;
@@ -16,7 +17,7 @@ int main(int argc, char * argv[]) {
 	
 	// Plot spectral irradiance of Sun and Earth's surfaces as blackbodies.
 	int const n_nu = 10000;
-	double nu_sun, nu_earth, nu, dnu, nu_min, nu_max, nu_intersection; // / (1 / m)
+	double nu_sun, nu_earth, nu, dnu, nu_min, nu_max, nu_threshold; // / (1 / m)
 	double I_sun, I_earth; // / (W m / m^2)
 	double ratio;
 	ofstream plot_file;
@@ -34,15 +35,17 @@ int main(int argc, char * argv[]) {
 		I_sun = (1.0 - global_alpha) * ratio*ratio * M_PI * planck_law_nu(nu, global_T_sun);
 		I_earth = M_PI * planck_law_nu(nu, global_T_earth);
 		nu /= 100.0; // Plot bandwidth in unit 1 / cm.
+		I_sun *= 100.0; // Plot irradiance in unit W cm / m^2.
+		I_earth *= 100.0; // Plot irradiance in unit W cm / m^2.
 		plot_file << nu << ' ' << I_sun << ' ' << I_earth << '\n';
 	}
 	plot_file.close();
 	
-	nu_intersection = secant(spectral_irradiance_diff, 2e5, 3e5, 1e-12) / 100.0;
-	cout << nu_intersection << endl; // MC debug.
-	
-	cout << ratio*ratio * M_PI * gaussquad(planck_law_lambda, 1.0 / nu_max, 1.0 / nu_min, GAUSSQUAD_INTERVALS, 3, global_T_sun) << endl;
-	cout << ratio*ratio * M_PI * gaussquad(planck_law_nu, nu_min, nu_max, GAUSSQUAD_INTERVALS, 2, global_T_sun) << endl;
+	nu_threshold = secant(spectral_irradiance_diff, 2e5, 3e5, 1e-9);
+	cout << nu_threshold / 100.0 << endl; // MC debug.
+	cout << bisection(spectral_irradiance_diff, 2e5, 3e5, 1e-9) / 100.0 << endl; // MC debug.
+	cout << falseposition(spectral_irradiance_diff, 2e5, 3e5, 1e-9) / 100.0 << endl; // MC debug.
+	cout << newtonraphson(spectral_irradiance_diff, spectral_irradiance_diff1, 2e5, 3e5, 1e-9) / 100.0 << endl; // MC debug.
 	
 	// Evaluate overlap of spectral irradiances.
 	
@@ -52,5 +55,16 @@ int main(int argc, char * argv[]) {
 
 double spectral_irradiance_diff(double nu) {
 	double ratio = global_R_sun / global_au;
-	return M_PI * ((1.0 - global_alpha) * ratio*ratio * planck_law_nu(nu, global_T_sun) / 32.0 - planck_law_nu(nu, 288.0));
+	return M_PI * ((1.0 - global_alpha) * ratio*ratio * planck_law_nu(nu, global_T_sun) - planck_law_nu(nu, global_T_earth));
+}
+
+double spectral_irradiance_diff1(double nu) {
+	double ratio, factor;
+	ratio = global_R_sun / global_au;
+	factor = global_h * global_c / global_k_B;
+	return M_PI * (3.0 / nu * spectral_irradiance_diff(nu) + factor * (
+		(1.0 - global_alpha) * ratio*ratio
+		* planck_law_nu(nu, global_T_sun) / (global_T_sun * expm1(-factor * nu / global_T_sun))
+		- planck_law_nu(nu, global_T_earth) / (global_T_earth * expm1(-factor * nu / global_T_earth))
+	));
 }

@@ -1,7 +1,7 @@
 reset
 
-_font=",10"
-_pt=7
+load 'configuration.gp'
+nu_threshold=2.156e3
 
 set title "Blackbody spectral irradiance" font _font
 set key top left font _font
@@ -12,9 +12,12 @@ set xlabel '$\nu / (\unit{\per\centi\metre})$' font _font
 set xrange[9e1:1.5e5]
 set mxtics 10
 
-set ylabel '$I / (\unit{\watt\metre\per\square\metre})$' font _font
-set yrange[0:4.5e-3]
+set ylabel '$I / (\unit{\watt\centi\metre\per\square\metre})$' font _font
+set yrange[0:4.5e-1]
 set mytics 5
+
+set arrow from nu_threshold, graph 0 to nu_threshold, graph 1 nohead lc rgb "black"
+set xtics add ('$\nu_\text{threshold}$' nu_threshold)
 
 plot "spectral_irradiance.dat" using 1:2 notitle with lines lc rgb "blue", \
 	"" using (NaN) title "Sun" lc rgb "blue" pt _pt ps 0.5, \
