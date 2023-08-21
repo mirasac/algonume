@@ -91,9 +91,7 @@ To simplify some calculations for radiative fluxes, the definition of wavenumber
 
 Specific gas constant is used in thermodynamical relations, which is defined as the gas constant $R$ divided by the gas molar mass. Henceforth, specific gas constant is represented with symbol $R_M$.
 
-Some assumptions are made on state and composition of Earth's atmosphere. 
-% MC do I need to use the International Standard Atmosphere? It is not a wise choice since its temperature profile is already fixed. But I can take it as reference for other parametrizations.
-Gravitational acceleration $g$ is constant. Air parcels are supposed to be in hydrostatic equilibrium,
+Some assumptions are made on state and composition of Earth's atmosphere. Gravitational acceleration $g$ is constant. Air parcels are supposed to be in hydrostatic equilibrium,
 \begin{equation}
   \label{eq:hydrostatic_equilibrium}
   \dd P = - \rho g \dd z
@@ -104,8 +102,9 @@ with each component obeying the ideal gas law
   P = \rho R_M T
 \end{equation}
 where $\rho = \frac{m}{V}$ is the volumetric mass density of the air parcel.
+The average Earth's surface considered in the model is approximated as an emitting blackbody with temperature $T_\text{earth}$.
 
-Sun's surface is approximated as an emitting blackbody. Solar radiation is considered orthogonal to the plane which represents Earth's surface in the RCM. Constant value $S_0$ for total solar irradiance is used in calculations.
+Sun's surface is approximated as an emitting blackbody with temperature $T_\text{sun}$. Solar radiation is considered orthogonal to the plane which represents Earth's surface in the RCM. Constant value $S_0$ for total solar irradiance is used in calculations.
 
 % MC check the following.
 Solar spectral irradiance is peaked in the ultraviolet (UV) and visible bandwidths, while spectral irradiance of Earth's surface is peaked in the infrared (IR) bandwidth. The difference between shapes of the distributions allows to split the spectrum at the intersection and to treat the two resulting spectra independently. The overlap between distributions is neglected.
@@ -132,7 +131,9 @@ Data on constants used in this work are listed in table~\ref{tab:constants}.
     $R$              & \num{8.31446261815324} & \unit{\cubic\metre\pascal\per\kelvin\per\mole} &       \\
     $g$              & \num{9.80665}          & \unit{\metre\per\square\second}                &       \\
     $S_0$            & \num{1361.0}             & \unit{\watt\per\square\metre}                  & Nominal total solar irradiance, from \cite{IAU} \\
-    $R_\mathrm{sun}$ & \num{6.957e8}          & \unit{\metre}                                  & Nominal solar radius, from \cite{IAU} \\
+    $R_\text{sun}$ & \num{6.957e8}          & \unit{\metre}                                  & Nominal solar radius, from \cite{IAU} \\
+    $T_\text{sun}$ & \num{5772} & \unit{\kelvin} & Solar surface temperature, from \cite{IAU} \\
+    $T_\text{earth}$ & \num{288.15} & \unit{\kelvin} & Earth's surface temperature based on \cite{ISA} \\
     \bottomrule
   \end{tabular}
 \end{table*}
