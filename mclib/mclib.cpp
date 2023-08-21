@@ -369,7 +369,7 @@ double bisection(double (*f)(double x), double a, double b, double tolerance) {
 		} while (fabs(b - a) > tolerance);
 		#if FLG_DEBUG
 		++k;
-		std::cout << "Bisection(): k = " << k << "; [a,b] = [" << a << ", " << b << "]; xm = " << x_0 << "; dx = " << b - a << "; fm = " << f(x_0) << std::endl;
+		std::cout << "Bisection(): k = " << k << "; [a,b] = [" << a << ", " << b << "]; xm = " << x_m << "; dx = " << b - a << "; fm = " << f(x_m) << std::endl;
 		#endif /* FLG_DEBUG */
 	}
 	return x_m;
