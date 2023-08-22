@@ -95,6 +95,7 @@ Some assumptions are made on state and composition of Earth's atmosphere. Gravit
 \begin{equation}
   \label{eq:hydrostatic_equilibrium}
   \dd P = - \rho g \dd z
+  \quad ,
 \end{equation}
 with each component obeying the ideal gas law
 \begin{equation}
@@ -102,11 +103,11 @@ with each component obeying the ideal gas law
   P = \rho R_M T
 \end{equation}
 where $\rho = \frac{m}{V}$ is the volumetric mass density of the air parcel.
-The average Earth's surface considered in the model is approximated as an emitting blackbody with temperature $T_\text{earth}$.
+The average Earth's surface considered in the model is approximated as an emitting blackbody with temperature $T_\text{earth}$. Average Bond albedo fo Earth is identified with constant $\alpha$.
 
 Sun's surface is approximated as an emitting blackbody with temperature $T_\text{sun}$. Solar radiation is considered orthogonal to the plane which represents Earth's surface in the RCM. Constant value $S_0$ for total solar irradiance is used in calculations.
 
-Solar spectral irradiance is peaked in the ultraviolet (UV) and visible bandwidths, while spectral irradiance of Earth's surface is peaked in the infrared (IR) bandwidth. This difference allows the division of the spectrum at the intersection of the curves and to treat the two resulting spectra independently. The overlap between curves is neglected. Accuracy of this approximation and value of wavenumber $\nu_t$ of the intersection point are discussed in section~\ref{sec:Division of the electromagnetic spectrum}.
+Solar spectral irradiance is peaked in the ultraviolet (UV) and visible bandwidths, while spectral irradiance of Earth's surface is peaked in the infrared (IR) bandwidth. This difference allows the division of the spectrum at the intersection of the curves and to treat the two resulting spectra independently. The overlap between curves is neglected. Accuracy of this approximation and value of wavenumber $\nu_\text{div}$ of the intersection point are discussed in section~\ref{sec:Division of the electromagnetic spectrum}.
 
 Data on constants used in this work are listed in table~\ref{tab:constants}.
 \begin{table*}[h]
@@ -123,6 +124,7 @@ Data on constants used in this work are listed in table~\ref{tab:constants}.
     $R_\text{sun}$ & \num{6.957e8}          & \unit{\metre}                                  & Nominal solar radius, from \cite{IAU} \\
     $T_\text{sun}$ & \num{5772} & \unit{\kelvin} & Solar surface temperature, from \cite{IAU} \\
     $T_\text{earth}$ & \num{288.15} & \unit{\kelvin} & Earth's surface temperature based on \cite{ISA} \\
+    $\alpha$ & 0.3 & & Value compatible with various measures, cfr. \cite{albedo} \\
     \bottomrule
   \end{tabular}
 \end{table*}
@@ -178,32 +180,17 @@ while Earth's surface spectral irradiance is
   I_\text{earth}(\nu) = \pi B_\nu(\nu, T_\text{earth})
   \quad .
 \end{equation}
+%\cite[43]{Catling}
 
-% MC continue.
-% MC also add what is \alpha.
-Equations~\eqref{eq:spectral_irradiance_sun} and \eqref{eq:spectral_irradiance_earth} are shown in figure~\ref{fig:spectral_irradiance}, along with the point division and the intersection point is evaluated numerically (cfr. appendix~\ref{sec:Hypotheses}) and has value $\nu_t \approx \qty{2.156}{\per\centi\metre}$.
+Figure~\ref{fig:spectral_irradiance} shows the plots of equations~\eqref{eq:spectral_irradiance_sun} and \eqref{eq:spectral_irradiance_earth} and the division of the spectrum at the wavenumber $\nu_\text{div}$ where the curves intersect. Value $\nu_\text{div} \approx \qty{2.156}{\per\centi\metre}$ is obtained numerically (cfr. appendix~\ref{sec:Hypotheses}).
 \begin{figure*}[h]
   \centering
   \includegraphics*[keepaspectratio=true,width=0.95\textwidth]{spectral_irradiance}
-  \caption{MC complete.}
+  \caption{Spectral irradiances evaluated at Earth's surface. The spectrum is divided at $\nu_\text{div}$ and the vertical black line marks the two resulting regions: interval $[\qty{100}{\per\centi\metre}, \nu_\text{div}]$ is dominated by radiation from Earth's surface, instead in $[\nu_\text{div}, \qty{100000}{\per\centi\metre}]$ solar radiation has the largest contribution.}
   \label{fig:spectral_irradiance}
 \end{figure*}
 
-
-
-
-
-
-
-
-
-
-The accuracy of this approximation can be quantified by the overlap between curves in each of the two resulting spectra. The comparison is performed in Earth's atmosphereSun and earth are Both surfaces are backbodies, hence their radiance is described by Planck's law. Given any coordinate system, the comparison is performed at the point where Earth is located ( as a point source, cfr. appendix~\ref{sec:Radiometric quantities}), hence solar radiance is scaled by the 
-% MC complete hypothesis justification.
-and an upper limit for the accuracy of this approximation can be quantified by the ratio between radiant intensities of Sun and Earth's surface in each spectra, when the sources are considered as blackbodies (i.e. when the emission is maximum).
-%\cite[43]{Catling}
-
-
+% MC continue with overlap.
 
 %\section{Conclusion} % MC instead create a "Discussion and conclusion" section.
 

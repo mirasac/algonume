@@ -15,18 +15,17 @@ int main(int argc, char * argv[]) {
 	using namespace std;
 	cout << scientific << setprecision(N_PRECISION);
 	
-	// Plot spectral irradiance of Sun and Earth's surfaces as blackbodies.
 	int const n_nu = 10000;
-	double nu_sun, nu_earth, nu, dnu, nu_min, nu_max, nu_threshold; // / (1 / m)
+	double nu, dnu, nu_min, nu_max, nu_div; // / (1 / m)
 	double I_sun, I_earth; // / (W m / m^2)
 	double ratio;
 	ofstream plot_file;
-	nu_sun = 2e6;
-	nu_earth = 1e5;
 	nu_min = 1e4;
 	nu_max = 1e7;
 	ratio = global_R_sun / global_au;
 	dnu = (nu_max - nu_min) / n_nu;
+	
+	// Plot spectral irradiance of Sun and Earth's surfaces as blackbodies.
 	plot_file.open(DIR_DATA "/spectral_irradiance.dat");
 	plot_file << fixed << setprecision(N_PRECISION);
 	plot_file << "#nu I_sun I_earth" << endl;
@@ -41,11 +40,9 @@ int main(int argc, char * argv[]) {
 	}
 	plot_file.close();
 	
-	nu_threshold = secant(spectral_irradiance_diff, 2e5, 3e5, 1e-9);
-	cout << nu_threshold / 100.0 << endl; // MC debug.
-	cout << bisection(spectral_irradiance_diff, 2e5, 3e5, 1e-9) / 100.0 << endl; // MC debug.
-	cout << falseposition(spectral_irradiance_diff, 2e5, 3e5, 1e-9) / 100.0 << endl; // MC debug.
-	cout << newtonraphson(spectral_irradiance_diff, spectral_irradiance_diff1, 2e5, 3e5, 1e-9) / 100.0 << endl; // MC debug.
+	// Find intersection between spectral irradiances.
+	nu_div = newtonraphson(spectral_irradiance_diff, spectral_irradiance_diff1, 2e5, 3e5, 1e-10);
+	cout << "Spectral irradiances intersect at nu_div = " << nu_div / 100.0 << " 1 / cm" << endl;
 	
 	// Evaluate overlap of spectral irradiances.
 	
