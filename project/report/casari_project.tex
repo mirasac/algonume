@@ -166,7 +166,6 @@ Spectral bands are identified by two arrays: one listing the lower bound of each
 % MC sum up what I did and the results compared with article TTAPS-I.
 % MC if there is enough time, use the results and the comparison with TTAPS-I as model validation then gain some insights on the same results using the contemporary nuclear arsenal and compare with the modern version of TTAPS (i.e. Turco 2008, compare what is possible since it is made with a GCM).
 
-% MC after: check if *radiance should be written as spectral *radiance.
 \subsection{Division of the electromagnetic spectrum}
 \label{sec:Division of the electromagnetic spectrum}
 Spectral irradiances of Sun and Earth's surfaces are obtained from blackbody spectral radiance (cfr. appendix~\ref{sec:Radiometric quantities}). They are compared inside Earth's atmosphere, whose thickness is neglected with respect to the other spatial quantities involved in these calculations, hence the comparison is performed directly on Earth's surface. Given a generic coordinate system, attenuation of solar radiation is considered: spectral radiant intensity of Sun is obtained by multiplying the spectral radiance by the area of a spherical surface with radius $R_\text{sun}$, then the result is divided by the area of a spherical surface with radius \qty{1}{\astronomicalunit}. The resulting solar spectral irradiance is
@@ -180,17 +179,17 @@ while Earth's surface spectral irradiance is
   I_\text{earth}(\nu) = \pi B_\nu(\nu, T_\text{earth})
   \quad .
 \end{equation}
-%\cite[43]{Catling}
 
-Figure~\ref{fig:spectral_irradiance} shows the plots of equations~\eqref{eq:spectral_irradiance_sun} and \eqref{eq:spectral_irradiance_earth} and the division of the spectrum at the wavenumber $\nu_\text{div}$ where the curves intersect. Value $\nu_\text{div} \approx \qty{2.156}{\per\centi\metre}$ is obtained numerically (cfr. appendix~\ref{sec:Hypotheses}).
+Figure~\ref{fig:spectral_irradiance} shows the plots of equations~\eqref{eq:spectral_irradiance_sun} and \eqref{eq:spectral_irradiance_earth} and the division of the spectrum at the wavenumber $\nu_\text{div}$ where the curves intersect. Value $\nu_\text{div} \approx \qty{2156}{\per\centi\metre}$ is obtained numerically (cfr. appendix~\ref{sec:Hypotheses}).
 \begin{figure*}[h]
   \centering
   \includegraphics*[keepaspectratio=true,width=0.95\textwidth]{spectral_irradiance}
-  \caption{Spectral irradiances evaluated at Earth's surface. The spectrum is divided at $\nu_\text{div}$ and the vertical black line marks the two resulting regions: interval $[\qty{100}{\per\centi\metre}, \nu_\text{div}]$ is dominated by radiation from Earth's surface, instead in $[\nu_\text{div}, \qty{100000}{\per\centi\metre}]$ solar radiation has the largest contribution.}
+  \caption{The vertical black line marks the division of the spectrum at $\nu_\text{div}$. In $[\qty{100}{\per\centi\metre}, \nu_\text{div}]$ Earth's surface brings the largest contribution to the total irradiance, in $[\nu_\text{div}, \qty{100000}{\per\centi\metre}]$ solar radiation dominates instead.}
   \label{fig:spectral_irradiance}
 \end{figure*}
 
-% MC continue with overlap.
+Considering only interval $[\qty{100}{\per\centi\metre}, \nu_\text{div}]$, the largest contribution to the total irradiance is brought by Earth's surface and solar irradiance is neglected, being about \qty{2.2}{\percent} of the total irradiance. The removed irradiance is \qty{0.65}{\percent} of the total Sun's surface irradiance. % MC talk about uncertainties?
+Instead, in $[\nu_\text{div}, \qty{100000}{\per\centi\metre}]$ Earth's surface irradiance is \qty{0.16}{\percent} of the total irradiance in this interval and is neglected. The removed quantity is \qty{0.54}{\percent} of the total Earth's surface irradiance. % MC talk about uncertainties?
 
 %\section{Conclusion} % MC instead create a "Discussion and conclusion" section.
 
@@ -299,21 +298,21 @@ All previous quantities can be expressed as densities with respect to the wavele
 
 Spectral radiance of a blackbody is given by Planck's law
 \begin{equation}
-  \label{eq:blackbody_radiance}
+  \label{eq:blackbody_spectral_radiance}
   B_\nu (\nu, T) = 2 h c^2 \nu^3 \frac{1}{e^\frac{h c \nu}{k_B T} - 1}
   \quad ,
 \end{equation}
 where $\nu$ is the wavenumber in unit \unit{\per\centi\metre} (cfr. notation in section~\ref{sec:Hypotheses and conventions}), $T$ in unit \unit{\kelvin} is the temperature of the emitting body and the other quantities are constants (cfr. table~\ref{tab:constants}).
 Note that Planck's law has different form when it is expressed in terms of wavelength, due to its definition as density and the resulting change of variables:
 \begin{equation}
-  \label{eq:blackbody_radiance_lambda}
+  \label{eq:blackbody_spectral_radiance_lambda}
   B_\lambda (\lambda, T) = \frac{2 h c^2}{\lambda^5} \frac{1}{e^\frac{h c}{\lambda k_B T} - 1}
   \quad .
 \end{equation}
 
-If the radiance is isotropic, i.e. it has not dependence on the direction of the radiation, the corresponding irradiance is proportional. For instance, if the radiation is absorbed by a hemispheric surface approximated by a blackbody, the spectral irradiance of the surface is
+If radiance is isotropic, i.e. it has not dependence on the direction of the radiation, the corresponding irradiance is proportional. For instance, if the radiation is absorbed by a hemispheric surface approximated by a blackbody, the spectral irradiance of the surface is
 \begin{equation}
-  \label{eq:blackbody_irradiance_hemisphere}
+  \label{eq:blackbody_spectral_irradiance_hemisphere}
   \begin{split}
     & \int B_\nu (\nu, T) \dd \phi \sin(\theta) \dd \theta \cos(\theta) = \\
     & = B_\nu (\nu, T) \int_0^{2\pi} \dd \phi \int_0^\frac{\pi}{2} \sin(\theta) \cos(\theta) \dd \theta = \\
