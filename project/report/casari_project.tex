@@ -50,7 +50,7 @@
 
 \newcommand{\cpp}{C++}
 \newcommand{\dd}{\mathop{}\!\mathrm{d}}
-\newcommand{\PTOA}{P_\mathrm{TOA}}
+\newcommand{\PTOA}{P_\text{TOA}}
 
 \raggedbottom
 
@@ -116,15 +116,15 @@ Data on constants used in this work are listed in table~\ref{tab:constants}.
   \label{tab:constants}
   \begin{tabular}[b]{cccc}
     \toprule
-    Symbol           & Value                  & Unit                                           & Notes \\
+    Symbol           & Value                  & Unit                                           & Notes                                                      \\
     \midrule
-    $R$              & \num{8.31446261815324} & \unit{\cubic\metre\pascal\per\kelvin\per\mole} &       \\
-    $g$              & \num{9.80665}          & \unit{\metre\per\square\second}                &       \\
-    $S_0$            & \num{1361.0}             & \unit{\watt\per\square\metre}                  & Nominal total solar irradiance, from \cite{IAU} \\
-    $R_\text{sun}$ & \num{6.957e8}          & \unit{\metre}                                  & Nominal solar radius, from \cite{IAU} \\
-    $T_\text{sun}$ & \num{5772} & \unit{\kelvin} & Solar surface temperature, from \cite{IAU} \\
-    $T_\text{earth}$ & \num{288.15} & \unit{\kelvin} & Earth's surface temperature based on \cite{ISA} \\
-    $\alpha$ & 0.3 & & Value compatible with various measures, cfr. \cite{albedo} \\
+    $R$              & \num{8.31446261815324} & \unit{\cubic\metre\pascal\per\kelvin\per\mole} &                                                            \\
+    $g$              & \num{9.80665}          & \unit{\metre\per\square\second}                &                                                            \\
+    $S_0$            & \num{1361.0}           & \unit{\watt\per\square\metre}                  & Nominal total solar irradiance, from \cite{IAU}            \\
+    $R_\text{sun}$   & \num{6.957e8}          & \unit{\metre}                                  & Nominal solar radius, from \cite{IAU}                      \\
+    $T_\text{sun}$   & \num{5772}             & \unit{\kelvin}                                 & Solar surface temperature, from \cite{IAU}                 \\
+    $T_\text{earth}$ & \num{288.15}           & \unit{\kelvin}                                 & Earth's surface temperature based on \cite{ISA}            \\
+    $\alpha$         & \num{0.3}              &                                                & Value compatible with various measures, cfr. \cite{albedo} \\
     \bottomrule
   \end{tabular}
 \end{table*}
@@ -169,7 +169,7 @@ Spectral bands are identified by two arrays: one listing the lower bound of each
 \subsection{Division of the electromagnetic spectrum}
 \label{sec:Division of the electromagnetic spectrum}
 % Content of this section is elaborated on \cite[43]{Catling}.
-Spectral irradiances of Sun and Earth's surfaces are obtained from blackbody spectral radiance (cfr. appendix~\ref{sec:Radiometric quantities}). They are compared inside Earth's atmosphere, whose thickness is neglected with respect to the other spatial quantities involved in these calculations, hence the comparison is performed directly on Earth's surface. Given a generic coordinate system, attenuation of solar radiation is considered: spectral radiant intensity of Sun is obtained by multiplying the spectral radiance by the area of a spherical surface with radius $R_\text{sun}$, then the result is divided by the area of a spherical surface with radius \qty{1}{\astronomicalunit}. The resulting solar spectral irradiance is
+Spectral irradiances of Sun and Earth's surfaces are obtained from blackbody spectral radiance (cfr. appendix~\ref{sec:Radiometric quantities}). They are compared inside Earth's atmosphere, whose thickness is neglected with respect to the other spatial quantities involved in these calculations, hence the comparison is performed directly on Earth's surface. Given a generic coordinate system, attenuation of solar radiation is considered: spectral radiant intensity of Sun is obtained by multiplying the spectral radiance by the area of a spherical surface with radius $R_\text{sun}$, then the result is divided by the area of a spherical surface with radius \qty{1}{\astronomicalunit} to measure solar radiance at Earth's surface. The resulting solar spectral irradiance is
 \begin{equation}
   \label{eq:spectral_irradiance_sun}
   I_\text{sun}(\nu) = (1 - \alpha) \left( \frac{R_\text{sun}}{\qty{1}{\astronomicalunit}} \right)^2 \pi B_\nu(\nu, T_\text{sun})
