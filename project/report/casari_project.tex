@@ -105,7 +105,7 @@ with each component obeying the ideal gas law
   \label{eq:ideal_gas_law}
   P = \rho R_M T
 \end{equation}
-where $\rho = \frac{m}{V}$ is the volumetric mass density of the air parcel.
+where $\rho = \frac{m}{V}$ is the volumetric mass density of the air parcel. Each atmospheric layer is homogeneous, which means that quantities affecting radiative calculations are not dependent on spatial position inside the layer (e.g. gas densities and extintion coefficients are constant inside the layer).
 The average Earth's surface considered in the model is approximated as an emitting blackbody with temperature $T_\text{earth}$. Average Bond albedo fo Earth is identified with constant $\alpha$.
 
 Sun's surface is approximated as an emitting blackbody with temperature $T_\text{sun}$. Solar radiation is considered orthogonal to the plane which represents Earth's surface in the RCM. Constant value $S_0$ for total solar irradiance is used in calculations.
@@ -189,12 +189,13 @@ Spectral bands are identified by two arrays: one listing the lower bound of each
 Spectral irradiances of Sun and Earth's surfaces are obtained from blackbody spectral radiance (cfr. appendix~\ref{sec:Radiometric quantities}). They are compared inside Earth's atmosphere, whose thickness is neglected with respect to the other spatial quantities involved in these calculations, hence the comparison is performed directly on Earth's surface. Given a generic coordinate system, attenuation of solar radiation is considered: spectral radiant intensity of Sun is obtained by multiplying the spectral radiance by the area of a spherical surface with radius $R_\text{sun}$, then the result is divided by the area of a spherical surface with radius \qty{1}{\astronomicalunit}. The resulting solar spectral irradiance is
 \begin{equation}
   \label{eq:spectral_irradiance_sun}
-  I_\text{sun}(\nu) = (1 - \alpha) \left( \frac{R_\text{sun}}{\qty{1}{\astronomicalunit}} \right)^2 \pi B_\nu(\nu, T_\text{sun})
+  E_\text{sun}(\nu) = (1 - \alpha) \left( \frac{R_\text{sun}}{\qty{1}{\astronomicalunit}} \right)^2 \pi B_\nu(\nu, T_\text{sun})
+  \quad ,
 \end{equation}
 while Earth's surface spectral irradiance is
 \begin{equation}
   \label{eq:spectral_irradiance_earth}
-  I_\text{earth}(\nu) = \pi B_\nu(\nu, T_\text{earth})
+  E_\text{earth}(\nu) = \pi B_\nu(\nu, T_\text{earth})
   \quad .
 \end{equation}
 

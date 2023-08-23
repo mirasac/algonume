@@ -18,7 +18,7 @@ int main(int argc, char * argv[]) {
 	// Plot spectral irradiance of Sun and Earth's surfaces as blackbodies.
 	int const n_nu = 10000;
 	double nu, dnu, nu_min, nu_max; // / (1 / m)
-	double I_sun, I_earth; // / (W m / m^2)
+	double E_sun, E_earth; // / (W m / m^2)
 	double ratio;
 	ofstream file_plot;
 	char filename_plot[] = DIR_DATA "/spectral_irradiance.dat";
@@ -28,15 +28,15 @@ int main(int argc, char * argv[]) {
 	dnu = (nu_max - nu_min) / n_nu;
 	file_plot.open(filename_plot);
 	file_plot << fixed << setprecision(N_PRECISION);
-	file_plot << "#nu I_sun I_earth" << endl;
+	file_plot << "#nu E_sun E_earth" << endl;
 	for (int i = 0; i <= n_nu; i++) {
 		nu = nu_min + i * dnu;
-		I_sun = (1.0 - global_alpha) * ratio*ratio * M_PI * planck_law_nu(nu, global_T_sun);
-		I_earth = M_PI * planck_law_nu(nu, global_T_earth);
+		E_sun = (1.0 - global_alpha) * ratio*ratio * M_PI * planck_law_nu(nu, global_T_sun);
+		E_earth = M_PI * planck_law_nu(nu, global_T_earth);
 		nu /= 100.0; // Plot bandwidth in unit 1 / cm.
-		I_sun *= 100.0; // Plot irradiance in unit W cm / m^2.
-		I_earth *= 100.0; // Plot irradiance in unit W cm / m^2.
-		file_plot << nu << ' ' << I_sun << ' ' << I_earth << '\n';
+		E_sun *= 100.0; // Plot irradiance in unit W cm / m^2.
+		E_earth *= 100.0; // Plot irradiance in unit W cm / m^2.
+		file_plot << nu << ' ' << E_sun << ' ' << E_earth << '\n';
 	}
 	file_plot.close();
 	cout << "Spectral irradiances plotted in file " << filename_plot << endl;
@@ -49,17 +49,17 @@ int main(int argc, char * argv[]) {
 	
 	// Evaluate overlap of spectral irradiances.
 	cout << endl;
-	double I_sun_long, I_earth_long, I_sun_short, I_earth_short; // / (W m / m^2)
-	I_sun_long = ratio*ratio * M_PI * gaussquad(planck_law_nu, nu_min, nu_div, GAUSSQUAD_INTERVALS, 2, global_T_sun);
-	I_earth_long = M_PI * gaussquad(planck_law_nu, nu_min, nu_div, GAUSSQUAD_INTERVALS, 2, global_T_earth);
-	I_sun_short = ratio*ratio * M_PI * gaussquad(planck_law_nu, nu_div, nu_max, GAUSSQUAD_INTERVALS, 2, global_T_sun);
-	I_earth_short = M_PI * gaussquad(planck_law_nu, nu_div, nu_max, GAUSSQUAD_INTERVALS, 2, global_T_earth);
+	double E_sun_long, E_earth_long, E_sun_short, E_earth_short; // / (W m / m^2)
+	E_sun_long = ratio*ratio * M_PI * gaussquad(planck_law_nu, nu_min, nu_div, GAUSSQUAD_INTERVALS, 2, global_T_sun);
+	E_earth_long = M_PI * gaussquad(planck_law_nu, nu_min, nu_div, GAUSSQUAD_INTERVALS, 2, global_T_earth);
+	E_sun_short = ratio*ratio * M_PI * gaussquad(planck_law_nu, nu_div, nu_max, GAUSSQUAD_INTERVALS, 2, global_T_sun);
+	E_earth_short = M_PI * gaussquad(planck_law_nu, nu_div, nu_max, GAUSSQUAD_INTERVALS, 2, global_T_earth);
 	cout << "In bandwidth [" << nu_min / 100.0 << " 1 / cm, " << nu_div / 100.0 << " 1 / cm]:" << endl;
-	cout << " - ratio of Sun's surface to total irradiances: " << I_sun_long / (I_sun_long + I_earth_long) << endl;
-	cout << " - ratio of Sun's surface to whole spectrum Sun's surface irradiances: " << I_sun_long / (I_sun_long + I_sun_short) << endl;
+	cout << " - ratio of Sun's surface to total irradiances: " << E_sun_long / (E_sun_long + E_earth_long) << endl;
+	cout << " - ratio of Sun's surface to whole spectrum Sun's surface irradiances: " << E_sun_long / (E_sun_long + E_sun_short) << endl;
 	cout << "In bandwidth [" << nu_div / 100.0 << " 1 / cm, " << nu_max / 100.0 << " 1 / cm]:" << endl;
-	cout << " - ratio of Earth's surface to total irradiances: " << I_earth_short / (I_sun_short + I_earth_short) << endl;
-	cout << " - ratio of Earth's surface to whole spectrum Earth's surface irradiances: " << I_earth_short / (I_earth_long + I_earth_short) << endl;
+	cout << " - ratio of Earth's surface to total irradiances: " << E_earth_short / (E_sun_short + E_earth_short) << endl;
+	cout << " - ratio of Earth's surface to whole spectrum Earth's surface irradiances: " << E_earth_short / (E_earth_long + E_earth_short) << endl;
 	
 	return 0;
 }

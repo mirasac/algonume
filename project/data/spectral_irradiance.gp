@@ -12,7 +12,7 @@ set xlabel '$\nu / (\unit{\per\centi\metre})$' font _font
 set xrange[9e1:1.5e5]
 set mxtics 10
 
-set ylabel '$I / (\unit{\watt\centi\metre\per\square\metre})$' font _font
+set ylabel '$E / (\unit{\watt\centi\metre\per\square\metre})$' font _font
 set yrange[0:4.5e-1]
 set mytics 5
 
