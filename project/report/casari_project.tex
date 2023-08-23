@@ -76,6 +76,8 @@ Planet Earth's climate dynamics can be studied with models of varying complexity
 
 The present work intends to study the atmospheric temperature profile averaged on the Northern Hemisphere in presence of conditions 
 
+
+
 %\section{Materials}
 % MC describe the tools used during the study. List the specifics and the references of the code. Maybe list the number of atmosphere layers.
 
@@ -84,7 +86,8 @@ The present work intends to study the atmospheric temperature profile averaged o
 The RCM developed for the present work approximates the atmosphere as a vertical column divided in a given number of layers.
 % MC put the number of layers, here or in Methods.
 
-% MC describe conventions used in this work.
+
+
 \subsection{Hypotheses and conventions}
 \label{sec:Hypotheses and conventions}
 To simplify some calculations for radiative fluxes, the definition of wavenumber $\nu = \frac{1}{\lambda}$ is used in this work, where $\lambda$ is the wavelenght of the radiation.
@@ -129,6 +132,8 @@ Data on constants used in this work are listed in table~\ref{tab:constants}.
   \end{tabular}
 \end{table*}
 
+
+
 \subsection{Shortwave radiation}
 % MC TTAPS-I: absorption and scattering of shortwave radiation.
 At wavelengths $\lambda < \qty{4}{\micro\metre}$, solar radiation has much greater intensity than radiation emitted from Earth's surface and atmosphere. Both scattering and absorption by gases, aerosols and clouds of atmosphere dissipates solar radiation.\cite[469]{ramanathan}
@@ -139,11 +144,15 @@ A lower complexity parametrisation is adopted instead, where the atmosphere is d
 
 % MC continue with formulae.
 
+
+
 \subsection{Longwave radiation}
 % MC TTAPS-I: absorption of longwave radiation.
 At wavelengths $\lambda \geq \qty{4}{\micro\metre}$, solar radiation has lower intensities than radiation emitted by Earth's surface and atmosphere at the same wavelengths. Moreover, it presents negligible scattering in atmosphere with respect to absorption. For these reasons longwave radiation is considered to be emitted only by Earth's surface and atmosphere.\cite[468]{ramanathan}
 
 % MC continue with formulae.
+
+
 
 \subsection{Numerical treatment} % MC find better title.
 % MC convert the problem and the physical formulae into the numerical algorithms and functions to solve it.
@@ -155,16 +164,24 @@ Euler's method is used to solve the Ordinary Differential Equation (ODE) for the
 % MC how many spectral bands have I chosen? Maybe list them in a table in the appendix with notes for each band to explain why I have chosen that band (e.g. to excite the vibro-rotational levels of some gases).
 Spectral bands are identified by two arrays: one listing the lower bound of each band, the other containing the width of each band. This choice simplify the use of functions for numerical integration. Values related to spectral bands are stored as integers.
 
+
+
 \section{Results}
 % MC explain briefly how to read a skew-T plot.
 % MC show and comment obtained plots.
 
+
+
 \subsection{Stability analysis}
 % MC the equilibrium temperature profile is insensitive of the initial guess temperature profile for the time-stepping (i.e. Euler) approach.\cite[473]{ramanathan}
+
+
 
 \section{Discussion}
 % MC sum up what I did and the results compared with article TTAPS-I.
 % MC if there is enough time, use the results and the comparison with TTAPS-I as model validation then gain some insights on the same results using the contemporary nuclear arsenal and compare with the modern version of TTAPS (i.e. Turco 2008, compare what is possible since it is made with a GCM).
+
+
 
 \subsection{Division of the electromagnetic spectrum}
 \label{sec:Division of the electromagnetic spectrum}
@@ -192,6 +209,8 @@ Figure~\ref{fig:spectral_irradiance} shows the plots of equations~\eqref{eq:spec
 Considering only interval $[\qty{100}{\per\centi\metre}, \nu_\text{div}]$, the largest contribution to the total irradiance is brought by Earth's surface and solar irradiance is neglected, being about \qty{2.2}{\percent} of the total irradiance. The removed irradiance is \qty{0.65}{\percent} of the total Sun's surface irradiance. % MC talk about uncertainties?
 Instead, in $[\nu_\text{div}, \qty{100000}{\per\centi\metre}]$ Earth's surface irradiance is \qty{0.16}{\percent} of the total irradiance in this interval and is neglected. The removed quantity is \qty{0.54}{\percent} of the total Earth's surface irradiance. % MC talk about uncertainties?
 
+
+
 %\section{Conclusion} % MC instead create a "Discussion and conclusion" section.
 
 \newpage
@@ -210,14 +229,22 @@ Therefore two arrays are needed: one for the point and one with the correspondin
 % MC radiative fluxes are computed for each atmospheric layer.
 To reduce the computation load of radiative fluxes, only some spectral intervals are considered and they are specific to each atmospheric layer, since the available absorbing gases and aerosols differ among layers. First absorbers for each layer are stored in an array, then the spectral bandwitdhs needed for each layer are evaluated. Spectral bandwidths are expressed in terms of wavenumbers with unit \unit{\per\centi\metre} to manage integer values or double precision values close to unity. For each chemical species the absorption intervals are identified by their width and central wavenumber, the former are obtained from the latter and using the exponential wide band model (cfr. \cite[360]{Modest}). These two values are stored in separate arrays.
 
+
+
 \subsection{Hypotheses} % MC find a more significant title.
 \label{sec:Hypotheses}
 % MC here insert code and discuss details (e.g. root finder used and why) from hypotheses.cpp.
 
+
+
 \subsection{Classes}
 % MC show and comment the source code for the used classes.
 
+
+
 \section{Supplementary information}
+
+
 
 \subsection{Plotting}
 \label{sec:Plotting}
@@ -239,8 +266,12 @@ t[N_t - 1] P[N_P - 1] T[N_t - 1][N_P - 1]
 \end{verbatim}
 Value \verb|N_t| is not known a priori since it is the number of temporal steps needed to reach convergence, instead \verb|N_P| is the chosen number of atmospheric layers.
 
+
+
 \section{Mathematical derivations}
 In this appendix mathematical derivations of some ancillary results and formulae used in the main text are explicitly shown.
+
+
 
 \subsection{Relation between pressure and altitude}
 \label{sec:Relation between pressure and altitude}
@@ -287,6 +318,8 @@ with $T_0$ temperature corresponding to reference altitude $z_0$. Using these as
 
 Equation \eqref{eq:pressure_constant_lapse_rate} can be used also with a piecewise constant lapse rate in altitude intervals where it is not null. Otherwise, in altitude intervals where lapse rate is null, equation \eqref{eq:pressure_constant_temperature} is valid with appropriate boundary conditions to ensure continuity between layers.
 
+
+
 \subsection{Radiometric quantities}
 \label{sec:Radiometric quantities}
 Refer to \cite{CIE} for more details on quantities reviewed in this section.
@@ -323,6 +356,8 @@ If radiance is isotropic, i.e. it has not dependence on the direction of the rad
   \quad ,
 \end{equation}
 where spherical coordinates are used to describe the surface and the term $\cos(\theta)$ considers the component of radiation along the normal of the infinitesimal solid angle.
+
+
 
 \newpage
 \printbibliography[heading=bibintoc]

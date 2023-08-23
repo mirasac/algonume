@@ -9,7 +9,7 @@
 - Before launching the simulation, normalize quantities to reduce their magnitudes and avoid numerical divergences (e.g. time normalized in units of 1 day).
 - Divide total solar irradiance by 4 due to combination of day-night cycle and distribution of total energy over a disk (i.e. S_0 * r * pi^2 / (4 * r * pi^2) = S_0 / 4) and again by 2 due to the choice to focus on the Northern Hemisphere and not only on the illuminated face of the Earth.
 - Use optical depths and formulae for soot from TTAPS-II because reproducing the aerosol formation computational model presented in Turco 1979 goes beyond the purpose of this work.
-- Spectral radiance is also called specific intensity, minly in the old literature.
+- Spectral radiance is also called specific intensity, mainly in the old literature.
 
 ## Questions
 - What is temperature profile instability.
