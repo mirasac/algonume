@@ -6,13 +6,14 @@
 #include "constants.h"
 #include "../../mclib/mclib.h"
 #include "radiation.h"
+#include "configuration.h" // Load last to redefine some things.
 
 void set_layers_z_uniform(double z_S, double z_TOA, int n_layers, double z[], double delta_z[]);
 void set_absorbers_uniform(int n_layers, int n_absorbers[], absorber_t * absorbers[], absorber_t a1, absorber_t a2);
 
 int main(int argc, char * argv[]) {
 	using namespace std;
-	cout << setprecision(N_PRECISION);
+	cout << fixed << setprecision(N_PRECISION);
 	
 	// Configure atmospheric layers.
 	int n_layers = 20;

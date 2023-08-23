@@ -3,15 +3,10 @@
 #include <iomanip>
 #include <iostream>
 
-#include "configuration.h"
 #include "constants.h"
 #include "functions.h"
 #include "../../mclib/mclib.h"
-
-#ifdef N_PRECISION
-#undef N_PRECISION
-#endif /* N_PRECISION */
-#define N_PRECISION 6
+#include "configuration.h" // Load last to redefine some things.
 
 double spectral_irradiance_diff(double nu);
 double spectral_irradiance_diff1(double nu);
