@@ -46,21 +46,19 @@ else
 			set output '${basename_export}_input.tex'
 		EOF
 		)
-		if [ "${option}" = 'export' ]
+		command=$(
+		cat <<-EOF
+			${command}
+			${command_export}
+			replot
+		EOF
+		)
+		if [ "${option}" = 'exportonly' ]
 		then
 			command=$(
 			cat <<-EOF
+				set terminal unknown
 				${command}
-				${command_export}
-				replot
-			EOF
-			)
-		elif [ "${option}" = 'exportonly' ]
-		then
-			command=$(
-			cat <<-EOF
-				${command_export}
-				load '${basename}.gp'
 			EOF
 			)
 		fi
