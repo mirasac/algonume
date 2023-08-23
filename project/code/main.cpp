@@ -46,6 +46,26 @@ int main(int argc, char * argv[]) {
 	double dnu = 100.0; // / (1 / cm)
 	// MC continue with three arrays for the bandwidth of each layer.
 	
+	// Run model.
+	int n_t = 10680;
+	double n_t, t, dt, t_min, t_max; // / h
+	double T; // / K
+	ofstream file_plot;
+	char filename_plot[] = DIR_DATA "/temperature.dat";
+	t_min = 0.0;
+	t_max = 85440.0;
+	dt = (t_max - t_min) / n_t;
+	file_plot.open(filename_plot);
+	file_plot << fixed << setprecision(N_PRECISION);
+	file_plot << "#t P T" << endl;
+	for (int i_t = 0; i_t <= n_t; i_t++) {
+		t = t_min + i_t * dt;
+		// MC here put inner integration loop, where radiative calculations and convective adjustment are performed.
+		file_plot << '\n' << endl;
+	}
+	file_plot.close();
+	cout << "Temperature profile calculated, values are stored in file " << filename_plot << endl;
+	
 	// Clean up.
 	delete[] z;
 	delete[] delta_z;
