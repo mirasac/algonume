@@ -44,7 +44,7 @@ int main(int argc, char * argv[]) {
 	// Find intersection between spectral irradiances.
 	cout << endl;
 	double nu_div; // / (1 / m)
-	nu_div = newtonraphson(spectral_irradiance_diff, spectral_irradiance_diff1, 2e5, 3e5, 1e-6);
+	nu_div = newtonraphson(spectral_irradiance_diff, spectral_irradiance_diff1, 2e5, 3e5, TOLERANCE);
 	cout << "Spectral irradiances intersect at nu_div = " << nu_div / 100.0 << " 1 / cm" << endl;
 	
 	// Evaluate overlap of spectral irradiances.
