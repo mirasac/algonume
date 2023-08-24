@@ -12,7 +12,7 @@ double const global_R = 8.31446261815324; // m^3 Pa / (K mol)
 double const global_sigma = 5.670374419e-8; // W / (m^2 K^4)
 
 // Nominal values.
-double const global_alpha = 0.306;
+double const global_alpha = 0.3;
 double const global_Gamma_0 = 0.0065; // K / m
 double const global_R_sun = 6.957e8; // m
 double const global_R_m_air = 2.8705287e2; // m^3 Pa / (K kg)
