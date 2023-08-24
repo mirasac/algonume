@@ -61,7 +61,7 @@ int main(int argc, char * argv[]) {
 	for (int i_t = 0; i_t <= n_t; i_t++) {
 		t = t_min + i_t * dt;
 		// MC here put inner integration loop, where radiative calculations and convective adjustment are performed.
-		file_plot << '\n' << endl;
+		file_plot << '\n' << endl; // MC put double '\n' to reduce write time.
 	}
 	file_plot.close();
 	cout << "Temperature profile calculated, values are stored in file " << filename_plot << endl;

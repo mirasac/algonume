@@ -70,21 +70,23 @@
 %\newpage
 
 \section{Introduction}
-% MC the aim of this project is presented.
-% MC the physical background is presented.
-Planet Earth's climate dynamics can be studied with models of varying complexity depending on the subject of the study. Radiative-convective models (RCMs) provide an intermediate complexity approach to the simulation of climate, evaluating the atmospheric temperature profile in a vertical column where temperature is averaged over all latitudes and longitudes.
+Planet Earth's climate dynamics can be studied with models of varying complexity. Radiative-convective models (RCMs) provide an intermediate complexity approach to the simulation of climate, evaluating an average atmospheric temperature profile. Temperature is averaged over all latitudes and longitudes and is a function of time and altitude. Since only one spatial dimension is used, it is addressed as 1-dimensional model. The atmosphere is modelled as a vertical column divided in parallel layers, each containing specific gases, hence presenting specific optical and physical properties.
 
-The present work intends to study the atmospheric temperature profile averaged on the Northern Hemisphere in presence of conditions 
+Physical processes driving the model are radiation absorption, transmission, reflection and air convection which determine the energy exchange between layers. More complex mechanisms such horizontal heat transport are neglected.
+
+The present work intends to study the atmospheric temperature profile averaged on the Northern Hemisphere in presence of conditions ...
+% MC continue with the idea to apply the model to nuclear winter, if I am able to do that.
 
 
 
 %\section{Materials}
-% MC describe the tools used during the study. List the specifics and the references of the code. Maybe list the number of atmosphere layers.
+% MC describe the tools used during the study. List the specifics and the references of the code.
 
 \section{Methods}
+\label{sec:Methods}
 % MC explain the atmosphere model: vertical column where each layer present quantities averaged over the global atmosphere.
-The RCM developed for the present work approximates the atmosphere as a vertical column divided in a given number of layers.
-% MC put the number of layers, here or in Methods.
+The RCM developed for the present work approximates the atmosphere as a vertical column divided in % MC put here the number of layers used.
+plane-parallel layers. Temperature is evaluated % MC continue following or replacing what is written in \ref{sec:Numerical treatment}.
 
 
 
@@ -155,6 +157,7 @@ At wavelengths $\lambda \geq \qty{4}{\micro\metre}$, solar radiation has lower i
 
 
 \subsection{Numerical treatment} % MC find better title.
+\label{sec:Numerical treatment}
 % MC convert the problem and the physical formulae into the numerical algorithms and functions to solve it.
 % MC show and describe formulae.
 % MC explain that the integration scheme is explicit since the evaulation is made at the same time step, not at the next time step. Probably it is better if the evaluation of fluxed is made implicitly to guarantee numerical stability.
