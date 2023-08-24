@@ -49,12 +49,16 @@ int main(int argc, char * argv[]) {
 	// Run model.
 	int n_t = 10680;
 	double n_t, t, dt, t_min, t_max; // / h
-	double T; // / K
+	double * T; // / K
 	ofstream file_plot;
 	char filename_plot[] = DIR_DATA "/temperature.dat";
 	t_min = 0.0;
 	t_max = 85440.0;
 	dt = (t_max - t_min) / n_t;
+	T = new double[n_layers];
+	for (int i = 0; i < n_layers; i++) {
+		T[i] = global_T_earth;
+	}
 	file_plot.open(filename_plot);
 	file_plot << fixed << setprecision(N_PRECISION);
 	file_plot << "#t P T" << endl;
