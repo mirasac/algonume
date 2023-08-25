@@ -6,7 +6,7 @@ dev: ${OBJECTS}
 	g++ ${CPPFLAGS} -o ${MAIN}.out ${OBJECTS}
 
 prod: ${OBJECTS}
-	g++ ${CPPFLAGS} -DPROD -o ${MAIN}.out ${OBJECTS}
+	g++ ${CPPFLAGS} -Wall -pedantic -pedantic-errors -Wextra -DPROD -o ${MAIN}.out ${OBJECTS}
 
 ${MAIN}.o: ${MAIN}.cpp ${LIB}.h constants.h
 	g++ ${CPPFLAGS} -c ${MAIN}.cpp -o ${MAIN}.o
