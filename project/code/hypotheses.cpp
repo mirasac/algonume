@@ -41,23 +41,23 @@ int main(int argc, char * argv[]) {
 	
 	// Find intersection between spectral irradiances.
 	cout << endl;
-	double nu_div;
+	double nu_div; // / (1 / m)
 	nu_div = spectrum_division_nu();
 	cout << "Spectral irradiances intersect at nu_div = " << nu_div / 100.0 << " 1 / cm" << endl;
 	
 	// Evaluate overlap of spectral irradiances.
 	cout << endl;
-	double E_sun_long, E_earth_long, E_sun_short, E_earth_short; // / (W m / m^2)
+	double E_sun_long, E_earth_long, E_sun_short, E_earth_short; // / (W / m^2)
 	E_sun_long = ratio*ratio * M_PI * gaussquad(planck_law_nu, nu_min, nu_div, GAUSSQUAD_INTERVALS, 2, global_T_sun);
 	E_earth_long = M_PI * gaussquad(planck_law_nu, nu_min, nu_div, GAUSSQUAD_INTERVALS, 2, global_T_earth);
 	E_sun_short = ratio*ratio * M_PI * gaussquad(planck_law_nu, nu_div, nu_max, GAUSSQUAD_INTERVALS, 2, global_T_sun);
 	E_earth_short = M_PI * gaussquad(planck_law_nu, nu_div, nu_max, GAUSSQUAD_INTERVALS, 2, global_T_earth);
 	cout << "In bandwidth [" << nu_min / 100.0 << " 1 / cm, " << nu_div / 100.0 << " 1 / cm]:" << endl;
-	cout << " - ratio of Sun's surface to total irradiances: " << E_sun_long / (E_sun_long + E_earth_long) << endl;
-	cout << " - ratio of Sun's surface to whole spectrum Sun's surface irradiances: " << E_sun_long / (E_sun_long + E_sun_short) << endl;
+	cout << " - irradiances ratio of Sun's surface to total: " << E_sun_long / (E_sun_long + E_earth_long) << endl;
+	cout << " - irradiances ratio of Sun's surface to whole spectrum Sun's surface: " << E_sun_long / (E_sun_long + E_sun_short) << endl;
 	cout << "In bandwidth [" << nu_div / 100.0 << " 1 / cm, " << nu_max / 100.0 << " 1 / cm]:" << endl;
-	cout << " - ratio of Earth's surface to total irradiances: " << E_earth_short / (E_sun_short + E_earth_short) << endl;
-	cout << " - ratio of Earth's surface to whole spectrum Earth's surface irradiances: " << E_earth_short / (E_earth_long + E_earth_short) << endl;
+	cout << " - irradiances ratio of Earth's surface to total: " << E_earth_short / (E_sun_short + E_earth_short) << endl;
+	cout << " - irradiances ratio of Earth's surface to whole spectrum Earth's surface: " << E_earth_short / (E_earth_long + E_earth_short) << endl;
 	
 	return 0;
 }

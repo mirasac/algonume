@@ -1,7 +1,7 @@
 reset
 
 load 'configuration.gp'
-nu_div=2.154e3
+nu_div=2.154e3  # / (1 / cm)
 
 set title "Spectral irradiance at Earth's surface" font _font
 set key top right font _font
@@ -9,7 +9,7 @@ set logscale x
 set grid mxtics mytics
 
 set xlabel '$\nu / (\unit{\per\centi\metre})$' font _font
-set xrange[9e1:1.5e5]
+set xrange[9e1:1.5e5]  # / (1 / cm)
 set mxtics 10
 
 set ylabel '$E / (\unit{\watt\centi\metre\per\square\metre})$' font _font
