@@ -4,7 +4,7 @@ load 'configuration.gp'
 nu_div=2.154e3  # / (1 / cm)
 
 set title "Spectral irradiance at Earth's surface" font _font
-set key top right font _font
+set key top left font _font
 set logscale x
 set grid mxtics mytics
 

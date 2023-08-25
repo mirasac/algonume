@@ -14,6 +14,8 @@ double const global_sigma = 5.670374419e-8; // W / (m^2 K^4)
 // Nominal values.
 double const global_alpha = 0.3;
 double const global_Gamma_0 = 0.0065; // K / m
+double const global_nu_IR_VIS = 1e7 / 7.8; // / (1 / m)
+double const global_nu_VIS_UV = 1e7 / 4.0; // / (1 / m)
 double const global_R_sun = 6.957e8; // m
 double const global_R_m_air = 2.8705287e2; // m^3 Pa / (K kg)
 double const global_S_0 = 1361.0; // W / m^2

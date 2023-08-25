@@ -112,7 +112,7 @@ The average Earth's surface considered in the model is approximated as an emitti
 
 Solar radiation is composed by parallel rays forming an angle of incidence $\epsilon$ with the plane-parallel layers of Earth's atmosphere model. Sun's surface is approximated as an emitting blackbody with temperature $T_\text{sun}$. Constant value $S_0$ for total solar irradiance is used in calculations.
 
-Solar spectral irradiance is peaked in the ultraviolet (UV) and visible bandwidths, while spectral irradiance of Earth's surface is peaked in the infrared (IR) bandwidth. This difference allows the division of the spectrum at the intersection of the curves and to treat the two resulting spectra independently. The overlap between curves is neglected. Accuracy of this approximation and value of wavenumber $\nu_\text{div}$ of the intersection point are discussed in section~\ref{sec:Division of the electromagnetic spectrum}.
+Solar spectral irradiance extends in the infrared (IR), visible (VIS) and ultraviolet (UV) bandwidths, while spectral irradiance of Earth's surface is peaked in the IR bandwidth. The difference of their shapes allows the division of the spectrum at the intersection of the curves. The wavenumber of the intersection point is $\nu_\text{div}$, radiation with wavenumbers below it is called longwave radiation, otherwise it is addressed as shortwave radiation. These two spectra are treated independently and the overlap between curves is neglected. Accuracy of this approximation and value of $\nu_\text{div}$ are discussed in section~\ref{sec:Division of the electromagnetic spectrum}.
 
 Data on constants used in this work are listed in table~\ref{tab:constants}.
 \begin{table*}[h]
@@ -205,8 +205,8 @@ while Earth's surface spectral irradiance is
 Figure~\ref{fig:spectral_irradiance} shows the plots of equations~\eqref{eq:spectral_irradiance_sun} and \eqref{eq:spectral_irradiance_earth} and the division of the spectrum at the wavenumber $\nu_\text{div}$ where the curves intersect. Value $\nu_\text{div} \approx \qty{2154}{\per\centi\metre}$ is obtained numerically (cfr. appendix~\ref{sec:Hypotheses}).
 \begin{figure*}[h]
   \centering
-  \includegraphics*[keepaspectratio=true,width=0.95\textwidth]{spectral_irradiance}
-  \caption{The vertical black line marks the division of the spectrum at $\nu_\text{div}$. In $[\qty{100}{\per\centi\metre}, \nu_\text{div}]$ Earth's surface brings the largest contribution to the total irradiance, in $[\nu_\text{div}, \qty{100000}{\per\centi\metre}]$ solar radiation dominates instead.}
+  \includegraphics*[keepaspectratio=true,width=0.95\textwidth]{spectral_irradiance_bands}
+  \caption{The vertical black line marks the division of the spectrum at $\nu_\text{div}$. In the longwave region $[\qty{100}{\per\centi\metre}, \nu_\text{div}]$ Earth's surface brings the largest contribution to the total irradiance, in the shortwave region $[\nu_\text{div}, \qty{100000}{\per\centi\metre}]$ solar radiation dominates instead. Infrared (IR), visible (VIS) and ultraviolet (UV) spectral bands as specified by \cite{CIE} are shown in background.}
   \label{fig:spectral_irradiance}
 \end{figure*}
 
