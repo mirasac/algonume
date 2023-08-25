@@ -110,7 +110,7 @@ with each component obeying the ideal gas law
 where $\rho = \frac{m}{V}$ is the volumetric mass density of the air parcel. Each atmospheric layer is homogeneous, which means that quantities affecting radiative calculations are not dependent on spatial position inside the layer (e.g. gas densities and extintion coefficients are constant inside the layer).
 The average Earth's surface considered in the model is approximated as an emitting blackbody with temperature $T_\text{earth}$. Average Bond albedo fo Earth is identified with constant $\alpha$.
 
-Sun's surface is approximated as an emitting blackbody with temperature $T_\text{sun}$. Solar radiation is considered orthogonal to the plane which represents Earth's surface in the RCM. Constant value $S_0$ for total solar irradiance is used in calculations.
+Solar radiation is composed by parallel rays forming an angle of incidence $\epsilon$ with the plane-parallel layers of Earth's atmosphere model. Sun's surface is approximated as an emitting blackbody with temperature $T_\text{sun}$. Constant value $S_0$ for total solar irradiance is used in calculations.
 
 Solar spectral irradiance is peaked in the ultraviolet (UV) and visible bandwidths, while spectral irradiance of Earth's surface is peaked in the infrared (IR) bandwidth. This difference allows the division of the spectrum at the intersection of the curves and to treat the two resulting spectra independently. The overlap between curves is neglected. Accuracy of this approximation and value of wavenumber $\nu_\text{div}$ of the intersection point are discussed in section~\ref{sec:Division of the electromagnetic spectrum}.
 
@@ -202,7 +202,7 @@ while Earth's surface spectral irradiance is
   \quad .
 \end{equation}
 
-Figure~\ref{fig:spectral_irradiance} shows the plots of equations~\eqref{eq:spectral_irradiance_sun} and \eqref{eq:spectral_irradiance_earth} and the division of the spectrum at the wavenumber $\nu_\text{div}$ where the curves intersect. Value $\nu_\text{div} \approx \qty{2156}{\per\centi\metre}$ is obtained numerically (cfr. appendix~\ref{sec:Hypotheses}).
+Figure~\ref{fig:spectral_irradiance} shows the plots of equations~\eqref{eq:spectral_irradiance_sun} and \eqref{eq:spectral_irradiance_earth} and the division of the spectrum at the wavenumber $\nu_\text{div}$ where the curves intersect. Value $\nu_\text{div} \approx \qty{2154}{\per\centi\metre}$ is obtained numerically (cfr. appendix~\ref{sec:Hypotheses}).
 \begin{figure*}[h]
   \centering
   \includegraphics*[keepaspectratio=true,width=0.95\textwidth]{spectral_irradiance}
@@ -211,7 +211,7 @@ Figure~\ref{fig:spectral_irradiance} shows the plots of equations~\eqref{eq:spec
 \end{figure*}
 
 Considering only interval $[\qty{100}{\per\centi\metre}, \nu_\text{div}]$, the largest contribution to the total irradiance is brought by Earth's surface and solar irradiance is neglected, being about \qty{2.2}{\percent} of the total irradiance. The removed irradiance is \qty{0.65}{\percent} of the total Sun's surface irradiance. % MC talk about uncertainties?
-Instead, in $[\nu_\text{div}, \qty{100000}{\per\centi\metre}]$ Earth's surface irradiance is \qty{0.16}{\percent} of the total irradiance in this interval and is neglected. The removed quantity is \qty{0.54}{\percent} of the total Earth's surface irradiance. % MC talk about uncertainties?
+Instead, in $[\nu_\text{div}, \qty{100000}{\per\centi\metre}]$ Earth's surface irradiance is \qty{0.16}{\percent} of the total irradiance in this interval and is neglected. The removed quantity is \qty{0.55}{\percent} of the total Earth's surface irradiance. % MC talk about uncertainties?
 
 
 

@@ -1,7 +1,7 @@
 reset
 
 load 'configuration.gp'
-nu_div=2.156e3
+nu_div=2.154e3
 
 set title "Spectral irradiance at Earth's surface" font _font
 set key top right font _font

@@ -6,10 +6,8 @@
 #include "constants.h"
 #include "functions.h"
 #include "../../mclib/mclib.h"
+#include "radiation.h"
 #include "configuration.h" // Load last to redefine some things.
-
-double spectral_irradiance_diff(double nu);
-double spectral_irradiance_diff1(double nu);
 
 int main(int argc, char * argv[]) {
 	using namespace std;
@@ -43,8 +41,8 @@ int main(int argc, char * argv[]) {
 	
 	// Find intersection between spectral irradiances.
 	cout << endl;
-	double nu_div; // / (1 / m)
-	nu_div = newtonraphson(spectral_irradiance_diff, spectral_irradiance_diff1, 2e5, 3e5, TOLERANCE);
+	double nu_div;
+	nu_div = spectrum_division_nu();
 	cout << "Spectral irradiances intersect at nu_div = " << nu_div / 100.0 << " 1 / cm" << endl;
 	
 	// Evaluate overlap of spectral irradiances.
@@ -62,20 +60,4 @@ int main(int argc, char * argv[]) {
 	cout << " - ratio of Earth's surface to whole spectrum Earth's surface irradiances: " << E_earth_short / (E_earth_long + E_earth_short) << endl;
 	
 	return 0;
-}
-
-double spectral_irradiance_diff(double nu) {
-	double ratio = global_R_sun / global_au;
-	return M_PI * ((1.0 - global_alpha) * ratio*ratio * planck_law_nu(nu, global_T_sun) - planck_law_nu(nu, global_T_earth));
-}
-
-double spectral_irradiance_diff1(double nu) {
-	double ratio, factor;
-	ratio = global_R_sun / global_au;
-	factor = global_h * global_c / global_k_B;
-	return M_PI * (3.0 / nu * spectral_irradiance_diff(nu) + factor * (
-		(1.0 - global_alpha) * ratio*ratio
-		* planck_law_nu(nu, global_T_sun) / (global_T_sun * expm1(-factor * nu / global_T_sun))
-		- planck_law_nu(nu, global_T_earth) / (global_T_earth * expm1(-factor * nu / global_T_earth))
-	));
 }

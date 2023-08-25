@@ -43,25 +43,36 @@ int main(int argc, char * argv[]) {
 	// Configure spectral bands.
 	int * n_bands;
 	double * nu, * delta_nu; // / (1 / cm)
-	double dnu = 100.0; // / (1 / cm)
+	double dnu, nu_div; // / (1 / m)
+	dnu = 10000.0;
+	nu_div = spectrum_division_nu();
 	// MC continue with three arrays for the bandwidth of each layer.
 	
-	// Run model.
+	// Set time integration parameters.
 	int n_t = 10680;
-	double n_t, t, dt, t_min, t_max; // / h
-	double * T; // / K
-	ofstream file_plot;
-	char filename_plot[] = DIR_DATA "/temperature.dat";
+	double t, dt, t_min, t_max; // / h
 	t_min = 0.0;
 	t_max = 85440.0;
 	dt = (t_max - t_min) / n_t;
+	
+	// Initialise temperature output variable.
+	double * T; // / K
 	T = new double[n_layers];
 	for (int i = 0; i < n_layers; i++) {
 		T[i] = global_T_earth;
 	}
+	
+	// MC draft variables, decide where to put them.
+	double mu = M_SQRT2 / 2.0; // / rad
+	
+	// Prepare output file.
+	ofstream file_plot;
+	char filename_plot[] = DIR_DATA "/temperature.dat";
 	file_plot.open(filename_plot);
 	file_plot << fixed << setprecision(N_PRECISION);
 	file_plot << "#t P T" << endl;
+	
+	// Run model.
 	for (int i_t = 0; i_t <= n_t; i_t++) {
 		t = t_min + i_t * dt;
 		// MC here put inner integration loop, where radiative calculations and convective adjustment are performed.
