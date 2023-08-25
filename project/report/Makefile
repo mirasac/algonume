@@ -4,11 +4,10 @@ FIGURES=${DIR_FIGURES}/spectral_irradiance.pdf ${DIR_FIGURES}/spectral_irradianc
 
 .PHONY: all all_figures clean
 
-${MAIN}.pdf: ${MAIN}.tex ${MAIN}.bbl all_figures
+${MAIN}.pdf: ${MAIN}.tex ${MAIN}.bbl ${FIGURES}
 	pdflatex ${MAIN}.tex
 	pdflatex ${MAIN}.tex
-	touch ${MAIN}.bbl
-	touch ${MAIN}.pdf
+	touch --no-create ${MAIN}.pdf ${MAIN}.bbl ${FIGURES}
 
 ${MAIN}.bbl: ${MAIN}.bcf bibliography.bib
 	biber ${MAIN}
