@@ -7,6 +7,7 @@
 \usepackage[style=ieee,backend=biber]{biblatex}
 \usepackage{booktabs}
 %\usepackage[tableposition=top,figureposition=bottom,font=footnotesize,format=hang,subrefformat=parens]{caption}
+\usepackage{derivative}
 \usepackage{listings}
 %\usepackage{mathtools}
 %\usepackage{physics}
@@ -49,7 +50,7 @@
 \lstset{style=mystyle}
 
 \newcommand{\cpp}{C++}
-\newcommand{\dd}{\mathop{}\!\mathrm{d}}
+\newcommand{\zTOA}{z_\text{TOA}}
 \newcommand{\PTOA}{P_\text{TOA}}
 
 \raggedbottom
@@ -86,7 +87,8 @@ The present work intends to study the atmospheric temperature profile averaged o
 \label{sec:Methods}
 % MC explain the atmosphere model: vertical column where each layer present quantities averaged over the global atmosphere.
 The RCM developed for the present work approximates the atmosphere as a vertical column divided in % MC put here the number of layers used.
-plane-parallel layers. Temperature is evaluated % MC continue following or replacing what is written in \ref{sec:Numerical treatment}.
+plane-parallel layers. Altitude $z$ is used as vertical coordinate, spanning from Earth's surface at $z = \qty{0}{\metre}$ to the value corresponding to the top-of-atmosphere (TOA) %$\zTOA = \qty{}{\kilo\metre}$ % MC insert value.
+. Each layer is identified by a value of $z$ corresponding to the lower bound of the layer and by its thickness. Layers are numbered starting from 0 from Earth's surface to TOA. % MC generally the opposite is done, check if my choice makes sense anyway.
 
 
 
@@ -96,23 +98,23 @@ To simplify some calculations for radiative fluxes, the definition of wavenumber
 
 Specific gas constant is used in thermodynamical relations, which is defined as the gas constant $R$ divided by the gas molar mass. Henceforth, specific gas constant is represented with symbol $R_m$.
 
-Some assumptions are made on state and composition of Earth's atmosphere. Gravitational acceleration $g$ is constant. Air parcels are supposed to be in hydrostatic equilibrium,
+Some assumptions are made on state and composition of Earth's atmosphere. Gravitational acceleration $g$ is constant. Atmospheric layers are supposed to be in hydrostatic equilibrium described by
 \begin{equation}
   \label{eq:hydrostatic_equilibrium}
-  \dd P = - \rho g \dd z
-  \quad ,
+  \odif{P} = - \rho g \odif{z}
 \end{equation}
-with each component obeying the ideal gas law
+and gaseous components obey the ideal gas law
 \begin{equation}
   \label{eq:ideal_gas_law}
   P = \rho R_m T
+  \quad ,
 \end{equation}
-where $\rho = \frac{m}{V}$ is the volumetric mass density of the air parcel. Each atmospheric layer is homogeneous, which means that quantities affecting radiative calculations are not dependent on spatial position inside the layer (e.g. gas densities and extintion coefficients are constant inside the layer).
-The average Earth's surface considered in the model is approximated as an emitting blackbody with temperature $T_\text{earth}$. Average Bond albedo fo Earth is identified with constant $\alpha$.
+where $\rho$ is the volumetric mass density of the gas. Each layer is homogenoeus in the sense that quantities affecting radiative calculations are not dependent on spatial position inside the layer (e.g. gas densities, extintion coefficients and specific heats at constant pressure $c_p$ are constant inside the layer).
+The average Earth's surface considered in the model is approximated as an emitting blackbody with temperature $T_\text{earth}$. Average Bond albedo for Earth is identified with constant $\alpha$.
 
-Solar radiation is composed by parallel rays forming an angle of incidence $\epsilon$ with the plane-parallel layers of Earth's atmosphere model. Sun's surface is approximated as an emitting blackbody with temperature $T_\text{sun}$. Constant value $S_0$ for total solar irradiance is used in calculations.
+Solar radiation is made by parallel rays forming an angle of incidence $\varepsilon$ with the normal of the plane-parallel atmospheric layers. Sun's surface is approximated as an emitting blackbody with temperature $T_\text{sun}$. Constant value $S_0$ for total solar irradiance is used in calculations.
 
-Solar spectral irradiance extends in the infrared (IR), visible (VIS) and ultraviolet (UV) bandwidths, while spectral irradiance of Earth's surface is peaked in the IR bandwidth. The difference of their shapes allows the division of the spectrum at the intersection of the curves. The wavenumber of the intersection point is $\nu_\text{div}$, radiation with wavenumbers below it is called longwave radiation, otherwise it is addressed as shortwave radiation. These two spectra are treated independently and the overlap between curves is neglected. Accuracy of this approximation and value of $\nu_\text{div}$ are discussed in section~\ref{sec:Division of the electromagnetic spectrum}.
+Solar spectral irradiance extends in the infrared (IR), visible (VIS) and ultraviolet (UV) bands, while spectral irradiance of Earth's surface is peaked in the IR band. The difference of their shapes allows the division of the spectrum at the intersection of the curves. The wavenumber of the intersection point is $\nu_\text{div}$, radiation with lesser wavenumbers is called longwave radiation, otherwise it is addressed as shortwave radiation. The two resulting spectra are treated independently and the overlap between curves is neglected. Accuracy of these approximations and value of $\nu_\text{div}$ are discussed in section~\ref{sec:Division of the electromagnetic spectrum}.
 
 Data on constants used in this work are listed in table~\ref{tab:constants}.
 \begin{table*}[h]
@@ -156,8 +158,28 @@ At wavelengths $\lambda \geq \qty{4}{\micro\metre}$, solar radiation has lower i
 
 
 
-\subsection{Numerical treatment} % MC find better title.
-\label{sec:Numerical treatment}
+\subsection{Temperature equation}
+\label{sec:Temperature equation}
+Intermediate layers of the atmosphere are treated as open systems where in general air parcels can move vertically, therefore temperature is determined by horizontally averaging the thermodynamic energy equation. Details on the derivation are in \cite[466]{ramanathan}. The resulting differential equation describing temperature variation with time across layer $z$ is
+\begin{equation}
+  \label{eq:temperature_derivation}
+  \pdv*{T(t,z)}{t} = -\frac{1}{\rho c_p} \odv*{q(z)}{z}
+\end{equation}
+where $q(z)$ is the total power exchanged due to heat transfer, which depends on altitude $z$ also through the temperature. In particular, $q(z) = \Phi_L(z) + \Phi_S(z) + q_C(z)$, where $\Phi_L(z)$ and $\Phi_S(z)$ are the total radiant fluxes generated by longwave and shortwave radiations, respectively, and $q_C(z)$ is the heat exchanged by convection.
+
+% MC continue with simplification of equation.
+% MC continue following or replacing what is written in \ref{sec:Numerical approach}.
+
+
+
+\subsection{Convective adjustment}
+\label{sec:Convective adjustment}
+% MC explain how the convective heat flux is not evaluated explicitly but it is forced by a fixed lapse rate, refer to \cite[467]{ramanathan}.
+
+
+
+\subsection{Numerical approach}
+\label{sec:Numerical approach}
 % MC convert the problem and the physical formulae into the numerical algorithms and functions to solve it.
 % MC show and describe formulae.
 % MC explain that the integration scheme is explicit since the evaulation is made at the same time step, not at the next time step. Probably it is better if the evaluation of fluxed is made implicitly to guarantee numerical stability.
@@ -293,10 +315,10 @@ If density is not constant its expression is given by the ideal gas law (cfr. eq
 \begin{equation}
   \label{eq:pressure_constant_temperature}
   \begin{split}
-    & \dd P = - \frac{P g}{R T} \dd z \iff \\
-    \iff & \frac{\dd P}{P} = - \frac{g}{R T} \dd z \impliedby \\
-    \impliedby & \ln(P') \bigg|_{P_0}^{P(z)} = - \frac{g}{R T} z' \bigg|_{z_0}^{z} \iff \\
-    \iff & P(z) = P_0 \exp{\bigg( - \frac{g}{R T} (z - z_0) \bigg)}
+    & \odif{P} = - \frac{P g}{R_m T} \odif{z} \iff \\
+    \iff & \frac{\odif{P}}{P} = - \frac{g}{R_m T} \odif{z} \impliedby \\
+    \impliedby & \ln(P') \bigg|_{P_0}^{P(z)} = - \frac{g}{R_m T} z' \bigg|_{z_0}^{z} \iff \\
+    \iff & P(z) = P_0 \exp{\bigg( - \frac{g}{R_m T} (z - z_0) \bigg)}
     \quad .
   \end{split}
 \end{equation}
@@ -305,17 +327,17 @@ This relation is not meaningful, since the aim of the work is to derive the non-
 A better approximation assumes non-constant density and constant lapse rate $\Gamma$, hence temperature depends linearly on altitude,
 \begin{equation}
   \label{eq:constant_lapse_rate}
-  \Gamma = - \frac{\dd T}{\dd z} \impliedby T(z) = T_0 - \Gamma (z - z_0)
+  \Gamma = - \frac{\odif{T}}{\odif{z}} \impliedby T(z) = T_0 - \Gamma (z - z_0)
   \quad ,
 \end{equation}
 with $T_0$ temperature corresponding to reference altitude $z_0$. Using these assumptions and the density rewritten through the ideal gas law \eqref{eq:ideal_gas_law}, equation~\eqref{eq:hydrostatic_equilibrium} becomes
 \begin{equation}
   \label{eq:pressure_constant_lapse_rate}
   \begin{split}
-    & \dd P = - \frac{P g}{R T} \bigg( - \frac{\dd T}{\Gamma} \bigg) \iff \\
-    \iff & \frac{\dd P}{P} = \frac{g}{R \Gamma} \frac{\dd T}{T} \impliedby \\
-    \impliedby & \ln(P') \bigg|_{P_0}^{P(z)} = \frac{g}{R \Gamma} \ln(T') \bigg|_{T_0}^{T(z)} \iff \\
-    \iff & P(z) = P_0 \bigg( \frac{T_0 - \Gamma (z - z_0)}{T_0} \bigg)^\frac{g}{R \Gamma}
+    & \odif{P} = - \frac{P g}{R_m T} \bigg( - \frac{\odif{T}}{\Gamma} \bigg) \iff \\
+    \iff & \frac{\odif{P}}{P} = \frac{g}{R_m \Gamma} \frac{\odif{T}}{T} \impliedby \\
+    \impliedby & \ln(P') \bigg|_{P_0}^{P(z)} = \frac{g}{R_m \Gamma} \ln(T') \bigg|_{T_0}^{T(z)} \iff \\
+    \iff & P(z) = P_0 \bigg( \frac{T_0 - \Gamma (z - z_0)}{T_0} \bigg)^\frac{g}{R_m \Gamma}
   \end{split}
 \end{equation}
 % MC choose a better format for splitted equations.
@@ -352,9 +374,9 @@ If radiance is isotropic, i.e. it has not dependence on the direction of the rad
 \begin{equation}
   \label{eq:blackbody_spectral_irradiance_hemisphere}
   \begin{split}
-    & \int B_\nu (\nu, T) \dd \phi \sin(\theta) \dd \theta \cos(\theta) = \\
-    & = B_\nu (\nu, T) \int_0^{2\pi} \dd \phi \int_0^\frac{\pi}{2} \sin(\theta) \cos(\theta) \dd \theta = \\
-    & = 2 \pi B_\nu (\nu, T) \int_0^1 \sin(\theta) \dd(\sin(\theta)) = \\
+    & \int B_\nu (\nu, T) \odif{\phi} \sin(\theta) \odif{\theta} \cos(\theta) = \\
+    & = B_\nu (\nu, T) \int_0^{2\pi} \odif{\phi} \int_0^\frac{\pi}{2} \sin(\theta) \cos(\theta) \odif{\theta} = \\
+    & = 2 \pi B_\nu (\nu, T) \int_0^1 \sin(\theta) \odif{(\sin(\theta))} = \\
     & = 2 \pi B_\nu (\nu, T) \frac{1}{2} = \pi B_\nu (\nu, T)
   \end{split}
   \quad ,

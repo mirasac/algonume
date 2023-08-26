@@ -8,7 +8,7 @@
 #include "radiation.h"
 #include "configuration.h" // Load last to redefine some things.
 
-void set_layers_z_uniform(double z_S, double z_TOA, int n_layers, double z[], double delta_z[]);
+void set_layers_z_uniform(double z_TOA, int n_layers, double z[], double delta_z[]);
 void set_absorbers_uniform(int n_layers, int n_absorbers[], absorber_t * absorbers[], absorber_t a1, absorber_t a2);
 
 int main(int argc, char * argv[]) {
@@ -17,13 +17,12 @@ int main(int argc, char * argv[]) {
 	
 	// Configure atmospheric layers.
 	int n_layers = 20;
-	double z_TOA, z_S; // / m
+	double z_TOA; // / m
 	double * z, * delta_z; // / m
 	z_TOA = 42000.0;
-	z_S = 0.0;
 	z = new double[n_layers];
 	delta_z = new double[n_layers];
-	set_layers_z_uniform(z_S, z_TOA, n_layers, z, delta_z);
+	set_layers_z_uniform(z_TOA, n_layers, z, delta_z);
 	
 	// Configure absorbers.
 	absorber_t H2O, CO2;
@@ -70,7 +69,7 @@ int main(int argc, char * argv[]) {
 	char filename_plot[] = DIR_DATA "/temperature.dat";
 	file_plot.open(filename_plot);
 	file_plot << fixed << setprecision(N_PRECISION);
-	file_plot << "#t P T" << endl;
+	file_plot << "#t z T" << endl;
 	
 	// Run model.
 	for (int i_t = 0; i_t <= n_t; i_t++) {
@@ -93,8 +92,8 @@ int main(int argc, char * argv[]) {
 	return 0;
 }
 
-void set_layers_z_uniform(double z_S, double z_TOA, int n_layers, double z[], double delta_z[]) {
-	delta_z[0] = (z_TOA - z_S) / n_layers;
+void set_layers_z_uniform(double z_TOA, int n_layers, double z[], double delta_z[]) {
+	delta_z[0] = z_TOA / n_layers;
 	z[0] = z_TOA - delta_z[0] / 2.0;
 	for (int i_z = 1; i_z < n_layers; i_z++) {
 		delta_z[i_z] = delta_z[0];
