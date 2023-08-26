@@ -8,8 +8,12 @@
 #include "radiation.h"
 #include "configuration.h" // Load last to redefine some things.
 
-void set_layers_z_uniform(double z_TOA, int n_layers, double z[], double delta_z[]);
+void set_layers_z_uniform(double z_min, double z_max, int n_layers, double z[], double delta_z[]);
 void set_absorbers_uniform(int n_layers, int n_absorbers[], absorber_t * absorbers[], absorber_t a1, absorber_t a2);
+double get_pressure(double z, double T);
+double get_altitude(double P, double T);
+double get_sigma(double P, double P_TOA);
+double get_theta(double T, double P);
 
 int main(int argc, char * argv[]) {
 	using namespace std;
@@ -19,10 +23,10 @@ int main(int argc, char * argv[]) {
 	int n_layers = 20;
 	double z_TOA; // / m
 	double * z, * delta_z; // / m
-	z_TOA = 42000.0;
+	z_TOA = 55000.0;
 	z = new double[n_layers];
 	delta_z = new double[n_layers];
-	set_layers_z_uniform(z_TOA, n_layers, z, delta_z);
+	set_layers_z_uniform(global_z_g, z_TOA, n_layers, z, delta_z);
 	
 	// Configure absorbers.
 	absorber_t H2O, CO2;
@@ -69,7 +73,7 @@ int main(int argc, char * argv[]) {
 	char filename_plot[] = DIR_DATA "/temperature.dat";
 	file_plot.open(filename_plot);
 	file_plot << fixed << setprecision(N_PRECISION);
-	file_plot << "#t z T" << endl;
+	file_plot << "#t z T " << endl;
 	
 	// Run model.
 	for (int i_t = 0; i_t <= n_t; i_t++) {
@@ -78,7 +82,22 @@ int main(int argc, char * argv[]) {
 		file_plot << '\n' << endl; // MC put double '\n' to reduce write time.
 	}
 	file_plot.close();
-	cout << "Temperature profile calculated, values are stored in file " << filename_plot << endl;
+	//cout << "Temperature profile calculated, values are stored in file " << filename_plot << endl;
+	
+	// Evaluate additional vertical coordinates.
+	double P, P_TOA; // / Pa
+	char filename_coordinates[] = DIR_DATA "/coordinates.dat";
+	P_TOA = get_pressure(z[0], T[0]);
+	file_plot.open(filename_coordinates);
+	file_plot << fixed << setprecision(N_PRECISION);
+	file_plot << "#z P sigma" << endl;
+	for (int i = 0; i < n_layers; i++) {
+		P = get_pressure(z[i], T[i]);
+		file_plot << z[i] << ' ' << P << ' ' << get_sigma(P, P_TOA) << '\n';
+	}
+	//file_plot << global_z_g << ' ' << global_P_g << ' ' << get_sigma(global_P_g, P_TOA) << '\n';
+	file_plot.close();
+	cout << "Additional vertical coordinates calculated, values are stored in file " << filename_coordinates << endl;
 	
 	// Clean up.
 	delete[] z;
@@ -92,9 +111,9 @@ int main(int argc, char * argv[]) {
 	return 0;
 }
 
-void set_layers_z_uniform(double z_TOA, int n_layers, double z[], double delta_z[]) {
-	delta_z[0] = z_TOA / n_layers;
-	z[0] = z_TOA - delta_z[0] / 2.0;
+void set_layers_z_uniform(double z_min, double z_max, int n_layers, double z[], double delta_z[]) {
+	delta_z[0] = (z_max - z_min) / n_layers;
+	z[0] = z_max;
 	for (int i_z = 1; i_z < n_layers; i_z++) {
 		delta_z[i_z] = delta_z[0];
 		z[i_z] = z[0] - delta_z[0] * i_z;
@@ -112,4 +131,20 @@ void set_absorbers_uniform(int n_layers, int n_absorbers[], absorber_t * absorbe
 		absorbers[i][0] = a1;
 		absorbers[i][1] = a2;
 	}
+}
+
+double get_pressure(double z, double T) {
+	return global_P_g * exp(- global_g / global_R_m_air / T * (z - global_z_g));
+}
+
+double get_altitude(double P, double T) {
+	return global_z_g - global_R_m_air * T / global_g * log(P / global_P_g);
+}
+
+double get_sigma(double P, double P_TOA) {
+	return (P - P_TOA) / (global_P_g - P_TOA);
+}
+
+double get_theta(double T, double P) {
+	return T * pow(global_P_0 / P, global_R_m_air / global_c_P_air);
 }
