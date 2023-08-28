@@ -23,77 +23,78 @@ print_usage() {
 	EOF
 }
 
-# Script body.
+# Check mandatory arguments.
 basename="$1"
 if [ -z "${basename}" ]
 then
 	print_error 'the first argument is mandatory'
 	print_usage
-else
-	option="$2"
-	
-	# Main plot command.
-	command="load '${basename}.gp'"
-	
-	# Add export commands.
-	case "${option}" in
-	export*|only*)
-		dir_export="${3:-${DEF_DIR_EXPORT}}"
-		basename_export="${basename}"
-		if [ "${option}" = 'onlyexport' ]
-		then
-			command_export=$(
-			cat <<-EOF
-				set terminal cairolatex pdf input colourtext noheader color size 14.85cm,10.5cm
-				set output '${basename_export}_input.tex'
-			EOF
-			)
-		elif [ "${option}" = 'onlypdf' ]
-		then
-			command_export=$(
-			cat <<-EOF
-				set terminal pdfcairo noenhanced color font "cmr,10" size 14.85cm,10.5cm
-				set output '${basename_export}.pdf'
-			EOF
-			)
-		fi
-		command=$(
+	return 1
+fi
+
+option="$2"
+
+# Main plot command.
+command="load '${basename}.gp'"
+
+# Add export commands.
+case "${option}" in
+export*|only*)
+	dir_export="${3:-${DEF_DIR_EXPORT}}"
+	basename_export="${basename}"
+	if [ "${option}" = 'onlyexport' ]
+	then
+		command_export=$(
 		cat <<-EOF
-			${command}
-			${command_export}
-			replot
+			set terminal cairolatex pdf input colourtext noheader color size 14.85cm,10.5cm
+			set output '${basename_export}_input.tex'
 		EOF
 		)
-		case "${option}" in
-		only*)
-			command=$(
-			cat <<-EOF
-				set terminal unknown
-				${command}
-			EOF
-			)
-		;;
-		esac
-	;;
-	*)
-		print_info "invalid value for the second argument, it is ignored"
-	;;
-	esac
-	
-	# Launch gnuplot.
-	$(
-	gnuplot --persist <<-EOF
-		${command}
-	EOF
-	)
-	
-	# Move exported files to the specified directory.
-	if [ "${option}" = 'export' ] || [ "${option}" = 'onlyexport' ]
-	then
-		mv "${basename_export}_input.tex" "${dir_export}/${basename_export}_input.tex"
-		mv "${basename_export}_input.pdf" "${dir_export}/${basename_export}_input.pdf"
 	elif [ "${option}" = 'onlypdf' ]
 	then
-		mv "${basename_export}.pdf" "${dir_export}/${basename_export}.pdf"
+		command_export=$(
+		cat <<-EOF
+			set terminal pdfcairo noenhanced color font ",10" size 14.85cm,10.5cm
+			set output '${basename_export}.pdf'
+		EOF
+		)
 	fi
+	command=$(
+	cat <<-EOF
+		${command}
+		${command_export}
+		replot
+	EOF
+	)
+	case "${option}" in
+	only*)
+		command=$(
+		cat <<-EOF
+			set terminal unknown
+			${command}
+		EOF
+		)
+	;;
+	esac
+;;
+*)
+	print_info "invalid value for the second argument, it is ignored"
+;;
+esac
+
+# Launch gnuplot.
+$(
+gnuplot --persist <<-EOF
+	${command}
+EOF
+)
+
+# Move exported files to the specified directory.
+if [ "${option}" = 'export' ] || [ "${option}" = 'onlyexport' ]
+then
+	mv "${basename_export}_input.tex" "${dir_export}/${basename_export}_input.tex"
+	mv "${basename_export}_input.pdf" "${dir_export}/${basename_export}_input.pdf"
+elif [ "${option}" = 'onlypdf' ]
+then
+	mv "${basename_export}.pdf" "${dir_export}/${basename_export}.pdf"
 fi
