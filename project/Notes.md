@@ -53,4 +53,5 @@
 - Remove all personal comments.
 - Remove unused appendices, maybe keep them as separate LaTeX source files and include only the ones needed.
 - Correct format issues related to composition of bibliography.
-- Align fields of tables.
+- Align fields of tables in source code.
+- Use cf. instead of cfr. and use see when needed.
