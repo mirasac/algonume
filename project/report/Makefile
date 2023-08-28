@@ -2,7 +2,7 @@ MAIN=casari_project
 CLASS_OPTIONS=draft
 MAIN_CLASS_OPTIONS="\providecommand\classoptions{${CLASS_OPTIONS}}\input{${MAIN}.tex}"
 DIR_FIGURES=./figures
-FIGURES=${DIR_FIGURES}/spectral_irradiance.pdf ${DIR_FIGURES}/spectral_irradiance_logy.pdf ${DIR_FIGURES}/spectral_irradiance_bands.pdf
+FIGURES=${DIR_FIGURES}/spectral_irradiance.pdf ${DIR_FIGURES}/spectral_irradiance_logy.pdf ${DIR_FIGURES}/spectral_irradiance_bands.pdf ${DIR_FIGURES}/temperature_profile.pdf ${DIR_FIGURES}/temperature_variation.pdf
 
 .PHONY: all class_options all_figures clean
 
@@ -39,6 +39,12 @@ ${DIR_FIGURES}/spectral_irradiance_logy.pdf: ${DIR_FIGURES}/spectral_irradiance_
 
 ${DIR_FIGURES}/spectral_irradiance_bands.pdf: ${DIR_FIGURES}/spectral_irradiance_bands_input.tex ${DIR_FIGURES}/spectral_irradiance_bands_input.pdf
 	sh standalone.sh spectral_irradiance_bands ${DIR_FIGURES}
+
+${DIR_FIGURES}/temperature_profile.pdf: ${DIR_FIGURES}/temperature_profile_input.tex ${DIR_FIGURES}/temperature_profile_input.pdf
+	sh standalone.sh temperature_profile ${DIR_FIGURES}
+
+${DIR_FIGURES}/temperature_variation.pdf: ${DIR_FIGURES}/temperature_variation_input.tex ${DIR_FIGURES}/temperature_variation_input.pdf
+	sh standalone.sh temperature_variation ${DIR_FIGURES}
 
 clean:
 	rm -f *.aux
