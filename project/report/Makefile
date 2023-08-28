@@ -1,6 +1,6 @@
 MAIN=casari_project
 CLASS_OPTIONS=draft
-MAIN_CLASS_OPTIONS="\PassOptionsToClass{${CLASS_OPTIONS}}{article}\input{${MAIN}.tex}"
+MAIN_CLASS_OPTIONS="\providecommand\classoptions{${CLASS_OPTIONS}}\input{${MAIN}.tex}"
 DIR_FIGURES=./figures
 FIGURES=${DIR_FIGURES}/spectral_irradiance.pdf ${DIR_FIGURES}/spectral_irradiance_logy.pdf ${DIR_FIGURES}/spectral_irradiance_bands.pdf
 
