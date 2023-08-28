@@ -1,3 +1,9 @@
+# Useful references:
+# - https://gnuplot.sourceforge.net/demo/contours.html;
+# - http://www.phyast.pitt.edu/~zov1/gnuplot/html/contour.html;
+# - https://stackoverflow.com/questions/36658283/multiple-data-blocks-in-a-single-file-and-a-single-plot-markers-for-each-block;
+# - https://stackoverflow.com/questions/40679443/plotting-last-data-block-in-gnuplot.
+
 reset
 
 load 'configuration.gp'

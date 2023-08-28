@@ -1,3 +1,8 @@
+# Useful references:
+# - https://gnuplot.sourceforge.net/demo/multiaxis.html;
+# - https://stackoverflow.com/questions/2827650/plotting-two-axes-in-gnuplot;
+# - https://stackoverflow.com/questions/63771600/is-there-a-way-to-have-3-different-y-axes-on-one-graph-using-gnuplot.
+
 reset
 
 load 'configuration.gp'
