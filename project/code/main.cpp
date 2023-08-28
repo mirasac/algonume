@@ -86,9 +86,13 @@ int main(int argc, char * argv[]) {
 			// MC inner integration loop, where radiative calculations and convective adjustment are performed.
 			P = get_pressure(z[i_z], T[i_z]);
 			file_plot << t << ' ' << z[i_z] << ' ' << T[i_z] << ' ' << P << ' ' << get_sigma(P, P_TOA) << ' ' << get_theta(T[i_z], P) << '\n';
-			// MC an additional separate line is needed for values at ground level since they are evaluated separately from the loop on layers.
 		}
+		// MC an additional separate line is needed for values at ground level since they are evaluated separately from the loop on layers.
 		file_plot << '\n';
+		// MC avoid adding an extra data block at the end of data file.
+		if (i_t != n_t) {
+			file_plot << '\n';
+		}
 	}
 	file_plot.close();
 	//cout << "Temperature profile calculated, values are stored in file " << filename_plot << endl;
