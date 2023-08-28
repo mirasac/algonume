@@ -65,39 +65,33 @@ int main(int argc, char * argv[]) {
 		T[i] = global_T_earth;
 	}
 	
-	// MC draft variables, decide where to put them.
-	double mu = M_SQRT2 / 2.0; // / rad
+	// Prepare support variables.
+	double mu; // / rad
+	double P, P_TOA; // / Pa
+	mu = M_SQRT2 / 2.0;
 	
 	// Prepare output file.
 	ofstream file_plot;
 	char filename_plot[] = DIR_DATA "/temperature.dat";
 	file_plot.open(filename_plot);
 	file_plot << fixed << setprecision(N_PRECISION);
-	file_plot << "#t z T " << endl;
+	file_plot << "#t z T P sigma theta" << endl;
 	
 	// Run model.
-	for (int i_t = 0; i_t <= n_t; i_t++) {
+	// MC put here initial and boundary conditions.
+	P_TOA = get_pressure(z[0], T[0]);
+	for (int i_t = 0; i_t <= n_t; i_t++) { // MC switch to while loop to check convergence condition.
 		t = t_min + i_t * dt;
-		// MC here put inner integration loop, where radiative calculations and convective adjustment are performed.
-		file_plot << '\n' << endl; // MC put double '\n' to reduce write time.
+		for (int i_z = 0; i_z < n_layers; i_z++) {
+			// MC inner integration loop, where radiative calculations and convective adjustment are performed.
+			P = get_pressure(z[i_z], T[i_z]);
+			file_plot << t << ' ' << z[i_z] << ' ' << T[i_z] << ' ' << P << ' ' << get_sigma(P, P_TOA) << ' ' << get_theta(T[i_z], P) << '\n';
+			// MC an additional separate line is needed for values at ground level since they are evaluated separately from the loop on layers.
+		}
+		file_plot << '\n';
 	}
 	file_plot.close();
 	//cout << "Temperature profile calculated, values are stored in file " << filename_plot << endl;
-	
-	// Evaluate additional vertical coordinates.
-	double P, P_TOA; // / Pa
-	char filename_coordinates[] = DIR_DATA "/coordinates.dat";
-	P_TOA = get_pressure(z[0], T[0]);
-	file_plot.open(filename_coordinates);
-	file_plot << fixed << setprecision(N_PRECISION);
-	file_plot << "#z P sigma" << endl;
-	for (int i = 0; i < n_layers; i++) {
-		P = get_pressure(z[i], T[i]);
-		file_plot << z[i] << ' ' << P << ' ' << get_sigma(P, P_TOA) << '\n';
-	}
-	//file_plot << global_z_g << ' ' << global_P_g << ' ' << get_sigma(global_P_g, P_TOA) << '\n';
-	file_plot.close();
-	cout << "Additional vertical coordinates calculated, values are stored in file " << filename_coordinates << endl;
 	
 	// Clean up.
 	delete[] z;

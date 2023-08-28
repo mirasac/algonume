@@ -1,8 +1,10 @@
 MAIN=casari_project
+CLASS_OPTIONS=draft
+MAIN_CLASS_OPTIONS="\PassOptionsToClass{${CLASS_OPTIONS}}{article}\input{${MAIN}.tex}"
 DIR_FIGURES=./figures
 FIGURES=${DIR_FIGURES}/spectral_irradiance.pdf ${DIR_FIGURES}/spectral_irradiance_logy.pdf ${DIR_FIGURES}/spectral_irradiance_bands.pdf
 
-.PHONY: all all_figures clean
+.PHONY: all class_options all_figures clean
 
 ${MAIN}.pdf: ${MAIN}.tex ${MAIN}.bbl ${FIGURES}
 	pdflatex ${MAIN}.tex
@@ -20,6 +22,12 @@ all: ${MAIN}.tex bibliography.bib all_figures
 	biber ${MAIN}
 	pdflatex ${MAIN}.tex
 	pdflatex ${MAIN}.tex
+
+class_options: ${MAIN}.tex bibliography.bib
+	pdflatex ${MAIN_CLASS_OPTIONS}
+	biber ${MAIN}
+	pdflatex ${MAIN_CLASS_OPTIONS}
+	pdflatex ${MAIN_CLASS_OPTIONS}
 
 all_figures: ${FIGURES}
 
