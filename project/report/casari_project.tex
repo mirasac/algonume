@@ -133,8 +133,8 @@ Data on constants used in this work are listed in table~\ref{tab:constants}.
     \toprule
     Symbol             & Value                  & Unit                                  & \centering Notes                                                   \tabularnewline
     \midrule
-    $R$                & \num{8.31446261815324} & \unit{\joule\per\kelvin\per\mole}     &                                                                    \\
-    $g$                & \num{9.80665}          & \unit{\metre\per\square\second}       &                                                                    \\
+    $R$                & \num{8.31446261815324} & \unit{\joule\per\kelvin\per\mole}     & Gas constant                                                       \\
+    $g$                & \num{9.80665}          & \unit{\metre\per\square\second}       & Standard gravitational acceleration of Earth                       \\
     $S_0$              & \num{1361.0}           & \unit{\watt\per\square\metre}         & Nominal total solar irradiance, from \cite{IAU}                    \\
     $R_\text{sun}$     & \num{6.957e8}          & \unit{\metre}                         & Nominal solar radius, from \cite{IAU}                              \\
     $T_\text{sun}$     & \num{5772}             & \unit{\kelvin}                        & Solar surface temperature, from \cite{IAU}                         \\
@@ -156,7 +156,7 @@ At wavelengths $\lambda < \qty{4}{\micro\metre}$, solar radiation has much great
 
 Specific intensity of solar radiation can be expressed by a differential equation whose resolution is complex even applying approximations and numerical methods.\cite[469]{Ramanathan}
 
-A lower complexity parametrisation is adopted instead, where the atmosphere is divided in a given number of layers and radiation is absorbed, scattered and reflected between each layes. Multiple reflections can occur from each layer but only one is considered in this model because successive reflections from amospheric layers have negligible intensities compared to the first one.\cite[470]{Ramanathan}
+A lower complexity parametrisation is adopted instead, where the atmosphere is divided in a given number of layers and radiation is absorbed, scattered and reflected between each layer. Multiple reflections can occur but only one is considered in this model because successive reflections from amospheric layers have negligible intensities compared to the first one.\cite[470]{Ramanathan}
 
 % MC continue with formulae.
 
@@ -188,8 +188,8 @@ Equation~\eqref{eq:temperature_derivation} can be rewritten using equation~\eqre
 
 
 
-\subsection{Numerical formulation of the model}
-\label{sec:Numerical formulation of the model}
+\subsection{Numerical resolution}
+\label{sec:Numerical resolution}
 % MC convert the problem and the physical formulae into the numerical algorithms and functions to solve it.
 % MC show and describe formulae.
 % MC explain that the integration scheme is explicit since the evaulation is made at the same time step, not at the next time step. Probably it is better if the evaluation of fluxed is made implicitly to guarantee numerical stability.
@@ -389,7 +389,7 @@ Earth's surface horizontal profile is not uniform, hence altitude and pressure n
 An alternative quantity evaluated in place of $T(t,z)$ for a given parcel of fluid is the potential temperature
 \begin{equation}
   \label{eq:potential_temperature}
-  \theta(t,z) = T(t,z) (\frac{P_0}{P(z)})^\frac{R_m}{c_P}
+  \theta(t,z) = T(t,z) \bigg( \frac{P_0}{P(z)} \bigg)^\frac{R_m}{c_P}
   \quad ,
 \end{equation}
 where $P_0$ is a reference pressure and quantities $P(z)$, $R_m$ and $c_P$ refer to the fluid.
