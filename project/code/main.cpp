@@ -66,7 +66,7 @@ int main(int argc, char * argv[]) {
 	}
 	
 	// Prepare support variables.
-	double mu; // / rad
+	double mu;
 	double P, P_TOA; // / Pa
 	mu = M_SQRT2 / 2.0;
 	

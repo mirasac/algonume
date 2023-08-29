@@ -3,6 +3,7 @@
 # Global variables and functions definition.
 FILENAME_SCRIPT='plot.sh'
 DEF_DIR_EXPORT='../report/figures'
+DEF_NULL='NULL'
 
 print_info() {
 	echo "${FILENAME_SCRIPT} INFO: $1"
@@ -18,7 +19,7 @@ print_usage() {
 		Create plot using a specific gnuplot script.
 		
 		The first argument is mandatory and its value is used as basename for the gnuplot script.
-		If the second argument is specified, if its value is 'export' then the plot is also exported to a file with same basename of the gnuplot script, if its value is 'onlyexport' then the plot is not displayed in a separate window and only the export is performed (e.g. useful in systems which lack of GUI support), if its value is 'onlypdf' then the same exporting of value 'onlyexport' is performed but with terminal pdfcairo.
+		If the second argument is specified, if its value is 'export' then the plot is also exported to a file with same basename of the gnuplot script, if its value is 'onlyexport' then the plot is not displayed in a separate window and only the export is performed (e.g. useful in systems which lack of GUI support), if its value is 'exportpdf' then the same exporting of value 'export' is performed but with terminal pdfcairo, if its value is 'onlypdf' then the same exporting of value 'onlyexport' is performed but with terminal pdfcairo.
 		If the third argument is specified, its value is used as directory for the exported file, else the default directory is '${DEF_DIR_EXPORT}'.
 	EOF
 }
@@ -32,7 +33,7 @@ then
 	return 1
 fi
 
-option="$2"
+option="${2:-${DEF_NULL}}"
 
 # Main plot command.
 command="load '${basename}.gp'"
@@ -42,7 +43,7 @@ case "${option}" in
 export*|only*)
 	dir_export="${3:-${DEF_DIR_EXPORT}}"
 	basename_export="${basename}"
-	if [ "${option}" = 'onlyexport' ]
+	if [ "${option}" = 'export' ] || [ "${option}" = 'onlyexport' ]
 	then
 		command_export=$(
 		cat <<-EOF
@@ -50,7 +51,7 @@ export*|only*)
 			set output '${basename_export}_input.tex'
 		EOF
 		)
-	elif [ "${option}" = 'onlypdf' ]
+	elif [ "${option}" = 'exportpdf' ] || [ "${option}" = 'onlypdf' ]
 	then
 		command_export=$(
 		cat <<-EOF
@@ -76,6 +77,9 @@ export*|only*)
 		)
 	;;
 	esac
+;;
+"${DEF_NULL}")
+	:
 ;;
 *)
 	print_info "invalid value for the second argument, it is ignored"

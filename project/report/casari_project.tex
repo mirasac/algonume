@@ -120,7 +120,8 @@ and gaseous components obey the ideal gas law
 where $\rho$ is the volumetric mass density of the gas. Each layer is homogenoeus in the sense that quantities affecting radiative calculations are not dependent on spatial position inside the layer (e.g. gas densities, extintion coefficients and specific heats at constant pressure $c_P$ are constant inside the layer).
 The average Earth's surface considered in the model is approximated as an emitting blackbody with temperature $T_\text{earth}$. Average Bond albedo for Earth is identified with constant $\alpha$.
 
-Solar radiation is made by parallel rays forming an angle of incidence $\varepsilon$ with the normal of the plane-parallel atmospheric layers. Sun's surface is approximated as an emitting blackbody with temperature $T_\text{sun}$. Constant value $S_0$ for total solar irradiance is used in calculations.
+Solar radiation is made by parallel rays forming an angle of incidence $\varepsilon$ with the normal of the plane-parallel atmospheric layers (i.e. zenith angle). % MC for US1976 epsilon = 45° = pi / 4 rad.
+Sun's surface is approximated as an emitting blackbody with temperature $T_\text{sun}$. Constant value $S_0$ for total solar irradiance is used in calculations.
 
 Solar spectral irradiance extends in the infrared (IR), visible (VIS) and ultraviolet (UV) bands, while spectral irradiance of Earth's surface is peaked in the IR band. The difference of their shapes allows the division of the spectrum at the intersection of the curves. The wavenumber of the intersection point is $\nu_\text{div}$, radiation with lesser wavenumbers is called longwave radiation, otherwise it is addressed as shortwave radiation. The two resulting spectra are treated independently and the overlap between curves is neglected. Accuracy of these approximations and value of $\nu_\text{div}$ are discussed in section~\ref{sec:Division of the electromagnetic spectrum}.
 
@@ -150,21 +151,23 @@ Data on constants used in this work are listed in table~\ref{tab:constants}.
 
 
 
-\subsection{Shortwave radiation}
-% MC TTAPS-I: absorption and scattering of shortwave radiation.
-At wavelengths $\lambda < \qty{4}{\micro\metre}$, solar radiation has much greater intensity than radiation emitted from Earth's surface and atmosphere. Both scattering and absorption by gases, aerosols and clouds of atmosphere dissipates solar radiation.\cite[469]{Ramanathan}
-
-Specific intensity of solar radiation can be expressed by a differential equation whose resolution is complex even applying approximations and numerical methods.\cite[469]{Ramanathan}
-
-A lower complexity parametrisation is adopted instead, where the atmosphere is divided in a given number of layers and radiation is absorbed, scattered and reflected between each layer. Multiple reflections can occur but only one is considered in this model because successive reflections from amospheric layers have negligible intensities compared to the first one.\cite[470]{Ramanathan}
+\subsection{Longwave radiation}
+\label{sec:Longwave radiation}
+% MC TTAPS-I: absorption of longwave radiation.
+At wavelengths $\lambda \geq \qty{4}{\micro\metre}$, solar radiation has lower intensities than radiation emitted by Earth's surface and atmosphere at the same wavelengths. Moreover, it presents negligible scattering in atmosphere with respect to absorption. For these reasons longwave radiation is considered to be emitted only by Earth's surface and atmosphere.\cite[468]{Ramanathan}
 
 % MC continue with formulae.
 
 
 
-\subsection{Longwave radiation}
-% MC TTAPS-I: absorption of longwave radiation.
-At wavelengths $\lambda \geq \qty{4}{\micro\metre}$, solar radiation has lower intensities than radiation emitted by Earth's surface and atmosphere at the same wavelengths. Moreover, it presents negligible scattering in atmosphere with respect to absorption. For these reasons longwave radiation is considered to be emitted only by Earth's surface and atmosphere.\cite[468]{Ramanathan}
+\subsection{Shortwave radiation}
+% MC TTAPS-I: absorption and scattering of shortwave radiation.
+At wavelengths $\lambda < \qty{4}{\micro\metre}$, solar radiation has much greater intensity than radiation emitted from Earth's surface and atmosphere. Both scattering and absorption by gases, aerosols and clouds of atmosphere dissipates solar radiation.\cite[469]{Ramanathan}
+% MC solar diffuse radiant flux is neglected, hence transmittances are characterised only by the component of solar radiation normal to the layers.
+
+Specific intensity of solar radiation can be expressed by a differential equation whose resolution is complex even applying approximations and numerical methods.\cite[469]{Ramanathan}
+
+A lower complexity parametrisation is adopted instead, where the atmosphere is divided in a given number of layers and radiation is absorbed, scattered and reflected between each layer. Multiple reflections can occur but only one is considered in this model because successive reflections from amospheric layers have negligible intensities compared to the first one.\cite[470]{Ramanathan}
 
 % MC continue with formulae.
 
@@ -407,7 +410,7 @@ Software gnuplot is used to generate plots shown in this work. Output values fro
   style=verbatim,%
   gobble=2,%
   float=*h,%
-  caption={Structure of DAT file containing output values. The line spacing between data blocks is mandatory and ellipsis \texttt{...} indicates a logical continuation of the sequences. Number \texttt{N\_t} of temporal steps needed to reach convergence is not known a priori, instead \texttt{N} is the chosen number of atmospheric layers. Quantities \texttt{P}, \texttt{sigma} and \texttt{theta} are added in case of need for additional plots.},%
+  caption={Structure of DAT file containing output values. The line spacing between data blocks is mandatory and ellipsis \texttt{...} indicates a logical continuation of the sequences. Number \texttt{N\_t} of temporal steps needed to reach convergence is not known a priori, instead \texttt{N} is the chosen number of atmospheric layers. Quantities \texttt{P}, \texttt{sigma} and \texttt{theta} are added in case of need for additional plots or comparison with other models.},%
   label={lst:file_plot}%
 ]
   t[0]       z[0]     T[0][0]           P[0]     sigma[0]     theta[0][0]

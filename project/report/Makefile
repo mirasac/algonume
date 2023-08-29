@@ -2,7 +2,7 @@ MAIN=casari_project
 CLASS_OPTIONS=draft
 MAIN_CLASS_OPTIONS="\providecommand\classoptions{${CLASS_OPTIONS}}\input{${MAIN}.tex}"
 DIR_FIGURES=./figures
-FIGURES=${DIR_FIGURES}/spectral_irradiance.pdf ${DIR_FIGURES}/spectral_irradiance_logy.pdf ${DIR_FIGURES}/spectral_irradiance_bands.pdf
+FIGURES=${DIR_FIGURES}/spectral_irradiance.pdf ${DIR_FIGURES}/spectral_irradiance_logy.pdf ${DIR_FIGURES}/spectral_irradiance_bands.pdf ${DIR_FIGURES}/spectral_irradiance_wavelength.pdf
 
 .PHONY: all class_options all_figures clean
 
@@ -39,6 +39,9 @@ ${DIR_FIGURES}/spectral_irradiance_logy.pdf: ${DIR_FIGURES}/spectral_irradiance_
 
 ${DIR_FIGURES}/spectral_irradiance_bands.pdf: ${DIR_FIGURES}/spectral_irradiance_bands_input.tex ${DIR_FIGURES}/spectral_irradiance_bands_input.pdf
 	sh standalone.sh spectral_irradiance_bands ${DIR_FIGURES}
+
+${DIR_FIGURES}/spectral_irradiance_wavelength.pdf: ${DIR_FIGURES}/spectral_irradiance_wavelength_input.tex ${DIR_FIGURES}/spectral_irradiance_wavelength_input.pdf
+	sh standalone.sh spectral_irradiance_wavelength ${DIR_FIGURES}
 
 clean:
 	rm -f *.aux
