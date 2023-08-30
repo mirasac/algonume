@@ -55,3 +55,4 @@
 - Correct format issues related to composition of bibliography.
 - Align fields of tables in source code.
 - Use cf. instead of cfr. and use see when needed.
+- Check content against what prof. Palazzi taught us during lesson.
