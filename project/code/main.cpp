@@ -30,10 +30,10 @@ int main(int argc, char * argv[]) {
 	
 	// Configure absorbers.
 	absorber_t H2O, CO2;
-	H2O.nu = new double[]{140.0, 1600.0, 3760.0, 5350.0, 7250.0};
+	H2O.nu = new double[]{14000.0, 160000.0, 376000.0, 535000.0, 725000.0};
 	H2O.n_nu = 5;
 	H2O.delta_nu = new double[H2O.n_nu]; // MC bandwidths missing.
-	CO2.nu = new double[]{667.0, 960.0, 1060.0, 2410.0, 3660.0, 5200.0};
+	CO2.nu = new double[]{66700.0, 96000.0, 106000.0, 241000.0, 366000.0, 520000.0};
 	CO2.n_nu = 6;
 	CO2.delta_nu = new double[CO2.n_nu]; // MC bandwidths missing.
 	

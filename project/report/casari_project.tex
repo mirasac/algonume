@@ -8,6 +8,7 @@
 \usepackage[style=ieee,backend=biber]{biblatex}
 \usepackage{booktabs}
 %\usepackage[tableposition=top,figureposition=bottom,font=footnotesize,format=hang,subrefformat=parens]{caption}
+\usepackage{chemformula}
 \usepackage{derivative}
 \usepackage{listings}
 %\usepackage{mathtools}
@@ -156,10 +157,9 @@ Data on constants used in this work are listed in table~\ref{tab:constants}.
 
 \subsection{Longwave radiation}
 \label{sec:Longwave radiation}
-% MC TTAPS-I: absorption of longwave radiation.
-% MC absorption by H2O, CO2 and trace gases.
 % MC I use band-averaging techniques, cfr. \cite[220]{primer}.
-At wavelengths $\lambda \geq \qty{4}{\micro\metre}$, solar radiation has lower intensities than radiation emitted by Earth's surface and atmosphere at the same wavelengths. Moreover, it presents negligible scattering in atmosphere with respect to absorption. For these reasons longwave radiation is considered to be emitted only by Earth's surface and atmosphere.\cite[468]{Ramanathan}
+In the longwave region $[\nu_\text{min}, \nu_\text{div}]$ the extinction of radiation is dominated by absorption. %\cite[468]{Ramanathan}
+Gases responsible of absorption in this bandwidth are \ch{H2O} in form of water vapor, \ch{CO2} and trace gases like \ch{N2O}, chlorofluorocarbons (CFCs), \ch{CH4}. %\cite[221]{primer}
 
 % MC continue with formulae.
 
