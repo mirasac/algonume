@@ -3,7 +3,7 @@
 
 #include "constants.h"
 #include "functions.h"
-#include "configuration.h" // Load last to redefine some things.
+#include "configuration.h" // Include last to allow redefinitions.
 
 struct absorber_t {
 	int n_nu;

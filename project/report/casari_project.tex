@@ -94,15 +94,15 @@ The present work intends to study the atmospheric temperature profile averaged o
 % MC explain the atmosphere model: vertical column where each layer present quantities averaged over the global atmosphere.
 The RCM developed for the present work approximates the atmosphere as a vertical column divided in % MC put here the number of layers used.
 plane-parallel layers. 
-A bijective relation exists between altitude $z$ and pressure $P$ (cfr. section~\ref{sec:Relation between pressure and altitude}), hence they can be used interchangeably as vertical coordinates. The origin of coordinate $z$ is set at ground level and it is identified by value $z_\text{g}$ to keep generality. On the contrary, the Top-Of-Atmosphere (TOA) altitude $\zTOA$ is chosen arbitrarily. Pressure decreases with altitude from standard value $P_\text{g}$ at ground level to value $\PTOA$, which is calculated using equation~\ref{eq:pressure_constant_temperature}. % MC this way the secondary scale given by pressure changes with time. To obtain the time changing plot I probaly need to choose which scale (i.e. choose a reference time instant) to use for the whole plot and a good choice is the one calculated when the steady state is reached.
+A bijective relation exists between altitude $z$ and pressure $P$ (cfr. section~\ref{sec:Relation between pressure and altitude}), hence they can be used interchangeably as vertical coordinates. The origin of coordinate $z$ is set at ground level and it is identified by value $z_\text{g}$ to keep generality. On the contrary, the Top-Of-Atmosphere (TOA) altitude $\zTOA$ is chosen arbitrarily. Pressure decreases with altitude from standard value $P_\text{g}$ at ground level to value $\PTOA$, which is calculated using equation~\eqref{eq:pressure_constant_temperature}. % MC this way the secondary scale given by pressure changes with time. To obtain the time changing plot I probaly need to choose which scale (i.e. choose a reference time instant) to use for the whole plot and a good choice is the one calculated when the steady state is reached.
 
-Each layer is identified by a value of $z$ corresponding to the upper boundary of the layer and by its thickness. The corresponding values of pressure are evaluated at each time instant with equation~\ref{eq:pressure_constant_temperature}.
+Each layer is identified by a value of $z$ corresponding to the upper boundary of the layer and by its thickness. The corresponding values of pressure are evaluated at each time instant with equation~\eqref{eq:pressure_constant_temperature}.
 
 
 
 \subsection{Hypotheses and conventions}
 \label{sec:Hypotheses and conventions}
-To simplify some calculations for radiative fluxes, the definition of wavenumber $\nu = \frac{1}{\lambda}$ is used in this work, where $\lambda$ is the wavelenght of the radiation.
+To simplify some calculations for radiative fluxes, the definition of wavenumber $\nu = \frac{1}{\lambda}$ is used in this work, where $\lambda$ is the wavelenght of the radiation. The electromagnetic (EM) spectrum is limited to interval $[\nu_\text{min}, \nu_text{max}]$ and the choice of these values is discussed in section~\ref{sec:Division of the electromagnetic spectrum}.
 
 Specific gas constant is used in thermodynamical relations, which is defined as the gas constant $R$ divided by the gas molar mass. Henceforth, specific gas constant is represented with symbol $R_m$.
 
@@ -123,12 +123,12 @@ The average Earth's surface considered in the model is approximated as an emitti
 Solar radiation is made by parallel rays forming an angle of incidence $\varepsilon$ with the normal of the plane-parallel atmospheric layers (i.e. zenith angle). % MC for US1976 epsilon = 45° = pi / 4 rad.
 Sun's surface is approximated as an emitting blackbody with temperature $T_\text{sun}$. Constant value $S_0$ for total solar irradiance is used in calculations.
 
-Solar spectral irradiance extends in the infrared (IR), visible (VIS) and ultraviolet (UV) bands, while spectral irradiance of Earth's surface is peaked in the IR band. The difference of their shapes allows the division of the spectrum at the intersection of the curves. The wavenumber of the intersection point is $\nu_\text{div}$, radiation with lesser wavenumbers is called longwave radiation, otherwise it is addressed as shortwave radiation. The two resulting spectra are treated independently and the overlap between curves is neglected. Accuracy of these approximations and value of $\nu_\text{div}$ are discussed in section~\ref{sec:Division of the electromagnetic spectrum}.
+Solar spectral irradiance extends in the infrared (IR), visible (VIS) and ultraviolet (UV) bands, while spectral irradiance of Earth's surface is peaked in the IR band. The difference of their shapes allows the division of the spectrum at the intersection of the curves. The wavenumber of the intersection point is $\nu_\text{div}$, radiation with lesser wavenumbers is called longwave radiation, otherwise it is called shortwave radiation. The two resulting spectra are treated independently and the overlap between curves is neglected. Accuracy of these approximations and value of $\nu_\text{div}$ are discussed in section~\ref{sec:Division of the electromagnetic spectrum}.
 
 Data on constants used in this work are listed in table~\ref{tab:constants}.
 \begin{table*}[h]
   \centering
-  \caption{Data on constants used in the present work.}
+  \caption{Data on constants used in the present work. The middle rule separates standard values on top from arbitrary values chosen for the present work on bottom.}
   \label{tab:constants}
   \begin{tabular}[b]{cccp{0.5\textwidth}}
     \toprule
@@ -144,7 +144,10 @@ Data on constants used in this work are listed in table~\ref{tab:constants}.
     $P_\text{g}$       & \num{1.013250e5}       & \unit{\pascal}                        & Standard pressure at ground level, from \cite[2]{US1976}           \\
     $c_{P,\text{air}}$ & \num{1.004e3}          & \unit{\joule\per\kelvin\per\kilogram} & Specific heat at constant pressure of air, from \cite[16]{Catling} \\
     $z_\text{g}$       & \num{0}                & \unit{\metre}                         & Nominal ground level                                               \\
+    \midrule
     $\zTOA$            & \num{55000}            & \unit{\metre}                         & Arbitrary TOA altitude                                             \\ % MC set the value I choose for z_TOA.
+    $\nu_\text{min}$            & \num{100}            & \unit{\per\centi\metre}                         & Arbitrary minimum boundary for EM spectrum                                             \\
+    $\nu_\text{max}$            & \num{100000}            & \unit{\per\centi\metre}                         & Arbitrary maximum boundary for EM spectrum                                             \\
     \bottomrule
   \end{tabular}
 \end{table*}
@@ -161,6 +164,7 @@ At wavelengths $\lambda \geq \qty{4}{\micro\metre}$, solar radiation has lower i
 
 
 \subsection{Shortwave radiation}
+\label{sec:Shortwave radiation}
 % MC TTAPS-I: absorption and scattering of shortwave radiation.
 At wavelengths $\lambda < \qty{4}{\micro\metre}$, solar radiation has much greater intensity than radiation emitted from Earth's surface and atmosphere. Both scattering and absorption by gases, aerosols and clouds of atmosphere dissipates solar radiation.\cite[469]{Ramanathan}
 % MC solar diffuse radiant flux is neglected, hence transmittances are characterised only by the component of solar radiation normal to the layers.
@@ -232,7 +236,9 @@ Layers are numbered downward starting from 0 at the TOA layer.
 \subsection{Division of the electromagnetic spectrum}
 \label{sec:Division of the electromagnetic spectrum}
 % Content of this section is elaborated on \cite[43]{Catling}.
-Spectral irradiances of Sun and Earth's surfaces are obtained from blackbody spectral radiance (cfr. appendix~\ref{sec:Radiometric quantities}). They are compared inside Earth's atmosphere, whose thickness is neglected with respect to the other spatial quantities involved in these calculations, hence the comparison is performed directly on Earth's surface. Given a generic coordinate system, attenuation of solar radiation is considered: spectral radiant intensity of Sun is obtained by multiplying the spectral radiance by the area of a spherical surface with radius $R_\text{sun}$, then the result is divided by the area of a spherical surface with radius \qty{1}{\astronomicalunit} to measure solar radiance at Earth's surface. The resulting solar spectral irradiance is
+Spectral irradiances of Sun's and Earth's surfaces are obtained from blackbody spectral radiance (cfr. appendix~\ref{sec:Radiometric quantities}). They are compared inside Earth's atmosphere, whose thickness is neglected with respect to the other spatial quantities involved in these calculations, hence the comparison is performed directly on Earth's surface. Nevertheless, the reflexion of solar radiation by atmospheric components is still considered and it is parametrised through Earth's Bond albedo. Moreover, attenuation of solar radiation due to distance is considered: given a generic coordinate system, spectral radiant intensity of Sun is obtained by multiplying the spectral radiance by the area of a spherical surface with radius $R_\text{sun}$, then the result is divided by the area of a spherical surface with radius \qty{1}{\astronomicalunit} to measure solar radiance at Earth's surface.
+
+The resulting solar spectral irradiance is
 \begin{equation}
   \label{eq:spectral_irradiance_sun}
   E_\text{sun}(\nu) = (1 - \alpha) \left( \frac{R_\text{sun}}{\qty{1}{\astronomicalunit}} \right)^2 \pi B_\nu(\nu, T_\text{sun})
@@ -245,16 +251,23 @@ while Earth's surface spectral irradiance is
   \quad .
 \end{equation}
 
+The boundaries of the EM spectrum are chosen arbitrarily in such a way that equations~\eqref{eq:spectral_irradiance_sun} and \eqref{eq:spectral_irradiance_earth} integrated in the resulting interval are over \qty{99}{\percent} of the respective radiant exitances (cf. appendix~\ref{sec:Radiometric quantities}) given by the Stefan-Boltzmann law
+\begin{equation}
+  \label{eq:stefan-boltzmann_law}
+  M = \sigma T^4
+\end{equation}
+where $\sigma$ is the Stefan-Boltzmann constant and $T$ is the temperature of the emitting body. The chosen values are shown in table~\ref{tab:constants}.
+
 Figure~\ref{fig:spectral_irradiance} shows the plots of equations~\eqref{eq:spectral_irradiance_sun} and \eqref{eq:spectral_irradiance_earth} and the division of the spectrum at the wavenumber $\nu_\text{div}$ where the curves intersect. Value $\nu_\text{div} \approx \qty{2154}{\per\centi\metre}$ is obtained numerically (cfr. appendix~\ref{sec:Hypotheses}).
 \begin{figure*}[h]
   \centering
   \includegraphics*[keepaspectratio=true,width=0.95\textwidth]{spectral_irradiance_bands}
-  \caption{The vertical black line marks the division of the spectrum at $\nu_\text{div}$. In the longwave region $[\qty{100}{\per\centi\metre}, \nu_\text{div}]$ Earth's surface brings the largest contribution to the total irradiance, in the shortwave region $[\nu_\text{div}, \qty{100000}{\per\centi\metre}]$ solar radiation dominates instead. Infrared (IR), visible (VIS) and ultraviolet (UV) spectral bands as specified by \cite{CIE} are shown in background.}
+  \caption{The vertical black line marks the division of the spectrum at $\nu_\text{div}$. In the longwave region $[\nu_\text{min}, \nu_\text{div}]$ Earth's surface brings the largest contribution to the total irradiance, in the shortwave region $[\nu_\text{div}, \nu_\text{max}]$ solar radiation dominates instead. Infrared (IR), visible (VIS) and ultraviolet (UV) spectral bands as specified by \cite{CIE} are shown in background.}
   \label{fig:spectral_irradiance}
 \end{figure*}
 
-Considering only interval $[\qty{100}{\per\centi\metre}, \nu_\text{div}]$, the largest contribution to the total irradiance is brought by Earth's surface and solar irradiance is neglected, being about \qty{2.2}{\percent} of the total irradiance. The removed irradiance is \qty{0.65}{\percent} of the total Sun's surface irradiance. % MC talk about uncertainties?
-Instead, in $[\nu_\text{div}, \qty{100000}{\per\centi\metre}]$ Earth's surface irradiance is \qty{0.16}{\percent} of the total irradiance in this interval and is neglected. The removed quantity is \qty{0.55}{\percent} of the total Earth's surface irradiance. % MC talk about uncertainties?
+Considering only interval $[\nu_\text{min}, \nu_\text{div}]$, the largest contribution to the total irradiance is brought by Earth's surface and solar irradiance is neglected, being about \qty{1.6}{\percent} of the total irradiance. The removed irradiance is \qty{0.65}{\percent} of the total Sun's surface irradiance. % MC talk about uncertainties?
+Instead, in $[\nu_\text{div}, \nu_\text{max}]$ Earth's surface irradiance is \qty{0.22}{\percent} of the total irradiance in this interval and is neglected. The removed quantity is \qty{0.55}{\percent} of the total Earth's surface irradiance. % MC talk about uncertainties?
 
 
 
@@ -345,9 +358,9 @@ Equation \eqref{eq:pressure_constant_lapse_rate} can be used also with a piecewi
 \label{sec:Radiometric quantities}
 Refer to \cite{CIE} for more details on quantities reviewed in this section.
 
-Consider electromagnetic radiation emitted by a point source. The total emitted power is called \emph{radiant flux}, with unit \unit{\watt}. The density of radiant flux with respect to a solid angle in the direction of emission is called \emph{radiant intensity}, expressed in \unit{\watt\per\steradian}. When radiation interacts with a surface, i.e. it gets absorbed, transmitted or reflected, its radiant intensity distributed over the surface is measured through \emph{radiance} in \unit{\watt\per\square\metre\per\steradian}. If the area on which the radiation is incident is expressed through the solid angle it subtends, the integral of radiance over this solid angle is called \emph{irradiance}, expressed in \unit{\watt\per\square\metre}. Note that the coordinate system where the solid angles of radiant intensity and irradiance are defined may not be the same.
+Consider electromagnetic radiation emitted by a point source. The total emitted power is called \emph{radiant flux}, with unit \unit{\watt}. The density of radiant flux with respect to a solid angle in the direction of emission is called \emph{radiant intensity}, expressed in \unit{\watt\per\steradian}. When radiation interacts with a surface, i.e. it gets absorbed, transmitted or reflected, its radiant intensity distributed over the surface is measured through \emph{radiance} in \unit{\watt\per\square\metre\per\steradian}. If the area on which the radiation is incident is expressed through the solid angle it subtends, the integral of radiance over this solid angle is called \emph{irradiance}, expressed in \unit{\watt\per\square\metre}. Note that the coordinate system where the solid angles of radiant intensity and irradiance are defined may not be the same. Radiant flux emitted by a body normalised over the surface of emission is measured by \emph{radiant exitance} in \unit{\watt\per\square\metre}.
 
-% MC if needed make a consideration for the case where there is no source and only the radiation incident on a surface is considered.
+% MC if needed make a consideration for the case where there is no source and only the radiation incident on a surface is considered. This phenomenon is addressed as diffusion.
 
 All previous quantities can be expressed as densities with respect to the wavelength or the wavenumber and the adjective \emph{spectral} is prefixed to their names. Their units are divided by the respective spectral quantity (e.g. spectral radiance with wavenumber in \unit{\per\centi\metre} has units \unit{\watt\per\metre\squared\centi\metre\per\steradian}).
 

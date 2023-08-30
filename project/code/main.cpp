@@ -6,7 +6,7 @@
 #include "constants.h"
 #include "../../mclib/mclib.h"
 #include "radiation.h"
-#include "configuration.h" // Load last to redefine some things.
+#include "configuration.h" // Include last to allow redefinitions.
 
 void set_layers_z_uniform(double z_min, double z_max, int n_layers, double z[], double delta_z[]);
 void set_absorbers_uniform(int n_layers, int n_absorbers[], absorber_t * absorbers[], absorber_t a1, absorber_t a2);
@@ -76,6 +76,7 @@ int main(int argc, char * argv[]) {
 	file_plot.open(filename_plot);
 	file_plot << fixed << setprecision(N_PRECISION);
 	file_plot << "#t z T P sigma theta" << endl;
+	file_plot << "#(h) (m) (K) (Pa) () (K)" << endl;
 	
 	// Run model.
 	// MC put here initial and boundary conditions.
