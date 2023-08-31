@@ -75,8 +75,8 @@ int main(int argc, char * argv[]) {
 	char filename_plot[] = DIR_DATA "/temperature.dat";
 	file_plot.open(filename_plot);
 	file_plot << fixed << setprecision(N_PRECISION);
-	file_plot << "#t z T P sigma theta" << endl;
-	file_plot << "#(h) (m) (K) (Pa) () (K)" << endl;
+	file_plot << "#t   z   T   P    sigma theta" << endl;
+	file_plot << "#(h) (m) (K) (Pa) ()    (K)" << endl;
 	
 	// Run model.
 	// MC put here initial and boundary conditions.

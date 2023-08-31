@@ -38,7 +38,7 @@ int main(int argc, char * argv[]) {
 	dnu = (nu_max - nu_min) / n_nu;
 	file_plot.open(filename_plot);
 	file_plot << fixed << setprecision(N_PRECISION);
-	file_plot << "#nu E_sun(nu) E_earth(nu)" << endl;
+	file_plot << "#nu       E_sun(nu)    E_earth(nu)" << endl;
 	file_plot << "#(1 / cm) (W cm / m^2) (W cm / m^2)" << endl;
 	for (int i = 0; i <= n_nu; i++) {
 		nu = nu_min + i * dnu;
