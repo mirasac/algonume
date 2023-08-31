@@ -52,13 +52,12 @@ int main(int argc, char * argv[]) {
 	// MC continue with three arrays for the bandwidth of each layer.
 	
 	// Set time integration parameters.
-	int n_t = 10680;
-	double t, dt, t_min, t_max; // / h
-	t_min = 0.0;
-	t_max = 85440.0;
-	dt = (t_max - t_min) / n_t;
+	int i_t;
+	double t, dt; // / h
+	dt = 8.0;
 	
 	// Initialise temperature output variable.
+	double T_TOA; // / K
 	double * T; // / K
 	T = new double[n_layers];
 	for (int i = 0; i < n_layers; i++) {
@@ -76,25 +75,25 @@ int main(int argc, char * argv[]) {
 	file_plot.open(filename_plot);
 	file_plot << fixed << setprecision(N_PRECISION);
 	file_plot << "#t   z   T   P    sigma theta" << endl;
-	file_plot << "#(h) (m) (K) (Pa) ()    (K)" << endl;
+	file_plot << "#(h) (m) (K) (Pa) ()    (K)";
 	
 	// Run model.
+	i_t = 0;
 	// MC put here initial and boundary conditions.
 	P_TOA = get_pressure(z[0], T[0]);
-	for (int i_t = 0; i_t <= n_t; i_t++) { // MC switch to while loop to check convergence condition.
-		t = t_min + i_t * dt;
+	do {
+		file_plot << '\n';
+		t = i_t * dt;
+		T_TOA = T[0];
 		for (int i_z = 0; i_z < n_layers; i_z++) {
-			// MC inner integration loop, where radiative calculations and convective adjustment are performed.
 			P = get_pressure(z[i_z], T[i_z]);
 			file_plot << t << ' ' << z[i_z] << ' ' << T[i_z] << ' ' << P << ' ' << get_sigma(P, P_TOA) << ' ' << get_theta(T[i_z], P) << '\n';
+			// MC inner integration loop, where radiative calculations and convective adjustment are performed.
 		}
-		// MC an additional separate line is needed for values at ground level since they are evaluated separately from the loop on layers.
+		// MC an additional separate line of calculation is needed for values at ground level.
 		file_plot << '\n';
-		// MC avoid adding an extra data block at the end of data file.
-		if (i_t != n_t) {
-			file_plot << '\n';
-		}
-	}
+		i_t++;
+	} while (fabs(T[0] - T_TOA) > TOLERANCE);
 	file_plot.close();
 	//cout << "Temperature profile calculated, values are stored in file " << filename_plot << endl;
 	
