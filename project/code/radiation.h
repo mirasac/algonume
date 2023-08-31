@@ -22,4 +22,9 @@ Return wavenumber in 1 / m of intersection between spectral irradiances of Sun's
 */
 double spectrum_division_nu();
 
+/*
+Return wavenumber in 1 / m of a photon in vacuum with energy Q / eV.
+*/
+double photon_wavenumber(double Q);
+
 #endif /* RADIATION_H */

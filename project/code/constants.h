@@ -4,6 +4,7 @@
 // Physical constants.
 double const global_au = 1.49597870700e11; // m
 double const global_c = 2.99792458e8; // m / s
+double const global_e = 1.602176634e-19; // C
 double const global_g = 9.80665; // m / s^2
 double const global_h = 6.62607015e-34; // J s
 double const global_k_B = 1.380649e-23; // J / K

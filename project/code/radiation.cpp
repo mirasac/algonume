@@ -37,3 +37,7 @@ double spectral_irradiance_diff1(double nu) {
 double spectrum_division_nu() {
 	return newtonraphson(spectral_irradiance_diff, spectral_irradiance_diff1, 2e5, 3e5, TOLERANCE);
 }
+
+double photon_wavenumber(double Q) {
+	return global_h * global_c / (global_e * Q);
+}
