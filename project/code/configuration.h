@@ -10,4 +10,7 @@
 
 #define TOLERANCE 1e-6
 
+#define GAUSSQUAD_POINTS 2
+#define QUAD_INTERVALS 100000
+
 #endif /* CONFIGURATION_H */

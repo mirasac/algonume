@@ -4,7 +4,6 @@
 #include <iostream>
 
 #include "constants.h"
-#include "functions.h"
 #include "../../mclib/mclib.h"
 #include "radiation.h"
 #include "configuration.h" // Include last to allow redefinitions.
@@ -21,9 +20,9 @@ int main(int argc, char * argv[]) {
 	nu_max = 1e7;
 	ratio = global_R_sun / global_au;
 	M_sun = global_sigma * global_T_sun*global_T_sun*global_T_sun*global_T_sun;
-	E_sun = M_PI * gaussquad(planck_law_nu, nu_min, nu_max, GAUSSQUAD_INTERVALS, 2, global_T_sun);
+	E_sun = M_PI * gaussquad(planck_law_nu, nu_min, nu_max, QUAD_INTERVALS, 2, global_T_sun);
 	M_earth = global_sigma * global_T_earth*global_T_earth*global_T_earth*global_T_earth;
-	E_earth = M_PI * gaussquad(planck_law_nu, nu_min, nu_max, GAUSSQUAD_INTERVALS, 2, global_T_earth);
+	E_earth = M_PI * gaussquad(planck_law_nu, nu_min, nu_max, QUAD_INTERVALS, 2, global_T_earth);
 	cout << "In EM spectrum [" << nu_min / 100.0 << " 1 / cm, " << nu_max / 100.0 << " 1 / cm]:" << endl;
 	cout << "- ratio of Sun's surface calculated irradiance to theroretical radiant exitance is: " << E_sun / M_sun << endl;
 	cout << "- ratio of Earth's surface calculated irradiance to theroretical radiant exitance is: " << E_earth / M_earth << endl;
@@ -61,10 +60,10 @@ int main(int argc, char * argv[]) {
 	// Evaluate overlap of spectral irradiances.
 	cout << endl;
 	double E_sun_long, E_earth_long, E_sun_short, E_earth_short; // / (W / m^2)
-	E_sun_long = (1.0 - global_alpha) * ratio*ratio * M_PI * gaussquad(planck_law_nu, nu_min, nu_div, GAUSSQUAD_INTERVALS, 2, global_T_sun);
-	E_earth_long = M_PI * gaussquad(planck_law_nu, nu_min, nu_div, GAUSSQUAD_INTERVALS, 2, global_T_earth);
-	E_sun_short = (1.0 - global_alpha) * ratio*ratio * M_PI * gaussquad(planck_law_nu, nu_div, nu_max, GAUSSQUAD_INTERVALS, 2, global_T_sun);
-	E_earth_short = M_PI * gaussquad(planck_law_nu, nu_div, nu_max, GAUSSQUAD_INTERVALS, 2, global_T_earth);
+	E_sun_long = (1.0 - global_alpha) * ratio*ratio * M_PI * gaussquad(planck_law_nu, nu_min, nu_div, QUAD_INTERVALS, 2, global_T_sun);
+	E_earth_long = M_PI * gaussquad(planck_law_nu, nu_min, nu_div, QUAD_INTERVALS, 2, global_T_earth);
+	E_sun_short = (1.0 - global_alpha) * ratio*ratio * M_PI * gaussquad(planck_law_nu, nu_div, nu_max, QUAD_INTERVALS, 2, global_T_sun);
+	E_earth_short = M_PI * gaussquad(planck_law_nu, nu_div, nu_max, QUAD_INTERVALS, 2, global_T_earth);
 	cout << "In longwave bandwidth [" << nu_min / 100.0 << " 1 / cm, " << nu_div / 100.0 << " 1 / cm]:" << endl;
 	cout << "- irradiances ratio of Sun's surface to total: " << E_sun_long / (E_sun_long + E_earth_long) << endl;
 	cout << "- irradiances ratio of Sun's surface to whole spectrum Sun's surface: " << E_sun_long / (E_sun_long + E_sun_short) << endl;
@@ -74,7 +73,7 @@ int main(int argc, char * argv[]) {
 	
 	// Evaluate overlap of spectral irradiances for shortwave radiation.
 	double E_sun_short_IR; // / (W / m^2)
-	E_sun_short_IR = (1.0 - global_alpha) * ratio*ratio * M_PI * gaussquad(planck_law_nu, nu_div, global_nu_IR_VIS, GAUSSQUAD_INTERVALS, 2, global_T_sun);
+	E_sun_short_IR = (1.0 - global_alpha) * ratio*ratio * M_PI * gaussquad(planck_law_nu, nu_div, global_nu_IR_VIS, QUAD_INTERVALS, 2, global_T_sun);
 	cout << "- Sun's surface irradiances ratio of shortwave IR band to shortwave bandwidth: " << E_sun_short_IR / E_sun_short << endl;
 	
 	return 0;
