@@ -53,7 +53,12 @@ double spectral_longwave_irradiance(double nu, double T_g) {
 	return M_PI * planck_law_nu(nu, T_g) * exp(-0.15);
 }
 
-// MC beware that I am supposing that all layers have same thickness.
+// MC beware that here I am supposing that all layers have same thickness.
 double longwave_irradiance(double const nu_min, double const nu_max, int const n_nu, int const n_layers, double const T[], double const z[]) {
 	return trapezioidalquad(spectral_longwave_irradiance, nu_min, nu_max, n_nu, T[n_layers]);
+}
+
+// MC beware that here I am supposing that all layers have same thickness.
+double shortwave_irradiance(double const nu_min, double const nu_max, int const n_nu, int const n_layers, double const T[], double const z[]) {
+	return 0.0;
 }

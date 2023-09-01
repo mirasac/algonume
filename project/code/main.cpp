@@ -117,8 +117,8 @@ void rhs(double t, double const * Y_0, double * R, int const n_eq) {
 	nu_div = Y_0[i_0_param];
 	for (int i = 0; i < n_eq; i++) {
 		P = get_pressure(Y_0[i_0_z + i], Y_0[i]);
-		E_L = longwave_irradiance(global_nu_min, nu_div, 55, n_eq, Y_0, Y_0 + i_0_z); // MC change to 999 to have dnu = 100 / cm.
-		E_S = 0.0; // MC implement function shortwave_irradiance, try with n_nu = 38.
+		E_L = longwave_irradiance(global_nu_min, nu_div, 55, n_eq, Y_0, Y_0 + i_0_z); // MC change to n_nu = 21 to have dnu ~ 100 / cm.
+		E_S = shortwave_irradiance(nu_div, global_nu_max, 38, n_eq, Y_0, Y_0 + i_0_z); // MC change to n_nu = 978 to have dnu ~ 100 / cm.
 		R[i] = - (E_L + E_S) / (Y_0[i_0_z + i + 1] - Y_0[i_0_z + i])
 			/ (get_density(Y_0[i_0_z + i], Y_0[i]) * global_c_P_air);
 	}

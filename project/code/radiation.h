@@ -54,4 +54,9 @@ Return longwave irradiance in W / m^2.
 */
 double longwave_irradiance(double const nu_min, double const nu_max, int const n_nu, int const n_layers, double const T[], double const z[]);
 
+/*
+Return shortwave irradiance in W / m^2.
+*/
+double shortwave_irradiance(double const nu_min, double const nu_max, int const n_nu, int const n_layers, double const T[], double const z[]);
+
 #endif /* RADIATION_H */

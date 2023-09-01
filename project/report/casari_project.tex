@@ -144,7 +144,8 @@ Data on constants used in this work are listed in table~\ref{tab:constants}.
     $R_\text{sun}$     & \num{6.957e8}          & \unit{\metre}                         & Nominal solar radius, from \cite{IAU}                              \\
     $T_\text{sun}$     & \num{5772}             & \unit{\kelvin}                        & Solar surface temperature, from \cite{IAU}                         \\
     $T_\text{earth}$   & \num{288.15}           & \unit{\kelvin}                        & Earth's surface temperature based on \cite{US1976}                 \\
-    $\alpha$           & \num{0.3}              &                                       & Value compatible with various measures, cfr. \cite[1281]{albedo}   \\
+    $\alpha$           & \num{0.3}              &                                       & Bond albedo value compatible with various observations, cfr. \cite[1281]{albedo}   \\
+    $\alpha_\text{g}$           & \num{0.1}              &                                       & Average surface albedo of Earth, cfr. \cite[217]{primer}   \\
     $P_\text{g}$       & \num{1.013250e5}       & \unit{\pascal}                        & Standard pressure at ground level, from \cite[2]{US1976}           \\
     $c_{P,\text{air}}$ & \num{1.004e3}          & \unit{\joule\per\kelvin\per\kilogram} & Specific heat at constant pressure of air, from \cite[16]{Catling} \\
     $z_\text{g}$       & \num{0}                & \unit{\metre}                         & Nominal ground level                                               \\
@@ -186,7 +187,8 @@ where $E_\text{L}(z)$ and $E_\text{S}(z)$ are the irradiances of longwave and sh
 % Content in this section is elaborated on \cite[218]{primer}.
 In the region $[\nu_\text{min}, \nu_\text{div}]$ the attenuation of radiation is dominated by absorption, scattering is neglected.
 %\cite[468]{Ramanathan}
-Absorbing species in this bandwidth are \ch{H2O} as water vapor, \ch{CO2} and trace gases like \ch{N2O}, chlorofluorocarbons (CFCs), \ch{CH4} (cfr. \cite[221]{primer}).
+Absorbing species in this bandwidth are \ch{H2O} as water vapor, \ch{CO2} and trace gases like \ch{N2O}, chlorofluorocarbons (CFCs), \ch{CH4}.
+%\cite[221]{primer})
 
 The longwave irradiance at altitude $z$ is given by
 \begin{equation}
@@ -226,9 +228,13 @@ As stated by the hypotheses, the absorbing species do not interact, hence $\mu(\
 
 \subsection{Shortwave radiation}
 \label{sec:Shortwave radiation}
-% MC TTAPS-I: absorption and scattering of shortwave radiation.
-At wavelengths $\lambda < \qty{4}{\micro\metre}$, solar radiation has much greater intensity than radiation emitted from Earth's surface and atmosphere. Both scattering and absorption by gases, aerosols and clouds of atmosphere dissipates solar radiation.
+Both absorption and scattering occur in bandwidth $[\nu_\text{div}, \nu_\text{max}]$.
 %\cite[469]{Ramanathan}
+Chemical species absorbing in this bandwitdh are \ch{O3}, \ch{H2O} as water vapor, \ch{CO2} and \ch{O2}.
+%\cite[218]{primer}
+
+% MC continue.
+
 % MC solar diffuse radiant flux is neglected, hence transmittances are characterised only by the component of solar radiation normal to the layers.
 % MC insert the dependence on incidence angle (only for solar radiation, i.e. divide dz by -cos(epsilon)).
 
