@@ -1,5 +1,10 @@
 #include "radiation.h"
 
+void delete_absorber(absorber_t absorber) {
+	delete[] absorber.nu;
+	delete[] absorber.delta_nu;
+}
+
 double planck_law_nu(double nu, double T) {
 	double factor = global_h * global_c / global_k_B;
 	return 2.0 * global_h * global_c*global_c * nu*nu*nu / expm1(factor * nu / T);
@@ -17,24 +22,6 @@ double planck_law_lambda(double lambda, double T) {
 
 double planck_law_nu_average(double nu, double dnu, double T) {
 	return gaussquad(planck_law_nu, nu, nu + dnu, QUAD_INTERVALS, 2, T) / dnu;
-}
-
-double total_flux_longwave(int n_nu, double nu[], double delta_nu[], double T){
-	double _return = 0.0;
-	for (int i = 0; i < n_nu; i++) {
-		_return += flux_longwave(T, nu[i], delta_nu[i]) * delta_nu[i];
-	}
-	return _return;
-}
-
-double flux_longwave(double nu, double delta_nu, double T) {
-	double _return; // MC continue with parametrization of T(z, z').
-	return _return;
-}
-
-void delete_absorber(absorber_t absorber) {
-	delete[] absorber.nu;
-	delete[] absorber.delta_nu;
 }
 
 double spectral_irradiance_diff(double nu) {
@@ -59,4 +46,14 @@ double spectrum_division_nu() {
 
 double photon_wavenumber(double Q) {
 	return global_h * global_c / (global_e * Q);
+}
+
+// MC test with constant optical depth delta = 0.15.
+double spectral_longwave_irradiance(double nu, double T_g) {
+	return M_PI * planck_law_nu(nu, T_g) * exp(-0.15);
+}
+
+// MC beware that I am supposing that all layers have same thickness.
+double longwave_irradiance(double const nu_min, double const nu_max, int const n_nu, int const n_layers, double const T[], double const z[]) {
+	return trapezioidalquad(spectral_longwave_irradiance, nu_min, nu_max, n_nu, T[n_layers]);
 }

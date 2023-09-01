@@ -9,18 +9,19 @@
 #include "utilities.h"
 #include "configuration.h" // Include last to allow redefinitions.
 
+void rhs(double t, const double * Y_0, double * R, int const n_eq);
+
 int main(int argc, char * argv[]) {
 	using namespace std;
 	cout << fixed << setprecision(N_PRECISION);
 	
 	// Configure atmospheric layers.
-	int n_layers = 20;
-	double z_TOA; // / m
+	int n_layers;
 	double * z, * delta_z; // / m
-	z_TOA = 55000.0;
+	n_layers = 20;
 	z = new double[n_layers];
 	delta_z = new double[n_layers];
-	set_layers_z_uniform(global_z_g, z_TOA, n_layers, z, delta_z);
+	set_layers_z_uniform(global_z_g, global_z_TOA, n_layers, z, delta_z);
 	
 	// Configure absorbers.
 	absorber_t H2O, CO2;
@@ -47,16 +48,20 @@ int main(int argc, char * argv[]) {
 	
 	// Set time integration parameters.
 	int i_t;
-	double t, dt; // / h
-	dt = 8.0;
+	double t, dt; // / s
+	dt = 8 * 3600.0;
 	
-	// Initialise temperature output variable.
+	// Initialise temperature output variable, set initial and boundary conditions.
 	double T_TOA; // / K
 	double * T; // / K
-	T = new double[n_layers];
+	T = new double[2 * n_layers + 3]; // Use also for parameters.
 	for (int i = 0; i < n_layers; i++) {
 		T[i] = global_T_earth;
+		T[n_layers + 1 + i] = z[i];
 	}
+	T[n_layers] = global_T_earth; // Temperature at ground level.
+	T[2 * n_layers + 1] = global_z_g;
+	T[2 * n_layers + 2] = nu_div;
 	
 	// Prepare support variables.
 	double mu;
@@ -73,23 +78,22 @@ int main(int argc, char * argv[]) {
 	
 	// Run model.
 	i_t = 0;
-	// MC put here initial and boundary conditions.
-	P_TOA = get_pressure(z[0], T[0]);
 	do {
 		file_plot << '\n';
 		t = i_t * dt;
 		T_TOA = T[0];
+		P_TOA = get_pressure(z[0], T_TOA);
 		for (int i_z = 0; i_z < n_layers; i_z++) {
-			P = get_pressure(z[i_z], T[i_z]);
 			file_plot << t << ' ' << z[i_z] << ' ' << T[i_z] << ' ' << P << ' ' << get_sigma(P, P_TOA) << ' ' << get_theta(T[i_z], P) << '\n';
-			// MC inner integration loop, where radiative calculations and convective adjustment are performed.
 		}
+		file_plot << t << ' ' << global_z_g << ' ' << T[n_layers] << ' ' << P << ' ' << get_sigma(P, P_TOA) << ' ' << get_theta(T[n_layers], P) << '\n';
+		eulerstep(t, dt, T, rhs, n_layers);
 		// MC an additional separate line of calculation is needed for values at ground level.
 		file_plot << '\n';
 		i_t++;
-	} while (fabs(T[0] - T_TOA) > TOLERANCE);
+	} while (fabs(T[0] - T_TOA) > TOLERANCE); // Equilibrium condition at TOA.
 	file_plot.close();
-	//cout << "Temperature profile calculated, values are stored in file " << filename_plot << endl;
+	cout << "Temperature profile calculated, values are stored in file " << filename_plot << endl;
 	
 	// Clean up.
 	delete[] z;
@@ -101,4 +105,21 @@ int main(int argc, char * argv[]) {
 	delete[] absorbers;
 	
 	return 0;
+}
+
+void rhs(double t, double const * Y_0, double * R, int const n_eq) {
+	int i_0_z, i_0_param;
+	double P; // / Pa
+	double nu_div; // / (1 / m)
+	double E_L, E_S; // / (W / m^2)
+	i_0_z = n_eq + 1; // Index of the first value of altitude.
+	i_0_param = i_0_z + n_eq + 1; // Index of the first parameter.
+	nu_div = Y_0[i_0_param];
+	for (int i = 0; i < n_eq; i++) {
+		P = get_pressure(Y_0[i_0_z + i], Y_0[i]);
+		E_L = longwave_irradiance(global_nu_min, nu_div, 55, n_eq, Y_0, Y_0 + i_0_z); // MC change to 999 to have dnu = 100 / cm.
+		E_S = 0.0; // MC implement function shortwave_irradiance, try with n_nu = 38.
+		R[i] = - (E_L + E_S) / (Y_0[i_0_z + i + 1] - Y_0[i_0_z + i])
+			/ (get_density(Y_0[i_0_z + i], Y_0[i]) * global_c_P_air);
+	}
 }

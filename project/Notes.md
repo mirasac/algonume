@@ -56,3 +56,4 @@
 - Align fields of tables in source code.
 - Use cf. instead of cfr. and use see when needed.
 - Check content against what prof. Palazzi taught us during lesson.
+- In the hypotheses stay general by using the term medium instead of layer. Then introduce layers and use them in the transition to the numerical resolution of the model.

@@ -103,7 +103,9 @@ Each layer is identified by a value of $z$ corresponding to the upper boundary o
 
 \subsection{Hypotheses and conventions}
 \label{sec:Hypotheses and conventions}
-To simplify some calculations for radiative fluxes, the definition of wavenumber $\nu = \frac{1}{\lambda}$ is used in this work, where $\lambda$ is the wavelenght of the radiation. The electromagnetic (EM) spectrum is limited to interval $[\nu_\text{min}, \nu_\text{max}]$ and the choice of these values is discussed in section~\ref{sec:Division of the electromagnetic spectrum}.
+To simplify some calculations of radiative fluxes,
+% MC there seems to be no sostantial changes if wavelength would be used in calculations, except for having values about {lambda^2} ~ 10^12 times greater. Maybe this is the real reason for using wavenumber instead of wavelenght.
+the definition of wavenumber $\nu = \frac{1}{\lambda}$ is used in this work, where $\lambda$ is the wavelenght of the radiation. The electromagnetic (EM) spectrum is limited to interval $[\nu_\text{min}, \nu_\text{max}]$ and the choice of these values is discussed in section~\ref{sec:Division of the electromagnetic spectrum}.
 
 Specific gas constant is used in thermodynamical relations, which is defined as the gas constant $R$ divided by the gas molar mass. Henceforth, specific gas constant is represented with symbol $R_m$.
 
@@ -118,8 +120,9 @@ and gaseous components obey the ideal gas law
   P = \rho R_m T
   \quad ,
 \end{equation}
-where $\rho$ is the volumetric mass density of the gas. Each layer is homogenoeus in the sense that quantities affecting radiative calculations are not dependent on spatial position inside the layer (e.g. gas densities, attenuation coefficients $\mu$ and specific heats at constant pressure $c_P$ are constant inside the layer).
-The average Earth's surface considered in the model is approximated as an emitting blackbody with temperature $T_\text{earth}$. Average Bond albedo for Earth is identified with constant $\alpha$.
+where $\rho$ is the volumetric mass density of the gas.
+Each layer is homogenoeus, in the sense that quantities affecting radiative calculations are not dependent on spatial position inside the layer (e.g. gas densities, attenuation coefficients $\mu$ and specific heats at constant pressure $c_P$ are constant inside the layer), and emits in both upward and downward directions as a blackbody. No chemical reactions are supposed to occur in atmosphere.
+The average Earth's surface considered in the model is approximated as a planar blackbody emitting in the normal direction with temperature $T_\text{earth}$. Average Bond albedo for Earth is identified with constant $\alpha$.
 
 Solar radiation is made by parallel rays forming an angle of incidence $\varepsilon$ with the normal of the plane-parallel atmospheric layers (i.e. zenith angle). % MC for US1976 epsilon = 45° = pi / 4 rad.
 Sun's surface is approximated as an emitting blackbody with temperature $T_\text{sun}$. Constant value $S_0$ for total solar irradiance is used in calculations.
@@ -164,7 +167,9 @@ Intermediate layers of the atmosphere are treated as open systems where in gener
 \end{equation}
 where $q(z)$ is the total flux exchanged due to heat transfer, which depends on altitude $z$ also through $T(t,z)$.
 
-The total heat flux $q(z)$ is determined by radiative transfer and atmospheric convection. The first process is described by the radiative transfer equation (RTE), while the second process is governed by fluid dynamics. The RTE is an integro-differential equation in five dimensions and it is not solved directly by the RCM, instead longwave and shortwave radiations are treated separately. Neither the contribution to $q(z)$ due to atmospheric convection is obtained by solving the proper fluid dynamics equations, instead a numerical correction is adopted and it is described in section~\ref{sec:Convective adjustment}.
+The total heat flux $q(z)$ is determined by radiative transfer and atmospheric convection. The first process is described by the radiative transfer equation (RTE),
+%\cite[25]{Modest}
+while the second process is governed by fluid dynamics. The RTE is an integro-differential equation in five dimensions and it is not solved directly by the RCM, instead longwave and shortwave radiations are treated separately. Neither the contribution to $q(z)$ due to atmospheric convection is obtained by solving the proper fluid dynamics equations, in its place a numerical correction is adopted and is described in section~\ref{sec:Convective adjustment}.
 
 With these considerations and using equation~\eqref{eq:hydrostatic_equilibrium} to drop the dependency on $\rho$, equation~\eqref{eq:temperature_derivation} can be rewritten as
 \begin{equation}
@@ -172,31 +177,66 @@ With these considerations and using equation~\eqref{eq:hydrostatic_equilibrium} 
   \pdv*{T(t,z)}{t} = \frac{g}{c_P} \odv*{\big( E_\text{L}(z) + E_\text{S}(z) \big)}{P}
   \quad ,
 \end{equation}
-where $E_\text{L}(z)$ and $E_\text{S}(z)$ are the total irradiances of longwave and shortwave radiations, respectively.
+where $E_\text{L}(z)$ and $E_\text{S}(z)$ are the irradiances of longwave and shortwave radiations, respectively.
 
 
 
 \subsection{Longwave radiation}
 \label{sec:Longwave radiation}
-% MC I use band-averaging techniques, cfr. \cite[220]{primer}.
-In the longwave region $[\nu_\text{min}, \nu_\text{div}]$ the attenuation of radiation is dominated by absorption and scattering is neglected. %\cite[468]{Ramanathan}
-Absorbing species in this bandwidth are \ch{H2O} present as water vapor, \ch{CO2} and trace gases like \ch{N2O}, chlorofluorocarbons (CFCs), \ch{CH4} (cfr. \cite[221]{primer}).
+% Content in this section is elaborated on \cite[218]{primer}.
+In the region $[\nu_\text{min}, \nu_\text{div}]$ the attenuation of radiation is dominated by absorption, scattering is neglected.
+%\cite[468]{Ramanathan}
+Absorbing species in this bandwidth are \ch{H2O} as water vapor, \ch{CO2} and trace gases like \ch{N2O}, chlorofluorocarbons (CFCs), \ch{CH4} (cfr. \cite[221]{primer}).
 
-The radiant flux as function of altitude $E_\text{L}(z)$ is derivated from the spectral integration % MC continue.
+The longwave irradiance at altitude $z$ is given by
+\begin{equation}
+  \label{eq:irradiance_longwave}
+  E_\text{L}(z) = \int_{\nu_\text{min}}^{\nu_\text{div}} E_\text{L}(\nu, z) \odif{\nu}
+  \quad ,
+\end{equation}
+where $E_\text{L}(\nu, z)$ is the longwave spectral irradiance, obtained by integrating the RTE under the hypotheses in section~\ref{sec:Hypotheses and conventions}:
+\begin{equation}
+  \label{eq:spectral_irradiance_longwave}
+  \begin{split}
+    & E_\text{L}(\nu, z) = \\
+    & = \pi B_\nu(\nu, T(t, 0)) \tau(\nu, 0, z) + \\
+    & + \int_{z_\text{g}}^{z} \pi B_\nu(\nu, T(t, z')) \odv{\tau(\nu, z, z')}{z'} \odif{z'} + \\
+    & - \int_{z}^{\zTOA} \pi B_\nu(\nu, T(t, z')) \odv{\tau(\nu, z, z')}{z'} \odif{z'}
+  \end{split}
+\end{equation}
+with $\tau(\nu, z, z')$ spectral transmittance between altitudes $z$ and $z'$ and time $t$ acting as parameter.
+In equation~\eqref{eq:spectral_irradiance_longwave} each addend corresponds to a spectral irradiance depositing energy at altitude $z$: the first one is generated by Earth's surface, the second one and the third one are the total spectral irradiances of layers beneath and above $z$, respectively.
 
-% MC continue with formulae.
+Spectral transmittance is given by 
+\begin{equation}
+  \label{eq:spectral_transmittance}
+  \tau(\nu, z, z') = e^{-\delta(\nu, z, z')}
+  \quad ,
+\end{equation}
+where $\delta(\nu, z, z')$ is the spectral optical depth, which depends only on the spectral attenuation coefficient $\mu(\nu, z'')$ of the medium traversed by the radiation from altitude $z'$ to altitude $z$:
+\begin{equation}
+  \label{eq:spectral_optical_thickness}
+  \delta(\nu, z, z') = \int_{z'}^{z} \mu(\nu, z'') \odif{z''}
+  \quad .
+\end{equation}
+
+As stated by the hypotheses, the absorbing species do not interact, hence $\mu(\nu, z'')$ is simply the sum of the spectral absorption coefficients of the individual components of the medium. Moreover, the coefficient is constant with respect to spatial position due to homogeneity.
 
 
 
 \subsection{Shortwave radiation}
 \label{sec:Shortwave radiation}
 % MC TTAPS-I: absorption and scattering of shortwave radiation.
-At wavelengths $\lambda < \qty{4}{\micro\metre}$, solar radiation has much greater intensity than radiation emitted from Earth's surface and atmosphere. Both scattering and absorption by gases, aerosols and clouds of atmosphere dissipates solar radiation.\cite[469]{Ramanathan}
+At wavelengths $\lambda < \qty{4}{\micro\metre}$, solar radiation has much greater intensity than radiation emitted from Earth's surface and atmosphere. Both scattering and absorption by gases, aerosols and clouds of atmosphere dissipates solar radiation.
+%\cite[469]{Ramanathan}
 % MC solar diffuse radiant flux is neglected, hence transmittances are characterised only by the component of solar radiation normal to the layers.
+% MC insert the dependence on incidence angle (only for solar radiation, i.e. divide dz by -cos(epsilon)).
 
-Specific intensity of solar radiation can be expressed by a differential equation whose resolution is complex even applying approximations and numerical methods.\cite[469]{Ramanathan}
+Specific intensity of solar radiation can be expressed by a differential equation whose resolution is complex even applying approximations and numerical methods
+%\cite[469]{Ramanathan}
 
-A lower complexity parametrisation is adopted instead, where the atmosphere is divided in a given number of layers and radiation is absorbed, scattered and reflected between each layer. Multiple reflections can occur but only one is considered in this model because successive reflections from amospheric layers have negligible intensities compared to the first one.\cite[470]{Ramanathan}
+A lower complexity parametrisation is adopted instead, where the atmosphere is divided in a given number of layers and radiation is absorbed, scattered and reflected between each layer. Multiple reflections can occur but only one is considered in this model because successive reflections from amospheric layers have negligible intensities compared to the first one.
+%\cite[470]{Ramanathan}
 
 % MC continue with formulae.
 
@@ -208,7 +248,9 @@ A lower complexity parametrisation is adopted instead, where the atmosphere is d
 % MC show and describe formulae.
 % MC explain that the integration scheme is explicit since the evaulation is made at the same time step, not at the next time step. Probably it is better if the evaluation of fluxed is made implicitly to guarantee numerical stability.
 
-Euler's method is used to solve the Ordinary Differential Equation (ODE) for the time-dependant temperature function.\cite[472]{Ramanathan} A solution for each atmospheric layer is calculated, hence the resulting values are triplets of temperature, altitude (i.e. proxy for the atmospheric layer) and time (i.e. simulation time). Further information on storage and plotting of data are presented in Section~\ref{sec:Plotting}.
+Euler's method is used to solve the Ordinary Differential Equation (ODE) for the time-dependant temperature function.
+%\cite[472]{Ramanathan}
+A solution for each atmospheric layer is calculated, hence the resulting values are triplets of temperature, altitude (i.e. proxy for the atmospheric layer) and time (i.e. simulation time). Further information on storage and plotting of data are presented in Section~\ref{sec:Plotting}.
 
 % MC how many spectral bands have I chosen? Maybe list them in a table in the appendix with notes for each band to explain why I have chosen that band (e.g. to excite the vibro-rotational levels of some gases).
 Spectral bands are identified by two arrays: one listing the lower bound of each band, the other containing the width of each band. This choice simplify the use of functions for numerical integration. Values related to spectral bands are stored as integers.
@@ -216,6 +258,8 @@ Spectral bands are identified by two arrays: one listing the lower bound of each
 Layers are numbered downward starting from 0 at the TOA layer.
 
 Equation~\eqref{eq:temperature_time_derivative} is solved in the time domain through Euler method. % MC and in space domain? Both are finite differences.
+
+% MC I use band-averaging techniques, cfr. \cite[220]{primer}.
 
 
 
@@ -232,7 +276,8 @@ Equation~\eqref{eq:temperature_time_derivative} is solved in the time domain thr
 
 
 \subsection{Stability analysis}
-% MC the equilibrium temperature profile is insensitive of the initial guess temperature profile for the time-stepping (i.e. Euler) approach.\cite[473]{Ramanathan}
+% MC the equilibrium temperature profile is insensitive of the initial guess temperature profile for the time-stepping (i.e. Euler) approach.
+%\cite[473]{Ramanathan}
 
 
 
@@ -328,13 +373,19 @@ If density is assumed constant, equation~\eqref{eq:hydrostatic_equilibrium} can 
 \end{equation}
 where $(z_0, P_0)$ is a reference point inside the atmosphere.
 
-If density is not constant its expression is given by the ideal gas law (cfr. equation~\eqref{eq:ideal_gas_law}) and, assuming constant temperature $T$, equation~\eqref{eq:hydrostatic_equilibrium} results in:
+If density is not constant its expression is given by the ideal gas law (cfr. equation~\eqref{eq:ideal_gas_law}) and, assuming constant temperature $T$, equation~\eqref{eq:hydrostatic_equilibrium} becomes
+\begin{equation}
+  \label{eq:hydrostatic_equilibrium_ideal_gas_law_constant_temperature}
+  \begin{split}
+    & \odif{P} = - \frac{P g}{R_m T} \odif{z} \iff \\
+    \iff & \frac{\odif{P}}{P} = - \frac{g}{R_m T} \odif{z}
+  \end{split}
+\end{equation}
+with solution
 \begin{equation}
   \label{eq:pressure_constant_temperature}
   \begin{split}
-    & \odif{P} = - \frac{P g}{R_m T} \odif{z} \iff \\
-    \iff & \frac{\odif{P}}{P} = - \frac{g}{R_m T} \odif{z} \impliedby \\
-    \impliedby & \ln(P') \bigg|_{P_0}^{P(z)} = - \frac{g}{R_m T} z' \bigg|_{z_0}^{z} \iff \\
+    & \ln(P') \bigg|_{P_0}^{P(z)} = - \frac{g}{R_m T} z' \bigg|_{z_0}^{z} \iff \\
     \iff & P(z) = P_0 \exp{\bigg( - \frac{g}{R_m T} (z - z_0) \bigg)}
     \quad .
   \end{split}
@@ -349,15 +400,22 @@ A better approximation assumes non-constant density and constant lapse rate $\Ga
 \end{equation}
 with $T_0$ temperature corresponding to reference altitude $z_0$. Using these assumptions and the density rewritten through the ideal gas law \eqref{eq:ideal_gas_law}, equation~\eqref{eq:hydrostatic_equilibrium} becomes
 \begin{equation}
-  \label{eq:pressure_constant_lapse_rate}
+  \label{eq:hydrostatic_equilibrium_ideal_gas_law_constant_lapse_rate}
   \begin{split}
     & \odif{P} = - \frac{P g}{R_m T} \bigg( - \frac{\odif{T}}{\Gamma} \bigg) \iff \\
-    \iff & \frac{\odif{P}}{P} = \frac{g}{R_m \Gamma} \frac{\odif{T}}{T} \impliedby \\
-    \impliedby & \ln(P') \bigg|_{P_0}^{P(z)} = \frac{g}{R_m \Gamma} \ln(T') \bigg|_{T_0}^{T(z)} \iff \\
-    \iff & P(z) = P_0 \bigg( \frac{T_0 - \Gamma (z - z_0)}{T_0} \bigg)^\frac{g}{R_m \Gamma}
+    \iff & \frac{\odif{P}}{P} = \frac{g}{R_m \Gamma} \frac{\odif{T}}{T}
+    \quad ,
   \end{split}
 \end{equation}
-% MC choose a better format for splitted equations.
+which has solution
+\begin{equation}
+  \label{eq:pressure_constant_lapse_rate}
+  \begin{split}
+    & \ln(P') \bigg|_{P_0}^{P(z)} = \frac{g}{R_m \Gamma} \ln(T') \bigg|_{T_0}^{T(z)} \iff \\
+    \iff & P(z) = P_0 \bigg( \frac{T_0 - \Gamma (z - z_0)}{T_0} \bigg)^\frac{g}{R_m \Gamma}
+    \quad .
+  \end{split}
+\end{equation}
 
 Equation \eqref{eq:pressure_constant_lapse_rate} can be used also with a piecewise constant lapse rate in altitude intervals where it is not null. Otherwise, in altitude intervals where lapse rate is null, equation \eqref{eq:pressure_constant_temperature} is valid with appropriate boundary conditions to ensure continuity between layers.
 
@@ -375,28 +433,29 @@ All previous quantities can be expressed as densities with respect to the wavele
 
 Spectral radiance of a blackbody is given by Planck's law
 \begin{equation}
-  \label{eq:blackbody_spectral_radiance}
+  \label{eq:spectral_radiance_blackbody}
   B_\nu (\nu, T) = 2 h c^2 \nu^3 \frac{1}{e^\frac{h c \nu}{k_B T} - 1}
   \quad ,
 \end{equation}
 where $\nu$ is the wavenumber in unit \unit{\per\centi\metre} (cfr. notation in section~\ref{sec:Hypotheses and conventions}), $T$ in unit \unit{\kelvin} is the temperature of the emitting body and the other quantities are constants (cfr. table~\ref{tab:constants}).
 Note that Planck's law has different form when it is expressed in terms of wavelength, due to its definition as density and the resulting change of variables:
 \begin{equation}
-  \label{eq:blackbody_spectral_radiance_lambda}
+  \label{eq:spectral_radiance_blackbody_lambda}
   B_\lambda (\lambda, T) = \frac{2 h c^2}{\lambda^5} \frac{1}{e^\frac{h c}{\lambda k_B T} - 1}
   \quad .
 \end{equation}
 
 If radiance is isotropic, i.e. it is not dependent on the direction of the radiation, the corresponding irradiance is proportional. For instance, if the radiation is absorbed by a hemispheric surface approximated by a blackbody, the spectral irradiance of the surface is
 \begin{equation}
-  \label{eq:blackbody_spectral_irradiance_hemisphere}
+  \label{eq:spectral_irradiance_blackbody_hemisphere}
   \begin{split}
     & \int B_\nu (\nu, T) \odif{\phi} \sin(\theta) \odif{\theta} \cos(\theta) = \\
     & = B_\nu (\nu, T) \int_0^{2\pi} \odif{\phi} \int_0^\frac{\pi}{2} \sin(\theta) \cos(\theta) \odif{\theta} = \\
     & = 2 \pi B_\nu (\nu, T) \int_0^1 \sin(\theta) \odif{(\sin(\theta))} = \\
-    & = 2 \pi B_\nu (\nu, T) \frac{1}{2} = \pi B_\nu (\nu, T)
+    & = 2 \pi B_\nu (\nu, T) \frac{1}{2} = \\
+    & = \pi B_\nu (\nu, T)
+    \quad ,
   \end{split}
-  \quad ,
 \end{equation}
 where spherical coordinates are used to describe the surface and the term $\cos(\theta)$ considers the component of radiation along the normal of the infinitesimal solid angle.
 
@@ -407,7 +466,7 @@ where spherical coordinates are used to describe the surface and the term $\cos(
 Radiation crossing a medium loses energy due to absorption and scattering. This attenuation is measured by the \emph{transmittance} of the medium as the spectral radiant fluxes ratio of transmitted to incident radiation.
 
 % MC continue in parallel to explanation in main text.
-Experimentally it is observed that the ratio between  follows the Beer-Lambert-Bouguer law
+Experimentally it is observed that the ratio between follows the Beer-Lambert-Bouguer law
 \begin{equation}
   \label{eq:extinction_law}
   E(s) = E(0) \int_0^s \dots
@@ -416,7 +475,7 @@ Experimentally it is observed that the ratio between  follows the Beer-Lambert-B
 between radiation and  of radiant flux along the direction of radiation is given by the \emph{attenuation coefficient} (commonly called \emph{extinction coefficient} in atmospheric sciences), which has different definitions based on the way it is derived (cfr. \cite[44]{Catling}). The attenuation coefficient is the sum of \emph{absorption coefficient} and \emph{scattering coefficient} which contain information on the attenuation due to the respective physical processes.
 In general these coefficients are functions of wavelength or wavenumber, in which case the prefix \emph{spectral} is adopted. If the medium is a fluid, they depends on temperature and pressure of the medium.
 
-Integrating the extinction coefficient
+The \emph{optical depth} (also called \emph{optical thickness}) ...
 
 
 

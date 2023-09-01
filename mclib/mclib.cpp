@@ -540,6 +540,14 @@ void eulerstep(double const t, double const dt, double Y[], void (*rhs)(double c
 	}
 }
 
+void eulerstep(double const t, double const dt, double Y[], void (*rhs)(double const t, double const Y_0[], double R[], int const n_eq), int const n_eq) {
+	double R[n_eq];
+	rhs(t, Y, R, n_eq);
+	for (int i = 0; i < n_eq; i++) {
+		Y[i] += dt * R[i];
+	}
+}
+
 void rungekutta2(double const t, double const dt, double Y[], void (*rhs)(double const t, double const Y_0[], double R[]), int const n_eq) {
 	double R[n_eq], k_1[n_eq], k_2[n_eq];
 	rhs(t, Y, k_1);

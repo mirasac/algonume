@@ -260,6 +260,24 @@ n_eq : int
 */
 void eulerstep(double const t, double const dt, double Y[], void (*rhs)(double const t, double const Y_0[], double R[]), int const n_eq);
 
+/*
+Perform a single step of the Euler method for ODEs resolution. First order ODEs are accepted, but an ODE of any order can be treated if it is rewrited as a system of first order ODEs.
+
+Parameters
+----------
+t : double
+	Time value considered during the step execution.
+dt : double
+	Time step.
+Y : double
+	Array of solutions. When the function is called it must contain initial values at time t and after step execution it contains solutions at time t + dt.
+rhs : void
+	Function representing the RHS terms of the equations. It operates simultaneously on all equations, using t as time, Y_0 as array of initial values, R as array of solutions of the operation and n_eq number of first order ODEs treated.
+n_eq : int
+	Number of first order ODEs treated.
+*/
+void eulerstep(double const t, double const dt, double Y[], void (*rhs)(double const t, double const Y_0[], double R[], int const n_eq), int const n_eq);
+
 void rungekutta2(double const t, double const dt, double Y[], void (*rhs)(double const t, double const Y_0[], double R[]), int const n_eq);
 
 void rungekutta4(double const t, double const dt, double Y[], void (*rhs)(double const t, double const Y_0[], double R[]), int const n_eq);
