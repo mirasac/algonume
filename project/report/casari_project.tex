@@ -124,7 +124,7 @@ The average Earth's surface considered in the model is approximated as an emitti
 Solar radiation is made by parallel rays forming an angle of incidence $\varepsilon$ with the normal of the plane-parallel atmospheric layers (i.e. zenith angle). % MC for US1976 epsilon = 45° = pi / 4 rad.
 Sun's surface is approximated as an emitting blackbody with temperature $T_\text{sun}$. Constant value $S_0$ for total solar irradiance is used in calculations.
 
-Solar spectral irradiance extends in the infrared (IR), visible (VIS) and ultraviolet (UV) bands, while spectral irradiance of Earth's surface is peaked in the IR band. The difference of their shapes allows the division of the spectrum at the intersection of the curves. The wavenumber of the intersection point is $\nu_\text{div}$, radiation with lesser wavenumbers is called longwave radiation, otherwise it is called shortwave radiation. The two resulting spectra are treated independently and the overlap between curves is neglected. Accuracy of these approximations and value of $\nu_\text{div}$ are discussed in section~\ref{sec:Division of the electromagnetic spectrum}.
+Solar spectral irradiance extends in the infrared (IR), visible (VIS) and ultraviolet (UV) bands, while spectral irradiance of Earth's surface is peaked in the IR band. The difference of their shapes allows the division of the spectrum at the intersection of the curves. The wavenumber of the intersection point is $\nu_\text{div}$. In this work, radiation with wavenumbers lesser than $\nu_\text{div}$ is addressed as longwave radiation, otherwise the denomination shortwave radiation is used. The two resulting spectra are treated independently and the overlap between curves is neglected. Accuracy of these approximations and value of $\nu_\text{div}$ are discussed in section~\ref{sec:Division of the electromagnetic spectrum}.
 
 Data on constants used in this work are listed in table~\ref{tab:constants}.
 \begin{table*}[h]
@@ -155,13 +155,34 @@ Data on constants used in this work are listed in table~\ref{tab:constants}.
 
 
 
+\subsection{Temperature equation}
+\label{sec:Temperature equation}
+Intermediate layers of the atmosphere are treated as open systems where in general air parcels can move vertically, therefore temperature is determined by horizontally averaging the thermodynamic energy equation. Details on the derivation are in \cite[466]{Ramanathan}, where the equation is written in terms of volumetric power densities. The resulting differential equation describing temperature variation with time across layer $z$ is
+\begin{equation}
+  \label{eq:temperature_derivation}
+  \pdv*{T(t,z)}{t} = -\frac{1}{\rho c_P} \odv*{q(z)}{z}
+\end{equation}
+where $q(z)$ is the total flux exchanged due to heat transfer, which depends on altitude $z$ also through $T(t,z)$.
+
+The total heat flux $q(z)$ is determined by radiative transfer and atmospheric convection. The first process is described by the radiative transfer equation (RTE), while the second process is governed by fluid dynamics. The RTE is an integro-differential equation in five dimensions and it is not solved directly by the RCM, instead longwave and shortwave radiations are treated separately. Neither the contribution to $q(z)$ due to atmospheric convection is obtained by solving the proper fluid dynamics equations, instead a numerical correction is adopted and it is described in section~\ref{sec:Convective adjustment}.
+
+With these considerations and using equation~\eqref{eq:hydrostatic_equilibrium} to drop the dependency on $\rho$, equation~\eqref{eq:temperature_derivation} can be rewritten as
+\begin{equation}
+  \label{eq:temperature_time_derivative}
+  \pdv*{T(t,z)}{t} = \frac{g}{c_P} \odv*{\big( E_\text{L}(z) + E_\text{S}(z) \big)}{P}
+  \quad ,
+\end{equation}
+where $E_\text{L}(z)$ and $E_\text{S}(z)$ are the total irradiances of longwave and shortwave radiations, respectively.
+
+
+
 \subsection{Longwave radiation}
 \label{sec:Longwave radiation}
 % MC I use band-averaging techniques, cfr. \cite[220]{primer}.
 In the longwave region $[\nu_\text{min}, \nu_\text{div}]$ the attenuation of radiation is dominated by absorption and scattering is neglected. %\cite[468]{Ramanathan}
 Absorbing species in this bandwidth are \ch{H2O} present as water vapor, \ch{CO2} and trace gases like \ch{N2O}, chlorofluorocarbons (CFCs), \ch{CH4} (cfr. \cite[221]{primer}).
 
-The radiant flux as function of altitude $\Phi_\text{L}(z)$ is derivated from the spectral integration % MC continue.
+The radiant flux as function of altitude $E_\text{L}(z)$ is derivated from the spectral integration % MC continue.
 
 % MC continue with formulae.
 
@@ -181,25 +202,6 @@ A lower complexity parametrisation is adopted instead, where the atmosphere is d
 
 
 
-% MC maybe put this section before longwave and shortwave.
-\subsection{Temperature equation}
-\label{sec:Temperature equation}
-Intermediate layers of the atmosphere are treated as open systems where in general air parcels can move vertically, therefore temperature is determined by horizontally averaging the thermodynamic energy equation. Details on the derivation are in \cite[466]{Ramanathan}, where the equation is written in terms of volumetric power densities. The resulting differential equation describing temperature variation with time across layer $z$ is
-\begin{equation}
-  \label{eq:temperature_derivation}
-  \pdv*{T(t,z)}{t} = -\frac{1}{\rho c_P} \odv*{q(z)}{z}
-\end{equation}
-where $q(z)$ is the total flux exchanged due to heat transfer, which depends on altitude $z$ also through $T(t,z)$. The total flux is the sum of three terms: $\Phi_\text{L}(z)$ and $\Phi_\text{S}(z)$ are the total irradiances of longwave and shortwave radiations, respectively, and $q_\text{C}(z)$ is the flux generated by convection.
-
-Equation~\eqref{eq:temperature_derivation} can be rewritten using equation~\eqref{eq:hydrostatic_equilibrium} to drop the dependency on layer density. Moreover, $q_\text{C}(z)$ is neglected because it would require the resolution of equations from fluid dynamics. A numerical correction is adopted instead, which is described in section~\ref{sec:Convective adjustment}. With these considerations, the actual equation for temperature is:
-\begin{equation}
-  \label{eq:temperature_time_derivative}
-  \pdv*{T(t,z)}{t} = -\frac{g}{c_P} \odv*{\big( \Phi_\text{L}(z) + \Phi_\text{S}(z) \big)}{P}
-  \quad .
-\end{equation}
-
-
-
 \subsection{Numerical resolution}
 \label{sec:Numerical resolution}
 % MC convert the problem and the physical formulae into the numerical algorithms and functions to solve it.
@@ -213,7 +215,7 @@ Spectral bands are identified by two arrays: one listing the lower bound of each
 
 Layers are numbered downward starting from 0 at the TOA layer.
 
-Equation~\eqref{eq:temperature_time_derivative} is solved in the time domain through Euler method % MC and in space domain? Both are finite differences.
+Equation~\eqref{eq:temperature_time_derivative} is solved in the time domain through Euler method. % MC and in space domain? Both are finite differences.
 
 
 
@@ -408,7 +410,7 @@ Radiation crossing a medium loses energy due to absorption and scattering. This 
 Experimentally it is observed that the ratio between  follows the Beer-Lambert-Bouguer law
 \begin{equation}
   \label{eq:extinction_law}
-  
+  E(s) = E(0) \int_0^s \dots
 \end{equation}
 
 between radiation and  of radiant flux along the direction of radiation is given by the \emph{attenuation coefficient} (commonly called \emph{extinction coefficient} in atmospheric sciences), which has different definitions based on the way it is derived (cfr. \cite[44]{Catling}). The attenuation coefficient is the sum of \emph{absorption coefficient} and \emph{scattering coefficient} which contain information on the attenuation due to the respective physical processes.
