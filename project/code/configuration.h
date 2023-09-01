@@ -13,4 +13,9 @@
 #define GAUSSQUAD_POINTS 2
 #define QUAD_INTERVALS 100000
 
+// Arbitrary values.
+double const global_nu_min = 1e4; // 1 / m
+double const global_nu_max = 1e7; // 1 / m
+double const global_z_TOA = 55000.0; // m
+
 #endif /* CONFIGURATION_H */
