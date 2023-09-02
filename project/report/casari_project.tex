@@ -122,7 +122,7 @@ and gaseous components obey the ideal gas law
 \end{equation}
 where $\varrho$ is the volumetric mass density of the gas.
 Each layer is homogenoeus, in the sense that quantities affecting radiative calculations are not dependent on spatial position inside the layer (e.g. gas densities, attenuation coefficients $\mu$ and specific heats at constant pressure $c_P$ are constant inside the layer), and emits in both upward and downward directions as a blackbody. No chemical reactions are supposed to occur in atmosphere.
-The average Earth's surface considered in the model is approximated as a planar blackbody emitting in the normal direction with temperature $T_\text{earth}$. Average Bond albedo for Earth is identified with constant $\alpha$.
+The average Earth's surface considered in the model is approximated as a planar blackbody emitting in the normal direction with temperature $T_\text{earth}$. Average Bond albedo for Earth is identified with constant $A$.
 
 Solar radiation is made by parallel rays forming an angle of incidence $\varepsilon$ with the normal of the plane-parallel atmospheric layers (i.e. zenith angle). % MC for US1976 epsilon = 45° = pi / 4 rad.
 Sun's surface is approximated as an emitting blackbody with temperature $T_\text{sun}$. Constant value $S_0$ for total solar irradiance is used in calculations.
@@ -144,8 +144,8 @@ Data on constants used in this work are listed in table~\ref{tab:constants}.
     $R_\text{sun}$     & \num{6.957e8}          & \unit{\metre}                         & Nominal solar radius, from \cite{IAU}                              \\
     $T_\text{sun}$     & \num{5772}             & \unit{\kelvin}                        & Solar surface temperature, from \cite{IAU}                         \\
     $T_\text{earth}$   & \num{288.15}           & \unit{\kelvin}                        & Earth's surface temperature based on \cite{US1976}                 \\
-    $\alpha$           & \num{0.3}              &                                       & Bond albedo value compatible with various observations, cfr. \cite[1281]{albedo}   \\
-    $\alpha_\text{g}$           & \num{0.1}              &                                       & Average surface albedo of Earth, cfr. \cite[217]{primer}   \\
+    $A$           & \num{0.3}              &                                       & Bond albedo value compatible with various observations, cfr. \cite[1281]{albedo}   \\
+    $A_\text{g}$           & \num{0.1}              &                                       & Average surface albedo of Earth, cfr. \cite[217]{primer}   \\
     $P_\text{g}$       & \num{1.013250e5}       & \unit{\pascal}                        & Standard pressure at ground level, from \cite[2]{US1976}           \\
     $c_{P,\text{air}}$ & \num{1.004e3}          & \unit{\joule\per\kelvin\per\kilogram} & Specific heat at constant pressure of air, from \cite[16]{Catling} \\
     $z_\text{g}$       & \num{0}                & \unit{\metre}                         & Nominal ground level                                               \\
@@ -233,6 +233,7 @@ Both absorption and scattering occur in bandwidth $[\nu_\text{div}, \nu_\text{ma
 Chemical species absorbing in this bandwitdh are \ch{O3}, \ch{H2O} as water vapor, \ch{CO2} and \ch{O2}.
 %\cite[218]{primer}
 
+Explicit evaluation of scattering and reflection of solar radiation is not performed due to the complexity of the equations. Instead, reflectance $\rho$, absorbance $\alpha$ at each point of the atmosphere at each altitude the solar radiation is decomposed in reflected, 
 % MC continue.
 
 % MC solar diffuse radiant flux is neglected, hence transmittances are characterised only by the component of solar radiation normal to the layers.
@@ -246,6 +247,7 @@ A lower complexity parametrisation is adopted instead, where the atmosphere is d
 
 % MC continue with formulae.
 
+% MC first I neglect effect from cloud diffusion.
 
 
 \subsection{Numerical resolution}
@@ -301,7 +303,7 @@ Spectral irradiances of Sun's and Earth's surfaces are obtained from blackbody s
 The resulting solar spectral irradiance is
 \begin{equation}
   \label{eq:spectral_irradiance_sun}
-  E_\text{sun}(\nu) = (1 - \alpha) \left( \frac{R_\text{sun}}{\qty{1}{\astronomicalunit}} \right)^2 \pi B_\nu(\nu, T_\text{sun})
+  E_\text{sun}(\nu) = (1 - A) \left( \frac{R_\text{sun}}{\qty{1}{\astronomicalunit}} \right)^2 \pi B_\nu(\nu, T_\text{sun})
   \quad ,
 \end{equation}
 while Earth's surface spectral irradiance is

@@ -12,8 +12,8 @@ double const global_R = 8.31446261815324; // J / (K mol)
 double const global_sigma = 5.670374419e-8; // W / (m^2 K^4)
 
 // Nominal values.
-double const global_alpha = 0.3;
-double const global_alpha_g = 0.1;
+double const global_A = 0.3;
+double const global_A_g = 0.1;
 double const global_c_P_air = 1.004e3; // J / (K kg)
 double const global_Gamma_0 = 0.0065; // K / m
 double const global_nu_IR_VIS = 1e7 / 7.8; // 1 / m
