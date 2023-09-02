@@ -1,0 +1,40 @@
+\documentclass[class=article,border=0mm,tikz=true,10pt]{standalone}
+\input{../standalone_packages.tex}
+\usetikzlibrary {decorations.pathmorphing,positioning}
+\begin{document}
+\begin{tikzpicture}[
+  thick,
+  radiation/.style={
+    -latex,
+    decorate,
+    decoration={
+      snake,
+      amplitude=1,
+      post length=1mm
+    }
+  }
+]
+  \draw[radiation] (5,6) -- (5,4)
+    node[anchor=south east] {$\frac{S_0}{\cos \varepsilon}$};
+  \draw[radiation] (5,4) -- (6,6)
+    node[midway,anchor=west] {$A \frac{S_0}{\cos \varepsilon}$};
+  \draw (0,4)
+    node[anchor=east] {0}
+    -- (12,4);
+  \draw[radiation] (5,4)
+    node[anchor=north east] {$(1 - A) \frac{S_0}{\cos \varepsilon}$}
+    -- (5,0)
+    node[anchor=south east] {$\tau_\text{i}(0) (1 - A) \frac{S_0}{\cos \varepsilon}$};
+  \draw[radiation] (5,3) -- (4,2)
+    node[anchor=north east] {$\alpha_\text{i}(0) (1 - A) \frac{S_0}{\cos \varepsilon}$};
+  \draw[radiation] (5,0) -- (6,3)
+    node[anchor=south west] {$\alpha_\text{i}(0) \rho(1) \tau_\text{i}(0) (1 - A) \frac{S_0}{\cos \varepsilon}$}
+    node[near end,anchor=west] {$\rho(1) \tau_\text{i}(0) (1 - A) \frac{S_0}{\cos \varepsilon}$};
+  \draw (0,0)
+    node[anchor=east] {1}
+    -- (12,0);
+  \draw[radiation] (5,0) -- (5,-2);
+  \draw[radiation] (6,-2) -- (7,1)
+    node[anchor=west] {};
+\end{tikzpicture}
+\end{document}

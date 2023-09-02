@@ -2,7 +2,7 @@ MAIN=casari_project
 CLASS_OPTIONS=draft
 MAIN_CLASS_OPTIONS="\providecommand\classoptions{${CLASS_OPTIONS}}\input{${MAIN}.tex}"
 DIR_FIGURES=./figures
-FIGURES=${DIR_FIGURES}/spectral_irradiance.pdf ${DIR_FIGURES}/spectral_irradiance_logy.pdf ${DIR_FIGURES}/spectral_irradiance_bands.pdf ${DIR_FIGURES}/spectral_irradiance_wavelength.pdf
+FIGURES=${DIR_FIGURES}/spectral_irradiance.pdf ${DIR_FIGURES}/spectral_irradiance_logy.pdf ${DIR_FIGURES}/spectral_irradiance_bands.pdf ${DIR_FIGURES}/spectral_irradiance_wavelength.pdf ${DIR_FIGURES}/shortwave_radiation.pdf ${DIR_FIGURES}/shortwave_radiation_TOA.pdf ${DIR_FIGURES}/shortwave_radiation_g.pdf
 
 .PHONY: all class_options all_figures clean
 
@@ -42,6 +42,21 @@ ${DIR_FIGURES}/spectral_irradiance_bands.pdf: ${DIR_FIGURES}/spectral_irradiance
 
 ${DIR_FIGURES}/spectral_irradiance_wavelength.pdf: ${DIR_FIGURES}/spectral_irradiance_wavelength_input.tex ${DIR_FIGURES}/spectral_irradiance_wavelength_input.pdf
 	sh standalone.sh spectral_irradiance_wavelength ${DIR_FIGURES}
+
+${DIR_FIGURES}/shortwave_radiation.pdf: ${DIR_FIGURES}/shortwave_radiation.tex
+	pdflatex -jobname=shortwave_radiation -output-directory=${DIR_FIGURES} ${DIR_FIGURES}/shortwave_radiation
+	rm ${DIR_FIGURES}/shortwave_radiation.aux
+	rm ${DIR_FIGURES}/shortwave_radiation.log
+
+${DIR_FIGURES}/shortwave_radiation_TOA.pdf: ${DIR_FIGURES}/shortwave_radiation_TOA.tex
+	pdflatex -jobname=shortwave_radiation_TOA -output-directory=${DIR_FIGURES} ${DIR_FIGURES}/shortwave_radiation_TOA
+	rm ${DIR_FIGURES}/shortwave_radiation_TOA.aux
+	rm ${DIR_FIGURES}/shortwave_radiation_TOA.log
+
+${DIR_FIGURES}/shortwave_radiation_g.pdf: ${DIR_FIGURES}/shortwave_radiation_g.tex
+	pdflatex -jobname=shortwave_radiation_g -output-directory=${DIR_FIGURES} ${DIR_FIGURES}/shortwave_radiation_g
+	rm ${DIR_FIGURES}/shortwave_radiation_g.aux
+	rm ${DIR_FIGURES}/shortwave_radiation_g.log
 
 clean:
 	rm -f *.aux
