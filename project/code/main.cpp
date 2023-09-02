@@ -74,7 +74,7 @@ int main(int argc, char * argv[]) {
 	file_plot.open(filename_plot);
 	file_plot << fixed << setprecision(N_PRECISION);
 	file_plot << "#t   z   T   P    sigma theta" << endl;
-	file_plot << "#(h) (m) (K) (Pa) ()    (K)";
+	file_plot << "#'h' 'm' 'K' 'Pa' '1'   'K'";
 	
 	// Run model.
 	i_t = 0;

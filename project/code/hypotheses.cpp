@@ -13,9 +13,7 @@ int main(int argc, char * argv[]) {
 	cout << fixed << setprecision(N_PRECISION);
 	
 	// Check validity of EM spectrum.
-	double ratio;
 	double M_sun, E_sun, M_earth, E_earth; // / (W / m^2)
-	ratio = global_R_sun / global_au;
 	M_sun = global_sigma * global_T_sun*global_T_sun*global_T_sun*global_T_sun;
 	E_sun = M_PI * gaussquad(planck_law_nu, global_nu_min, global_nu_max, QUAD_INTERVALS, 2, global_T_sun);
 	M_earth = global_sigma * global_T_earth*global_T_earth*global_T_earth*global_T_earth;
@@ -27,15 +25,17 @@ int main(int argc, char * argv[]) {
 	// Plot spectral irradiance of Sun's and Earth's surfaces as blackbodies.
 	cout << endl;
 	int const n_nu = 10000;
+	double ratio;
 	double nu, dnu; // / (1 / m)
 	double E_sun_nu, E_earth_nu; // / (W m / m^2)
 	ofstream file_plot;
 	char filename_plot[] = DIR_DATA "/spectral_irradiance.dat";
+	ratio = global_R_sun / global_au;
 	dnu = (global_nu_max - global_nu_min) / n_nu;
 	file_plot.open(filename_plot);
 	file_plot << fixed << setprecision(N_PRECISION);
 	file_plot << "#nu       E_sun(nu)    E_earth(nu)" << endl;
-	file_plot << "#(1 / cm) (W cm / m^2) (W cm / m^2)" << endl;
+	file_plot << "#'1 / cm' 'W cm / m^2' 'W cm / m^2'" << endl;
 	for (int i = 0; i <= n_nu; i++) {
 		nu = global_nu_min + i * dnu;
 		E_sun_nu = (1.0 - global_A) * ratio*ratio * M_PI * planck_law_nu(nu, global_T_sun);
@@ -67,11 +67,6 @@ int main(int argc, char * argv[]) {
 	cout << "In shortwave bandwidth [" << nu_div / 100.0 << " 1 / cm, " << global_nu_max / 100.0 << " 1 / cm]:" << endl;
 	cout << "- irradiances ratio of Earth's surface to total: " << E_earth_short / (E_sun_short + E_earth_short) << endl;
 	cout << "- irradiances ratio of Earth's surface to whole spectrum Earth's surface: " << E_earth_short / (E_earth_long + E_earth_short) << endl;
-	
-	// Evaluate overlap of spectral irradiances for shortwave radiation.
-	double E_sun_short_IR; // / (W / m^2)
-	E_sun_short_IR = (1.0 - global_A) * ratio*ratio * M_PI * gaussquad(planck_law_nu, nu_div, global_nu_IR_VIS, QUAD_INTERVALS, 2, global_T_sun);
-	cout << "- Sun's surface irradiances ratio of shortwave IR band to shortwave bandwidth: " << E_sun_short_IR / E_sun_short << endl;
 	
 	return 0;
 }
