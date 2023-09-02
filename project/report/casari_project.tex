@@ -112,15 +112,15 @@ Specific gas constant is used in thermodynamical relations, which is defined as 
 Some assumptions are made on state and composition of Earth's atmosphere. Gravitational acceleration $g$ is constant. Atmospheric layers are supposed to be in hydrostatic equilibrium described by
 \begin{equation}
   \label{eq:hydrostatic_equilibrium}
-  \odif{P} = - \rho g \odif{z}
+  \odif{P} = - \varrho g \odif{z}
 \end{equation}
 and gaseous components obey the ideal gas law
 \begin{equation}
   \label{eq:ideal_gas_law}
-  P = \rho R_m T
+  P = \varrho R_m T
   \quad ,
 \end{equation}
-where $\rho$ is the volumetric mass density of the gas.
+where $\varrho$ is the volumetric mass density of the gas.
 Each layer is homogenoeus, in the sense that quantities affecting radiative calculations are not dependent on spatial position inside the layer (e.g. gas densities, attenuation coefficients $\mu$ and specific heats at constant pressure $c_P$ are constant inside the layer), and emits in both upward and downward directions as a blackbody. No chemical reactions are supposed to occur in atmosphere.
 The average Earth's surface considered in the model is approximated as a planar blackbody emitting in the normal direction with temperature $T_\text{earth}$. Average Bond albedo for Earth is identified with constant $\alpha$.
 
@@ -164,7 +164,7 @@ Data on constants used in this work are listed in table~\ref{tab:constants}.
 Intermediate layers of the atmosphere are treated as open systems where in general air parcels can move vertically, therefore temperature is determined by horizontally averaging the thermodynamic energy equation. Details on the derivation are in \cite[466]{Ramanathan}, where the equation is written in terms of volumetric power densities. The resulting differential equation describing temperature variation with time across layer $z$ is
 \begin{equation}
   \label{eq:temperature_derivation}
-  \pdv*{T(t,z)}{t} = -\frac{1}{\rho c_P} \odv*{q(z)}{z}
+  \pdv*{T(t,z)}{t} = -\frac{1}{\varrho c_P} \odv*{q(z)}{z}
 \end{equation}
 where $q(z)$ is the total flux exchanged due to heat transfer, which depends on altitude $z$ also through $T(t,z)$.
 
@@ -172,7 +172,7 @@ The total heat flux $q(z)$ is determined by radiative transfer and atmospheric c
 %\cite[25]{Modest}
 while the second process is governed by fluid dynamics. The RTE is an integro-differential equation in five dimensions and it is not solved directly by the RCM, instead longwave and shortwave radiations are treated separately. Neither the contribution to $q(z)$ due to atmospheric convection is obtained by solving the proper fluid dynamics equations, in its place a numerical correction is adopted and is described in section~\ref{sec:Convective adjustment}.
 
-With these considerations and using equation~\eqref{eq:hydrostatic_equilibrium} to drop the dependency on $\rho$, equation~\eqref{eq:temperature_derivation} can be rewritten as
+With these considerations and using equation~\eqref{eq:hydrostatic_equilibrium} to drop the dependency on $\varrho$, equation~\eqref{eq:temperature_derivation} can be rewritten as
 \begin{equation}
   \label{eq:temperature_time_derivative}
   \pdv*{T(t,z)}{t} = \frac{g}{c_P} \odv*{\big( E_\text{L}(z) + E_\text{S}(z) \big)}{P}
@@ -311,14 +311,14 @@ while Earth's surface spectral irradiance is
   \quad .
 \end{equation}
 
-The boundaries of the EM spectrum are chosen arbitrarily in such a way that equations~\eqref{eq:spectral_irradiance_sun} and \eqref{eq:spectral_irradiance_earth} integrated in the resulting interval are over \qty{99}{\percent} of the respective radiant exitances (cf. appendix~\ref{sec:Radiometric quantities}) given by the Stefan-Boltzmann law
+The boundaries of the EM spectrum are chosen arbitrarily in such a way that both equation~\eqref{eq:spectral_irradiance_sun} and equation~\eqref{eq:spectral_irradiance_earth} integrated in the resulting interval are over \qty{99}{\percent} of the respective radiant exitances (cf. appendix~\ref{sec:Radiometric quantities}) given by the Stefan-Boltzmann law
 \begin{equation}
   \label{eq:stefan-boltzmann_law}
   M(T) = \sigma T^4
 \end{equation}
 where $\sigma$ is the Stefan-Boltzmann constant and $T$ is the temperature of the emitting body. The chosen values are shown in table~\ref{tab:constants}.
 
-Figure~\ref{fig:spectral_irradiance} shows the plots of equations~\eqref{eq:spectral_irradiance_sun} and \eqref{eq:spectral_irradiance_earth} and the division of the spectrum at the wavenumber $\nu_\text{div}$ where the curves intersect. Value $\nu_\text{div} \approx \qty{2154}{\per\centi\metre}$ is obtained numerically (cfr. appendix~\ref{sec:Hypotheses}).
+Figure~\ref{fig:spectral_irradiance} shows the plots of equation~\eqref{eq:spectral_irradiance_sun}, equation~\eqref{eq:spectral_irradiance_earth} and the division of the spectrum at the wavenumber $\nu_\text{div}$ where the curves intersect. Value $\nu_\text{div} \approx \qty{2154}{\per\centi\metre}$ is obtained numerically (cfr. appendix~\ref{sec:Hypotheses}).
 \begin{figure*}[h]
   \centering
   \includegraphics*[keepaspectratio=true,width=0.95\textwidth]{spectral_irradiance_bands}
@@ -374,7 +374,7 @@ A general result regarding planetary atmosphere is that atmospheric pressure dec
 If density is assumed constant, equation~\eqref{eq:hydrostatic_equilibrium} can be solved easily resulting in a linear dependence of pressure $P$ on altitude $z$, % MC normalize the way I refere to sections and equations.
 \begin{equation}
   \label{eq:pressure_constant_density}
-  P(z) = P_0 - \rho g (z - z_0)
+  P(z) = P_0 - \varrho g (z - z_0)
   \quad ,
 \end{equation}
 where $(z_0, P_0)$ is a reference point inside the atmosphere.
@@ -493,6 +493,7 @@ Earth's surface horizontal profile is not uniform, hence altitude and pressure n
   \sigma = \frac{P - \PTOA}{P_\text{g} - \PTOA}
   \quad .
 \end{equation}
+To avoid confusion, in this work symbol $\sigma$ is used for the Stefan-Boltzmann constant (cfr. table~\ref{tab:constants}), except for equation~\eqref{eq:sigma_coordinate}.
 
 An alternative quantity evaluated in place of $T(t,z)$ for a given parcel of fluid is the potential temperature
 \begin{equation}
@@ -515,7 +516,7 @@ Software gnuplot is used to generate plots shown in this work. Output values fro
   style=verbatim,%
   gobble=2,%
   float=*h,%
-  caption={Structure of DAT file containing output values. The line spacing between data blocks is mandatory and ellipsis \texttt{...} indicates a logical continuation of the sequence. Number \texttt{N\_t} of temporal steps needed to reach convergence is not known a priori, instead \texttt{N} is the chosen number of atmospheric layers. Quantities \texttt{P}, \texttt{sigma} and \texttt{theta} are added in case of need for additional plots or comparison with other models.},%
+  caption={Structure of DAT file containing output values. The line spacing between data blocks is mandatory and ellipsis \texttt{...} indicates a logical continuation of the sequence. Number \texttt{N\_t} of temporal steps needed to reach convergence is not known a priori, instead \texttt{N} is the chosen number of atmospheric layers. Quantities \texttt{P}, \texttt{sigma} and \texttt{theta} are added for additional plots or for comparison with other models. To maintain characters portability, sigma coordinate and potential temperature are presented with their names \texttt{sigma} and \texttt{theta} and not by their symbols from equation~\eqref{eq:sigma_coordinate} and equation~\eqref{eq:potential_temperature}, respectively.},%
   label={lst:file_plot}%
 ]
   t[0]       z[0]     T[0][0]           P[0]     sigma[0]     theta[0][0]
