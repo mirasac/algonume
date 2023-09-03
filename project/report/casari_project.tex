@@ -152,6 +152,7 @@ Data on constants used in this work are listed in table~\ref{tab:constants}.
     $\zTOA$            & \num{55000}            & \unit{\metre}                         & Arbitrary TOA altitude                                             \\ % MC set the value I choose for z_TOA.
     $\nu_\text{min}$            & \num{100}            & \unit{\per\centi\metre}                         & Arbitrary minimum boundary for EM spectrum                                             \\
     $\nu_\text{max}$            & \num{100000}            & \unit{\per\centi\metre}                         & Arbitrary maximum boundary for EM spectrum                                             \\
+    $N$            & \num{20}            &                         & Number of atmospheric layers                                             \\
     \bottomrule
   \end{tabular}
 \end{table*}
@@ -239,6 +240,7 @@ Multiple reflections can occur but only one is considered in this model because 
 %\cite[470]{Ramanathan}
 
 % MC here talk about diffusion adding the factor of 1.66 to the optical depth, cfr. \cite[469]{Ramanathan} for a superficial explanation and \cite[217]{primer} for a more elaborated description, copied from \cite[367]{Manabe}.
+% MC for scattering see \cite[217]{primer}.
 
 % MC continue.
 In a similar way to hortwave radiation is given by:
@@ -250,7 +252,7 @@ In a similar way to hortwave radiation is given by:
 
 \begin{figure*}[h]
   \centering
-  \includegraphics*[keepaspectratio=true,width=0.95\textwidth]{shortwave_radiation}
+  \includegraphics*[keepaspectratio=true,width=0.6\textwidth]{shortwave_radiation}
   \caption{} % MC complete.
   \label{fig:shortwave_radiation}
 \end{figure*}
@@ -290,9 +292,7 @@ A solution for each atmospheric layer is calculated, hence the resulting values 
 % MC how many spectral bands have I chosen? Maybe list them in a table in the appendix with notes for each band to explain why I have chosen that band (e.g. to excite the vibro-rotational levels of some gases).
 Spectral bands are identified by two arrays: one listing the lower bound of each band, the other containing the width of each band. This choice simplify the use of functions for numerical integration. Values related to spectral bands are stored as integers.
 
-Vertical spatial dimension is discretised in
-% MC put here the number of layers used.
-layers, numbered downward starting from 0 at the TOA layer.
+Vertical spatial dimension is discretised in $N$ layers, numbered downward starting from 0 at the TOA layer.
 
 Equation~\eqref{eq:temperature_time_derivative} is solved in the time domain through Euler method. % MC and in space domain? Both are finite differences.
 
@@ -550,22 +550,25 @@ Software gnuplot is used to generate plots shown in this work. Output values fro
   style=verbatim,%
   gobble=2,%
   float=*h,%
-  caption={Structure of DAT file containing output values. The line spacing between data blocks is mandatory and ellipsis \texttt{...} indicates a logical continuation of the sequence. Number \texttt{N\_t} of temporal steps needed to reach convergence is not known a priori, instead \texttt{N} is the chosen number of atmospheric layers. Quantities \texttt{P}, \texttt{sigma} and \texttt{theta} are added for additional plots or for comparison with other models. To maintain characters portability, sigma coordinate and potential temperature are presented with their names \texttt{sigma} and \texttt{theta} and not by their symbols from equation~\eqref{eq:sigma_coordinate} and equation~\eqref{eq:potential_temperature}, respectively.},%
+  caption={Structure of DAT file containing output values. The line spacing between data blocks is mandatory and ellipsis \texttt{...} indicates a logical continuation of the sequence. Number \texttt{N\_t} of temporal steps needed to reach convergence is not known a priori. Values for the ground level are shown as elements of the sequence with index \texttt{N}. Quantities \texttt{P}, \texttt{sigma} and \texttt{theta} are added for additional plots or for comparison with other models. To maintain file portability, sigma coordinate and potential temperature are presented with their names \texttt{sigma} and \texttt{theta} and not by their symbols from equation~\eqref{eq:sigma_coordinate} and equation~\eqref{eq:potential_temperature}, respectively.},%
   label={lst:file_plot}%
 ]
   t[0]       z[0]     T[0][0]           P[0]     sigma[0]     theta[0][0]
   ...        ...      ...               ...      ...          ...
   t[0]       z[N - 1] T[0][N - 1]       P[N - 1] sigma[N - 1] theta[0][N - 1]
+  t[0]       z[N]     T[0][N]           P[N]     sigma[N]     theta[0][N]
 
   t[1]       z[0]     T[1][0]           P[0]     sigma[0]     theta[1][0]
   ...        ...      ...               ...      ...          ...
   t[1]       z[N - 1] T[1][N - 1]       P[N - 1] sigma[N - 1] theta[1][N - 1]
+  t[1]       z[N]     T[1][N]           P[N]     sigma[N]     theta[1][N]
 
   ...
 
   t[N_t - 1] z[0]     T[N_t - 1][0]     P[0]     sigma[0]     theta[N_t - 1][0]
   ...        ...      ...               ...      ...          ...
   t[N_t - 1] z[N - 1] T[N_t - 1][N - 1] P[N - 1] sigma[N - 1] theta[N_t - 1][N - 1]
+  t[N_t - 1] z[N]     T[N_t - 1][N]     P[N]     sigma[N]     theta[N_t - 1][N]
 \end{lstlisting}
 
 

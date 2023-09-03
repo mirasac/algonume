@@ -16,12 +16,10 @@ int main(int argc, char * argv[]) {
 	cout << fixed << setprecision(N_PRECISION);
 	
 	// Configure atmospheric layers.
-	int n_layers;
 	double * z, * delta_z; // / m
-	n_layers = 20;
-	z = new double[n_layers];
-	delta_z = new double[n_layers];
-	set_layers_z_uniform(global_z_g, global_z_TOA, n_layers, z, delta_z);
+	z = new double[global_N];
+	delta_z = new double[global_N];
+	set_layers_z_uniform(global_z_g, global_z_TOA, global_N, z, delta_z);
 	
 	// Configure absorbers.
 	absorber_t H2O, CO2;
@@ -34,9 +32,9 @@ int main(int argc, char * argv[]) {
 	
 	int * n_absorbers;
 	absorber_t ** absorbers;
-	n_absorbers = new int[n_layers];
-	absorbers = new absorber_t*[n_layers];
-	set_absorbers_uniform(n_layers, n_absorbers, absorbers, H2O, CO2);
+	n_absorbers = new int[global_N];
+	absorbers = new absorber_t*[global_N];
+	set_absorbers_uniform(global_N, n_absorbers, absorbers, H2O, CO2);
 	
 	// Configure spectral bands.
 	int * n_bands;
@@ -54,14 +52,14 @@ int main(int argc, char * argv[]) {
 	// Initialise temperature output variable, set initial and boundary conditions.
 	double T_TOA; // / K
 	double * T; // / K
-	T = new double[2 * n_layers + 3]; // Use also for parameters.
-	for (int i = 0; i < n_layers; i++) {
+	T = new double[2 * global_N + 3]; // Use also for parameters.
+	for (int i = 0; i < global_N; i++) {
 		T[i] = global_T_earth;
-		T[n_layers + 1 + i] = z[i];
+		T[global_N + 1 + i] = z[i];
 	}
-	T[n_layers] = global_T_earth; // Temperature at ground level.
-	T[2 * n_layers + 1] = global_z_g;
-	T[2 * n_layers + 2] = nu_div;
+	T[global_N] = global_T_earth; // Temperature at ground level.
+	T[2 * global_N + 1] = global_z_g;
+	T[2 * global_N + 2] = nu_div;
 	
 	// Prepare support variables.
 	double mu;
@@ -83,12 +81,12 @@ int main(int argc, char * argv[]) {
 		t = i_t * dt;
 		T_TOA = T[0];
 		P_TOA = get_pressure(z[0], T_TOA);
-		for (int i_z = 0; i_z < n_layers; i_z++) {
+		for (int i_z = 0; i_z < global_N; i_z++) {
 			P = get_pressure(z[i_z], T[i_z]);
 			file_plot << t << ' ' << z[i_z] << ' ' << T[i_z] << ' ' << P << ' ' << get_sigma(P, P_TOA) << ' ' << get_theta(T[i_z], P) << '\n';
 		}
-		file_plot << t << ' ' << global_z_g << ' ' << T[n_layers] << ' ' << global_P_g << ' ' << get_sigma(global_P_g, P_TOA) << ' ' << get_theta(T[n_layers], global_P_g) << '\n';
-		eulerstep(t, dt, T, rhs, n_layers);
+		file_plot << t << ' ' << global_z_g << ' ' << T[global_N] << ' ' << global_P_g << ' ' << get_sigma(global_P_g, P_TOA) << ' ' << get_theta(T[global_N], global_P_g) << '\n';
+		eulerstep(t, dt, T, rhs, global_N);
 		// MC an additional separate line of calculation is needed for values at ground level.
 		file_plot << '\n';
 		i_t++;
