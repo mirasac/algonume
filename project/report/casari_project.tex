@@ -520,15 +520,15 @@ In general these coefficients are functions of wavelength or wavenumber, in whic
 % The \emph{optical depth} (also called \emph{optical thickness}) ...
 Due to conservation of energy, the sum of \emph{internal transmittance} and \emph{internal absorptance} is 1, as well as the sum of \emph{reflectance}, \emph{absorptance} and \emph{transmittance}.
 
-Names of radiative properties ending with suffix -ance are generally used for rough surfaces, while suffix -ivity indicates smooth surfaces. In this work the suffix -ance is adopted. Refer to \cite[20]{Modest} for more information and to the definition of spectral absorptivity in \cite{CIE} for an example of the difference.
+Names of radiative properties ending with suffix \emph{-ance} are generally used for rough surfaces, while suffix \emph{-ivity} indicates smooth surfaces. In this work the former is adopted. Refer to \cite[20]{Modest} for more information and to the definition of spectral absorptivity in \cite{CIE} for an example of the difference.
 
-To derive the reflection term in equation~\ref{eq:irradiance_shortwave}, it is useful to consider a generic index $n$ with $1 \leq i \leq n \leq N - 1$ and to write the irradiances in terms of the irradiance transmitted by layer 0 to layer 1, which is the initial condition for the calculations of shortwave radiation:
+To derive the reflection term in equation~\ref{eq:irradiance_shortwave}, it is useful to consider a generic index $n$ with $i \leq n \leq N - 1$ and to write the irradiances in terms of the irradiance transmitted by layer 0 to layer 1, which is the initial condition for the sequences of shortwave radiation formulae:
 \begin{equation}
   \label{eq:irradiance_transmitted_0}
   E_\text{t}(0) = \tau_\text{i}(0) (1 - \rho(0)) \ESTOA
   \quad .
 \end{equation}
-The irradiance transmitted to layer $n + 1$ is
+The irradiance transmitted by layer $n$ is
 \begin{equation}
   \label{eq:irradiance_transmitted}
   \begin{split}
@@ -547,59 +547,81 @@ Multiple reflections are neglected, hence the irradiance reflected by layer $n +
     \quad ,
   \end{split}
 \end{equation}
-is reduced only by the transmittances of the crossed layers. The irradiance reflected by layer 1 is:
-\begin{equation}
-  \label{eq:irradiance_reflected_1}
-  E_\text{r}(0) = \rho(1) E_\text{t}(0)
-  \quad .
-\end{equation}
+is reduced only by the transmittances of the crossed layers.
+%The irradiance reflected by layer 1 is:
+%\begin{equation}
+%  \label{eq:irradiance_reflected_1}
+%  E_\text{r}(0) = \rho(1) E_\text{t}(0)
+%  \quad .
+%\end{equation}
 The effective irradiance reflected by layer $n + 1$ and arriving to layer $i$ is
 \begin{equation}
   \label{eq:irradiance_reflected_effective}
   \begin{split}
-  & E_{\text{r},\text{eff}}(n) = \\
+  & E_{\text{r},\text{eff}}(i, n) = \\
   & = \tau_\text{i}(i + 1) \cdots \tau_\text{i}(n) E_\text{r}(n) = \\
   & = \rho(n + 1) E_\text{t}(n) \prod_{k = i + 1}^{n} \tau_\text{i}(k) = \\
   & = \rho(n + 1) E_\text{t}(0) \prod_{j = 1}^{n} \tau_\text{i}(j) (1 - \rho(j)) \prod_{k = i + 1}^{n} \tau_\text{i}(k)
   \quad .
   \end{split}
 \end{equation}
-Equation~\eqref{eq:irradiance_reflected_effective} is valid when $n > i$, otherwise $E_{\text{r},\text{eff}}(n) = E_\text{r}(n)$ and $E_{\text{r},\text{eff}}(0) = E_\text{r}(0)$.
-The total irradiation arriving to layer $i$ due to reflection of the shortwave radiation is
-\begin{equation}
-  \label{eq:irradiance_reflected_shortwave}
-  \begin{split}
-  & E_{\text{r},\text{S}}(i) = \\
-  & = \sum_{n = i}^{N - 1} E_{\text{r},\text{eff}}(n + 1) = \\
-  & = E_\text{r}(i + 1) + \sum_{n = i + 1}^{N - 1} E_{\text{r},\text{eff}}(n + 1) = \\
-  & = \rho(i + 1) \tau_\text{i}(i) (1 - \rho(i)) E_\text{t}(i - 1) + \\
-  & + \sum_{n = i + 1}^{N - 1} \bigg( \rho(n + 1) \tau_\text{i}(i) (1 - \rho(i)) E_\text{t}(i - 1) \prod_{j = i + 1}^{n} \tau_\text{i}(j)^2 (1 - \rho(j)) \bigg) = \\
-  & = \tau_\text{i}(i) (1 - \rho(i)) E_\text{t}(i - 1) \Bigg( \rho(i + 1) + \\
-  & + \sum_{n = i + 1}^{N - 1} \bigg( \prod_{j = i + 1}^{n} \tau_\text{i}(j)^2 (1 - \rho(j)) \bigg) \Bigg)
-  \quad .
-  \end{split}
-\end{equation}
-
-Irradiance absorbed directly by layer $i$ when radiation is transmitted from layer $i - 1$ is
+%Equation~\eqref{eq:irradiance_reflected_effective} is valid when $n > i$, otherwise $E_{\text{r},\text{eff}}(n) = E_\text{r}(n)$ and for the first layer $E_{\text{r},\text{eff}}(0) = E_\text{r}(0)$.
+%The total irradiation arriving to layer $i$ due to reflection of the shortwave radiation is
+%\begin{equation}
+%  \label{eq:irradiance_reflected_shortwave}
+%  \begin{split}
+%  & E_{\text{r},\text{S}}(i) = \\
+%  & = \sum_{n = i}^{N - 1} E_{\text{r},\text{eff}}(n) = \\
+%  & = E_\text{r}(i) + \sum_{n = i + 1}^{N - 1} E_{\text{r},\text{eff}}(n) = \\
+%  & = \rho(i + 1) E_\text{t}(0) \prod_{j = 1}^{i} \tau_\text{i}(j) (1 - \rho(j)) + \sum_{n = i + 1}^{N - 1} \bigg( \\
+%  & \qquad \rho(n + 1) E_\text{t}(0) \prod_{j = 1}^{n} \tau_\text{i}(j) (1 - \rho(j)) \prod_{k = i + 1}^{n} \tau_\text{i}(k) \bigg) = \\
+%  & = E_\text{t}(0) \prod_{j = 1}^{i} \tau_\text{i}(j) (1 - \rho(j)) \Bigg( \rho(i + 1) + \sum_{n = i + 1}^{N - 1} \bigg( \\
+%  & \qquad \rho(n + 1) \prod_{j = i + 1}^{n} \tau_\text{i}(j) (1 - \rho(j)) \prod_{k = i + 1}^{n} \tau_\text{i}(k) \bigg) \Bigg) = \\
+%  & = E_\text{t}(0) \prod_{j = 1}^{i} \tau_\text{i}(j) (1 - \rho(j)) \Bigg( \rho(i + 1) + \sum_{n = i + 1}^{N - 1} \bigg( \\
+%  & \qquad \rho(n + 1) \prod_{j = i + 1}^{n} \tau_\text{i}(j)^2 (1 - \rho(j)) \bigg) \Bigg)
+%  \quad ,
+%  \end{split}
+%\end{equation}
+%with the value for layer 0 equal to:
+%\begin{equation}
+%  \label{eq:irradiance_reflected_shortwave}
+%  \begin{split}
+%  & E_{\text{r},\text{S}}(0) = \\
+%  & = \sum_{n = 0}^{N - 1} E_{\text{r},\text{eff}}(n) = \\
+%  & = E_\text{r}(0) + \sum_{n = 1}^{N - 1} E_{\text{r},\text{eff}}(n) = \\
+%  & = \rho(1) E_\text{t}(0) + \sum_{n = 1}^{N - 1} \bigg( \\
+%  & \qquad \rho(n + 1) E_\text{t}(0) \prod_{j = 1}^{n} \tau_\text{i}(j) (1 - \rho(j)) \prod_{k = 1}^{n} \tau_\text{i}(k) \bigg) = \\
+%  & = E_\text{t}(0) \Bigg( \rho(1) + \sum_{n = 1}^{N - 1} \bigg( \\
+%  & \qquad \rho(n + 1) \prod_{j = 1}^{n} \tau_\text{i}(j)^2 (1 - \rho(j)) \bigg) \Bigg)
+%  \quad .
+%  \end{split}
+%\end{equation}
+Irradiance absorbed directly by layer $n > 0$ is
 \begin{equation}
   \label{eq:irradiance_absorbed}
   \begin{split}
-  E_\text{a}(i) & = \alpha_\text{i}(i) (1 - \rho(i)) E_\text{t}(i - 1)
+  E_\text{a}(n) & = \alpha_\text{i}(n) (1 - \rho(n)) E_\text{t}(n - 1)
   = \\
-  & = (1 - \tau_\text{i}(i)) (1 - \rho(i)) E_\text{t}(i - 1)
+  & = \alpha_\text{i}(n) (1 - \rho(n)) E_\text{t}(0) \prod_{j = 1}^{n - 1} \tau_\text{i}(j) (1 - \rho(j))
   \end{split}
 \end{equation}
-which is added to the irradiance absorbed by layer $i$ due to reflection from lower layers to obtain the total shortwave irradiance absorbed by layer $i$:
+and for the TOA layer:
 \begin{equation}
-  \label{eq:irradiance_shortwave}
+  \label{eq:irradiance_absorbed_0}
+  \begin{split}
+  E_\text{a}(0) & = \alpha_\text{i}(0) (1 - \rho(0)) \ESTOA
+  \quad .
+  \end{split}
+\end{equation}
+Finally, the total irradiance absorbed by layer $i$ due to shortwave radiation is given by:
+\begin{equation}
+  \label{eq:irradiance_shortwave_derivation}
   \begin{split}
   & E_\text{S}(i) = \\
-  & = E_\text{a}(i) + \alpha_\text{i}(i) E_{\text{r},\text{S}}(i) = \\
-  & = (1 - \tau_\text{i}(i)) (1 - \rho(i)) E_\text{t}(i - 1) + \\
-  & + (1 - \tau_\text{i}(i)) \tau_\text{i}(i) (1 - \rho(i)) E_\text{t}(i - 1) \Bigg( \rho(i + 1) + \\
-  & + \sum_{n = i + 1}^{N - 1} \bigg( \prod_{j = i + 1}^{n} \tau_\text{i}(j)^2 (1 - \rho(j)) \bigg) \Bigg) = \\
-  & = (1 - \tau_\text{i}(i)) (1 - \rho(i)) E_\text{t}(i - 1) \Bigg( 1 + \tau_\text{i}(i) \Bigg( \rho(i + 1) + \\
-  & + \sum_{n = i + 1}^{N - 1} \bigg( \prod_{j = i + 1}^{n} \tau_\text{i}(j)^2 (1 - \rho(j)) \bigg) \Bigg) \Bigg)
+  & = E_\text{a}(i) + \alpha_\text{i}(i) \sum_{n = i}^{N - 1} E_{\text{r},\text{eff}}(i, n) = \\
+  & = \alpha_\text{i}(i) (1 - \rho(i)) E_\text{t}(0) \prod_{j = 1}^{i - 1} \tau_\text{i}(j) (1 - \rho(j)) + \\
+  & + \alpha_\text{i}(i) \sum_{n = i}^{N - 1} \bigg( \rho(n + 1) E_\text{t}(0) \prod_{j = 1}^{n} \tau_\text{i}(j) (1 - \rho(j)) \\
+  & \qquad \prod_{k = i + 1}^{n} \tau_\text{i}(k) \bigg)
   \quad .
   \end{split}
 \end{equation}
