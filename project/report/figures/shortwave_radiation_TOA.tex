@@ -15,26 +15,26 @@
   }
 ]
   \draw[radiation] (5,6) -- (5,4)
-    node[anchor=south east] {$\frac{S_0}{\cos \varepsilon}$};
+    node[anchor=south east] {$\ESTOA$};
   \draw[radiation] (5,4) -- (6,6)
-    node[midway,anchor=west] {$A \frac{S_0}{\cos \varepsilon}$};
+    node[midway,anchor=west] {$A \ESTOA$};
   \draw (0,4)
     node[anchor=east] {0}
     -- (12,4);
   \draw[radiation] (5,4)
-    node[anchor=north east] {$(1 - A) \frac{S_0}{\cos \varepsilon}$}
+    node[anchor=north east] {$(1 - A) \ESTOA$}
     -- (5,0)
-    node[anchor=south east] {$\tau_\text{i}(0) (1 - A) \frac{S_0}{\cos \varepsilon}$};
+    node[anchor=south east] {$\tau_\text{i}(0) (1 - A) \ESTOA$};
   \draw[radiation] (5,3) -- (4,2)
-    node[anchor=north east] {$\alpha_\text{i}(0) (1 - A) \frac{S_0}{\cos \varepsilon}$};
+    node[anchor=north east] {$\alpha_\text{i}(0) (1 - A) \ESTOA$};
   \draw[radiation] (5,0) -- (6,3)
-    node[anchor=south west] {$\alpha_\text{i}(0) \rho(1) \tau_\text{i}(0) (1 - A) \frac{S_0}{\cos \varepsilon}$}
-    node[near end,anchor=west] {$\rho(1) \tau_\text{i}(0) (1 - A) \frac{S_0}{\cos \varepsilon}$};
+    node[anchor=south west] {$\alpha_\text{i}(0) \rho(1) \tau_\text{i}(0) (1 - A) \ESTOA$}
+    node[near end,anchor=west] {$\rho(1) \tau_\text{i}(0) (1 - A) \ESTOA$};
   \draw (0,0)
     node[anchor=east] {1}
     -- (12,0);
   \draw[radiation] (5,0) -- (5,-2);
   \draw[radiation] (6,-2) -- (7,1)
-    node[anchor=west] {};
+    node[anchor=west] {$\alpha_\text{i}(0) \sum_{n = 1}^{N - 1} E_{\text{r},\text{eff}}(n + 1)$};
 \end{tikzpicture}
 \end{document}

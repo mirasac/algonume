@@ -188,7 +188,7 @@ where $E_\text{L}(z)$ and $E_\text{S}(z)$ are the irradiances of longwave and sh
 In the region $[\nu_\text{min}, \nu_\text{div}]$ the attenuation of radiation is dominated by absorption, scattering is neglected.
 %\cite[468]{Ramanathan}
 Absorbing species in this bandwidth are \ch{H2O} as water vapor, \ch{CO2} and trace gases like \ch{N2O}, chlorofluorocarbons (CFCs), \ch{CH4}.
-%\cite[221]{primer})
+%\cite[221]{primer}
 
 The longwave irradiance at altitude $z$ is given by
 \begin{equation}
@@ -234,22 +234,20 @@ Chemical species absorbing in this bandwitdh are \ch{O3}, \ch{H2O} as water vapo
 %\cite[218]{primer}
 % MC refer to \cite[369]{Manabe} and \cite{US1976} for mixing ratios of absorbing species.
 
-Explicit evaluation of scattering of solar radiation is not performed due to the complexity of equations involved. A simpler parametrisation is adopted instead, taking advantage of the division of the atmposhere in plane-parallel layers. Layer $z$ Different reflectance, internal absorptance and internal transmittance $\tau_\text{i}$. For the layer at altitude $z$, reflectance $\rho(z)$ is assigned a priori (e.g. $A$ at the TOA, $A_\text{g}$ at ground level), internal transmittance is evaluated through equation~\eqref{eq:spectral_internal_transmittance} and internal absorptance is $1 - \tau_\text{i}$.
-
-Multiple reflections can occur but only one is considered in this model because successive reflections from amospheric layers have negligible intensities compared to the first one.
-%\cite[470]{Ramanathan}
+Explicit evaluation of scattering of solar radiation is not performed due to the complexity of equations involved. A simpler parametrisation is adopted instead, where the division of the atmposhere in plane-parallel layers is used to assign constant reflectance, internal absorptance and internal transmittance to each layer.
+% MC I need to introduce the division in layers at the start of the Methods section and not as a mere transitionto the numerical formulation.
+In particular, layer $i$ has reflectance $\rho(i)$ assigned a priori (e.g. $A$ at the TOA, $A_\text{g}$ at ground level) and internal transmittance $\tau_\text{i}(i) = \tau_\text{i}(z, z')$ obtained by
+\begin{equation}
+  \label{eq:internal_transmittance}
+  \tau_\text{i}(z, z') = \int_{\nu_\text{div}}^{\nu_\text{max}} \tau_\text{i}(\nu, z, z') \odif{\nu}
+\end{equation}
+where $z$ is the altitude corresponding to layer $i$, $z' - z$ is the thickness of the layer and $\tau_\text{i}(\nu, z, z')$ is the spectral internal transmittance given by equation~\eqref{eq:spectral_internal_transmittance}. The internal absorptance of layer $i$ is $\alpha_\text{i}(i) = 1 - \tau_\text{i}(i)$.
+% MC solar diffuse radiant flux is neglected, hence transmittances are characterised only by the component of solar radiation normal to the layers.
 
 % MC here talk about diffusion adding the factor of 1.66 to the optical depth, cfr. \cite[469]{Ramanathan} for a superficial explanation and \cite[217]{primer} for a more elaborated description, copied from \cite[367]{Manabe}.
 % MC for scattering see \cite[217]{primer}.
 
-% MC continue.
-In a similar way to hortwave radiation is given by:
-\begin{equation}
-  \label{eq:irradiance_longwave}
-  E_\text{L}(z) = \int_{\nu_\text{min}}^{\nu_\text{div}} E_\text{L}(\nu, z) \odif{\nu}
-  \quad ,
-\end{equation}
-
+% MC complete.
 \begin{figure*}[h]
   \centering
   \includegraphics*[keepaspectratio=true,width=0.6\textwidth]{shortwave_radiation}
@@ -257,19 +255,25 @@ In a similar way to hortwave radiation is given by:
   \label{fig:shortwave_radiation}
 \end{figure*}
 % MC put here diagram for calculation of irradiances across a layer and refer to it to describe the following equation.
-Under the hypotheses in section~\ref{sec:Hypotheses and conventions}, shortwave irradiance at altitude $z$ is given by
+% MC insert the dependence on incidence angle (only for solar radiation, i.e. divide dz by -cos(epsilon)).
+Multiple reflections can occur but only one is considered in this model because successive reflections from amospheric layers have negligible intensities compared to the first one.
+%\cite[470]{Ramanathan}
+With this simplification, shortwave irradiance at layer $i$ is given by
 \begin{equation}
-  \label{eq:spectral_irradiance_shortwave}
+  \label{eq:irradiance_shortwave}
   \begin{split}
-    & E_\text{S}(\nu, z) = \\
-    & = \pi B_\nu(\nu, T(t, 0)) \tau_\text{i}(\nu, 0, z) + \\
-    & + \int_{z_\text{g}}^{z} \pi B_\nu(\nu, T(t, z')) \odv{\tau_\text{i}(\nu, z, z')}{z'} \odif{z'} + \\
-    & - \int_{z}^{\zTOA} \pi B_\nu(\nu, T(t, z')) \odv{\tau_\text{i}(\nu, z, z')}{z'} \odif{z'}
+    & E_\text{S}(i) = \\
+    & = (1 - \tau_\text{i}(i)) E_\text{t}(i - 1) \Bigg( (1 - \rho(i)) (1 + \rho(i + 1)) + \\
+    & + \sum_{j = 1}^{N - 1} \bigg( \sum_{k = 1}^{j} \tau_\text{i}(k) \bigg) \rho(j + 1) \prod_{l = 0}^{j + 1} \tau_\text{i}(l) (1 - \rho(l)) \Bigg)
   \end{split}
 \end{equation}
+where $E_\text{t}(i - 1)$ is the irradiance transmitted by layer $i - 1$ to layer $i$.
+% MC continue here, the derivation is in the appendix.
 
-% MC solar diffuse radiant flux is neglected, hence transmittances are characterised only by the component of solar radiation normal to the layers.
-% MC insert the dependence on incidence angle (only for solar radiation, i.e. divide dz by -cos(epsilon)).
+% MC correct formulae.
+
+% MC also see if I need to use S_0 or S_0 / 4 and update formulae in TikZ images.
+% MC complete shortwave_radiation_TOA after having completed shortwave_radiation.
 
 Specific intensity of solar radiation can be expressed by a differential equation whose resolution is complex even applying approximations and numerical methods
 %\cite[469]{Ramanathan}
@@ -277,6 +281,7 @@ Specific intensity of solar radiation can be expressed by a differential equatio
 % MC continue with formulae.
 
 % MC first I neglect effect from cloud diffusion.
+
 
 
 \subsection{Numerical resolution}
@@ -516,6 +521,81 @@ In general these coefficients are functions of wavelength or wavenumber, in whic
 Due to conservation of energy, the sum of \emph{internal transmittance} and \emph{internal absorptance} is 1, as well as the sum of \emph{reflectance}, \emph{absorptance} and \emph{transmittance}.
 
 Names of radiative properties ending with suffix -ance are generally used for rough surfaces, while suffix -ivity indicates smooth surfaces. In this work the suffix -ance is adopted. Refer to \cite[20]{Modest} for more information and to the definition of spectral absorptivity in \cite{CIE} for an example of the difference.
+
+To derive the reflection term in equation~\ref{eq:irradiance_shortwave}, it is useful to consider a generic index $n$ with $1 \leq i \leq n \leq N - 1$ and to write the irradiances in terms of the irradiance transmitted by layer $i - 1$. The irradiance transmitted to layer $n + 1$ is
+\begin{equation}
+  \label{eq:irradiance_transmitted}
+  \begin{split}
+  E_\text{t}(n) & = \\
+  & = \tau_\text{i}(n) (1 - \rho(n)) E_\text{t}(n - 1) = \\
+  & = E_\text{t}(i - 1) \prod_{j = i}^{n} \tau_\text{i}(j) (1 - \rho(j))
+  \end{split}
+\end{equation}
+and the irradiance transmitted by the TOA layer is the initial condition of the sequence:
+\begin{equation}
+  \label{eq:irradiance_transmitted_TOA}
+  E_\text{t}(0) = \tau_\text{i}(0) (1 - \rho(0)) \ESTOA
+  \quad .
+\end{equation}
+Multiple reflections are neglect, hence the irradiance reflected by layer $n + 1$
+\begin{equation}
+  \label{eq:irradiance_reflected}
+  \begin{split}
+    E_\text{r}(n) & = \\
+    & = \rho(n + 1) E_\text{t}(n) = \\
+    & = \rho(n + 1) E_\text{t}(i - 1) \prod_{j = i}^{n} \tau_\text{i}(j) (1 - \rho(j))
+  \end{split}
+\end{equation}
+is reduced only by transmittances of the layers crossed by the radiation. The effective irradiance reflected by layer $n + 1$ and arriving to layer $i$ is
+\begin{equation}
+  \label{eq:irradiance_reflected_below}
+  \begin{split}
+  & E_{\text{r},\text{eff}}(n) = \\
+  & = \tau_\text{i}(i + 1) \cdots \tau_\text{i}(n - 1) \tau_\text{i}(n) E_\text{r}(n) = \\
+  & = \rho(n + 1) E_\text{t}(n) \prod_{k = i + 1}^{n} \tau_\text{i}(k) = \\
+  & = \rho(n + 1) E_\text{t}(i - 1) \prod_{j = i}^{n} \tau_\text{i}(j) (1 - \rho(j)) \prod_{k = i + 1}^{n} \tau_\text{i}(k) = \\
+  & = \rho(n + 1) \tau_\text{i}(i) (1 - \rho(i)) E_\text{t}(i - 1) \prod_{j = i + 1}^{n} \tau_\text{i}(j)^2 (1 - \rho(j))
+  \end{split}
+\end{equation}
+valid only when $n > i$, otherwise $E_{\text{r},\text{eff}}(i + 1) = E_\text{r}(i + 1)$.
+The total irradiation arriving to layer $i$ due to reflection of the shortwave radiation is
+\begin{equation}
+  \label{eq:irradiance_reflected_shortwave}
+  \begin{split}
+  & E_{\text{r},\text{S}}(i) = \\
+  & = \sum_{n = i}^{N - 1} E_{\text{r},\text{eff}}(n + 1) = \\
+  & = E_\text{r}(i + 1) + \sum_{n = i + 1}^{N - 1} E_{\text{r},\text{eff}}(n + 1) = \\
+  & = \rho(i + 1) \tau_\text{i}(i) (1 - \rho(i)) E_\text{t}(i - 1) + \\
+  & + \sum_{n = i + 1}^{N - 1} \bigg( \rho(n + 1) \tau_\text{i}(i) (1 - \rho(i)) E_\text{t}(i - 1) \prod_{j = i + 1}^{n} \tau_\text{i}(j)^2 (1 - \rho(j)) \bigg) = \\
+  & = \tau_\text{i}(i) (1 - \rho(i)) E_\text{t}(i - 1) \Bigg( \rho(i + 1) + \\
+  & + \sum_{n = i + 1}^{N - 1} \bigg( \prod_{j = i + 1}^{n} \tau_\text{i}(j)^2 (1 - \rho(j)) \bigg) \Bigg)
+  \quad .
+  \end{split}
+\end{equation}
+
+Irradiance absorbed directly by layer $i$ when radiation is transmitted from layer $i - 1$ is
+\begin{equation}
+  \label{eq:irradiance_absorbed}
+  \begin{split}
+  E_\text{a}(i) & = \alpha_\text{i}(i) (1 - \rho(i)) E_\text{t}(i - 1)
+  = \\
+  & = (1 - \tau_\text{i}(i)) (1 - \rho(i)) E_\text{t}(i - 1)
+  \end{split}
+\end{equation}
+which is added to the irradiance absorbed by layer $i$ due to reflection from lower layers to obtain the total shortwave irradiance absorbed by layer $i$:
+\begin{equation}
+  \label{eq:irradiance_shortwave}
+  \begin{split}
+  & E_\text{S}(i) = \\
+  & = E_\text{a}(i) + \alpha_\text{i}(i) E_{\text{r},\text{S}}(i) = \\
+  & = (1 - \tau_\text{i}(i)) (1 - \rho(i)) E_\text{t}(i - 1) + \\
+  & + (1 - \tau_\text{i}(i)) \tau_\text{i}(i) (1 - \rho(i)) E_\text{t}(i - 1) \Bigg( \rho(i + 1) + \\
+  & + \sum_{n = i + 1}^{N - 1} \bigg( \prod_{j = i + 1}^{n} \tau_\text{i}(j)^2 (1 - \rho(j)) \bigg) \Bigg) = \\
+  & = (1 - \tau_\text{i}(i)) (1 - \rho(i)) E_\text{t}(i - 1) \Bigg( 1 + \tau_\text{i}(i) \Bigg( \rho(i + 1) + \\
+  & + \sum_{n = i + 1}^{N - 1} \bigg( \prod_{j = i + 1}^{n} \tau_\text{i}(j)^2 (1 - \rho(j)) \bigg) \Bigg) \Bigg)
+  \quad .
+  \end{split}
+\end{equation}
 
 
 
