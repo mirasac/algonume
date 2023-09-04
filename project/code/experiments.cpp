@@ -24,7 +24,7 @@ int main(int argc, char * argv[]) {
 	for (int i = 0; i <= n_T; i++) {
 		T = T_min + i * dT;
 		M = global_sigma * T*T*T*T;
-		E = M_PI * gaussquad(planck_law_nu, global_nu_min, global_nu_max, QUAD_INTERVALS, 2, T);
+		E = M_PI * gaussquad(spectral_irradiance_blackbody_nu, global_nu_min, global_nu_max, QUAD_INTERVALS, 2, T);
 		cout << T << ' ' << M << ' ' << E << ' ' << fabs(E - M) / M << '\n';
 	}
 	cout << fixed;
@@ -36,8 +36,8 @@ int main(int argc, char * argv[]) {
 	double E_sun_short, E_sun_short_IR; // / (W / m^2)
 	ratio = global_R_sun / global_au;
 	nu_div = spectrum_division_nu();
-	E_sun_short = (1.0 - global_A) * ratio*ratio * M_PI * gaussquad(planck_law_nu, nu_div, global_nu_max, QUAD_INTERVALS, 2, global_T_sun);
-	E_sun_short_IR = (1.0 - global_A) * ratio*ratio * M_PI * gaussquad(planck_law_nu, nu_div, global_nu_IR_VIS, QUAD_INTERVALS, 2, global_T_sun);
+	E_sun_short = (1.0 - global_A) * ratio*ratio * M_PI * gaussquad(spectral_irradiance_blackbody_nu, nu_div, global_nu_max, QUAD_INTERVALS, 2, global_T_sun);
+	E_sun_short_IR = (1.0 - global_A) * ratio*ratio * M_PI * gaussquad(spectral_irradiance_blackbody_nu, nu_div, global_nu_IR_VIS, QUAD_INTERVALS, 2, global_T_sun);
 	cout << "In shortwave bandwidth [" << nu_div / 100.0 << " 1 / cm, " << global_nu_max / 100.0 << " 1 / cm]:" << endl;
 	cout << "- Sun's surface irradiances ratio of shortwave IR band to shortwave bandwidth: " << E_sun_short_IR / E_sun_short << endl;
 	

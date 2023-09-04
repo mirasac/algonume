@@ -7,7 +7,7 @@
 - Distinguish thorougly simulation time and computation time.
 - Data file format for output values is set as shown in the [official Gnuplot documentation](http://gnuplot.info/docs_5.5/loc17750.html) but it is different from what suggested by Professor's (i.e. y variable fixed in each block), so I might change the format.
 - Before launching the simulation, normalize quantities to reduce their magnitudes and avoid numerical divergences (e.g. time normalized in units of 1 day).
-- Divide total solar irradiance by 4 due to combination of day-night cycle and distribution of total energy over a disk (i.e. S_0 * r * pi^2 / (4 * r * pi^2) = S_0 / 4) and again by 2 due to the choice to focus on the Northern Hemisphere and not only on the illuminated face of the Earth.
+- Divide total solar irradiance by 4 due to combination of day-night cycle and distribution of total energy over a disk (i.e. S_0 * r * pi^2 / (4 * r * pi^2) = S_0 / 4) and again by 2 due to the choice to focus on the Northern Hemisphere and not just on the illuminated face of the Earth.
 - Use optical depths and formulae for soot from TTAPS-II because reproducing the aerosol formation computational model presented in Turco 1979 goes beyond the purpose of this work.
 - Spectral radiance is also called specific intensity, mainly in the old literature.
 
@@ -22,7 +22,6 @@
 - Tracer continuity equation (cfr. https://clima.github.io/OceananigansDocumentation/v0.47.1/physics/navier_stokes_and_tracer_conservation/, https://getm.eu/files/GETM/doc/html/node78.html and https://climate.ucdavis.edu/ATM121/AtmosphericDynamics-Chapter01-Part03-Continuity.pdf).
 
 # Code
-- This `M_PI * ratio*ratio * gaussquad(planck_law_nu, nu_min, nu_max, GAUSSQUAD_INTERVALS, GAUSSQUAD_POINTS, global_T_sun)` has a result not compatible with `ratio*ratio * global_sigma * global_T_sun*global_T_sun*global_T_sun*global_T_sun`. Probably it is a problem in the quadrature procedure applied to this function.
 
 ## Software engineering
 - A class for nuclear warheads.

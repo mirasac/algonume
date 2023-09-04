@@ -1,20 +1,29 @@
 #include "utilities.h"
 
-void set_layers_z_uniform(double z_min, double z_max, int n_layers, double z[], double delta_z[]) {
-	delta_z[0] = (z_max - z_min) / n_layers;
+void set_layers_z_uniform(double z_min, double z_max, int n_layer, double z[], double delta_z[]) {
+	delta_z[0] = (z_max - z_min) / n_layer;
 	z[0] = z_max;
-	for (int i_z = 1; i_z < n_layers; i_z++) {
+	for (int i_z = 1; i_z < n_layer; i_z++) {
 		delta_z[i_z] = delta_z[0];
 		z[i_z] = z[0] - delta_z[0] * i_z;
 	}
 }
 
-void set_absorbers_uniform(int n_layers, int n_absorbers[], absorber_t * absorbers[], absorber_t a1, absorber_t a2) {
+void set_layers_z_uniform(double z_min, double z_max, int n_layer, layer_t layer[]) {
+	layer[0].delta_z = (z_max - z_min) / n_layer;
+	layer[0].z = z_max;
+	for (int i = 1; i < n_layer; i++) {
+		layer[i].delta_z = layer[0].delta_z;
+		layer[i].z = layer[0].z - layer[0].delta_z * i;
+	}
+}
+
+void set_absorbers_uniform(int n_layer, int n_absorbers[], absorber_t * absorbers[], absorber_t a1, absorber_t a2) {
 	n_absorbers[0] = 2;
-	absorbers[0] = new absorber_t[n_layers * n_absorbers[0]];
+	absorbers[0] = new absorber_t[n_layer * n_absorbers[0]];
 	absorbers[0][0] = a1;
 	absorbers[0][1] = a2;
-	for (int i = 1; i < n_layers; i++) {
+	for (int i = 1; i < n_layer; i++) {
 		n_absorbers[i] = n_absorbers[0];
 		absorbers[i] = absorbers[0] + i * n_absorbers[0];
 		absorbers[i][0] = a1;

@@ -1,6 +1,8 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
+#include <cmath>
+
 // Physical constants.
 double const global_au = 1.49597870700e11; // m
 double const global_c = 2.99792458e8; // m / s
@@ -15,6 +17,7 @@ double const global_sigma = 5.670374419e-8; // W / (m^2 K^4)
 double const global_A = 0.3;
 double const global_A_g = 0.1;
 double const global_c_P_air = 1.004e3; // J / (K kg)
+double const global_epsilon = M_PI_4; // / rad
 double const global_Gamma_0 = 0.0065; // K / m
 double const global_nu_IR_VIS = 1e7 / 7.8; // 1 / m
 double const global_nu_VIS_UV = 1e7 / 4.0; // 1 / m
