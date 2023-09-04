@@ -9,7 +9,7 @@
 #include "utilities.h"
 #include "configuration.h" // Include last to allow redefinitions.
 
-void rhs(double t, const double * Y_0, double * R, int const n_eq);
+void rhs(double t, const double * Y_0, double * R);
 
 int main(int argc, char * argv[]) {
 	using namespace std;
@@ -123,8 +123,7 @@ int main(int argc, char * argv[]) {
 			file_plot << t << ' ' << z[i_z] << ' ' << T[i_z] << ' ' << P << ' ' << get_sigma(P, P_TOA) << ' ' << get_theta(T[i_z], P) << '\n';
 		}
 		file_plot << t << ' ' << global_z_g << ' ' << T[global_N] << ' ' << global_P_g << ' ' << get_sigma(global_P_g, P_TOA) << ' ' << get_theta(T[global_N], global_P_g) << '\n';
-		eulerstep(t, dt, T, rhs, global_N);
-		// MC an additional separate line of calculation is needed for values at ground level.
+		eulerstep(t, dt, T, rhs, i_0_z);
 		file_plot << '\n';
 		i_t++;
 	} while (fabs(T[0] - T_TOA) > TOLERANCE); // Equilibrium condition at TOA.
@@ -143,22 +142,23 @@ int main(int argc, char * argv[]) {
 	return 0;
 }
 
-void rhs(double t, double const * Y_0, double * R, int const n_eq) {
+void rhs(double t, double const * Y_0, double * R) {
 	int i_0_z, i_0_param, i_0_tau, i_0_alpha;
 	double const * z;
 	double nu_div; // / (1 / m)
 	double const * alpha;
 	double E_L, E_S; // / (W / m^2)
-	i_0_z = n_eq + 1; // Index of the first value of altitude.
-	i_0_param = i_0_z + n_eq + 1; // Index of the first parameter.
+	i_0_z = global_N + 1; // Index of the first value of altitude.
+	i_0_param = i_0_z + global_N + 1; // Index of the first parameter.
 	i_0_tau = i_0_param + 1; // Index of the first value of internal transmittance.
-	i_0_alpha = i_0_tau + n_eq; // Index of the first value of absorptance shortwave.
+	i_0_alpha = i_0_tau + global_N; // Index of the first value of absorptance shortwave.
 	z = Y_0 + i_0_z;
 	nu_div = Y_0[i_0_param];
 	alpha = Y_0 + i_0_alpha;
-	for (int i = 0; i < n_eq; i++) {
-		E_L = irradiance_longwave(global_nu_min, nu_div, 55, n_eq, i, Y_0, z); // MC change to n_nu = 21 to have dnu ~ 100 / cm.
+	for (int i = 0; i < global_N; i++) {
+		E_L = irradiance_longwave(global_nu_min, nu_div, 55, global_N, i, Y_0, z); // MC change to n_nu = 21 to have dnu ~ 100 / cm.
 		E_S = global_S_0 * M_SQRT2 / 8.0 * alpha[i];
 		R[i] = - (E_L + E_S) / (z[i + 1] - z[i]) / (get_density(z[i], Y_0[i]) * global_c_P_air);
 	}
+	// MC an additional separate line of calculation is needed for values at ground level.
 }

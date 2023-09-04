@@ -1,6 +1,6 @@
 MAIN=main
 LIB=../../mclib/mclib
-OBJECTS=${MAIN}.o ${LIB}.o radiation.o utilities.o
+OBJECTS=${MAIN}.o ${LIB}.o radiation.o utilities.o convection.o
 
 dev: ${OBJECTS}
 	g++ ${CPPFLAGS} -o ${MAIN}.out ${OBJECTS}
@@ -19,6 +19,9 @@ radiation.o: radiation.cpp radiation.h constants.h ${LIB}.o configuration.h
 
 utilities.o: utilities.cpp utilities.h constants.h radiation.o
 	g++ ${CPPFLAGS} -c utilities.cpp -o utilities.o
+
+convection.o: convection.cpp convection.h
+	g++ ${CPPFLAGS} -c convection.cpp -o convection.o
 
 clean:
 	rm -f *.o

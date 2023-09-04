@@ -55,7 +55,9 @@ Return longwave irradiance in W / m^2.
 double irradiance_longwave(double const nu_min, double const nu_max, int const n_nu, int const i, int const n_layer, double const T[], double const z[]);
 
 /*
-Return total absorptance due to shortwave radiation. Array rho have length n_layer + 1 and element n_layer + 1 is the surface albedo.
+Return total absorptance due to shortwave radiation.
+
+Array rho have length n_layer + 1, the element in position n_layer is the surface albedo.
 */
 double absorptance_shortwave(int const i, int const n_layer, double const tau[], double const rho[]);
 
