@@ -70,27 +70,22 @@
 \maketitle
 
 \begin{abstract}
-  % MC abstract.
+  Earth's climate dynamics can be studied with models of varying complexity. Radiative-convective models (RCMs) provide an intermediate complexity approach to the simulation of climate, evaluating an atmospheric temperature profile averaged over all latitudes and longitudes and function of time and altitude.
+  The atmosphere is modelled as a vertical column divided in parallel layers, each containing specific gases with specific optical and physical properties. The optical depth of absorbing species is assumed constant with respect to the frequency of electromagnetic radiation.
+  Physical processes driving the model are radiation absorption, transmission, reflection and air convection which determine the energy exchange between layers.
 \end{abstract}
 
-% MC add if needed, probably not.
+% MC remove when finished.
 %\tableofcontents
 %\newpage
 
 \section{Introduction}
-Planet Earth's climate dynamics can be studied with models of varying complexity. Radiative-convective models (RCMs) provide an intermediate complexity approach to the simulation of climate, evaluating an average atmospheric temperature profile. Temperature is averaged over all latitudes and longitudes and is a function of time and altitude. Since only one spatial dimension is used, it is addressed as 1-dimensional model. The atmosphere is modelled as a vertical column divided in parallel layers, each containing specific gases, hence presenting specific optical and physical properties.
-
-Physical processes driving the model are radiation absorption, transmission, reflection and air convection which determine the energy exchange between layers. More complex mechanisms such horizontal heat transport are neglected.
-
-
-
-%\section{Materials}
-% MC describe the tools used during the study. List the specifics and the references of the code.
+The temperature distribution of a planetary atmosphere is the result of the heat exchange between different processes. Electromagnetic (EM) radiation is emitted, absorbed and scattered by the chemical species distributed in the atmosphere and by the planetary surface. Moreover, the atmosphere receives EM radiation by other celestial bodies, e.g. stars. Local temperature differences generate motion of fluid parcels, hence convection. These are the main processes driving the evolution of the temperature field.
 
 \section{Methods}
 \label{sec:Methods}
 % MC explain the atmosphere model: vertical column where each layer present quantities averaged over the global atmosphere.
-The RCM developed for the present work approximates the atmosphere as a vertical column divided in plane-parallel layers. 
+The RCM developed in the present work approximates the atmosphere as a vertical column divided in plane-parallel layers. 
 A bijective relation exists between altitude $z$ and pressure $P$ (cfr. section~\ref{sec:Relation between pressure and altitude}), hence they can be used interchangeably as vertical coordinates. The origin of coordinate $z$ is set at ground level and it is identified by value $z_\text{g}$ to keep generality. On the contrary, the Top-Of-Atmosphere (TOA) altitude $\zTOA$ is chosen arbitrarily. Pressure decreases with altitude from standard value $P_\text{g}$ at ground level to value $\PTOA$, which is calculated using equation~\eqref{eq:pressure_constant_temperature}. % MC this way the secondary scale given by pressure changes with time. To obtain the time changing plot I probaly need to choose which scale (i.e. choose a reference time instant) to use for the whole plot and a good choice is the one calculated when the steady state is reached.
 
 Each layer is identified by a value of $z$ corresponding to the upper boundary of the layer and by its thickness. The corresponding values of pressure are evaluated at each time instant with equation~\eqref{eq:pressure_constant_temperature}.
@@ -169,7 +164,7 @@ The total heat flux $q(z)$ is determined by radiative transfer and atmospheric c
 %\cite[25]{Modest}
 while the second process is governed by fluid dynamics. The RTE is an integro-differential equation in five dimensions and it is not solved directly by the RCM, instead longwave and shortwave radiations are treated separately. Neither the contribution to $q(z)$ due to atmospheric convection is obtained by solving the proper fluid dynamics equations, in its place a numerical correction is adopted and is described in section~\ref{sec:Convective adjustment}.
 
-With these considerations and using equation~\eqref{eq:hydrostatic_equilibrium} to drop the dependency on $\varrho$, equation~\eqref{eq:temperature_derivation} can be rewritten as
+With these considerations and using equation~\eqref{eq:hydrostatic_equilibrium} to drop the dependence on $\varrho$, equation~\eqref{eq:temperature_derivation} can be rewritten as
 \begin{equation}
   \label{eq:temperature_time_derivative}
   \pdv*{T(t,z)}{t} = \frac{g}{c_P} \odv*{\big( E_\text{L}(z) + E_\text{S}(z) \big)}{P}
