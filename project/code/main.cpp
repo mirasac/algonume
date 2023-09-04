@@ -6,30 +6,27 @@
 #include "constants.h"
 #include "../../mclib/mclib.h"
 #include "radiation.h"
+#include "utilities.h"
+#include "configuration.h" // Include last to allow redefinitions.
 
-void set_layers_z_uniform(double z_S, double z_TOA, int n_layers, double z[], double delta_z[]);
-void set_absorbers_default(int n_layers, int n_absorbers[], absorber_t * absorbers[], absorber_t a1, absorber_t a2);
+void rhs(double t, const double * Y_0, double * R, int const n_eq);
 
 int main(int argc, char * argv[]) {
 	using namespace std;
-	cout << setprecision(N_PRECISION);
+	cout << fixed << setprecision(N_PRECISION);
 	
 	// Configure atmospheric layers.
-	int n_layers = 20;
-	double z_TOA, z_S; // [m]
-	double * z, * delta_z; // [m]
-	z_TOA = 42000.0;
-	z_S = 0.0;
-	z = new double[n_layers];
-	delta_z = new double[n_layers];
-	set_layers_z_uniform(z_S, z_TOA, n_layers, z, delta_z);
+	double * z, * delta_z; // / m
+	z = new double[global_N];
+	delta_z = new double[global_N];
+	set_layers_z_uniform(global_z_g, global_z_TOA, global_N, z, delta_z);
 	
 	// Configure absorbers.
 	absorber_t H2O, CO2;
-	H2O.nu = new double[]{140.0, 1600.0, 3760.0, 5350.0, 7250.0};
+	H2O.nu = new double[]{14000.0, 160000.0, 376000.0, 535000.0, 725000.0};
 	H2O.n_nu = 5;
 	H2O.delta_nu = new double[H2O.n_nu]; // MC bandwidths missing.
-	CO2.nu = new double[]{667.0, 960.0, 1060.0, 2410.0, 3660.0, 5200.0};
+	CO2.nu = new double[]{66700.0, 96000.0, 106000.0, 241000.0, 366000.0, 520000.0};
 	CO2.n_nu = 6;
 	CO2.delta_nu = new double[CO2.n_nu]; // MC bandwidths missing.
 	
@@ -54,15 +51,85 @@ int main(int argc, char * argv[]) {
 	
 	int * n_absorbers;
 	absorber_t ** absorbers;
-	n_absorbers = new int[n_layers];
-	absorbers = new absorber_t*[n_layers];
-	set_absorbers_default(n_layers, n_absorbers, absorbers, H2O, CO2);
+	n_absorbers = new int[global_N];
+	absorbers = new absorber_t*[global_N];
+	set_absorbers_uniform(global_N, n_absorbers, absorbers, H2O, CO2);
 	
 	// Configure spectral bands.
 	int * n_bands;
-	double * nu, * delta_nu; // [1 / cm]
-	double dnu = 100.0; // [1 / cm]
+	double * nu, * delta_nu; // / (1 / cm)
+	double dnu, nu_div; // / (1 / m)
+	dnu = 10000.0;
+	nu_div = spectrum_division_nu();
 	// MC continue with three arrays for the bandwidth of each layer.
+	
+	// Set time integration parameters.
+	int i_t;
+	double t, dt; // / s
+	dt = 8 * 3600.0;
+	
+	// Pre-evaluate reflectance, absorptance and internal transmittance.
+	double * tau, * rho;
+	tau = new double[global_N];
+	rho = new double[global_N + 1];
+	tau[0] = exp(-0.15); // MC test shortwave with constant optical depth delta = 0.15.
+	rho[global_N] = global_A_g;
+	for (int i = 0; i < global_N; i++) {
+		tau[i] = tau[0];
+		rho[i] = 0.0; // MC test shortwave with null reflectance.
+	}
+	
+	// Initialise temperature output variable, set initial and boundary conditions.
+	int n_T, i_0_z, i_0_param, i_0_tau, i_0_alpha;
+	double T_TOA; // / K
+	double * T; // / K
+	i_0_z = global_N + 1; // Index of the first value of altitude.
+	i_0_param = i_0_z + global_N + 1; // Index of the first parameter.
+	i_0_tau = i_0_param + 1; // Index of the first value of internal transmittance.
+	i_0_alpha = i_0_tau + global_N; // Index of the first value of absorptance shortwave.
+	n_T = i_0_alpha + global_N; // Number of elements for the extended array of temperatures.
+	T = new double[n_T]; // Use also for parameters.
+	for (int i = 0; i < global_N; i++) {
+		T[i] = global_T_earth;
+		T[i_0_alpha + i] = absorptance_shortwave(i, global_N, tau, rho);
+		T[i_0_z + i] = z[i];
+	}
+	T[global_N] = global_T_earth; // Temperature at ground level.
+	T[i_0_z + global_N] = global_z_g;
+	T[i_0_param] = nu_div;
+	
+	// Prepare support variables.
+	double mu;
+	double P, P_TOA; // / Pa
+	mu = M_SQRT2 / 2.0;
+	
+	// Prepare output file.
+	ofstream file_plot;
+	char filename_plot[] = DIR_DATA "/temperature.dat";
+	file_plot.open(filename_plot);
+	file_plot << fixed << setprecision(N_PRECISION);
+	file_plot << "#t   z   T   P    sigma theta" << endl;
+	file_plot << "#'h' 'm' 'K' 'Pa' '1'   'K'";
+	
+	// Run model.
+	i_t = 0;
+	do {
+		file_plot << '\n';
+		t = i_t * dt;
+		T_TOA = T[0];
+		P_TOA = get_pressure(z[0], T_TOA);
+		for (int i_z = 0; i_z < global_N; i_z++) {
+			P = get_pressure(z[i_z], T[i_z]);
+			file_plot << t << ' ' << z[i_z] << ' ' << T[i_z] << ' ' << P << ' ' << get_sigma(P, P_TOA) << ' ' << get_theta(T[i_z], P) << '\n';
+		}
+		file_plot << t << ' ' << global_z_g << ' ' << T[global_N] << ' ' << global_P_g << ' ' << get_sigma(global_P_g, P_TOA) << ' ' << get_theta(T[global_N], global_P_g) << '\n';
+		eulerstep(t, dt, T, rhs, global_N);
+		// MC an additional separate line of calculation is needed for values at ground level.
+		file_plot << '\n';
+		i_t++;
+	} while (fabs(T[0] - T_TOA) > TOLERANCE); // Equilibrium condition at TOA.
+	file_plot.close();
+	cout << "Temperature profile calculated, values are stored in file " << filename_plot << endl;
 	
 	// Clean up.
 	delete[] z;
@@ -70,26 +137,28 @@ int main(int argc, char * argv[]) {
 	delete_absorber(H2O);
 	delete_absorber(CO2);
 	delete[] n_absorbers;
-	for (int i = 0; i < n_layers; i++) {
-		delete[] absorbers[i];
-	}
+	delete[] absorbers[0];
 	delete[] absorbers;
 	
 	return 0;
 }
 
-void set_layers_z_uniform(double z_S, double z_TOA, int n_layers, double z[], double delta_z[]) {
-	delta_z[0] = (z_TOA - z_S) / n_layers;
-	z[0] = z_TOA - delta_z[0] / 2.0;
-	for (int i_z = 1; i_z < n_layers; i_z++) {
-		delta_z[i_z] = delta_z[0];
-		z[i_z] = z[0] - delta_z[0] * i_z;
-	}
-}
-
-void set_absorbers_default(int n_layers, int n_absorbers[], absorber_t * absorbers[], absorber_t a1, absorber_t a2) {
-	for (int i_layers = 0; i_layers < n_layers; i_layers++) {
-		absorbers[i_layers] = new absorber_t[]{a1, a2};
-		n_absorbers[i_layers] = 2;
+void rhs(double t, double const * Y_0, double * R, int const n_eq) {
+	int i_0_z, i_0_param, i_0_tau, i_0_alpha;
+	double const * z;
+	double nu_div; // / (1 / m)
+	double const * alpha;
+	double E_L, E_S; // / (W / m^2)
+	i_0_z = n_eq + 1; // Index of the first value of altitude.
+	i_0_param = i_0_z + n_eq + 1; // Index of the first parameter.
+	i_0_tau = i_0_param + 1; // Index of the first value of internal transmittance.
+	i_0_alpha = i_0_tau + n_eq; // Index of the first value of absorptance shortwave.
+	z = Y_0 + i_0_z;
+	nu_div = Y_0[i_0_param];
+	alpha = Y_0 + i_0_alpha;
+	for (int i = 0; i < n_eq; i++) {
+		E_L = irradiance_longwave(global_nu_min, nu_div, 55, n_eq, i, Y_0, z); // MC change to n_nu = 21 to have dnu ~ 100 / cm.
+		E_S = global_S_0 * M_SQRT2 / 8.0 * alpha[i];
+		R[i] = - (E_L + E_S) / (z[i + 1] - z[i]) / (get_density(z[i], Y_0[i]) * global_c_P_air);
 	}
 }

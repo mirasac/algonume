@@ -120,19 +120,21 @@ double rectangularquad(double (*f)(double x), double a, double b, int N) {
 	double dx, x_n, s_n;
 	dx = (b - a) / N;
 	s_n = 0.0;
-	// My implementation.
-	/*
-	x_n = a;
-	for (int n = 1; n <= N: n++) {
-		s_n += f(x_n) * dx;
-		x_n += dx;
-	}
-	return s_n;
-	*/
-	// Better implementation because there are less repeated operations involved.
 	for (int n = 0; n < N; n++) {
 		x_n = a + n * dx;
 		s_n += f(x_n);
+	}
+	return s_n * dx;
+}
+
+double rectangularquad(double (*f)(double x, double p), double a, double b, int N, double p) {
+	orderinterval(&a, &b);
+	double dx, x_n, s_n;
+	dx = (b - a) / N;
+	s_n = 0.0;
+	for (int n = 0; n < N; n++) {
+		x_n = a + n * dx;
+		s_n += f(x_n, p);
 	}
 	return s_n * dx;
 }
@@ -141,36 +143,54 @@ double midpointquad(double (*f)(double x), double a, double b, int N) {
 	orderinterval(&a, &b);
 	double dx, x_n, s_n;
 	dx = (b - a) / N;
-	x_n = a + dx / 2.0;
 	s_n = 0.0;
-	for (int n = 1; n <= N; n++) {
-		s_n += f(x_n) * dx;
-		x_n += dx;
+	for (int n = 0; n < N; n++) {
+		x_n = a + (n + 0.5) * dx;
+		s_n += f(x_n);
 	}
-	return s_n;
+	return s_n * dx;
 }
 
-double trapezioidalquad(double (*f)(double x), double a, double b, int N) {
+double midpointquad(double (*f)(double x, double p), double a, double b, int N, double p) {
 	orderinterval(&a, &b);
 	double dx, x_n, s_n;
 	dx = (b - a) / N;
 	s_n = 0.0;
-	// My implementation, not wrong but inefficient because function f is called twice.
-	x_n = a;
-	for (int n = 1; n <= N; n++) {
-		s_n += (f(x_n) + f(x_n + dx)) / 2.0 * dx;
-		x_n += dx;
-	}
-	return s_n;
-	// Better implementation, f is called only N + 1 times.
-	// MC finire.
-	/*
 	for (int n = 0; n < N; n++) {
-		x_n = a + n * dx;
-		s_n = 
+		x_n = a + (n + 0.5) * dx;
+		s_n += f(x_n, p);
 	}
 	return s_n * dx;
-	*/
+}
+
+double trapezioidalquad(double (*f)(double x), double a, double b, int N) {
+	orderinterval(&a, &b);
+	double dx, x_n, s_n, f_prev, f_n;
+	dx = (b - a) / N;
+	s_n = 0.0;
+	f_prev = f(a);
+	for (int n = 1; n <= N; n++) {
+		x_n = a + n * dx;
+		f_n = f(x_n);
+		s_n += f_prev + f_n;
+		f_prev = f_n;
+	}
+	return s_n * dx / 2.0;
+}
+
+double trapezioidalquad(double (*f)(double x, double p), double a, double b, int N, double p) {
+	orderinterval(&a, &b);
+	double dx, x_n, s_n, f_prev, f_n;
+	dx = (b - a) / N;
+	s_n = 0.0;
+	f_prev = f(a, p);
+	for (int n = 1; n <= N; n++) {
+		x_n = a + n * dx;
+		f_n = f(x_n, p);
+		s_n += f_prev + f_n;
+		f_prev = f_n;
+	}
+	return s_n * dx / 2.0;
 }
 
 double simpsonquad(double (*f)(double x), double a, double b, int N) {
@@ -181,18 +201,32 @@ double simpsonquad(double (*f)(double x), double a, double b, int N) {
 	}
 	double dx, x_n, s_n;
 	dx = (b - a) / N;
-	//x_n = a + dx;
 	s_n = f(a) + f(b);
-	for (int n = 1; n <= N - 1; n++) {
+	for (int n = 1; n < N; n++) {
 		x_n = a + n * dx;
 		s_n += f(x_n) * 2.0 * (1 + n % 2);
 	}
 	return s_n * dx / 3.0;
 }
 
+double simpsonquad(double (*f)(double x, double p), double a, double b, int N, double p) {
+	orderinterval(&a, &b);
+	if (N % 2 != 0) {
+		std::cout << "Error: to apply the Simpson rule the number of intervals must be even" << std::endl;
+		exit(1);
+	}
+	double dx, x_n, s_n;
+	dx = (b - a) / N;
+	s_n = f(a, p) + f(b, p);
+	for (int n = 1; n < N; n++) {
+		x_n = a + n * dx;
+		s_n += f(x_n, p) * 2.0 * (1 + n % 2);
+	}
+	return s_n * dx / 3.0;
+}
+
 double gaussquad(double (*f)(double x), double a, double b, int N, int Ng) {
 	orderinterval(&a, &b);
-	// MC usare malloc o new per creare array con Ng parametro.
 	double dx, a_n, b_n, r_n, sum, sum_n;
 	double * x, * w;
 	x = new double[Ng];
@@ -211,13 +245,12 @@ double gaussquad(double (*f)(double x), double a, double b, int N, int Ng) {
 		sum_n = r_n * sum_n;
 		sum += sum_n;
 	}
-	// MC capire bene come funziona new - delete.
 	delete[] x;
 	delete[] w;
 	return sum;
 }
 
-double gaussquad2(double (*f)(double x, double p), double a, double b, int N, int Ng, double p) {
+double gaussquad(double (*f)(double x, double p), double a, double b, int N, int Ng, double p) {
 	orderinterval(&a, &b);
 	double dx, a_n, b_n, r_n, sum, sum_n;
 	double * x, * w;
@@ -242,7 +275,7 @@ double gaussquad2(double (*f)(double x, double p), double a, double b, int N, in
 	return sum;
 }
 
-double gaussquadparam(double (*f)(double x, int cp, double p[]), double a, double b, int N, int Ng, int cp, double p[]) {
+double gaussquad(double (*f)(double x, int cp, double p[]), double a, double b, int N, int Ng, int cp, double p[]) {
 	orderinterval(&a, &b);
 	double dx, a_n, b_n, r_n, sum, sum_n;
 	double * x, * w;
@@ -336,7 +369,7 @@ double bisection(double (*f)(double x), double a, double b, double tolerance) {
 		} while (fabs(b - a) > tolerance);
 		#if FLG_DEBUG
 		++k;
-		std::cout << "Bisection(): k = " << k << "; [a,b] = [" << a << ", " << b << "]; xm = " << x_0 << "; dx = " << b - a << "; fm = " << f(x_0) << std::endl;
+		std::cout << "Bisection(): k = " << k << "; [a,b] = [" << a << ", " << b << "]; xm = " << x_m << "; dx = " << b - a << "; fm = " << f(x_m) << std::endl;
 		#endif /* FLG_DEBUG */
 	}
 	return x_m;
@@ -502,6 +535,14 @@ double central_difference(double (*f)(double), double h, double x) {
 void eulerstep(double const t, double const dt, double Y[], void (*rhs)(double const t, double const Y_0[], double R[]), int const n_eq) {
 	double R[n_eq];
 	rhs(t, Y, R);
+	for (int i = 0; i < n_eq; i++) {
+		Y[i] += dt * R[i];
+	}
+}
+
+void eulerstep(double const t, double const dt, double Y[], void (*rhs)(double const t, double const Y_0[], double R[], int const n_eq), int const n_eq) {
+	double R[n_eq];
+	rhs(t, Y, R, n_eq);
 	for (int i = 0; i < n_eq; i++) {
 		Y[i] += dt * R[i];
 	}
