@@ -80,7 +80,7 @@
 %\newpage
 
 \section{Introduction}
-Climate dynamics can be studied with models of varying complexity. One of the quantities analysed is the temporal and spatial distribution of temperature in the atmosphere, which is the result of the heat exchange between different processes. Electromagnetic (EM) radiation is emitted, absorbed and scattered by the chemical species distributed in the atmosphere and by the planetary surface. Moreover, the atmosphere receives EM radiation by other celestial bodies, e.g. stars. Radiative processes are described by the radiative transfer equation (RTE), which is an integro-differential equation in five dimensions.
+Climate dynamics can be studied with models of varying complexity. One of the quantities analysed is the temporal and spatial distribution of temperature in the atmosphere, which is the result of the heat exchange between different processes. Electromagnetic (EM) radiation is emitted, absorbed and scattered by the chemical species distributed in the atmosphere and by the planetary surface. Moreover, the atmosphere receives EM radiation by other celestial bodies, e.g. stars. Radiative processes are described by the Radiative Transfer Equation (RTE).
 %\cite[25]{Modest}
 Local temperature differences generate motion of fluid parcels, hence convection. A rough planetary surface can hinder horizontal heat transport. Fluid dynamics equations are needed to represent these processes.
 
@@ -125,22 +125,72 @@ where $\mu_m$ is the mass attenuation coefficient of the atmosphere, which is th
   \delta(P) = \frac{\mu_m}{g} (P - \PTOA)
   \quad .
 \end{equation}
+For simplicity, the planet is supposed to have a diurnal cycle, to receive a constant irradiance $S_0$ and to have a constant Bond albedo $A$.
+Atmosphere is supposed transparent to radiation from outside the planet.
 
-The total heat flux $q(z)$ is determined by radiative transfer and atmospheric convection. The RTE is not solved directly by the RCM, instead a two-stream approximation is adopted: radiation processes are grouped in upward and downward radiations and are treated separately. Neither the contribution to $q(z)$ due to atmospheric convection is obtained by solving the proper fluid dynamics equations, in its place a numerical correction is adopted and is described in section~\ref{sec:Convective adjustment}.
+The total heat flux $q(z)$ is determined by radiative transfer and atmospheric convection. The RTE is not solved directly by the RCM, instead a two-stream approximation is adopted: radiation is split in upward and downward directions and they are treated separately. Neither the contribution to $q(z)$ due to atmospheric convection is obtained by solving the proper fluid dynamics equations, in its place a numerical correction is adopted and is described in section~\ref{sec:Convective adjustment}.
 With these considerations, equation~\eqref{eq:temperature_derivation} can be rewritten as
 \begin{equation}
   \label{eq:temperature_time_derivative}
-  \pdv*{T(t,z)}{t} = -\frac{1}{\varrho c_P} \odv*{\big( \E_\text{U}(z) + \E_\text{D}(z) \big)}{z}
+  \pdv*{T(t,z)}{t} = -\frac{1}{\varrho c_P} \odv*{\big( E_\text{U}(z) - E_\text{D}(z) \big)}{z}
   \quad ,
 \end{equation}
-where $\E_\text{U}(z)$ and $\E_\text{D}(z)$ are radiant fluxes of upward and downward radiations, respectively.
+where $E_\text{U}(z)$ and $E_\text{D}(z)$ are the irradiances of upward and downward radiations, respectively.
 
 
 
 \section{Analytical solution of radiative equilibrium}
-% MC explain how radiative fluxes are managed in a grey atmosphere.
+The modelled atmosphere is in Local Thermal Equilibrium (LTE) and does not scatter radiation. With these hypotheses the RTE becomes Schwarzchild's equation
+\begin{equation}
+  \label{eq:schwarzchild}
+  \frac{1}{\mu_m \varrho} \odv*{L(\nu, s)}{s} = B_\nu(\nu, T) - L(\nu, s)
+  \quad ,
+\end{equation}
+where $L(\nu, s)$ is the spectral radiance at point $s$ of the optical path and $B_\nu(\nu, T)$ is Planck's function (cfr. section~\ref{sec:Radiometric quantities}).
 
-% MC talk about diffusive radiation and the factor 1.66.
+To apply equation~\eqref{eq:schwarzchild} to irradiances, first it is integrated over the whole EM spectrum, then it is integrated over the solid angle corresponding to a hemisphere. This second integration brings a factor $D$ which is multiplied to $\delta$ to consider the diffusion of radiation.
+Optical depth $\delta' = D \delta$ is used as vertical coordinate, hence the resulting equations for the upward and downward irradiances are:
+\begin{align}
+  \label{eq:schwarzchild_upward}
+  - \odv*{E_\text{U}(\delta')}{\delta'} & = \sigma T(\delta')^4 - E_\text{U}(\delta') \quad , \\
+  \label{eq:schwarzchild_downward}
+  \odv*{E_\text{D}(\delta')}{\delta'} & = \sigma T(\delta')^4 - E_\text{D}(\delta')
+  \quad .
+\end{align}
+Boundary conditions are $E_\text{D}(0) = 0$ because energy released to atmosphere at TOA by the downward flux is negligible and $E_\text{U}(0)$ is a constant called Outgoing Longwave Radiation (OLR).
+
+For the condition of radiative equilibrium the OLR is equal to the irradiance arrived at TOA from outside the atmosphere:
+\begin{equation}
+  \label{eq:radiative_equilibrium}
+  E_\text{U}(0) = (1 - A) \frac{S_0}{4}
+  \quad .
+\end{equation}
+When temperature reaches the steady state, equations~\eqref{eq:schwarzchild_upward} and~\eqref{eq:schwarzchild_downward} are coupled by equation
+\begin{equation}
+  \label{eq:temperature_steady_state}
+  \odv*{\big( E_\text{U}(\delta') - E_\text{D}(\delta') \big)}{\delta'} = 0
+  \quad ,
+\end{equation}
+which has solution
+\begin{equation}
+  \label{eq:temperature_steady_state_solution}
+  E_\text{U}(\delta') - E_\text{D}(\delta') = (1 - A) \frac{S_0}{4}
+\end{equation}
+in agreement with the hypothesis of atmosphere transparent to radiation from outside the atmosphere.
+
+With these information and by adding and subtracting equations~\eqref{eq:schwarzchild_upward} and~\ref{eq:schwarzchild_downward}, the equation for the temperature of the steady state is obtained,
+\begin{equation}
+  \label{eq:temperature_radiative_equilibrium}
+  2 \sigma \odv*{T(\delta')^4}{\delta'} = (1 - A) \frac{S_0}{4}
+  \quad ,
+\end{equation}
+and the solution is:
+\begin{equation}
+  \label{eq:temperature_radiative_equilibrium_solution}
+  T(\delta) = \bigg( (1 - A) \frac{S_0}{8 \sigma} (1 + D \delta) \bigg)^\frac{1}{4}
+  \quad .
+\end{equation}
+% MC put here figure.
 
 
 
@@ -202,6 +252,7 @@ Data on constants used in this work are listed in table~\ref{tab:constants}.
     $P_\text{g}$       & \num{1.013250e5}       & \unit{\pascal}                        & Standard pressure at ground level, from \cite[2]{US1976}           \\
     $c_{P,\text{air}}$ & \num{1.004e3}          & \unit{\joule\per\kelvin\per\kilogram} & Specific heat at constant pressure of air, from \cite[16]{Catling} \\
     $z_\text{g}$       & \num{0}                & \unit{\metre}                         & Nominal ground level                                               \\
+    $D$       & \num{1.66}                &                       & Diffusivity factor, from \cite[469]{Ramanathan}                                               \\
     \midrule
     $\zTOA$            & \num{55000}            & \unit{\metre}                         & Arbitrary TOA altitude                                             \\ % MC set the value I choose for z_TOA.
     $\nu_\text{min}$            & \num{100}            & \unit{\per\centi\metre}                         & Arbitrary minimum boundary for EM spectrum                                             \\
