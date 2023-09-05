@@ -9,7 +9,6 @@
 #include "utilities.h"
 #include "configuration.h" // Include last to allow redefinitions.
 
-
 int main(int argc, char * argv[]) {
 	using namespace std;
 	cout << fixed << setprecision(N_PRECISION);
@@ -24,28 +23,35 @@ int main(int argc, char * argv[]) {
 	
 	// Precompute other vertical coordinates.
 	double * P; // / Pa
-	double * delta;
-	P = new double[global_N];
+	double * delta, * sigma;
 	delta = new double[global_N];
+	P = new double[global_N];
+	sigma = new double[global_N];
 	for (int i = 0; i < global_N; i++) {
 		delta[i] = get_optical_depth_z(z[i], global_P_TOA);
 		P[i] = get_pressure(z[i]);
+		sigma[i] = get_sigma(P[i], global_P_TOA);
 	}
 	
-	// Analytical solution of radiative equilibrium.
+	
+	
+	/* Analytical solution of radiative equilibrium */
+	
 	double T_0; // / K
-	double * T; // / K
+	double * T, * theta; // / K
 	T_0 = pow((1.0 - global_A) * global_S_0 / 8.0 / global_sigma, 0.25);
 	T = new double[global_N];
+	theta = new double[global_N];
 	ofstream file_plot;
 	char filename_plot[] = DIR_DATA "/temperature_radiative_equilibrium.dat";
 	file_plot << fixed << setprecision(N_PRECISION);
 	file_plot.open(filename_plot);
-	file_plot << "#z/z_0 T   delta P   " << endl;
-	file_plot << "#''    'K' ''    'Pa'" << endl;
+	file_plot << "#z/z_0  T   delta P    sigma theta" << endl;
+	file_plot << "#'1'    'K' '1'   'Pa' '1'   'K'" << endl;
 	for (int i = 0; i < global_N; i++) {
 		T[i] = pow(1.0 + global_D * delta[i], 0.25);
-		file_plot << z[i] / global_z_0 << ' ' << T_0 * T[i] << ' ' << delta[i] << ' ' << P[i] << '\n';
+		theta[i] = get_theta(T[i], P[i]);
+		file_plot << z[i] / global_z_0 << ' ' << T_0 * T[i] << ' ' << delta[i] << ' ' << P[i] << ' ' << sigma[i] << ' ' << theta[i] << '\n';
 	}
 	file_plot.close();
 	cout << "Temperature profile calculated, values are stored in file " << filename_plot << endl;
