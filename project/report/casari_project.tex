@@ -70,9 +70,9 @@
 \maketitle
 
 \begin{abstract}
-  Earth's climate dynamics can be studied with models of varying complexity. Radiative-convective models (RCMs) provide an intermediate complexity approach to the simulation of climate, evaluating an atmospheric temperature profile averaged over all latitudes and longitudes and function of time and altitude.
-  The atmosphere is modelled as a vertical column divided in parallel layers, each containing specific gases with specific optical and physical properties. The optical depth of absorbing species is assumed constant with respect to the frequency of electromagnetic radiation.
-  Physical processes driving the model are radiation absorption, transmission, reflection and air convection which determine the energy exchange between layers.
+  Radiative-convective models provide an intermediate complexity approach to the simulation of climate. These models evaluate the atmospheric temperature profile averaged over all latitudes and longitudes, which is function of time and altitude.
+  Physical processes which determine the energy exchange in the model are absorption, transmission, reflection of electromagnetic radiation and convection of fluid.
+  In this work a radiative-convective model is used to derive the temperature of an atmosphere where the optical depth is constant with respect to the frequency of radiation. The resulting temperature profile is compared with the analytical solution provided under the condition of radiative equilibrium.
 \end{abstract}
 
 % MC remove when finished.
@@ -80,7 +80,64 @@
 %\newpage
 
 \section{Introduction}
-The temperature distribution of a planetary atmosphere is the result of the heat exchange between different processes. Electromagnetic (EM) radiation is emitted, absorbed and scattered by the chemical species distributed in the atmosphere and by the planetary surface. Moreover, the atmosphere receives EM radiation by other celestial bodies, e.g. stars. Local temperature differences generate motion of fluid parcels, hence convection. These are the main processes driving the evolution of the temperature field.
+Climate dynamics can be studied with models of varying complexity. One of the quantities analysed is the temporal and spatial distribution of temperature in the atmosphere, which is the result of the heat exchange between different processes. Electromagnetic (EM) radiation is emitted, absorbed and scattered by the chemical species distributed in the atmosphere and by the planetary surface. Moreover, the atmosphere receives EM radiation by other celestial bodies, e.g. stars. Radiative processes are described by the radiative transfer equation (RTE), which is an integro-differential equation in five dimensions.
+%\cite[25]{Modest}
+Local temperature differences generate motion of fluid parcels, hence convection. A rough planetary surface can hinder horizontal heat transport. Fluid dynamics equations are needed to represent these processes.
+
+Fluid parcels are treated as open systems and the temperature distribution is obtained by a suitable thermodynamic energy equation, coupled with the equations of the processes occuring in the atmosphere. Even by limiting the analysis to radiative processes and convection, which are the main drivers of temperature variations, the equations involved are not solvable analytically and are not tractable numerically without simplifications.
+
+A first approximation is to consider the average over all latitudes and longitudes for quantities which depend on spatial position. The resulting atmosphere is represented by plane-parallel layers, identified by their altitude $z$ ranging from $z_\text{g}$ at ground level to $\zTOA$ at the Top Of the Atmosphere (TOA). With this hypothesis, the differential equation describing temperature variation with respect to time $t$ is
+\begin{equation}
+  \label{eq:temperature_derivation}
+  \pdv*{T(t,z)}{t} = -\frac{1}{\varrho c_P} \odv*{q(z)}{z}
+  \quad ,
+\end{equation}
+where $\varrho$ is the volumetric mass density of the atmosphere, in general a function of $z$, $c_P$ is the specific heat at constant pressure of the atmosphere, assumed constant, and $q(z)$ is the total flux exchanged due to heat transfer, which depends on altitude $z$ also through $T(t,z)$. Details on the derivation are in \cite[466]{Ramanathan}, where the equation is written initially in terms of volumetric power densities.
+
+A second hypothesis is the radiative-convective equilibrium of the atmosphere. This translates in the existence of a steady state $\pdv*{T(t,z)}{t} = 0$ where the atmosphere is both in radiative equilibrium, i.e. the total radiant flux at TOA is null, and in convective equilibrium, i.e. fluid parcels are stable with respect to vertical motion.
+
+A model with the previous assumptions is called Radiative-Convective Model (RCM).
+To simplify further the RTE, in this work the dependence of optical depth $\delta$ on the frequency of EM radiation is neglected. An atmosphere with this property is called grey atmosphere.
+
+Additional hypotheses are considered to simplify this study.
+Specific gas constant $R_m$ is used in thermodynamic relations, which is defined as the gas constant $R$ divided by the molar mass of the gas.
+Gravitational acceleration $g$ is constant.
+The atmosphere is supposed to be in hydrostatic equilibrium described by
+\begin{equation}
+  \label{eq:hydrostatic_equilibrium}
+  \odif{P} = - \varrho g \odif{z}
+\end{equation}
+and to obey the ideal gas law
+\begin{equation}
+  \label{eq:ideal_gas_law}
+  P = \varrho R_m T
+  \quad .
+\end{equation}
+A bijective relation exists between altitude $z$ and pressure $P$ (cfr. section~\ref{sec:Relation between pressure and altitude}), hence they can be used interchangeably as vertical coordinates. Pressure decreases with altitude from standard value $P_\text{g}$ at ground level to value $\PTOA$ at TOA.
+To simplify radiative calculations, scattering is neglected and optical depth is used as vertical coordinate, starting from \num{0} at TOA and increasing downward. Optical depth is related to altitude by
+\begin{equation}
+  \label{eq:optical_depth_altitude}
+  \delta(z) = \mu_m \int_{z}^{\zTOA} \varrho(z') \odif{z'}
+\end{equation}
+where $\mu_m$ is the mass attenuation coefficient of the atmosphere, which is the sum of mass attenuation coefficients of the chemical species if no chemical reaction is supposed to occur in atmosphere. A simpler relation exists between $\delta$ and $P$ using equation~\eqref{eq:hydrostatic_equilibrium} to evaluate the integral in equation~\eqref{eq:optical_depth_altitude}:
+\begin{equation}
+  \label{eq:optical_depth_pressure}
+  \delta(P) = \frac{\mu_m}{g} (P - \PTOA)
+  \quad .
+\end{equation}
+
+The total heat flux $q(z)$ is determined by radiative transfer and atmospheric convection. The RTE is not solved directly by the RCM, instead a two-stream approximation is adopted: radiation processes are grouped in upward and downward radiations and are treated separately. Neither the contribution to $q(z)$ due to atmospheric convection is obtained by solving the proper fluid dynamics equations, in its place a numerical correction is adopted and is described in section~\ref{sec:Convective adjustment}.
+With these considerations, equation~\eqref{eq:temperature_derivation} can be rewritten as
+\begin{equation}
+  \label{eq:temperature_time_derivative}
+  \pdv*{T(t,z)}{t} = -\frac{1}{\varrho c_P} \odv*{\big( \Phi_\text{U}(z) + \Phi_\text{D}(z) \big)}{z}
+  \quad ,
+\end{equation}
+where $\Phi_\text{U}(z)$ and $\Phi_\text{D}(z)$ are radiant fluxes of upward and downward radiations, respectively.
+
+% MC explain how radiative fluxes are managed in a grey atmosphere.
+
+
 
 \section{Methods}
 \label{sec:Methods}
@@ -263,7 +320,7 @@ With these simplifications, shortwave irradiance at layer $i$ is given by
   \label{eq:irradiance_shortwave}
   E_\text{S}(i) = \alpha_\text{S}(i) \ESTOA
 \end{equation}
-where absorptance $\alpha_\text{S}(i)$ measures the total absorption of shortwave radiation by layer $i$. A derivation for $\alpha_\text{S}(i)$ is found in appendix~\ref{sec:Radiation attenuation}.
+where absorptance $\alpha_\text{S}(i)$ measures the total absorption of shortwave radiation by layer $i$. A derivation for $\alpha_\text{S}(i)$ is found in section~\ref{sec:Radiation attenuation}.
 
 % MC also see if I need to use S_0 or S_0 / 4 and update formulae in TikZ images.
 % MC complete shortwave_radiation_TOA after having completed shortwave_radiation.
@@ -321,7 +378,7 @@ Equation~\eqref{eq:temperature_time_derivative} is solved in the time domain thr
 \subsection{Division of the electromagnetic spectrum}
 \label{sec:Division of the electromagnetic spectrum}
 % Content of this section is elaborated on \cite[43]{Catling}.
-Spectral irradiances of Sun's and Earth's surfaces are obtained from blackbody spectral radiance (cfr. appendix~\ref{sec:Radiometric quantities}). They are compared inside Earth's atmosphere, whose thickness is neglected with respect to the other spatial quantities involved in these calculations, hence the comparison is performed directly on Earth's surface. Nevertheless, the reflexion of solar radiation by atmospheric components is still considered and it is parametrised through Earth's Bond albedo. Moreover, attenuation of solar radiation due to distance is considered: given a generic coordinate system, spectral radiant intensity of Sun is obtained by multiplying the spectral radiance by the area of a spherical surface with radius $R_\text{sun}$, then the result is divided by the area of a spherical surface with radius \qty{1}{\astronomicalunit} to measure solar radiance at Earth's surface.
+Spectral irradiances of Sun's and Earth's surfaces are obtained from blackbody spectral radiance (cfr. section~\ref{sec:Radiometric quantities}). They are compared inside Earth's atmosphere, whose thickness is neglected with respect to the other spatial quantities involved in these calculations, hence the comparison is performed directly on Earth's surface. Nevertheless, the reflexion of solar radiation by atmospheric components is still considered and it is parametrised through Earth's Bond albedo. Moreover, attenuation of solar radiation due to distance is considered: given a generic coordinate system, spectral radiant intensity of Sun is obtained by multiplying the spectral radiance by the area of a spherical surface with radius $R_\text{sun}$, then the result is divided by the area of a spherical surface with radius \qty{1}{\astronomicalunit} to measure solar radiance at Earth's surface.
 
 The resulting solar spectral irradiance is
 \begin{equation}
@@ -336,14 +393,14 @@ while Earth's surface spectral irradiance is
   \quad .
 \end{equation}
 
-The boundaries of the EM spectrum are chosen arbitrarily in such a way that both equation~\eqref{eq:spectral_irradiance_sun} and equation~\eqref{eq:spectral_irradiance_earth} integrated in the resulting interval are over \qty{99}{\percent} of the respective radiant exitances (cf. appendix~\ref{sec:Radiometric quantities}) given by the Stefan-Boltzmann law
+The boundaries of the EM spectrum are chosen arbitrarily in such a way that both equation~\eqref{eq:spectral_irradiance_sun} and equation~\eqref{eq:spectral_irradiance_earth} integrated in the resulting interval are over \qty{99}{\percent} of the respective radiant exitances (cf. section~\ref{sec:Radiometric quantities}) given by the Stefan-Boltzmann law
 \begin{equation}
   \label{eq:stefan-boltzmann_law}
   M(T) = \sigma T^4
 \end{equation}
 where $\sigma$ is the Stefan-Boltzmann constant and $T$ is the temperature of the emitting body. The chosen values are shown in table~\ref{tab:constants}.
 
-Figure~\ref{fig:spectral_irradiance} shows the plots of equation~\eqref{eq:spectral_irradiance_sun}, equation~\eqref{eq:spectral_irradiance_earth} and the division of the spectrum at the wavenumber $\nu_\text{div}$ where the curves intersect. Value $\nu_\text{div} \approx \qty{2154}{\per\centi\metre}$ is obtained numerically (cfr. appendix~\ref{sec:Hypotheses}).
+Figure~\ref{fig:spectral_irradiance} shows the plots of equation~\eqref{eq:spectral_irradiance_sun}, equation~\eqref{eq:spectral_irradiance_earth} and the division of the spectrum at the wavenumber $\nu_\text{div}$ where the curves intersect. Value $\nu_\text{div} \approx \qty{2154}{\per\centi\metre}$ is obtained numerically (cfr. section~\ref{sec:Hypotheses}).
 \begin{figure*}[h]
   \centering
   \includegraphics*[keepaspectratio=true,width=0.95\textwidth]{spectral_irradiance_bands}
@@ -366,7 +423,7 @@ In this section the \cpp\ code used to obtain the results presented in this work
 % MC show the whole source code, splitted in sections.
 
 % MC some thoughts about the development of the code.
-First, the parametrization of the vertical coordinate is chosen among three alternatives: altitude $z$ in \unit{\metre}, atmospheric pressure $P$ in \unit{\pascal}, coordinate $\sigma = \frac{P - \PTOA}{P_S - \PTOA}$ adimensional, with $\PTOA$ pressure at the top of the modelised atmosphere and $P_S$ pressure at the surface. One parametrisation can be written in term of another through a monotonic function (e.g. pressure decreases with altitude, cfr. Appendix~\ref{sec:Relation between pressure and altitude}). For the initial development the altitude $z$ is chosen as vertical coordinate because it is more intuitive, moreover plots in TTAPS-I are expressed in terms of both $z$ and $P$.
+First, the parametrization of the vertical coordinate is chosen among three alternatives: altitude $z$ in \unit{\metre}, atmospheric pressure $P$ in \unit{\pascal}, coordinate $\sigma = \frac{P - \PTOA}{P_S - \PTOA}$ adimensional, with $\PTOA$ pressure at the top of the modelised atmosphere and $P_S$ pressure at the surface. One parametrisation can be written in term of another through a monotonic function (e.g. pressure decreases with altitude, cfr. section~\ref{sec:Relation between pressure and altitude}). For the initial development the altitude $z$ is chosen as vertical coordinate because it is more intuitive, moreover plots in TTAPS-I are expressed in terms of both $z$ and $P$.
 
 Second, the atmospheric layers are configured. In TTAPS-I 20 layers are used (cfr. \cite[396]{NuclearWinterPhysics}) and they are numbered from the top of the atmosphere down as it is common in RCMs. The vertical coordinate refers to the center of each layer, with the excpetion of the last layer which is in direct contact with the surface and needs to be treated separately. % MC "Temperatures are calculated at the midpoints of the layers, and fluxes are computed at the layer boundaries."\cite[449]{Catling}
 Therefore two arrays are needed: one for the point and one with the corresponding layer thicknesses. Values are then assigned as double precision numbers. The value corresponding to the top of the atmosphere is set in a proper variable and a uniform distribution of layer thicknesses is assumed for ease.
