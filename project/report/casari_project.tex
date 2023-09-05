@@ -132,7 +132,7 @@ Relation~\eqref{eq:optical_depth_pressure} is used also in conjunction with equa
   \delta(z) = \frac{\mu_m}{g} \bigg( P_\text{g} \exp{\bigg( - \frac{z - z_\text{g}}{z_0} \bigg)} - \PTOA \bigg)
   \quad ,
 \end{equation}
-where ground level is chosen as reference point and constant factor $z_0$ is introduced to normalise the numerator, $\PTOA$ can be calculated using again equation~\eqref{eq:pressure_constant_temperature}.
+where ground level is chosen as reference point and constant factor $z_0$ is introduced to normalise the numerator. Note that $\PTOA$ can be calculated from a fixed $\zTOA$ using equation~\eqref{eq:pressure_constant_temperature}, or viceversa.
 For simplicity, the planet is supposed to have a diurnal cycle, to receive a constant irradiance $S_0$ and to have a constant Bond albedo $A$.
 Atmosphere is supposed transparent to radiation from outside the planet.
 
@@ -192,13 +192,19 @@ With these information and by adding and subtracting equations~\eqref{eq:schwarz
   2 \sigma \odv*{T(\delta')^4}{\delta'} = (1 - A) \frac{S_0}{4}
   \quad ,
 \end{equation}
-and the solution is:
+and the solution is
 \begin{equation}
   \label{eq:temperature_radiative_equilibrium_solution}
   T(\delta) = \bigg( (1 - A) \frac{S_0}{8 \sigma} (1 + D \delta) \bigg)^\frac{1}{4}
   \quad .
 \end{equation}
-% MC put here figure.
+plotted in figure~\ref{fig:temperature_radiative_equilibrium}. The code used to create the plot is~\ref{lst:radiative_equilibrium}.
+\begin{figure*}[h]
+  \centering
+  \includegraphics*[keepaspectratio=true,width=0.75\textwidth]{temperature_radiative_equilibrium}
+  \caption{Steady state vertical temperature profile of a grey atmosphere in radiative equilibrium. Lower altitudes are candidate to present instability due to higher values of the slope.}
+  \label{fig:temperature_radiative_equilibrium}
+\end{figure*}
 
 
 
@@ -265,7 +271,8 @@ Data on constants used in this work are listed in table~\ref{tab:constants}.
     $\zTOA$            & \num{55000}            & \unit{\metre}                         & Arbitrary TOA altitude                                             \\ % MC set the value I choose for z_TOA.
     $\nu_\text{min}$            & \num{100}            & \unit{\per\centi\metre}                         & Arbitrary minimum boundary for EM spectrum                                             \\
     $\nu_\text{max}$            & \num{100000}            & \unit{\per\centi\metre}                         & Arbitrary maximum boundary for EM spectrum                                             \\
-    $N$            & \num{20}            &                         & Number of atmospheric layers                                             \\
+    $N$            & \num{100}            &                         & Number of atmospheric layers                                             \\
+    $z_0$            & \num{2000}            & \unit{\metre}                        & Arbitrary constant set in equation~\ref{eq:optical_depth_altitude_2} for normalisation                                            \\
     \bottomrule
   \end{tabular}
 \end{table*}

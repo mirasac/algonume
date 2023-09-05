@@ -17,11 +17,11 @@
 double const global_delta_g = 0.8;
 double const global_D = 1.66;
 double const global_z_0 = 2000.0; // / m
-double const global_mu_m = 1.0;
-int const global_N = 20;
+int const global_N = 100;
 double const global_nu_min = 1e4; // 1 / m
 double const global_nu_max = 1e7; // 1 / m
-double const global_P_TOA = 100.0; // Pa
+double const global_P_TOA = 3.0; // Pa
+double const global_mu_m = global_delta_g * global_g / (global_P_g - global_P_TOA);
 double const global_z_TOA = 55000.0; // m
 
 #endif /* CONFIGURATION_H */

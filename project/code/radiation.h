@@ -10,7 +10,7 @@
 struct absorber_t {
 	int n_nu;
 	double * nu; // / (1 / m)
-	double * delta_nu; // / (1 / m)
+	double * dnu; // / (1 / m)
 };
 
 void delete_absorber(absorber_t absorber);

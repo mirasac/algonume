@@ -2,7 +2,7 @@ MAIN=casari_project
 CLASS_OPTIONS=draft
 MAIN_CLASS_OPTIONS="\providecommand\classoptions{${CLASS_OPTIONS}}\input{${MAIN}.tex}"
 DIR_FIGURES=./figures
-FIGURES=${DIR_FIGURES}/spectral_irradiance.pdf ${DIR_FIGURES}/spectral_irradiance_logy.pdf ${DIR_FIGURES}/spectral_irradiance_bands.pdf ${DIR_FIGURES}/spectral_irradiance_wavelength.pdf ${DIR_FIGURES}/shortwave_radiation.pdf
+FIGURES=${DIR_FIGURES}/spectral_irradiance.pdf ${DIR_FIGURES}/spectral_irradiance_logy.pdf ${DIR_FIGURES}/spectral_irradiance_bands.pdf ${DIR_FIGURES}/spectral_irradiance_wavelength.pdf ${DIR_FIGURES}/shortwave_radiation.pdf ${DIR_FIGURES}/temperature_radiative_equilibrium.pdf
 
 .PHONY: all class_options all_figures clean
 
@@ -48,6 +48,9 @@ ${DIR_FIGURES}/shortwave_radiation.pdf: ${DIR_FIGURES}/shortwave_radiation.tex
 	rm ${DIR_FIGURES}/shortwave_radiation.aux
 	rm ${DIR_FIGURES}/shortwave_radiation.log
 
+${DIR_FIGURES}/temperature_radiative_equilibrium.pdf: ${DIR_FIGURES}/temperature_radiative_equilibrium_input.tex ${DIR_FIGURES}/temperature_radiative_equilibrium_input.pdf
+	sh standalone.sh temperature_radiative_equilibrium ${DIR_FIGURES}
+
 clean:
 	rm -f *.aux
 	rm -f *.bbl
@@ -57,3 +60,4 @@ clean:
 	rm -f *.out
 	rm -f *.toc
 	rm -f *.xml
+

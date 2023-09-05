@@ -1,20 +1,20 @@
 #include "utilities.h"
 
-void set_layers_uniform(double x_min, double x_max, int n_layer, double x[], double delta_x[]) {
-	delta_x[0] = (x_max - x_min) / n_layer;
+void set_layers_uniform(double x_min, double x_max, int n_layer, double x[], double dx[]) {
+	dx[0] = (x_max - x_min) / n_layer;
 	x[0] = x_max;
 	for (int i = 1; i < n_layer; i++) {
-		delta_x[i] = delta_x[0];
-		x[i] = x[0] - delta_x[0] * i;
+		dx[i] = dx[0];
+		x[i] = x[0] - dx[0] * i;
 	}
 }
 
 void set_layers_z_uniform(double z_min, double z_max, int n_layer, layer_t layer[]) {
-	layer[0].delta_z = (z_max - z_min) / n_layer;
+	layer[0].dz = (z_max - z_min) / n_layer;
 	layer[0].z = z_max;
 	for (int i = 1; i < n_layer; i++) {
-		layer[i].delta_z = layer[0].delta_z;
-		layer[i].z = layer[0].z - layer[0].delta_z * i;
+		layer[i].dz = layer[0].dz;
+		layer[i].z = layer[0].z - layer[0].dz * i;
 	}
 }
 
@@ -33,6 +33,10 @@ void set_absorbers_uniform(int n_layer, int n_absorbers[], absorber_t * absorber
 
 double get_pressure(double z) {
 	return global_P_g * exp(- (z - global_z_g) / global_z_0);
+}
+
+double get_altitude(double P) {
+	return global_z_g - global_z_0 * log(P / global_P_g);
 }
 
 double get_altitude(double P, double T) {

@@ -2,7 +2,7 @@
 
 void delete_absorber(absorber_t absorber) {
 	delete[] absorber.nu;
-	delete[] absorber.delta_nu;
+	delete[] absorber.dnu;
 }
 
 double spectral_irradiance_blackbody_nu(double nu, double T) {
