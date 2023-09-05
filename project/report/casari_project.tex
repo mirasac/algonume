@@ -114,7 +114,7 @@ and to obey the ideal gas law
   \quad .
 \end{equation}
 A bijective relation exists between altitude $z$ and pressure $P$ (cfr. section~\ref{sec:Relation between pressure and altitude}), hence they can be used interchangeably as vertical coordinates. Pressure decreases with altitude from standard value $P_\text{g}$ at ground level to value $\PTOA$ at TOA.
-To simplify radiative calculations, scattering is neglected and optical depth is used as vertical coordinate, starting from \num{0} at TOA and increasing downward. Optical depth is related to altitude by
+To simplify radiative calculations, scattering is neglected and optical depth is used as vertical coordinate, starting from \num{0} at TOA and increasing downward up to value $\delta_\text{g}$ at ground level. Optical depth is related to altitude by
 \begin{equation}
   \label{eq:optical_depth_altitude}
   \delta(z) = \mu_m \int_{z}^{\zTOA} \varrho(z') \odif{z'}
@@ -130,12 +130,17 @@ The total heat flux $q(z)$ is determined by radiative transfer and atmospheric c
 With these considerations, equation~\eqref{eq:temperature_derivation} can be rewritten as
 \begin{equation}
   \label{eq:temperature_time_derivative}
-  \pdv*{T(t,z)}{t} = -\frac{1}{\varrho c_P} \odv*{\big( \Phi_\text{U}(z) + \Phi_\text{D}(z) \big)}{z}
+  \pdv*{T(t,z)}{t} = -\frac{1}{\varrho c_P} \odv*{\big( \E_\text{U}(z) + \E_\text{D}(z) \big)}{z}
   \quad ,
 \end{equation}
-where $\Phi_\text{U}(z)$ and $\Phi_\text{D}(z)$ are radiant fluxes of upward and downward radiations, respectively.
+where $\E_\text{U}(z)$ and $\E_\text{D}(z)$ are radiant fluxes of upward and downward radiations, respectively.
 
+
+
+\section{Analytical solution of radiative equilibrium}
 % MC explain how radiative fluxes are managed in a grey atmosphere.
+
+% MC talk about diffusive radiation and the factor 1.66.
 
 
 
