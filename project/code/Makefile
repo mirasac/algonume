@@ -17,7 +17,7 @@ ${LIB}.o: ${LIB}.cpp ${LIB}.h
 radiation.o: radiation.cpp radiation.h constants.h ${LIB}.o configuration.h
 	g++ ${CPPFLAGS} -c radiation.cpp -o radiation.o
 
-utilities.o: utilities.cpp utilities.h constants.h radiation.o
+utilities.o: utilities.cpp utilities.h constants.h radiation.o configuration.h
 	g++ ${CPPFLAGS} -c utilities.cpp -o utilities.o
 
 convection.o: convection.cpp convection.h

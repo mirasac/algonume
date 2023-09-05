@@ -114,17 +114,25 @@ and to obey the ideal gas law
   \quad .
 \end{equation}
 A bijective relation exists between altitude $z$ and pressure $P$ (cfr. section~\ref{sec:Relation between pressure and altitude}), hence they can be used interchangeably as vertical coordinates. Pressure decreases with altitude from standard value $P_\text{g}$ at ground level to value $\PTOA$ at TOA.
-To simplify radiative calculations, scattering is neglected and optical depth is used as vertical coordinate, starting from \num{0} at TOA and increasing downward up to value $\delta_\text{g}$ at ground level. Optical depth is related to altitude by
+To simplify radiative calculations, scattering is neglected and optical depth is used as vertical coordinate, starting from \num{0} at TOA and increasing downward up to value $\delta_\text{g}$ at ground level. Optical depth is a function of altitude through
 \begin{equation}
   \label{eq:optical_depth_altitude}
   \delta(z) = \mu_m \int_{z}^{\zTOA} \varrho(z') \odif{z'}
+  \quad ,
 \end{equation}
-where $\mu_m$ is the mass attenuation coefficient of the atmosphere, which is the sum of mass attenuation coefficients of the chemical species if no chemical reaction is supposed to occur in atmosphere. A simpler relation exists between $\delta$ and $P$ using equation~\eqref{eq:hydrostatic_equilibrium} to evaluate the integral in equation~\eqref{eq:optical_depth_altitude}:
+where $\mu_m$ is the mass attenuation coefficient of the atmosphere, which is the sum of mass attenuation coefficients of the chemical species if no chemical reaction is supposed to occur. A simpler relation exists between $\delta$ and $P$ using equation~\eqref{eq:hydrostatic_equilibrium} to evaluate the integral in equation~\eqref{eq:optical_depth_altitude}:
 \begin{equation}
   \label{eq:optical_depth_pressure}
   \delta(P) = \frac{\mu_m}{g} (P - \PTOA)
   \quad .
 \end{equation}
+Relation~\eqref{eq:optical_depth_pressure} is used also in conjunction with equation~\eqref{eq:pressure_constant_temperature} to derive another formula for optical depth as a function of altitude:
+\begin{equation}
+  \label{eq:optical_depth_altitude_2}
+  \delta(z) = \frac{\mu_m}{g} \bigg( P_\text{g} \exp{\bigg( - \frac{z - z_\text{g}}{z_0} \bigg)} - \PTOA \bigg)
+  \quad ,
+\end{equation}
+where ground level is chosen as reference point and constant factor $z_0$ is introduced to normalise the numerator, $\PTOA$ can be calculated using again equation~\eqref{eq:pressure_constant_temperature}.
 For simplicity, the planet is supposed to have a diurnal cycle, to receive a constant irradiance $S_0$ and to have a constant Bond albedo $A$.
 Atmosphere is supposed transparent to radiation from outside the planet.
 
@@ -178,7 +186,7 @@ which has solution
 \end{equation}
 in agreement with the hypothesis of atmosphere transparent to radiation from outside the atmosphere.
 
-With these information and by adding and subtracting equations~\eqref{eq:schwarzchild_upward} and~\ref{eq:schwarzchild_downward}, the equation for the temperature of the steady state is obtained,
+With these information and by adding and subtracting equations~\eqref{eq:schwarzchild_upward} and~\eqref{eq:schwarzchild_downward}, the equation for the temperature of the steady state is obtained,
 \begin{equation}
   \label{eq:temperature_radiative_equilibrium}
   2 \sigma \odv*{T(\delta')^4}{\delta'} = (1 - A) \frac{S_0}{4}

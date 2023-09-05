@@ -1,11 +1,11 @@
 #include "utilities.h"
 
-void set_layers_z_uniform(double z_min, double z_max, int n_layer, double z[], double delta_z[]) {
-	delta_z[0] = (z_max - z_min) / n_layer;
-	z[0] = z_max;
-	for (int i_z = 1; i_z < n_layer; i_z++) {
-		delta_z[i_z] = delta_z[0];
-		z[i_z] = z[0] - delta_z[0] * i_z;
+void set_layers_uniform(double x_min, double x_max, int n_layer, double x[], double delta_x[]) {
+	delta_x[0] = (x_max - x_min) / n_layer;
+	x[0] = x_max;
+	for (int i = 1; i < n_layer; i++) {
+		delta_x[i] = delta_x[0];
+		x[i] = x[0] - delta_x[0] * i;
 	}
 }
 
@@ -31,8 +31,8 @@ void set_absorbers_uniform(int n_layer, int n_absorbers[], absorber_t * absorber
 	}
 }
 
-double get_pressure(double z, double T) {
-	return global_P_g * exp(- global_g / global_R_m_air / T * (z - global_z_g));
+double get_pressure(double z) {
+	return global_P_g * exp(- (z - global_z_g) / global_z_0);
 }
 
 double get_altitude(double P, double T) {
@@ -48,5 +48,13 @@ double get_theta(double T, double P) {
 }
 
 double get_density(double z, double T) {
-	return get_pressure(z, T) / global_R_m_air / T;
+	return get_pressure(z) / global_R_m_air / T;
+}
+
+double get_optical_depth_P(double P, double P_TOA) {
+	return global_mu_m / global_g * (P - P_TOA);
+}
+
+double get_optical_depth_z(double z, double P_TOA) {
+	return get_optical_depth_P(get_pressure(z), P_TOA);
 }
