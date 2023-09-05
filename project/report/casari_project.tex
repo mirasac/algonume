@@ -122,13 +122,13 @@ To simplify radiative calculations, scattering is neglected and optical depth is
   \delta(z) = \mu_m \int_{z}^{\zTOA} \varrho(z') \odif{z'}
   \quad ,
 \end{equation}
-where $\mu_m$ is the mass attenuation coefficient of the atmosphere, which corresponds to the sum of mass attenuation coefficients of the chemical species if they do not interact. This coefficient can be otbained as function of $\deltaTOA$ by evaluating equation~\eqref{eq:optical_depth_altitude_2} at the ground level,
+where $\mu_m$ is the mass attenuation coefficient of the atmosphere, which corresponds to the sum of mass attenuation coefficients of the chemical species if they do not interact. This coefficient can be otbained in function of $\delta_\text{g}$ by evaluating equation~\eqref{eq:optical_depth_altitude_2} at the ground level
 \begin{equation}
   \label{eq:mass_attenuation_coefficient}
-  \frac{\delta_\text{g} g}{P_\text{g} - \PTOA}
+  \mu_m = \frac{\delta_\text{g} g}{P_\text{g} - \PTOA}
   \quad ,
 \end{equation}
-or can be used as parameter to derive $\deltaTOA$. A simpler relation exists between $\delta$ and $P$ using equation~\eqref{eq:hydrostatic_equilibrium} to evaluate the integral in equation~\eqref{eq:optical_depth_altitude}:
+or viceversa can be used as parameter to derive $\delta_\text{g}$. A simpler relation exists between $\delta$ and $P$ using equation~\eqref{eq:hydrostatic_equilibrium} to evaluate the integral in equation~\eqref{eq:optical_depth_altitude}:
 \begin{equation}
   \label{eq:optical_depth_pressure}
   \delta(P) = \frac{\mu_m}{g} (P - \PTOA)
@@ -142,7 +142,7 @@ Relation~\eqref{eq:optical_depth_pressure} is used also in conjunction with equa
 \end{equation}
 where ground level is chosen as reference point and constant factor $z_0$ is introduced to normalise the numerator. Note that $\PTOA$ can be calculated from a fixed $\zTOA$ using equation~\eqref{eq:pressure_constant_temperature}, or viceversa.
 For simplicity, the planet is supposed to have a diurnal cycle, to receive a constant irradiance $S_0$ and to have a constant Bond albedo $A$.
-Atmosphere is supposed transparent to radiation from outside the planet.
+Atmosphere is supposed transparent to radiation coming from outside the planet.
 
 The total heat flux $q(z)$ is determined by radiative transfer and atmospheric convection. The RTE is not solved directly by the RCM, instead a two-stream approximation is adopted: radiation is split in upward and downward directions and they are treated separately. Neither the contribution to $q(z)$ due to atmospheric convection is obtained by solving the proper fluid dynamics equations, in its place a numerical correction is adopted.
 With these considerations, equation~\eqref{eq:temperature_derivation} can be rewritten as
@@ -206,19 +206,21 @@ To apply equation~\eqref{eq:schwarzchild} to irradiances, first it is integrated
 Optical depth $\delta' = D \delta$ is used as vertical coordinate, hence the resulting equations for the upward and downward irradiances are:
 \begin{align}
   \label{eq:schwarzchild_upward}
-  - \odv*{E_\text{U}(\delta')}{\delta'} & = \sigma T(\delta')^4 - E_\text{U}(\delta') \quad , \\
+  - \odv*{E_\text{U}(\delta')}{\delta'} & = \sigma T(t, \delta')^4 - E_\text{U}(\delta') \quad , \\
   \label{eq:schwarzchild_downward}
-  \odv*{E_\text{D}(\delta')}{\delta'} & = \sigma T(\delta')^4 - E_\text{D}(\delta')
-  \quad .
+  \odv*{E_\text{D}(\delta')}{\delta'} & = \sigma T(t, \delta')^4 - E_\text{D}(\delta')
+  \quad ,
 \end{align}
-Boundary conditions are $E_\text{D}(0) = 0$ because energy released to atmosphere at TOA by the downward flux is negligible and $E_\text{U}(0)$ is a constant called Outgoing Longwave Radiation (OLR).
+time $t$ appears as parameter.
 
-For the condition of radiative equilibrium the OLR is equal to the irradiance arrived at TOA from outside the atmosphere:
+Boundary conditions are $E_\text{D}(0) = 0$ because energy released to atmosphere at TOA by the downward flux is negligible and $E_\text{U}(0)$ is a constant called Outgoing Longwave Radiation (OLR).
+For the condition of radiative equilibrium, the OLR is equal to the irradiance arrived at TOA from outside the atmosphere:
 \begin{equation}
   \label{eq:radiative_equilibrium}
   E_\text{U}(0) = (1 - A) \frac{S_0}{4}
   \quad .
 \end{equation}
+
 When temperature reaches the steady state, equations~\eqref{eq:schwarzchild_upward} and~\eqref{eq:schwarzchild_downward} are coupled by equation
 \begin{equation}
   \label{eq:temperature_steady_state}
@@ -229,16 +231,16 @@ which has solution
 \begin{equation}
   \label{eq:temperature_steady_state_solution}
   E_\text{U}(\delta') - E_\text{D}(\delta') = (1 - A) \frac{S_0}{4}
+  \quad .
 \end{equation}
-in agreement with the hypothesis of atmosphere transparent to radiation from outside the atmosphere.
 
-With these information and by adding and subtracting equations~\eqref{eq:schwarzchild_upward} and~\eqref{eq:schwarzchild_downward}, the equation for the temperature of the steady state is obtained,
+The equation for the temperature at the steady state is obtained by adding and subtracting equations~\eqref{eq:schwarzchild_upward} and~\eqref{eq:schwarzchild_downward} and using equation~\eqref{eq:temperature_steady_state} and~\eqref{eq:temperature_steady_state}:
 \begin{equation}
   \label{eq:temperature_radiative_equilibrium}
   2 \sigma \odv*{T(\delta')^4}{\delta'} = (1 - A) \frac{S_0}{4}
-  \quad ,
+  \quad .
 \end{equation}
-and the solution is
+The solution is
 \begin{equation}
   \label{eq:temperature_radiative_equilibrium_solution}
   T(\delta) = \bigg( (1 - A) \frac{S_0}{8 \sigma} (1 + D \delta) \bigg)^\frac{1}{4}
