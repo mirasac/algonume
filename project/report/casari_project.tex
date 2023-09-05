@@ -59,6 +59,7 @@
 \newcommand{\cpp}{C++}
 \newcommand{\zTOA}{z_\text{TOA}}
 \newcommand{\PTOA}{P_\text{TOA}}
+\newcommand{\deltaTOA}{\delta_\text{TOA}}
 
 \raggedbottom
 
@@ -80,6 +81,7 @@
 %\newpage
 
 \section{Introduction}
+\label{sec:Introduction}
 Climate dynamics can be studied with models of varying complexity. One of the quantities analysed is the temporal and spatial distribution of temperature in the atmosphere, which is the result of the heat exchange between different processes. Electromagnetic (EM) radiation is emitted, absorbed and scattered by the chemical species distributed in the atmosphere and by the planetary surface. Moreover, the atmosphere receives EM radiation by other celestial bodies, e.g. stars. Radiative processes are described by the Radiative Transfer Equation (RTE).
 %\cite[25]{Modest}
 Local temperature differences generate motion of fluid parcels, hence convection. A rough planetary surface can hinder horizontal heat transport. Fluid dynamics equations are needed to represent these processes.
@@ -120,7 +122,13 @@ To simplify radiative calculations, scattering is neglected and optical depth is
   \delta(z) = \mu_m \int_{z}^{\zTOA} \varrho(z') \odif{z'}
   \quad ,
 \end{equation}
-where $\mu_m$ is the mass attenuation coefficient of the atmosphere, which is the sum of mass attenuation coefficients of the chemical species if no chemical reaction is supposed to occur. A simpler relation exists between $\delta$ and $P$ using equation~\eqref{eq:hydrostatic_equilibrium} to evaluate the integral in equation~\eqref{eq:optical_depth_altitude}:
+where $\mu_m$ is the mass attenuation coefficient of the atmosphere, which corresponds to the sum of mass attenuation coefficients of the chemical species if they do not interact. This coefficient can be otbained as function of $\deltaTOA$ by evaluating equation~\eqref{eq:optical_depth_altitude_2} at the ground level,
+\begin{equation}
+  \label{eq:mass_attenuation_coefficient}
+  \frac{\delta_\text{g} g}{P_\text{g} - \PTOA}
+  \quad ,
+\end{equation}
+or can be used as parameter to derive $\deltaTOA$. A simpler relation exists between $\delta$ and $P$ using equation~\eqref{eq:hydrostatic_equilibrium} to evaluate the integral in equation~\eqref{eq:optical_depth_altitude}:
 \begin{equation}
   \label{eq:optical_depth_pressure}
   \delta(P) = \frac{\mu_m}{g} (P - \PTOA)
@@ -136,7 +144,7 @@ where ground level is chosen as reference point and constant factor $z_0$ is int
 For simplicity, the planet is supposed to have a diurnal cycle, to receive a constant irradiance $S_0$ and to have a constant Bond albedo $A$.
 Atmosphere is supposed transparent to radiation from outside the planet.
 
-The total heat flux $q(z)$ is determined by radiative transfer and atmospheric convection. The RTE is not solved directly by the RCM, instead a two-stream approximation is adopted: radiation is split in upward and downward directions and they are treated separately. Neither the contribution to $q(z)$ due to atmospheric convection is obtained by solving the proper fluid dynamics equations, in its place a numerical correction is adopted and is described in section~\ref{sec:Convective adjustment}.
+The total heat flux $q(z)$ is determined by radiative transfer and atmospheric convection. The RTE is not solved directly by the RCM, instead a two-stream approximation is adopted: radiation is split in upward and downward directions and they are treated separately. Neither the contribution to $q(z)$ due to atmospheric convection is obtained by solving the proper fluid dynamics equations, in its place a numerical correction is adopted.
 With these considerations, equation~\eqref{eq:temperature_derivation} can be rewritten as
 \begin{equation}
   \label{eq:temperature_time_derivative}
@@ -144,6 +152,44 @@ With these considerations, equation~\eqref{eq:temperature_derivation} can be rew
   \quad ,
 \end{equation}
 where $E_\text{U}(z)$ and $E_\text{D}(z)$ are the irradiances of upward and downward radiations, respectively.
+
+Data on constants used in this work are listed in table~\ref{tab:constants} and where possible, values referred to Earth are used for a prompt comparison with reality.
+\begin{table*}[h]
+  \centering
+  \caption{Data on constants used in the present work. The middle rule separates standard values on top from arbitrary values chosen for the present work on bottom.}
+  \label{tab:constants}
+  \begin{tabular}[b]{cccp{0.5\textwidth}}
+    \toprule
+    Symbol             & Value                  & Unit                                  & \centering Notes                                                   \tabularnewline
+    \midrule
+    $A$                & \num{0.3}              &                                       & Bond albedo value compatible with various observations, cfr. \cite[1281]{albedo}   \\
+    $A_\text{g}$           & \num{0.1}              &                                       & Average surface albedo of Earth, cfr. \cite[217]{primer}   \\
+    $c_{P,\text{air}}$ & \num{1.004e3}          & \unit{\joule\per\kelvin\per\kilogram} & Specific heat at constant pressure of air, from \cite[16]{Catling} \\
+    $\deltaTOA$            & \num{0.0}            &                         & Optical depth at TOA, by definition                                             \\
+    $D$       & \num{1.66}                &                       & Diffusivity factor, from \cite[469]{Ramanathan}                                               \\
+    $g$                & \num{9.80665}          & \unit{\metre\per\square\second}       & Standard gravitational acceleration of Earth                       \\
+    $P_\text{g}$       & \num{1.013250e5}       & \unit{\pascal}                        & Standard pressure at ground level, from \cite[2]{US1976}           \\
+    %    $R$                & \num{8.31446261815324} & \unit{\joule\per\kelvin\per\mole}     & Gas constant                                                       \\
+    $R_{m,\text{air}}$ & \num{2.8705287e2}          & \unit{\joule\per\kelvin\per\kilogram} & Specific gas constant of air \\
+    $\sigma$              & \num{5.670374419e-8}           & \unit{\watt\per\square\metre\per\kelvin\tothe{4}}         & Stefan-Boltzmann constant                    \\
+    $S_0$              & \num{1361.0}           & \unit{\watt\per\square\metre}         & Nominal total solar irradiance, from \cite{IAU}                    \\
+    %    $R_\text{sun}$     & \num{6.957e8}          & \unit{\metre}                         & Nominal solar radius, from \cite{IAU}                              \\
+    %    $T_\text{earth}$   & \num{288.15}           & \unit{\kelvin}                        & Earth's surface temperature based on \cite{US1976}                 \\
+    %    $T_\text{sun}$     & \num{5772}             & \unit{\kelvin}                        & Solar surface temperature, from \cite{IAU}                         \\
+    $z_\text{g}$       & \num{0}                & \unit{\metre}                         & Nominal ground level                                               \\
+    \midrule
+    $\delta_\text{g}$            & \num{0.8}            &                         & Optical depth at ground level of Earth, from \cite[56]{Catling}                                             \\
+    $\mu_m$            & $\frac{\delta_\text{g} g}{P_\text{g} - \PTOA}$            &                         & Mass attenuation coefficient of the atmosphere of Earth                                           \\
+    $N$            & \num{100}            &                         & Number of atmospheric layers                                             \\
+    %    $\nu_\text{min}$            & \num{100}            & \unit{\per\centi\metre}                         & Arbitrary minimum boundary for EM spectrum                                             \\
+    %    $\nu_\text{max}$            & \num{100000}            & \unit{\per\centi\metre}                         & Arbitrary maximum boundary for EM spectrum                                             \\
+    $P_0$       & \num{1e5}       & \unit{\pascal}                        & Arbitrary reference value for pressure           \\
+    $\PTOA$            & \num{3}            & \unit{\pascal}                         & Arbitrary TOA pressure of Earth                                            \\ 
+    $z_0$            & \num{2000}            & \unit{\metre}                        & Arbitrary constant set in equation~\ref{eq:optical_depth_altitude_2} for normalisation                                            \\
+    $\zTOA$            & \num{55000}            & \unit{\metre}                         & Arbitrary TOA altitude of Earth                                            \\
+    \bottomrule
+  \end{tabular}
+\end{table*}
 
 
 
@@ -208,310 +254,22 @@ plotted in figure~\ref{fig:temperature_radiative_equilibrium}. The code used to 
 
 
 
-\section{Methods}
-\label{sec:Methods}
-% MC explain the atmosphere model: vertical column where each layer present quantities averaged over the global atmosphere.
-The RCM developed in the present work approximates the atmosphere as a vertical column divided in plane-parallel layers. 
-A bijective relation exists between altitude $z$ and pressure $P$ (cfr. section~\ref{sec:Relation between pressure and altitude}), hence they can be used interchangeably as vertical coordinates. The origin of coordinate $z$ is set at ground level and it is identified by value $z_\text{g}$ to keep generality. On the contrary, the Top-Of-Atmosphere (TOA) altitude $\zTOA$ is chosen arbitrarily. Pressure decreases with altitude from standard value $P_\text{g}$ at ground level to value $\PTOA$, which is calculated using equation~\eqref{eq:pressure_constant_temperature}. % MC this way the secondary scale given by pressure changes with time. To obtain the time changing plot I probaly need to choose which scale (i.e. choose a reference time instant) to use for the whole plot and a good choice is the one calculated when the steady state is reached.
-
-Each layer is identified by a value of $z$ corresponding to the upper boundary of the layer and by its thickness. The corresponding values of pressure are evaluated at each time instant with equation~\eqref{eq:pressure_constant_temperature}.
-
-
-
-\subsection{Hypotheses and conventions}
-\label{sec:Hypotheses and conventions}
-To simplify some calculations of radiative fluxes,
-% MC there seems to be no sostantial changes if wavelength would be used in calculations, except for having values about {lambda^2} ~ 10^12 times greater. Maybe this is the real reason for using wavenumber instead of wavelenght.
-the definition of wavenumber $\nu = \frac{1}{\lambda}$ is used in this work, where $\lambda$ is the wavelenght of the radiation. The electromagnetic (EM) spectrum is limited to interval $[\nu_\text{min}, \nu_\text{max}]$ and the choice of these values is discussed in section~\ref{sec:Division of the electromagnetic spectrum}.
-
-Specific gas constant is used in thermodynamical relations, which is defined as the gas constant $R$ divided by the gas molar mass. Henceforth, specific gas constant is represented with symbol $R_m$.
-
-Some assumptions are made on state and composition of Earth's atmosphere. Gravitational acceleration $g$ is constant. Atmospheric layers are supposed to be in hydrostatic equilibrium described by
-\begin{equation}
-  \label{eq:hydrostatic_equilibrium}
-  \odif{P} = - \varrho g \odif{z}
-\end{equation}
-and gaseous components obey the ideal gas law
-\begin{equation}
-  \label{eq:ideal_gas_law}
-  P = \varrho R_m T
-  \quad ,
-\end{equation}
-where $\varrho$ is the volumetric mass density of the gas.
-Each layer is homogenoeus, in the sense that quantities affecting radiative calculations are not dependent on spatial position inside the layer (e.g. gas densities, attenuation coefficients $\mu$ and specific heats at constant pressure $c_P$ are constant inside the layer), and emits in both upward and downward directions as a blackbody. No chemical reactions are supposed to occur in atmosphere.
-The average Earth's surface considered in the model is approximated as a planar blackbody emitting in the normal direction with temperature $T_\text{earth}$. Average Bond albedo for Earth is identified with constant $A$.
-
-Solar radiation is made by parallel rays forming an angle of incidence $\varepsilon$ with the normal of the plane-parallel atmospheric layers (i.e. zenith angle). % MC for US1976 epsilon = 45° = pi / 4 rad.
-Sun's surface is approximated as an emitting blackbody with temperature $T_\text{sun}$. Constant value $S_0$ for total solar irradiance is used in calculations.
-
-Solar spectral irradiance extends in the infrared (IR), visible (VIS) and ultraviolet (UV) bands, while spectral irradiance of Earth's surface is peaked in the IR band. The difference of their shapes allows the division of the spectrum at the intersection of the curves. The wavenumber of the intersection point is $\nu_\text{div}$. In this work, radiation with wavenumbers lesser than $\nu_\text{div}$ is addressed as longwave radiation, otherwise the denomination shortwave radiation is used. The two resulting spectra are treated independently and the overlap between curves is neglected. Accuracy of these approximations and value of $\nu_\text{div}$ are discussed in section~\ref{sec:Division of the electromagnetic spectrum}.
-
-Data on constants used in this work are listed in table~\ref{tab:constants}.
-\begin{table*}[h]
-  \centering
-  \caption{Data on constants used in the present work. The middle rule separates standard values on top from arbitrary values chosen for the present work on bottom.}
-  \label{tab:constants}
-  \begin{tabular}[b]{cccp{0.5\textwidth}}
-    \toprule
-    Symbol             & Value                  & Unit                                  & \centering Notes                                                   \tabularnewline
-    \midrule
-    $R$                & \num{8.31446261815324} & \unit{\joule\per\kelvin\per\mole}     & Gas constant                                                       \\
-    $g$                & \num{9.80665}          & \unit{\metre\per\square\second}       & Standard gravitational acceleration of Earth                       \\
-    $S_0$              & \num{1361.0}           & \unit{\watt\per\square\metre}         & Nominal total solar irradiance, from \cite{IAU}                    \\
-    $R_\text{sun}$     & \num{6.957e8}          & \unit{\metre}                         & Nominal solar radius, from \cite{IAU}                              \\
-    $T_\text{sun}$     & \num{5772}             & \unit{\kelvin}                        & Solar surface temperature, from \cite{IAU}                         \\
-    $T_\text{earth}$   & \num{288.15}           & \unit{\kelvin}                        & Earth's surface temperature based on \cite{US1976}                 \\
-    $A$           & \num{0.3}              &                                       & Bond albedo value compatible with various observations, cfr. \cite[1281]{albedo}   \\
-    $A_\text{g}$           & \num{0.1}              &                                       & Average surface albedo of Earth, cfr. \cite[217]{primer}   \\
-    $P_\text{g}$       & \num{1.013250e5}       & \unit{\pascal}                        & Standard pressure at ground level, from \cite[2]{US1976}           \\
-    $c_{P,\text{air}}$ & \num{1.004e3}          & \unit{\joule\per\kelvin\per\kilogram} & Specific heat at constant pressure of air, from \cite[16]{Catling} \\
-    $z_\text{g}$       & \num{0}                & \unit{\metre}                         & Nominal ground level                                               \\
-    $D$       & \num{1.66}                &                       & Diffusivity factor, from \cite[469]{Ramanathan}                                               \\
-    \midrule
-    $\zTOA$            & \num{55000}            & \unit{\metre}                         & Arbitrary TOA altitude                                             \\ % MC set the value I choose for z_TOA.
-    $\nu_\text{min}$            & \num{100}            & \unit{\per\centi\metre}                         & Arbitrary minimum boundary for EM spectrum                                             \\
-    $\nu_\text{max}$            & \num{100000}            & \unit{\per\centi\metre}                         & Arbitrary maximum boundary for EM spectrum                                             \\
-    $N$            & \num{100}            &                         & Number of atmospheric layers                                             \\
-    $z_0$            & \num{2000}            & \unit{\metre}                        & Arbitrary constant set in equation~\ref{eq:optical_depth_altitude_2} for normalisation                                            \\
-    \bottomrule
-  \end{tabular}
-\end{table*}
-
-
-
-\subsection{Temperature equation}
-\label{sec:Temperature equation}
-Intermediate layers of the atmosphere are treated as open systems where in general air parcels can move vertically, therefore temperature is determined by horizontally averaging the thermodynamic energy equation. Details on the derivation are in \cite[466]{Ramanathan}, where the equation is written in terms of volumetric power densities. The resulting differential equation describing temperature variation with time across layer $z$ is
-\begin{equation}
-  \label{eq:temperature_derivation}
-  \pdv*{T(t,z)}{t} = -\frac{1}{\varrho c_P} \odv*{q(z)}{z}
-\end{equation}
-where $q(z)$ is the total flux exchanged due to heat transfer, which depends on altitude $z$ also through $T(t,z)$.
-
-The total heat flux $q(z)$ is determined by radiative transfer and atmospheric convection. The first process is described by the radiative transfer equation (RTE),
-%\cite[25]{Modest}
-while the second process is governed by fluid dynamics. The RTE is an integro-differential equation in five dimensions and it is not solved directly by the RCM, instead longwave and shortwave radiations are treated separately. Neither the contribution to $q(z)$ due to atmospheric convection is obtained by solving the proper fluid dynamics equations, in its place a numerical correction is adopted and is described in section~\ref{sec:Convective adjustment}.
-
-With these considerations and using equation~\eqref{eq:hydrostatic_equilibrium} to drop the dependence on $\varrho$, equation~\eqref{eq:temperature_derivation} can be rewritten as
-\begin{equation}
-  \label{eq:temperature_time_derivative}
-  \pdv*{T(t,z)}{t} = \frac{g}{c_P} \odv*{\big( E_\text{L}(z) + E_\text{S}(z) \big)}{P}
-  \quad ,
-\end{equation}
-where $E_\text{L}(z)$ and $E_\text{S}(z)$ are the irradiances of longwave and shortwave radiations, respectively.
-
-
-
-\subsection{Longwave radiation}
-\label{sec:Longwave radiation}
-% Content in this section is elaborated on \cite[218]{primer}.
-In the region $[\nu_\text{min}, \nu_\text{div}]$ the attenuation of radiation is dominated by absorption, scattering is neglected.
-%\cite[468]{Ramanathan}
-Absorbing species in this bandwidth are \ch{H2O} as water vapor, \ch{CO2} and trace gases like \ch{N2O}, chlorofluorocarbons (CFCs), \ch{CH4}.
-%\cite[221]{primer}
-
-The aborption by the chemical species is quantified by the spectral internal transmittance
-\begin{equation}
-  \label{eq:spectral_internal_transmittance}
-  \tau_\text{i}(\nu, s, s_0) = e^{-\delta(\nu, s, s_0)}
-  \quad ,
-\end{equation}
-where $\delta(\nu, s, s_0)$ is the spectral optical depth, which depends only on the spectral attenuation coefficient $\mu(\nu, s')$ of the medium traversed by the radiation from $s_0$ to $s$ on the optical path. In the RCM optical paths are straight and form an angle $\theta$ with the direction normal to the layers, hence the definition of the spectral optical depth becomes:
-\begin{equation}
-  \label{eq:spectral_optical_depth}
-  \delta(\nu, s, s_0) = \frac{1}{\cos \theta} \int_{s_0}^{s} \mu(\nu, s') \odif{s'}
-  \quad .
-\end{equation}
-
-The absorbing species do not interact, hence $\mu(\nu, s')$ is simply the sum of the spectral attenuation coefficients of the individual components of the medium. Moreover, due to layers homogeneity it depends only on the concentration of the absorbing species in the layer, hence the spectral attenuation coefficient can be rewritten as
-\begin{equation}
-  \label{eq:spectral_attenuation_coefficient}
-  \mu(\nu, s') = \mu_m(\nu) \rho(s')
-\end{equation}
-where $\mu_m(\nu)$ is the spectral mass attenuation coefficient and $\rho(s')$ is the volumetric mass density of the absorber.
-
-The longwave irradiance at altitude $z$ is given by
-\begin{equation}
-  \label{eq:irradiance_longwave}
-  E_\text{L}(z) = \int_{\nu_\text{min}}^{\nu_\text{div}} E_\text{L}(\nu, z) \odif{\nu}
-  \quad ,
-\end{equation}
-where $E_\text{L}(\nu, z)$ is the longwave spectral irradiance
-% MC complete simplifying the equation.
-\begin{equation}
-  \label{eq:spectral_irradiance_longwave}
-  \begin{split}
-    E_\text{L}(\nu, z) = & \pi B_\nu(\nu, T(t, 0)) \tau_\text{i}(\nu, z, 0) + \\
-    & + \int_{z_\text{g}}^{z} \pi B_\nu(\nu, T(t, z')) \odv{\tau_\text{i}(\nu, z, z')}{z'} \odif{z'} \\
-    & + \int_{z}^{\zTOA} \pi B_\nu(\nu, T(t, z')) \odv{\tau_\text{i}(\nu, z', z)}{z'} \odif{z'}
-  \end{split}
-\end{equation}
-with $\tau_\text{i}(\nu, z, z')$ and $\tau_\text{i}(\nu, z', z)$ spectral internal transmittances of the medium between altitudes $z'$ and $z$. Time $t$ appears only as a parameter.
-In equation~\eqref{eq:spectral_irradiance_longwave} each addend corresponds to a spectral irradiance depositing energy at layer $z$: the first one is generated by Earth's surface, the second and the third ones are the total spectral irradiances of layers beneath and above $z$, respectively.
-
-% MC I forgot one fundamental thing: atmosphere emits as a blackbody in this bandwidth, this is the reason for using Planck's law as irradiance.
-
-
-
-\subsection{Shortwave radiation}
-\label{sec:Shortwave radiation}
-Both absorption and scattering occur in bandwidth $[\nu_\text{div}, \nu_\text{max}]$.
-%\cite[469]{Ramanathan}
-Chemical species absorbing in this bandwitdh are \ch{O3}, \ch{H2O} as water vapor, \ch{CO2} and \ch{O2}.
-%\cite[218]{primer}
-% MC refer to \cite[369]{Manabe} and \cite{US1976} for mixing ratios of absorbing species.
-
-Explicit evaluation of scattering of solar radiation is not performed due to the complexity of equations involved. A simpler parametrisation is adopted instead, where the division of the atmposhere in plane-parallel layers is used to assign constant reflectance, internal absorptance and internal transmittance to each layer.
-% MC I need to introduce the division in layers at the start of the Methods section and not as a mere transition to the numerical formulation.
-In particular, layer $i$ has reflectance $\rho(i)$ assigned a priori (e.g. $A$ at the TOA, $A_\text{g}$ at ground level), internal transmittance $\tau_\text{i}(i)$ and internal absorptance $\alpha_\text{i}(i) = 1 - \tau_\text{i}(i)$. The internal transmittance is obtained by integrating equation~\ref{eq:spectral_internal_transmittance} in the shortwave spectrum,
-\begin{equation}
-  \label{eq:internal_transmittance}
-  \tau_\text{i}(s, s_0) = \int_{\nu_\text{div}}^{\nu_\text{max}} \tau_\text{i}(\nu, s, s_0) \odif{\nu}
-  \quad ,
-\end{equation}
-and assigning $\tau_\text{i}(i) = \tau_\text{i}(z, z')$ with $z$ and $z'$ altitudes corresponding to layers $i$ and $i - 1$, respectively.
-% MC solar diffuse radiant flux is neglected (e.g. diffusion due to clouds), hence transmittances are characterised only by the component of solar radiation normal to the layers.
-
-% MC here talk about diffusion adding the factor of 1.66 to the optical depth, cfr. \cite[469]{Ramanathan} for a superficial explanation and \cite[217]{primer} for a more elaborated description, copied from \cite[367]{Manabe}.
-% MC for scattering see \cite[217]{primer}.
-
-% MC complete.
-\begin{figure*}[h]
-  \centering
-  \includegraphics*[keepaspectratio=true,width=0.75\textwidth]{shortwave_radiation}
-  \caption{} % MC complete.
-  \label{fig:shortwave_radiation}
-\end{figure*}
-% MC put here diagram for calculation of irradiances across a layer and refer to it to describe the following equation.
-% MC insert the dependence on incidence angle (only for solar radiation, i.e. divide dz by -cos(epsilon)).
-Multiple reflections can occur but only one is considered in this model because successive reflections from amospheric layers have negligible intensities compared to the first one.
-%\cite[470]{Ramanathan}
-With these simplifications, shortwave irradiance at layer $i$ is given by
-\begin{equation}
-  \label{eq:irradiance_shortwave}
-  E_\text{S}(i) = \alpha_\text{S}(i) \ESTOA
-\end{equation}
-where absorptance $\alpha_\text{S}(i)$ measures the total absorption of shortwave radiation by layer $i$. A derivation for $\alpha_\text{S}(i)$ is found in section~\ref{sec:Radiation attenuation}.
-
-% MC also see if I need to use S_0 or S_0 / 4 and update formulae in TikZ images.
-% MC complete shortwave_radiation_TOA after having completed shortwave_radiation.
-
-Specific intensity of solar radiation can be expressed by a differential equation whose resolution is complex even applying approximations and numerical methods
-%\cite[469]{Ramanathan}
-
-
-
-\subsection{Numerical resolution}
-\label{sec:Numerical resolution}
-% MC convert the problem and the physical formulae into the numerical algorithms and functions to solve it.
-% MC show and describe formulae.
-% MC explain that the integration scheme is explicit since the evaulation is made at the same time step, not at the next time step. Probably it is better if the evaluation of fluxed is made implicitly to guarantee numerical stability.
-
-Euler's method is used to solve the Ordinary Differential Equation (ODE) for the time-dependant temperature function.
-%\cite[472]{Ramanathan}
-A solution for each atmospheric layer is calculated, hence the resulting values are triplets of temperature, altitude (i.e. proxy for the atmospheric layer) and time (i.e. simulation time). Further information on storage and plotting of data are presented in Section~\ref{sec:Plotting}.
-
-% MC how many spectral bands have I chosen? Maybe list them in a table in the appendix with notes for each band to explain why I have chosen that band (e.g. to excite the vibro-rotational levels of some gases).
-Spectral bands are identified by two arrays: one listing the lower bound of each band, the other containing the width of each band. This choice simplify the use of functions for numerical integration. Values related to spectral bands are stored as integers.
-
-Vertical spatial dimension is discretised in $N$ layers, numbered downward starting from 0 at the TOA layer.
-
-Equation~\eqref{eq:temperature_time_derivative} is solved in the time domain through Euler method. % MC and in space domain? Both are finite differences.
-
-% MC I use band-averaging techniques, cfr. \cite[220]{primer}.
-
-
-
-\subsection{Convective adjustment}
-\label{sec:Convective adjustment}
-% MC explain how the convective heat flux is not evaluated explicitly but it is forced by a fixed lapse rate, refer to \cite[467]{Ramanathan}.
-
-
-
-\section{Results}
-% MC explain briefly how to read a skew-T plot.
-% MC show and comment obtained plots.
-
-
-
-\subsection{Stability analysis}
-% MC the equilibrium temperature profile is insensitive of the initial guess temperature profile for the time-stepping (i.e. Euler) approach.
-%\cite[473]{Ramanathan}
-
-
-
-\section{Discussion}
-% MC sum up what I did and the results compared with article TTAPS-I.
-% MC if there is enough time, use the results and the comparison with TTAPS-I as model validation then gain some insights on the same results using the contemporary nuclear arsenal and compare with the modern version of TTAPS (i.e. Turco 2008, compare what is possible since it is made with a GCM).
-
-
-
-\subsection{Division of the electromagnetic spectrum}
-\label{sec:Division of the electromagnetic spectrum}
-% Content of this section is elaborated on \cite[43]{Catling}.
-Spectral irradiances of Sun's and Earth's surfaces are obtained from blackbody spectral radiance (cfr. section~\ref{sec:Radiometric quantities}). They are compared inside Earth's atmosphere, whose thickness is neglected with respect to the other spatial quantities involved in these calculations, hence the comparison is performed directly on Earth's surface. Nevertheless, the reflexion of solar radiation by atmospheric components is still considered and it is parametrised through Earth's Bond albedo. Moreover, attenuation of solar radiation due to distance is considered: given a generic coordinate system, spectral radiant intensity of Sun is obtained by multiplying the spectral radiance by the area of a spherical surface with radius $R_\text{sun}$, then the result is divided by the area of a spherical surface with radius \qty{1}{\astronomicalunit} to measure solar radiance at Earth's surface.
-
-The resulting solar spectral irradiance is
-\begin{equation}
-  \label{eq:spectral_irradiance_sun}
-  E_\text{sun}(\nu) = (1 - A) \left( \frac{R_\text{sun}}{\qty{1}{\astronomicalunit}} \right)^2 \pi B_\nu(\nu, T_\text{sun})
-  \quad ,
-\end{equation}
-while Earth's surface spectral irradiance is
-\begin{equation}
-  \label{eq:spectral_irradiance_earth}
-  E_\text{earth}(\nu) = \pi B_\nu(\nu, T_\text{earth})
-  \quad .
-\end{equation}
-
-The boundaries of the EM spectrum are chosen arbitrarily in such a way that both equation~\eqref{eq:spectral_irradiance_sun} and equation~\eqref{eq:spectral_irradiance_earth} integrated in the resulting interval are over \qty{99}{\percent} of the respective radiant exitances (cf. section~\ref{sec:Radiometric quantities}) given by the Stefan-Boltzmann law
-\begin{equation}
-  \label{eq:stefan-boltzmann_law}
-  M(T) = \sigma T^4
-\end{equation}
-where $\sigma$ is the Stefan-Boltzmann constant and $T$ is the temperature of the emitting body. The chosen values are shown in table~\ref{tab:constants}.
-
-Figure~\ref{fig:spectral_irradiance} shows the plots of equation~\eqref{eq:spectral_irradiance_sun}, equation~\eqref{eq:spectral_irradiance_earth} and the division of the spectrum at the wavenumber $\nu_\text{div}$ where the curves intersect. Value $\nu_\text{div} \approx \qty{2154}{\per\centi\metre}$ is obtained numerically (cfr. section~\ref{sec:Hypotheses}).
-\begin{figure*}[h]
-  \centering
-  \includegraphics*[keepaspectratio=true,width=0.95\textwidth]{spectral_irradiance_bands}
-  \caption{The vertical black line marks the division of the spectrum at $\nu_\text{div}$. In the longwave region $[\nu_\text{min}, \nu_\text{div}]$ Earth's surface brings the largest contribution to the total irradiance, in the shortwave region $[\nu_\text{div}, \nu_\text{max}]$ solar radiation dominates instead. Infrared (IR), visible (VIS) and ultraviolet (UV) spectral bands as specified by \cite{CIE} are shown in background.}
-  \label{fig:spectral_irradiance}
-\end{figure*}
-
-Considering only interval $[\nu_\text{min}, \nu_\text{div}]$, the largest contribution to the total irradiance is brought by Earth's surface and solar irradiance is neglected, being about \qty{1.6}{\percent} of the total irradiance. The removed irradiance is \qty{0.65}{\percent} of the total Sun's surface irradiance. % MC talk about uncertainties?
-Instead, in $[\nu_\text{div}, \nu_\text{max}]$ Earth's surface irradiance is \qty{0.22}{\percent} of the total irradiance in this interval and is neglected. The removed quantity is \qty{0.55}{\percent} of the total Earth's surface irradiance. % MC talk about uncertainties?
-
-
-
-%\section{Conclusion} % MC instead create a "Discussion and conclusion" section.
-
 \newpage
 \appendix
 
+\onecolumn
 \section{Source code}
 In this section the \cpp\ code used to obtain the results presented in this work is shown and commented.
 % MC show the whole source code, splitted in sections.
 
 % MC some thoughts about the development of the code.
-First, the parametrization of the vertical coordinate is chosen among three alternatives: altitude $z$ in \unit{\metre}, atmospheric pressure $P$ in \unit{\pascal}, coordinate $\sigma = \frac{P - \PTOA}{P_S - \PTOA}$ adimensional, with $\PTOA$ pressure at the top of the modelised atmosphere and $P_S$ pressure at the surface. One parametrisation can be written in term of another through a monotonic function (e.g. pressure decreases with altitude, cfr. section~\ref{sec:Relation between pressure and altitude}). For the initial development the altitude $z$ is chosen as vertical coordinate because it is more intuitive, moreover plots in TTAPS-I are expressed in terms of both $z$ and $P$.
+First, the parametrization of the vertical coordinate is chosen among three alternatives: altitude $z$ in \unit{\metre}, atmospheric pressure $P$ in \unit{\pascal}, coordinate $\sigma = \frac{P - \PTOA}{P_S - \PTOA}$ adimensional, with $\PTOA$ pressure at the top of the modelised atmosphere and $P_S$ pressure at the surface. One parametrisation can be written in term of another through a monotonic function (e.g. pressure decreases with altitude, cfr. section~\ref{sec:Relation between pressure and altitude}). For the initial development the altitude $z$ is chosen as vertical coordinate because it is more intuitive, moreover plots in \cite{TTAPS-I} are expressed in terms of both $z$ and $P$.
 
-Second, the atmospheric layers are configured. In TTAPS-I 20 layers are used (cfr. \cite[396]{NuclearWinterPhysics}) and they are numbered from the top of the atmosphere down as it is common in RCMs. The vertical coordinate refers to the center of each layer, with the excpetion of the last layer which is in direct contact with the surface and needs to be treated separately. % MC "Temperatures are calculated at the midpoints of the layers, and fluxes are computed at the layer boundaries."\cite[449]{Catling}
+Second, the atmospheric layers are configured. In \cite{TTAPS-I} 20 layers are used and they are numbered from the top of the atmosphere down as it is common in RCMs. The vertical coordinate refers to the center of each layer, with the excpetion of the last layer which is in direct contact with the surface and needs to be treated separately. % MC "Temperatures are calculated at the midpoints of the layers, and fluxes are computed at the layer boundaries."\cite[449]{Catling}
 Therefore two arrays are needed: one for the point and one with the corresponding layer thicknesses. Values are then assigned as double precision numbers. The value corresponding to the top of the atmosphere is set in a proper variable and a uniform distribution of layer thicknesses is assumed for ease.
 
-% MC radiative fluxes are computed for each atmospheric layer.
-To reduce the computation load of radiative fluxes, only some spectral intervals are considered and they are specific to each atmospheric layer, since the available absorbing gases and aerosols differ among layers. First absorbers for each layer are stored in an array, then the spectral bandwitdhs needed for each layer are evaluated. Spectral bandwidths are expressed in terms of wavenumbers with unit \unit{\per\centi\metre} to manage integer values or double precision values close to unity. For each chemical species the absorption intervals are identified by their width and central wavenumber, the former are obtained from the latter and using the exponential wide band model (cfr. \cite[360]{Modest}). These two values are stored in separate arrays.
-
-
-
-\subsection{Hypotheses} % MC find a more significant title.
-\label{sec:Hypotheses}
-% MC here insert code and discuss details (e.g. root finder used and why) from hypotheses.cpp.
-
-
-
-\subsection{Classes}
-% MC show and comment the source code for the used classes.
+\lstinputlisting[language=C++,style=mystyle]{../code/main.cpp}
+\twocolumn
 
 
 
@@ -522,9 +280,9 @@ In this appendix mathematical derivations of some ancillary results and formulae
 
 \subsection{Relation between pressure and altitude}
 \label{sec:Relation between pressure and altitude}
-A general result regarding planetary atmosphere is that atmospheric pressure decreases with increasing altitude. Theoretical relations which approximate this behaviour can be obtained. Hypotheses considered in Section~\ref{sec:Hypotheses and conventions} are valid.
+A general result regarding planetary atmospheres is that atmospheric pressure decreases with increasing altitude. Theoretical relations which approximate this behaviour can be obtained. Hypotheses considered in section~\ref{sec:Introduction} are valid.
 
-If density is assumed constant, equation~\eqref{eq:hydrostatic_equilibrium} can be solved easily resulting in a linear dependence of pressure $P$ on altitude $z$, % MC normalize the way I refere to sections and equations.
+If density is assumed constant, equation~\eqref{eq:hydrostatic_equilibrium} can be solved easily resulting in a linear dependence of pressure $P$ on altitude $z$,
 \begin{equation}
   \label{eq:pressure_constant_density}
   P(z) = P_0 - \varrho g (z - z_0)
@@ -596,7 +354,7 @@ Spectral radiance of a blackbody is given by Planck's law
   B_\nu (\nu, T) = 2 h c^2 \nu^3 \frac{1}{e^\frac{h c \nu}{k_B T} - 1}
   \quad ,
 \end{equation}
-where $\nu$ is the wavenumber in unit \unit{\per\centi\metre} (cfr. notation in section~\ref{sec:Hypotheses and conventions}), $T$ in unit \unit{\kelvin} is the temperature of the emitting body and the other quantities are constants (cfr. table~\ref{tab:constants}).
+where $\nu$ is the wavenumber in unit \unit{\per\centi\metre}, $T$ in unit \unit{\kelvin} is the temperature of the emitting body and the other quantities are constants (cfr. table~\ref{tab:constants}).
 Note that Planck's law has different form when it is expressed in terms of wavelength, due to its definition as density and the resulting change of variables:
 \begin{equation}
   \label{eq:spectral_radiance_blackbody_lambda}
@@ -618,143 +376,37 @@ If radiance is isotropic, i.e. it is not dependent on the direction of the radia
 \end{equation}
 where spherical coordinates are used to describe the surface and the term $\cos(\theta)$ considers the component of radiation along the normal of the infinitesimal solid angle.
 
-Equation~\eqref{eq:spectral_irradiance_longwave} is obtained by integrating the RTE under the hypotheses in section~\ref{sec:Hypotheses and conventions}:
-\begin{equation}
-  \label{eq:spectral_irradiance_longwave_derivation}
-  \begin{split}
-    E_\text{L}(\nu, z) = & \pi B_\nu(\nu, T(t, 0)) \tau_\text{i}(\nu, z, 0) + \\
-    & + \int_{z_\text{g}}^{z} \pi B_\nu(\nu, T(t, z')) \odv{\tau_\text{i}(\nu, z, z')}{z'} \odif{z'} \\
-    & + \int_{z}^{\zTOA} \pi B_\nu(\nu, T(t, z')) \odv{\tau_\text{i}(\nu, z', z)}{z'} \odif{z'}
-  \end{split}
-\end{equation}
-
 
 
 \subsection{Radiation attenuation}
 \label{sec:Radiation attenuation}
-Radiation crossing a medium loses energy due to absorption and scattering. This attenuation is measured by the \emph{transmittance} of the medium as the spectral radiant fluxes ratio of transmitted to incident radiation.
+Radiation crossing a medium loses energy due to absorption and scattering. The effect of chemical species on these processes is quantified through the \emph{attenuation coefficient} (commonly called \emph{extinction coefficient} in atmospheric sciences), which has different definitions based on the way it is derived (cfr. \cite[44]{Catling}). The attenuation coefficient is the sum of \emph{absorption coefficient} and \emph{scattering coefficient} which contain information on the attenuation due to the respective physical processes. The \emph{optical depth} (also called \emph{optical thickness}) takes in consideration the amount of substance involved in the absorption.
 
-% MC continue in parallel to explanation in main text.
-Experimentally it is observed that the ratio between follows the Beer-Lambert-Bouguer law
-\begin{equation}
-  \label{eq:extinction_law}
-  E(s) = E(0) \int_0^s \dots
-\end{equation}
+Ratios between radiant fluxes are related by the conservation of energy: the sum of \emph{internal transmittance} and \emph{internal absorptance} is 1, as well as the sum of \emph{reflectance}, \emph{absorptance} and \emph{transmittance}.
 
-between radiation and  of radiant flux along the direction of radiation is given by the \emph{attenuation coefficient} (commonly called \emph{extinction coefficient} in atmospheric sciences), which has different definitions based on the way it is derived (cfr. \cite[44]{Catling}). The attenuation coefficient is the sum of \emph{absorption coefficient} and \emph{scattering coefficient} which contain information on the attenuation due to the respective physical processes.
 In general these coefficients are functions of wavelength or wavenumber, in which case the prefix \emph{spectral} is adopted. If the medium is a fluid, they depends on temperature and pressure of the medium.
+Another related quantity is the spectral internal transmittance
+\begin{equation}
+  \label{eq:spectral_internal_transmittance}
+  \tau_\text{i}(\nu, s, s_0) = e^{-\delta(\nu, s, s_0)}
+  \quad ,
+\end{equation}
+where $\delta(\nu, s, s_0)$ is the spectral optical depth, which depends only on the spectral attenuation coefficient $\mu(\nu, s')$ of the medium traversed by the radiation from $s_0$ to $s$ on the optical path. In the RCM optical paths are straight and form an angle $\theta$ with the direction normal to the layers, hence the definition of the spectral optical depth becomes:
+\begin{equation}
+  \label{eq:spectral_optical_depth}
+  \delta(\nu, s, s_0) = \frac{1}{\cos \theta} \int_{s_0}^{s} \mu(\nu, s') \odif{s'}
+  \quad .
+\end{equation}
+If the absorbing species do not interact, $\mu(\nu, s')$ is simply the sum of the spectral attenuation coefficients of the individual components of the medium.
 
-% The \emph{optical depth} (also called \emph{optical thickness}) ...
-Due to conservation of energy, the sum of \emph{internal transmittance} and \emph{internal absorptance} is 1, as well as the sum of \emph{reflectance}, \emph{absorptance} and \emph{transmittance}.
+Moreover, if the medium is homogenoeus, in the sense that quantities affecting radiative calculations are not dependent on spatial position (e.g. attenuation coefficients $\mu$ are constant inside the medium), the spectral attenuation coefficient depends only on the concentration of the absorbing species contained, hence the spectral attenuation coefficient can be rewritten as
+\begin{equation}
+  \label{eq:spectral_attenuation_coefficient}
+  \mu(\nu, s') = \mu_m(\nu) \rho(s')
+\end{equation}
+where $\mu_m(\nu)$ is the spectral mass attenuation coefficient and $\rho(s')$ is the volumetric mass density of the absorber.
 
 Names of radiative properties ending with suffix \emph{-ance} are generally used for rough surfaces, while suffix \emph{-ivity} indicates smooth surfaces. In this work the former is adopted. Refer to \cite[20]{Modest} for more information and to the definition of spectral absorptivity in \cite{CIE} for an example of the difference.
-
-To derive the reflection term in equation~\ref{eq:irradiance_shortwave}, it is useful to consider a generic index $n$ with $i \leq n \leq N - 1$ and to write the irradiances in terms of the total solar irradiance as discussed in section~\ref{sec:Shortwave radiation}.
-The irradiance transmitted by layer $n$ is:
-\begin{equation}
-  \label{eq:irradiance_transmitted}
-  \begin{split}
-    E_\text{t}(n) & = \\
-    & = \tau_\text{i}(n) (1 - \rho(n)) E_\text{t}(n - 1) = \\
-    & = \ESTOA \prod_{j = 0}^{n} \tau_\text{i}(j) (1 - \rho(j))
-    \quad .
-  \end{split}
-\end{equation}
-Multiple reflections are neglected, hence the irradiance reflected by layer $n + 1$,
-\begin{equation}
-  \label{eq:irradiance_reflected}
-  \begin{split}
-    E_\text{r}(n) & = \\
-    & = \rho(n + 1) E_\text{t}(n) = \\
-    & = \rho(n + 1) \ESTOA \prod_{j = 0}^{n} \tau_\text{i}(j) (1 - \rho(j))
-    \quad ,
-  \end{split}
-\end{equation}
-is reduced only by the transmittances of the crossed layers.
-%The irradiance reflected by layer 1 is:
-%\begin{equation}
-%  \label{eq:irradiance_reflected_1}
-%  E_\text{r}(0) = \rho(1) E_\text{t}(0)
-%  \quad .
-%\end{equation}
-The effective irradiance reflected by layer $n + 1$ and arriving to layer $i$ is
-\begin{equation}
-  \label{eq:irradiance_reflected_effective}
-  \begin{split}
-    & E_{\text{r},\text{eff}}(i, n) = \\
-    & = \tau_\text{i}(i + 1) \cdots \tau_\text{i}(n) E_\text{r}(n) = \\
-    & = \rho(n + 1) E_\text{t}(n) \prod_{k = i + 1}^{n} \tau_\text{i}(k) = \\
-    & = \rho(n + 1) \ESTOA \prod_{j = 0}^{n} \tau_\text{i}(j) (1 - \rho(j)) \prod_{k = i + 1}^{n} \tau_\text{i}(k)
-    \quad .
-  \end{split}
-\end{equation}
-%Equation~\eqref{eq:irradiance_reflected_effective} is valid when $n > i$, otherwise $E_{\text{r},\text{eff}}(n) = E_\text{r}(n)$ and for the first layer $E_{\text{r},\text{eff}}(0) = E_\text{r}(0)$.
-%The total irradiation arriving to layer $i$ due to reflection of the shortwave radiation is
-%\begin{equation}
-%  \label{eq:irradiance_reflected_shortwave}
-%  \begin{split}
-%  & E_{\text{r},\text{S}}(i) = \\
-%  & = \sum_{n = i}^{N - 1} E_{\text{r},\text{eff}}(n) = \\
-%  & = E_\text{r}(i) + \sum_{n = i + 1}^{N - 1} E_{\text{r},\text{eff}}(n) = \\
-%  & = \rho(i + 1) E_\text{t}(0) \prod_{j = 1}^{i} \tau_\text{i}(j) (1 - \rho(j)) + \sum_{n = i + 1}^{N - 1} \bigg( \\
-%  & \qquad \rho(n + 1) E_\text{t}(0) \prod_{j = 1}^{n} \tau_\text{i}(j) (1 - \rho(j)) \prod_{k = i + 1}^{n} \tau_\text{i}(k) \bigg) = \\
-%  & = E_\text{t}(0) \prod_{j = 1}^{i} \tau_\text{i}(j) (1 - \rho(j)) \Bigg( \rho(i + 1) + \sum_{n = i + 1}^{N - 1} \bigg( \\
-%  & \qquad \rho(n + 1) \prod_{j = i + 1}^{n} \tau_\text{i}(j) (1 - \rho(j)) \prod_{k = i + 1}^{n} \tau_\text{i}(k) \bigg) \Bigg) = \\
-%  & = E_\text{t}(0) \prod_{j = 1}^{i} \tau_\text{i}(j) (1 - \rho(j)) \Bigg( \rho(i + 1) + \sum_{n = i + 1}^{N - 1} \bigg( \\
-%  & \qquad \rho(n + 1) \prod_{j = i + 1}^{n} \tau_\text{i}(j)^2 (1 - \rho(j)) \bigg) \Bigg)
-%  \quad ,
-%  \end{split}
-%\end{equation}
-%with the value for layer 0 equal to:
-%\begin{equation}
-%  \label{eq:irradiance_reflected_shortwave}
-%  \begin{split}
-%  & E_{\text{r},\text{S}}(0) = \\
-%  & = \sum_{n = 0}^{N - 1} E_{\text{r},\text{eff}}(n) = \\
-%  & = E_\text{r}(0) + \sum_{n = 1}^{N - 1} E_{\text{r},\text{eff}}(n) = \\
-%  & = \rho(1) E_\text{t}(0) + \sum_{n = 1}^{N - 1} \bigg( \\
-%  & \qquad \rho(n + 1) E_\text{t}(0) \prod_{j = 1}^{n} \tau_\text{i}(j) (1 - \rho(j)) \prod_{k = 1}^{n} \tau_\text{i}(k) \bigg) = \\
-%  & = E_\text{t}(0) \Bigg( \rho(1) + \sum_{n = 1}^{N - 1} \bigg( \\
-%  & \qquad \rho(n + 1) \prod_{j = 1}^{n} \tau_\text{i}(j)^2 (1 - \rho(j)) \bigg) \Bigg)
-%  \quad .
-%  \end{split}
-%\end{equation}
-Irradiance absorbed directly by layer $n$ is
-\begin{equation}
-  \label{eq:irradiance_absorbed}
-  \begin{split}
-    E_\text{a}(n) & = \alpha_\text{i}(n) (1 - \rho(n)) E_\text{t}(n - 1)
-    = \\
-    & = \alpha_\text{i}(n) (1 - \rho(n)) \ESTOA \prod_{j = 0}^{n - 1} \tau_\text{i}(j) (1 - \rho(j))
-    \quad .
-  \end{split}
-\end{equation}
-In conclusion, the total irradiance absorbed by layer $i$ due to shortwave radiation is given by:
-\begin{equation}
-  \label{eq:irradiance_shortwave_derivation}
-  \begin{split}
-    & E_\text{S}(i) = \\
-    & = E_\text{a}(i) + \alpha_\text{i}(i) \sum_{n = i}^{N - 1} E_{\text{r},\text{eff}}(i, n) = \\
-    & = \alpha_\text{i}(i) (1 - \rho(i)) \ESTOA \prod_{l = 0}^{i - 1} \tau_\text{i}(l) (1 - \rho(l)) + \\
-    & + \alpha_\text{i}(i) \sum_{n = i}^{N - 1} \bigg( \rho(n + 1) \ESTOA \prod_{j = 0}^{n} \tau_\text{i}(j) (1 - \rho(j)) \\
-    & \qquad \prod_{k = i + 1}^{n} \tau_\text{i}(k) \bigg) = \\
-    & = \alpha_\text{i}(i) \ESTOA \prod_{j = 0}^{i} \tau_\text{i}(j) (1 - \rho(j)) \Bigg( \frac{1}{\tau_\text{i}(i)} + \\
-    & + \sum_{n = i}^{N - 1} \bigg( \rho(n + 1) \prod_{k = i + 1}^{n} \tau_\text{i}(k)^2 (1 - \rho(k)) \bigg) \Bigg) \\
-    & = (1 - \tau_\text{i}(i)) \ESTOA \prod_{j = 0}^{i} \tau_\text{i}(j) (1 - \rho(j)) \Bigg( \frac{1}{\tau_\text{i}(i)} + \\
-    & + \sum_{n = i}^{N - 1} \bigg( \rho(n + 1) \prod_{k = i + 1}^{n} \tau_\text{i}(k)^2 (1 - \rho(k)) \bigg) \Bigg)
-  \end{split}
-\end{equation}
-and the total absorptance of layer $i$ due to shortwave radiation can be defined as:
-\begin{equation}
-  \label{eq:absorbance_shortwave}
-  \begin{split}
-    & \alpha_\text{S}(i) = \\
-    & = \frac{E_\text{S}(i)}{\ESTOA} = \\
-    & = (1 - \tau_\text{i}(i)) \prod_{j = 0}^{i} \tau_\text{i}(j) (1 - \rho(j)) \Bigg( \frac{1}{\tau_\text{i}(i)} + \\
-    & + \sum_{n = i}^{N - 1} \bigg( \rho(n + 1) \prod_{k = i + 1}^{n} \tau_\text{i}(k)^2 (1 - \rho(k)) \bigg) \Bigg)
-    \quad .
-  \end{split}
-\end{equation}
 
 
 
@@ -784,31 +436,7 @@ where $P_0$ is a reference pressure and quantities $P(z)$, $R_m$ and $c_P$ refer
 
 \subsection{Plotting}
 \label{sec:Plotting}
-Software gnuplot is used to generate plots shown in this work. Output values from the simulation are stored in a DAT file with the structure reproduced in listing~\ref{lst:file_plot}.
-\begin{lstlisting}[%
-  style=verbatim,%
-  gobble=2,%
-  float=*h,%
-  caption={Structure of DAT file containing output values. The line spacing between data blocks is mandatory and ellipsis \texttt{...} indicates a logical continuation of the sequence. Number \texttt{N\_t} of temporal steps needed to reach convergence is not known a priori. Values for the ground level are shown as elements of the sequence with index \texttt{N}. Quantities \texttt{P}, \texttt{sigma} and \texttt{theta} are added for additional plots or for comparison with other models. To maintain file portability, sigma coordinate and potential temperature are presented with their names \texttt{sigma} and \texttt{theta} and not by their symbols from equation~\eqref{eq:sigma_coordinate} and equation~\eqref{eq:potential_temperature}, respectively.},%
-  label={lst:file_plot}%
-]
-  t[0]       z[0]     T[0][0]           P[0]     sigma[0]     theta[0][0]
-  ...        ...      ...               ...      ...          ...
-  t[0]       z[N - 1] T[0][N - 1]       P[N - 1] sigma[N - 1] theta[0][N - 1]
-  t[0]       z[N]     T[0][N]           P[N]     sigma[N]     theta[0][N]
-
-  t[1]       z[0]     T[1][0]           P[0]     sigma[0]     theta[1][0]
-  ...        ...      ...               ...      ...          ...
-  t[1]       z[N - 1] T[1][N - 1]       P[N - 1] sigma[N - 1] theta[1][N - 1]
-  t[1]       z[N]     T[1][N]           P[N]     sigma[N]     theta[1][N]
-
-  ...
-
-  t[N_t - 1] z[0]     T[N_t - 1][0]     P[0]     sigma[0]     theta[N_t - 1][0]
-  ...        ...      ...               ...      ...          ...
-  t[N_t - 1] z[N - 1] T[N_t - 1][N - 1] P[N - 1] sigma[N - 1] theta[N_t - 1][N - 1]
-  t[N_t - 1] z[N]     T[N_t - 1][N]     P[N]     sigma[N]     theta[N_t - 1][N]
-\end{lstlisting}
+Software gnuplot is used to generate plots shown in this work. Output values from the simulation are stored in a DAT file.
 
 
 
