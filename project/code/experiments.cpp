@@ -41,5 +41,11 @@ int main(int argc, char * argv[]) {
 	cout << "In shortwave bandwidth [" << nu_div / 100.0 << " 1 / cm, " << global_nu_max / 100.0 << " 1 / cm]:" << endl;
 	cout << "- Sun's surface irradiances ratio of shortwave IR band to shortwave bandwidth: " << E_sun_short_IR / E_sun_short << endl;
 	
+	// Evaluate altitude scale.
+	cout << endl;
+	double z_0;
+	z_0 = global_g / ( global_R_m * global_T_earth);
+	cout << "Altitude scale with atmosphere in hydrostatic equilibrium: z_0 = " << z_0 << " m" << endl;
+	
 	return 0;
 }

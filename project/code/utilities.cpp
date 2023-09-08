@@ -40,7 +40,7 @@ double get_altitude(double P) {
 }
 
 double get_altitude(double P, double T) {
-	return global_z_g - global_R_m_air * T / global_g * log(P / global_P_g);
+	return global_z_g - global_R_m * T / global_g * log(P / global_P_g);
 }
 
 double get_sigma(double P, double P_TOA) {
@@ -48,11 +48,11 @@ double get_sigma(double P, double P_TOA) {
 }
 
 double get_theta(double T, double P) {
-	return T * pow(global_P_0 / P, global_R_m_air / global_c_P_air);
+	return T * pow(global_P_0 / P, global_R_m / global_c_P_air);
 }
 
 double get_density(double z, double T) {
-	return get_pressure(z) / global_R_m_air / T;
+	return get_pressure(z) / global_R_m / T;
 }
 
 double get_optical_depth_P(double P, double P_TOA) {

@@ -82,78 +82,32 @@
 
 \section{Introduction}
 \label{sec:Introduction}
-Climate dynamics can be studied with models of varying complexity. One of the quantities analysed is the temporal and spatial distribution of temperature in the atmosphere, which is the result of the heat exchange between different processes. Electromagnetic (EM) radiation is emitted, absorbed and scattered by the chemical species distributed in the atmosphere and by the planetary surface. Moreover, the atmosphere receives EM radiation by other celestial bodies, e.g. stars. Radiative processes are described by the Radiative Transfer Equation (RTE).
+Climate dynamics of a planet can be studied with models of varying complexity. One of the quantities analysed is the temporal and spatial distribution of temperature in the planetary atmosphere, which is the result of the heat exchange between different processes. Electromagnetic (EM) radiation is emitted, absorbed and scattered by the chemical species distributed in the atmosphere and by the planetary surface. Moreover, the atmosphere receives EM radiation by other celestial bodies, e.g. stars. Radiative processes are described by the Radiative Transfer Equation (RTE).
 %\cite[25]{Modest}
 Local temperature differences generate motion of fluid parcels, hence convection. A rough planetary surface can hinder horizontal heat transport. Fluid dynamics equations are needed to represent these processes.
 
 Fluid parcels are treated as open systems and the temperature distribution is obtained by a suitable thermodynamic energy equation, coupled with the equations of the processes occuring in the atmosphere. Even by limiting the analysis to radiative processes and convection, which are the main drivers of temperature variations, the equations involved are not solvable analytically and are not tractable numerically without simplifications.
 
-A first approximation is to consider the average over all latitudes and longitudes for quantities which depend on spatial position. The resulting atmosphere is represented by plane-parallel layers, identified by their altitude $z$ ranging from $z_\text{g}$ at ground level to $\zTOA$ at the Top Of the Atmosphere (TOA). With this hypothesis, the differential equation describing temperature variation with respect to time $t$ is
+A first approximation is to consider the average over all latitudes and longitudes for quantities which depend on spatial position. The resulting atmosphere is represented by plane-parallel layers, identified by their altitude $z$ ranging from $z_\text{g}$ at ground level to $\zTOA$ at Top Of the Atmosphere (TOA). With this hypothesis, the differential equation describing the average temperature as function of time $t$ and altitude $z$ is
 \begin{equation}
   \label{eq:temperature_derivation}
-  \pdv*{T(t,z)}{t} = -\frac{1}{\varrho c_P} \odv*{q(z)}{z}
+  \pdv*{T(t,z)}{t} = -\frac{1}{\varrho c_P} \pdv*{q(t,z)}{z}
   \quad ,
 \end{equation}
-where $\varrho$ is the volumetric mass density of the atmosphere, in general a function of $z$, $c_P$ is the specific heat at constant pressure of the atmosphere, assumed constant, and $q(z)$ is the total flux exchanged due to heat transfer, which depends on altitude $z$ also through $T(t,z)$. Details on the derivation are in \cite[466]{Ramanathan}, where the equation is written initially in terms of volumetric power densities.
+where $c_P$ is the specific heat at constant pressure of the atmosphere, $\varrho$ is the average volumetric mass density of the atmosphere and $q(t,z)$ is the total energy flux due to heat transfer. In general all these quantities are functions of $t$ and $z$, also through $T$. Details on the derivation are in \cite[466]{Ramanathan}, where the equation is written initially in terms of volumetric power densities.
 
-A second hypothesis is the radiative-convective equilibrium of the atmosphere. This translates in the existence of a steady state $\pdv*{T(t,z)}{t} = 0$ where the atmosphere is both in radiative equilibrium, i.e. the total radiant flux at TOA is null, and in convective equilibrium, i.e. fluid parcels are stable with respect to vertical motion.
+A second hypothesis is the radiative-convective equilibrium of the atmosphere. This translates in the existence of a steady state $\pdv*{T(t,z)}{t} = 0$ where the planet is in radiative equilibrium, i.e. the total irradiance at TOA is null, and the atmosphere is in convective equilibrium, i.e. fluid parcels are stable with respect to vertical motion.
 
 A model with the previous assumptions is called Radiative-Convective Model (RCM).
-To simplify further the RTE, in this work the dependence of optical depth $\delta$ on the frequency of EM radiation is neglected. An atmosphere with this property is called grey atmosphere.
+To simplify further the RTE, in this work the dependence of quantities on the frequency of EM radiation is neglected. An atmosphere with this property is called grey atmosphere.
 
-Additional hypotheses are considered to simplify this study.
-Specific gas constant $R_m$ is used in thermodynamic relations, which is defined as the gas constant $R$ divided by the molar mass of the gas.
-Gravitational acceleration $g$ is constant.
-The atmosphere is supposed to be in hydrostatic equilibrium described by
-\begin{equation}
-  \label{eq:hydrostatic_equilibrium}
-  \odif{P} = - \varrho g \odif{z}
-\end{equation}
-and to obey the ideal gas law
-\begin{equation}
-  \label{eq:ideal_gas_law}
-  P = \varrho R_m T
-  \quad .
-\end{equation}
-A bijective relation exists between altitude $z$ and pressure $P$ (cfr. section~\ref{sec:Relation between pressure and altitude}), hence they can be used interchangeably as vertical coordinates. Pressure decreases with altitude from standard value $P_\text{g}$ at ground level to value $\PTOA$ at TOA.
-To simplify radiative calculations, scattering is neglected and optical depth is used as vertical coordinate, starting from \num{0} at TOA and increasing downward up to value $\delta_\text{g}$ at ground level. Optical depth is a function of altitude through
-\begin{equation}
-  \label{eq:optical_depth_altitude}
-  \delta(z) = \mu_m \int_{z}^{\zTOA} \varrho(z') \odif{z'}
-  \quad ,
-\end{equation}
-where $\mu_m$ is the mass attenuation coefficient of the atmosphere, which corresponds to the sum of mass attenuation coefficients of the chemical species if they do not interact. This coefficient can be otbained in function of $\delta_\text{g}$ by evaluating equation~\eqref{eq:optical_depth_altitude_2} at the ground level
-\begin{equation}
-  \label{eq:mass_attenuation_coefficient}
-  \mu_m = \frac{\delta_\text{g} g}{P_\text{g} - \PTOA}
-  \quad ,
-\end{equation}
-or viceversa can be used as parameter to derive $\delta_\text{g}$. A simpler relation exists between $\delta$ and $P$ using equation~\eqref{eq:hydrostatic_equilibrium} to evaluate the integral in equation~\eqref{eq:optical_depth_altitude}:
-\begin{equation}
-  \label{eq:optical_depth_pressure}
-  \delta(P) = \frac{\mu_m}{g} (P - \PTOA)
-  \quad .
-\end{equation}
-Relation~\eqref{eq:optical_depth_pressure} is used also in conjunction with equation~\eqref{eq:pressure_constant_temperature} to derive another formula for optical depth as a function of altitude:
-\begin{equation}
-  \label{eq:optical_depth_altitude_2}
-  \delta(z) = \frac{\mu_m}{g} \bigg( P_\text{g} \exp{\bigg( - \frac{z - z_\text{g}}{z_0} \bigg)} - \PTOA \bigg)
-  \quad ,
-\end{equation}
-where ground level is chosen as reference point and constant factor $z_0$ is introduced to normalise the numerator. Note that $\PTOA$ can be calculated from a fixed $\zTOA$ using equation~\eqref{eq:pressure_constant_temperature}, or viceversa.
-For simplicity, the planet is supposed to have a diurnal cycle, to receive a constant irradiance $S_0$ and to have a constant Bond albedo $A$.
-Atmosphere is supposed transparent to radiation coming from outside the planet.
+In the following sections the steady state vertical temperature profile of a grey atmosphere is computed. First the hypothesis of radiative equilibrium is used alone to obtain an analytical solution and use it as validation for a numerical solution. Then convection is taken into account and a simple RCM is implemented starting from the numerical scheme for radiative equilibrium.
 
-The total heat flux $q(z)$ is determined by radiative transfer and atmospheric convection. The RTE is not solved directly by the RCM, instead a two-stream approximation is adopted: radiation is split in upward and downward directions and they are treated separately. Neither the contribution to $q(z)$ due to atmospheric convection is obtained by solving the proper fluid dynamics equations, in its place a numerical correction is adopted.
-With these considerations, equation~\eqref{eq:temperature_derivation} can be rewritten as
-\begin{equation}
-  \label{eq:temperature_time_derivative}
-  \pdv*{T(t,z)}{t} = -\frac{1}{\varrho c_P} \odv*{\big( E_\text{U}(z) - E_\text{D}(z) \big)}{z}
-  \quad ,
-\end{equation}
-where $E_\text{U}(z)$ and $E_\text{D}(z)$ are the irradiances of upward and downward radiations, respectively.
 
-Data on constants used in this work are listed in table~\ref{tab:constants} and where possible, values referred to Earth are used for a prompt comparison with reality.
+
+\subsection{Hypotheses and conventions}
+\label{sec:Hypotheses and conventions}
+Some additional hypotheses are assumed to simplify the study. Data on constants are listed in table~\ref{tab:constants} and where possible, values referred to Earth are used for a prompt comparison with reality.
 \begin{table*}[h]
   \centering
   \caption{Data on constants used in the present work. The middle rule separates standard values on top from arbitrary values chosen for the present work on bottom.}
@@ -164,13 +118,13 @@ Data on constants used in this work are listed in table~\ref{tab:constants} and 
     \midrule
     $A$                & \num{0.3}              &                                       & Bond albedo value compatible with various observations, cfr. \cite[1281]{albedo}   \\
     $A_\text{g}$           & \num{0.1}              &                                       & Average surface albedo of Earth, cfr. \cite[217]{primer}   \\
-    $c_{P,\text{air}}$ & \num{1.004e3}          & \unit{\joule\per\kelvin\per\kilogram} & Specific heat at constant pressure of air, from \cite[16]{Catling} \\
-    $\deltaTOA$            & \num{0.0}            &                         & Optical depth at TOA, by definition                                             \\
-    $D$       & \num{1.66}                &                       & Diffusivity factor, from \cite[469]{Ramanathan}                                               \\
+    $c_P$ & \num{1.004e3}          & \unit{\joule\per\kelvin\per\kilogram} & Specific heat at constant pressure of air, from \cite[16]{Catling} \\
+    $\deltaTOA$            & \num{0}            &                         & Optical depth at TOA, by definition                                             \\
+    $D$       & \num{1.66}            &                       & Diffusion coefficient, commonly used value from \cite[55]{Catling}                                             \\
     $g$                & \num{9.80665}          & \unit{\metre\per\square\second}       & Standard gravitational acceleration of Earth                       \\
     $P_\text{g}$       & \num{1.013250e5}       & \unit{\pascal}                        & Standard pressure at ground level, from \cite[2]{US1976}           \\
     %    $R$                & \num{8.31446261815324} & \unit{\joule\per\kelvin\per\mole}     & Gas constant                                                       \\
-    $R_{m,\text{air}}$ & \num{2.8705287e2}          & \unit{\joule\per\kelvin\per\kilogram} & Specific gas constant of air \\
+    $R_\text{m}$ & \num{2.8705287e2}          & \unit{\joule\per\kelvin\per\kilogram} & Specific gas constant of air \\
     $\sigma$              & \num{5.670374419e-8}           & \unit{\watt\per\square\metre\per\kelvin\tothe{4}}         & Stefan-Boltzmann constant                    \\
     $S_0$              & \num{1361.0}           & \unit{\watt\per\square\metre}         & Nominal total solar irradiance, from \cite{IAU}                    \\
     %    $R_\text{sun}$     & \num{6.957e8}          & \unit{\metre}                         & Nominal solar radius, from \cite{IAU}                              \\
@@ -179,7 +133,7 @@ Data on constants used in this work are listed in table~\ref{tab:constants} and 
     $z_\text{g}$       & \num{0}                & \unit{\metre}                         & Nominal ground level                                               \\
     \midrule
     $\delta_\text{g}$            & \num{0.8}            &                         & Optical depth at ground level of Earth, from \cite[56]{Catling}                                             \\
-    $\mu_m$            & $\frac{\delta_\text{g} g}{P_\text{g} - \PTOA}$            &                         & Mass attenuation coefficient of the atmosphere of Earth                                           \\
+    $\mu_\text{m}$            & $\frac{\delta_\text{g} g}{P_\text{g} - \PTOA}$            &                         & Mass attenuation coefficient of the atmosphere of Earth                                           \\
     $N$            & \num{100}            &                         & Number of atmospheric layers                                             \\
     %    $\nu_\text{min}$            & \num{100}            & \unit{\per\centi\metre}                         & Arbitrary minimum boundary for EM spectrum                                             \\
     %    $\nu_\text{max}$            & \num{100000}            & \unit{\per\centi\metre}                         & Arbitrary maximum boundary for EM spectrum                                             \\
@@ -191,68 +145,152 @@ Data on constants used in this work are listed in table~\ref{tab:constants} and 
   \end{tabular}
 \end{table*}
 
-
-
-\section{Analytical solution of radiative equilibrium}
-The modelled atmosphere is in Local Thermal Equilibrium (LTE) and does not scatter radiation. With these hypotheses the RTE becomes Schwarzchild's equation
+Some assumptions are made on the planet.
+It is supposed to have a diurnal cycle, to receive a constant irradiance $S_0$ and to have a constant Bond albedo $A$. These conditions result in a costant irradiance
+%Atmosphere is supposed transparent to radiation coming from outside the planet. % MC needed only if I consider separate spectra for solar radiation and IR radiation from Earth's surface.
 \begin{equation}
-  \label{eq:schwarzchild}
-  \frac{1}{\mu_m \varrho} \odv*{L(\nu, s)}{s} = B_\nu(\nu, T) - L(\nu, s)
+  \label{eq:irradiance_sun_transmitted}
+  S_\text{t} = (1 - A) \frac{S_0}{4}
+\end{equation}
+transmitted to the illuminated hemisphere of the planet at TOA from outer space.
+Gravitational acceleration $g$ is constant.
+The atmosphere is supposed to be in hydrostatic equilibrium,
+\begin{equation}
+  \label{eq:hydrostatic_equilibrium}
+  \odif{P} = - \varrho g \odif{z}
   \quad ,
 \end{equation}
-where $L(\nu, s)$ is the spectral radiance at point $s$ of the optical path and $B_\nu(\nu, T)$ is Planck's function (cfr. section~\ref{sec:Radiometric quantities}).
+with $P$ atmospheric pressure.
+Specific heat at constant pressure $c_P$ is assumed constant.
+Scattering is neglected, hence the attenutation coefficient is equal to the absorption coefficient $\mu_\text{a}(z)$.
+Moreover, the absorption coefficient is supposed to depend on $z$ only through $\varrho$.
 
-To apply equation~\eqref{eq:schwarzchild} to irradiances, first it is integrated over the whole EM spectrum, then it is integrated over the solid angle corresponding to a hemisphere. This second integration brings a factor $D$ which is multiplied to $\delta$ to consider the diffusion of radiation.
-Optical depth $\delta' = D \delta$ is used as vertical coordinate, hence the resulting equations for the upward and downward irradiances are:
-\begin{align}
-  \label{eq:schwarzchild_upward}
-  - \odv*{E_\text{U}(\delta')}{\delta'} & = \sigma T(t, \delta')^4 - E_\text{U}(\delta') \quad , \\
-  \label{eq:schwarzchild_downward}
-  \odv*{E_\text{D}(\delta')}{\delta'} & = \sigma T(t, \delta')^4 - E_\text{D}(\delta')
-  \quad ,
-\end{align}
-time $t$ appears as parameter.
-
-Boundary conditions are $E_\text{D}(0) = 0$ because energy released to atmosphere at TOA by the downward flux is negligible and $E_\text{U}(0)$ is a constant called Outgoing Longwave Radiation (OLR).
-For the condition of radiative equilibrium, the OLR is equal to the irradiance arrived at TOA from outside the atmosphere:
+For gases, specific gas constant $R_\text{m}$ is used in thermodynamic relations, which is defined as the gas constant $R$ divided by the molar mass of the gas.
+They obey the ideal gas law
 \begin{equation}
-  \label{eq:radiative_equilibrium}
-  E_\text{U}(0) = (1 - A) \frac{S_0}{4}
+  \label{eq:ideal_gas_law}
+  P = \varrho R_\text{m} T
   \quad .
 \end{equation}
 
-When temperature reaches the steady state, equations~\eqref{eq:schwarzchild_upward} and~\eqref{eq:schwarzchild_downward} are coupled by equation
+The total heat flux $q(t,z)$ is determined by radiative transfer and atmospheric convection. The RTE is not solved directly by the RCM, instead a two-stream approximation is adopted for the radiation inside atmosphere: components of radiometric quantities in the upward and downward directions are treated separately. Neither the contribution to $q(t,z)$ due to atmospheric convection is obtained by solving the proper fluid dynamics equations, in its place a numerical correction is adopted. % MC do a proper section for convective adjustment.
+With these considerations, equation~\eqref{eq:temperature_derivation} can be rewritten as
 \begin{equation}
-  \label{eq:temperature_steady_state}
+  \label{eq:temperature}
+  \pdv*{T(t,z)}{t} = -\frac{1}{\varrho c_P} \pdv*{\big( E_\text{U}(t,z) - E_\text{D}(t,z) \big)}{z}
+  \quad ,
+\end{equation}
+where $E_\text{U}(t,z)$ and $E_\text{D}(t,z)$ are the irradiances of upward and downward radiations, respectively.
+
+
+
+\subsection{Vertical coordinates}
+\label{sec:Vertical coordinates}
+Altitude is used as vertical coordinate. However, it is convenient to define other vertical coordinates. % MC continue only if needed.
+
+A bijective relation relates pressure between altitude $z$ and pressure $P$ (cfr. section~\ref{sec:Relation between pressure and altitude}), hence they can be used interchangeably as vertical coordinates. Pressure decreases with altitude from standard value $P_\text{g}$ at ground level to value $\PTOA$ at TOA.
+
+To simplify radiative calculations optical depth is used as vertical coordinate, starting from \num{0} at TOA and increasing downward up to value $\delta_\text{g}$ at ground level. Optical depth is a function of altitude through
+\begin{equation}
+  \label{eq:optical_depth_altitude}
+  \delta(z) = \mu_\text{m} \int_{z}^{\zTOA} \varrho(z') \odif{z'}
+  \quad ,
+\end{equation}
+where $\mu_\text{m}$ is the mass attenuation coefficient of the atmosphere, which corresponds to the sum of mass attenuation coefficients of the chemical species if they do not interact. This coefficient can be otbained in function of $\delta_\text{g}$ by evaluating equation~\eqref{eq:optical_depth_altitude_2} at the ground level
+\begin{equation}
+  \label{eq:mass_attenuation_coefficient}
+  \mu_\text{m} = \frac{\delta_\text{g} g}{P_\text{g} - \PTOA}
+  \quad ,
+\end{equation}
+or conversely can be used as parameter to derive $\delta_\text{g}$. A simpler relation exists between $\delta$ and $P$ using equation~\eqref{eq:hydrostatic_equilibrium} to evaluate the integral in equation~\eqref{eq:optical_depth_altitude}:
+\begin{equation}
+  \label{eq:optical_depth_pressure}
+  \delta(P) = \frac{\mu_\text{m}}{g} (P - \PTOA)
+  \quad .
+\end{equation}
+Relation~\eqref{eq:optical_depth_pressure} is used also in conjunction with equation~\eqref{eq:pressure_constant_temperature} to derive another formula for optical depth as a function of altitude:
+\begin{equation}
+  \label{eq:optical_depth_altitude_2}
+  \delta(z) = \frac{\mu_\text{m}}{g} \bigg( P_\text{g} \exp{\bigg( - \frac{z - z_\text{g}}{z_0} \bigg)} - \PTOA \bigg)
+  \quad ,
+\end{equation}
+where ground level is chosen as reference point and constant factor $z_0$ is introduced to normalise the numerator. Note that $\PTOA$ can be calculated from a fixed $\zTOA$ using equation~\eqref{eq:pressure_constant_temperature}, or vice versa.
+
+% MC rewrite equations in adimensional terms: use delta' in the calculations, derived from chosen altitudes, and rescale everything by S_\text{t}.
+
+
+
+\section{Analytical solution in radiative equilibrium}
+Steady state temperature profile and irradiances are derived analytically in this section.
+
+The additional hypothesis of Local Thermodynamic Equilibrium (LTE) is considered for the atmosphere. % MC in the layers I will set each layer separately in LTE, but can I suppose it for the whole atmosphere and move this hypothesis in the previous section?
+With these hypotheses, the RTE becomes
+\begin{equation}
+  \label{eq:RTE_analytical}
+  \frac{1}{\mu} \pdv{L}{z} = B_\nu - L
+  \quad ,
+\end{equation}
+where $L(t, z, \theta, \nu)$ is the spectral radiance arriving at altitude $z$ with angle $\theta$ with respect to direction $\hat{z}$ and $B_\nu(\nu, T(t,z))$ is Planck's function (cfr. section~\ref{sec:Radiometric quantities}).
+
+To apply equation~\eqref{eq:RTE_analytical} to irradiances, two integrations are needed: one over the whole EM spectrum and one over the solid angle corresponding to a hemisphere. The latter can be performed adopting the diffusion approximation (cfr. \cite[55]{Catling}), which have the effect to substitute $\delta$ with $\delta' = D \delta$, where $D$ is the diffusion coefficient.
+The resulting equations for irradiances in terms of $\delta'$ are
+\begin{align}
+  \label{eq:irradiance_upward}
+  - \odv*{E_\text{U}(t, \delta')}{\delta'} & = \sigma T(t, \delta')^4 - E_\text{U}(t, \delta') \quad , \\
+  \label{eq:irradiance_downward}
+  \odv*{E_\text{D}(t, \delta')}{\delta'} & = \sigma T(t, \delta')^4 - E_\text{D}(t, \delta')
+\end{align}
+and they are coupled with equation~\eqref{eq:temperature_delta} written in terms of $\delta'$.
+
+Boundary conditions are $E_\text{D}(0) = 0$ because energy released to atmosphere at TOA by the downward flux is negligible and $E_\text{U}(0)$ is a constant called Outgoing Longwave Radiation (OLR).
+Since the planet is in radiative equilibrium,
+\begin{equation}
+  \label{eq:radiative_equilibrium}
+  E_\text{U}(0) = S_\text{t}
+  \quad .
+\end{equation}
+
+For the steady state solution, time dependence is dropped and irradiances are related by
+\begin{equation}
+  \label{eq:irradiance_steady_state}
   \odv*{\big( E_\text{U}(\delta') - E_\text{D}(\delta') \big)}{\delta'} = 0
   \quad ,
 \end{equation}
 which has solution
 \begin{equation}
-  \label{eq:temperature_steady_state_solution}
-  E_\text{U}(\delta') - E_\text{D}(\delta') = (1 - A) \frac{S_0}{4}
+  \label{eq:irradiance_steady_state_solution}
+  E_\text{U}(\delta') - E_\text{D}(\delta') = S_\text{t}
   \quad .
 \end{equation}
-
-The equation for the temperature at the steady state is obtained by adding and subtracting equations~\eqref{eq:schwarzchild_upward} and~\eqref{eq:schwarzchild_downward} and using equation~\eqref{eq:temperature_steady_state} and~\eqref{eq:temperature_steady_state}:
+Temperature is obtained by adding and subtracting equations~\eqref{eq:irradiance_upward} and~\eqref{eq:irradiance_downward} and using the conditions provided by equations~\eqref{eq:irradiance_steady_state} and~\eqref{eq:irradiance_steady_state_solution}:
 \begin{equation}
-  \label{eq:temperature_radiative_equilibrium}
-  2 \sigma \odv*{T(\delta')^4}{\delta'} = (1 - A) \frac{S_0}{4}
+  \label{eq:temperature_analytical}
+  2 \sigma \odv*{T(\delta')^4}{\delta'} = S_\text{t}
   \quad .
 \end{equation}
-The solution is
+The solution in terms of $\delta$ is
 \begin{equation}
-  \label{eq:temperature_radiative_equilibrium_solution}
-  T(\delta) = \bigg( (1 - A) \frac{S_0}{8 \sigma} (1 + D \delta) \bigg)^\frac{1}{4}
-  \quad .
+  \label{eq:temperature_analytical_solution}
+  T(\delta) = \bigg( \frac{S_\text{t}}{2 \sigma} (1 + D \delta) \bigg)^\frac{1}{4}
+  \quad ,
 \end{equation}
-plotted in figure~\ref{fig:temperature_radiative_equilibrium}. The code used to create the plot is~\ref{lst:radiative_equilibrium}.
+represented in figure~\ref{fig:temperature_radiative_equilibrium}. The code used to create the plot is~\ref{lst:radiative_equilibrium}.
 \begin{figure*}[h]
   \centering
   \includegraphics*[keepaspectratio=true,width=0.75\textwidth]{temperature_radiative_equilibrium}
   \caption{Steady state vertical temperature profile of a grey atmosphere in radiative equilibrium. Lower altitudes are candidate to present instability due to higher values of the slope.}
   \label{fig:temperature_radiative_equilibrium}
 \end{figure*}
+
+Once the temperature profile is known, $E_\text{U}(\delta)$ and $E_\text{D}(\delta)$ are evaluated with the same procedure used previously for $T(\delta')$, resulting in:
+\begin{align}
+  \label{eq:irradiance_upward_solution}
+  E_\text{U}(\delta) & = \frac{S_\text{t}}{2} (2 + D \delta) \quad , \\
+  \label{eq:irradiance_downward_solution}
+  E_\text{D}(\delta) & = \frac{S_\text{t}}{2} D \delta
+  \quad .
+\end{align}
+Irradiances are shown in figure~\ref{fig:irradiance_radiative_equilibrium}.
 
 
 
@@ -296,16 +334,16 @@ If density is not constant its expression is given by the ideal gas law (cfr. eq
 \begin{equation}
   \label{eq:hydrostatic_equilibrium_ideal_gas_law_constant_temperature}
   \begin{split}
-    & \odif{P} = - \frac{P g}{R_m T} \odif{z} \iff \\
-    \iff & \frac{\odif{P}}{P} = - \frac{g}{R_m T} \odif{z}
+    & \odif{P} = - \frac{P g}{R_\text{m} T} \odif{z} \iff \\
+    \iff & \frac{\odif{P}}{P} = - \frac{g}{R_\text{m} T} \odif{z}
   \end{split}
 \end{equation}
 with solution
 \begin{equation}
   \label{eq:pressure_constant_temperature}
   \begin{split}
-    & \ln(P') \bigg|_{P_0}^{P(z)} = - \frac{g}{R_m T} z' \bigg|_{z_0}^{z} \iff \\
-    \iff & P(z) = P_0 \exp{\bigg( - \frac{g}{R_m T} (z - z_0) \bigg)}
+    & \ln(P') \bigg|_{P_0}^{P(z)} = - \frac{g}{R_\text{m} T} z' \bigg|_{z_0}^{z} \iff \\
+    \iff & P(z) = P_0 \exp{\bigg( - \frac{g}{R_\text{m} T} (z - z_0) \bigg)}
     \quad .
   \end{split}
 \end{equation}
@@ -321,8 +359,8 @@ with $T_0$ temperature corresponding to reference altitude $z_0$. Using these as
 \begin{equation}
   \label{eq:hydrostatic_equilibrium_ideal_gas_law_constant_lapse_rate}
   \begin{split}
-    & \odif{P} = - \frac{P g}{R_m T} \bigg( - \frac{\odif{T}}{\Gamma} \bigg) \iff \\
-    \iff & \frac{\odif{P}}{P} = \frac{g}{R_m \Gamma} \frac{\odif{T}}{T}
+    & \odif{P} = - \frac{P g}{R_\text{m} T} \bigg( - \frac{\odif{T}}{\Gamma} \bigg) \iff \\
+    \iff & \frac{\odif{P}}{P} = \frac{g}{R_\text{m} \Gamma} \frac{\odif{T}}{T}
     \quad ,
   \end{split}
 \end{equation}
@@ -330,8 +368,8 @@ which has solution
 \begin{equation}
   \label{eq:pressure_constant_lapse_rate}
   \begin{split}
-    & \ln(P') \bigg|_{P_0}^{P(z)} = \frac{g}{R_m \Gamma} \ln(T') \bigg|_{T_0}^{T(z)} \iff \\
-    \iff & P(z) = P_0 \bigg( \frac{T_0 - \Gamma (z - z_0)}{T_0} \bigg)^\frac{g}{R_m \Gamma}
+    & \ln(P') \bigg|_{P_0}^{P(z)} = \frac{g}{R_\text{m} \Gamma} \ln(T') \bigg|_{T_0}^{T(z)} \iff \\
+    \iff & P(z) = P_0 \bigg( \frac{T_0 - \Gamma (z - z_0)}{T_0} \bigg)^\frac{g}{R_\text{m} \Gamma}
     \quad .
   \end{split}
 \end{equation}
@@ -382,6 +420,7 @@ where spherical coordinates are used to describe the surface and the term $\cos(
 
 \subsection{Radiation attenuation}
 \label{sec:Radiation attenuation}
+Details on quantities appearing in this section can be found in \cite[285]{Modest}.
 Radiation crossing a medium loses energy due to absorption and scattering. The effect of chemical species on these processes is quantified through the \emph{attenuation coefficient} (commonly called \emph{extinction coefficient} in atmospheric sciences), which has different definitions based on the way it is derived (cfr. \cite[44]{Catling}). The attenuation coefficient is the sum of \emph{absorption coefficient} and \emph{scattering coefficient} which contain information on the attenuation due to the respective physical processes. The \emph{optical depth} (also called \emph{optical thickness}) takes in consideration the amount of substance involved in the absorption.
 
 Ratios between radiant fluxes are related by the conservation of energy: the sum of \emph{internal transmittance} and \emph{internal absorptance} is 1, as well as the sum of \emph{reflectance}, \emph{absorptance} and \emph{transmittance}.
@@ -404,11 +443,11 @@ If the absorbing species do not interact, $\mu(\nu, s')$ is simply the sum of th
 Moreover, if the medium is homogenoeus, in the sense that quantities affecting radiative calculations are not dependent on spatial position (e.g. attenuation coefficients $\mu$ are constant inside the medium), the spectral attenuation coefficient depends only on the concentration of the absorbing species contained, hence the spectral attenuation coefficient can be rewritten as
 \begin{equation}
   \label{eq:spectral_attenuation_coefficient}
-  \mu(\nu, s') = \mu_m(\nu) \rho(s')
+  \mu(\nu, s') = \mu_\text{m}(\nu) \rho(s')
 \end{equation}
-where $\mu_m(\nu)$ is the spectral mass attenuation coefficient and $\rho(s')$ is the volumetric mass density of the absorber.
+where $\mu_\text{m}(\nu)$ is the spectral mass attenuation coefficient and $\rho(s')$ is the volumetric mass density of the absorber.
 
-Names of radiative properties ending with suffix \emph{-ance} are generally used for rough surfaces, while suffix \emph{-ivity} indicates smooth surfaces. In this work the former is adopted. Refer to \cite[20]{Modest} for more information and to the definition of spectral absorptivity in \cite{CIE} for an example of the difference.
+Names of radiative properties ending with suffix \emph{-ance} are generally used for rough surfaces, while suffix \emph{-ivity} indicates smooth surfaces. In this work the former is adopted. Refer to \cite[59]{Modest} for more information and to the definition of spectral absorptivity in \cite{CIE} for an example of the difference.
 
 
 
@@ -425,10 +464,10 @@ To avoid confusion, in this work symbol $\sigma$ is used for the Stefan-Boltzman
 An alternative quantity evaluated in place of $T(t,z)$ for a given parcel of fluid is the potential temperature
 \begin{equation}
   \label{eq:potential_temperature}
-  \theta(t,z) = T(t,z) \bigg( \frac{P_0}{P(z)} \bigg)^\frac{R_m}{c_P}
+  \theta(t,z) = T(t,z) \bigg( \frac{P_0}{P(z)} \bigg)^\frac{R_\text{m}}{c_P}
   \quad ,
 \end{equation}
-where $P_0$ is a reference pressure and quantities $P(z)$, $R_m$ and $c_P$ refer to the fluid.
+where $P_0$ is a reference pressure and quantities $P(z)$, $R_\text{m}$ and $c_P$ refer to the fluid.
 
 
 

@@ -14,12 +14,10 @@ int main(int argc, char * argv[]) {
 	cout << fixed << setprecision(N_PRECISION);
 	
 	// Configure vertical coordinates.
-	double z_TOA; // / m
 	double * z, * dz; // / m
-	z_TOA = get_altitude(global_P_TOA);
 	z = new double[global_N];
 	dz = new double[global_N];
-	set_layers_uniform(global_z_g, z_TOA, global_N, z, dz);
+	set_layers_uniform(global_z_g, get_altitude(global_P_TOA), global_N, z, dz);
 	
 	// Precompute other vertical coordinates.
 	double * P; // / Pa
@@ -39,28 +37,43 @@ int main(int argc, char * argv[]) {
 	
 	double T_0; // / K
 	double * T, * theta; // / K
-	T_0 = pow((1.0 - global_A) * global_S_0 / 8.0 / global_sigma, 0.25);
+	double S_t, E_U, E_D; // / (W / m^2)
+	S_t = (1.0 - global_A) * global_S_0 / 4.0;
+	T_0 = pow(S_t / 2.0 / global_sigma, 0.25);
 	T = new double[global_N];
 	theta = new double[global_N];
-	ofstream file_plot;
-	char filename_plot[] = DIR_DATA "/temperature_radiative_equilibrium.dat";
-	file_plot << fixed << setprecision(N_PRECISION);
-	file_plot.open(filename_plot);
-	file_plot << "#z/z_0  T   delta P    sigma theta" << endl;
-	file_plot << "#'1'    'K' '1'   'Pa' '1'   'K'" << endl;
+	ofstream file_temperature, file_irradiance;
+	char fn_temperature_analytical[] = DIR_DATA "/temperature_analytical.dat";
+	char fn_irradiance_analytical[] = DIR_DATA "/irradiance_analytical.dat";
+	file_temperature << fixed << setprecision(N_PRECISION);
+	file_temperature.open(fn_temperature_analytical);
+	file_temperature << "#z/z_0  T   delta P    sigma theta" << endl;
+	file_temperature << "#'1'    'K' '1'   'Pa' '1'   'K'" << endl;
+	file_irradiance << fixed << setprecision(N_PRECISION);
+	file_irradiance.open(fn_irradiance_analytical);
+	file_irradiance << "#z/z_0  E_U       E_D       delta P    sigma" << endl;
+	file_irradiance << "#'1'    'W / m^2' 'W / m^2' '1'   'Pa' '1'" << endl;
 	for (int i = 0; i < global_N; i++) {
 		T[i] = pow(1.0 + global_D * delta[i], 0.25);
 		theta[i] = get_theta(T[i], P[i]);
-		file_plot << z[i] / global_z_0 << ' ' << T_0 * T[i] << ' ' << delta[i] << ' ' << P[i] << ' ' << sigma[i] << ' ' << theta[i] << '\n';
+		file_temperature << z[i] / global_z_0 << ' ' << T_0 * T[i] << ' ' << delta[i] << ' ' << P[i] << ' ' << sigma[i] << ' ' << theta[i] << '\n';
+		E_U = 0.5 * (2.0 + global_D * delta[i]);
+		E_D = 0.5 * global_D * delta[i];
+		file_irradiance << z[i] / global_z_0 << ' ' << E_U << ' ' << E_D << ' ' << delta[i] << ' ' << P[i] << ' ' << sigma[i] << '\n';
 	}
-	file_plot.close();
-	cout << "Temperature profile calculated, values are stored in file " << filename_plot << endl;
+	file_temperature.close();
+	cout << "Analytical solution temperature profile in radiative equilibrium calculated, values are stored in file " << fn_temperature_analytical << endl;
+	file_irradiance.close();
+	cout << "Analytical solution irradiances in radiative equilibrium calculated, values are stored in file " << fn_irradiance_analytical << endl;
 	
-	// Clean up.
+	// Tear down.
 	delete[] z;
 	delete[] dz;
 	delete[] P;
 	delete[] delta;
+	delete[] sigma;
+	delete[] T;
+	delete[] theta;
 	
 	return 0;
 }
