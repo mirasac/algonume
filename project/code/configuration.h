@@ -1,6 +1,8 @@
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
 
+#include "constants.h"
+
 #define DIR_DATA "../data"
 
 #ifdef N_PRECISION
@@ -20,6 +22,7 @@ double const global_nu_min = 1e4; // 1 / m
 double const global_nu_max = 1e7; // 1 / m
 double const global_P_0 = 1e5; // Pa
 double const global_P_TOA = 3.0; // Pa
+double const global_S_t = (1.0 - global_A) * global_S_0 / 4.0; // / (W / m^2)
 double const global_z_0 = 2000.0; // / m
 double const global_z_TOA = 55000.0; // m
 

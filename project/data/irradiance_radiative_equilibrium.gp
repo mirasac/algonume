@@ -14,5 +14,5 @@ set ylabel '$z / z_0$' font _font
 set yrange [0:11]
 set mytics 4
 
-plot "irradiance_analytical.dat" using 2:1 title "Upward" with lines lc rgb "blue", \
-	"irradiance_analytical.dat" using 3:1 title "Downward" with lines lc rgb "red"
+plot "irradiance_analytical.dat" using 2:1 title 'Upward' with lines lc rgb "blue", \
+	"irradiance_analytical.dat" using 3:1 title 'Downward' with lines lc rgb "red"

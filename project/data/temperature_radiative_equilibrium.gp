@@ -3,11 +3,11 @@ reset
 load 'configuration.gp'
 
 set title "Temperature profile in radiative equilibrium" font _font
-set key top left font _font
+set key top right font _font
 set grid xtics mxtics ytics mytics
 
 set xlabel '$T / \unit{\kelvin}$' font _font
-set xrange [210:260] # K
+set xrange [210:264] # K
 set mxtics 5
 
 set ylabel '$z / z_0$' font _font

@@ -32,6 +32,9 @@ double get_altitude(double P, double T);
 
 double get_sigma(double P, double P_TOA);
 
+/*
+Potential temperature, proportional to temperature T / K and a negative power of pressure P / Pa.
+*/
 double get_theta(double T, double P);
 
 double get_density(double z, double T);
