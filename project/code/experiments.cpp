@@ -44,7 +44,7 @@ int main(int argc, char * argv[]) {
 	// Evaluate altitude scale.
 	cout << endl;
 	double z_0;
-	z_0 = global_g / ( global_R_m * global_T_earth);
+	z_0 = global_g / ( global_R_m * global_T_g);
 	cout << "Altitude scale with atmosphere in hydrostatic equilibrium: z_0 = " << z_0 << " m" << endl;
 	
 	return 0;

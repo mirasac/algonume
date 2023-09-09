@@ -27,8 +27,8 @@ double const global_P_g = 1.013250e5; // Pa
 double const global_R_m = 2.8705287e2; // J / (K kg)
 double const global_R_sun = 6.957e8; // m
 double const global_S_0 = 1361.0; // W / m^2
+double const global_T_g = 288.15; // K
 double const global_T_sun = 5772.0; // K
-double const global_T_earth = 288.15; // K
 double const global_z_g = 0.0; // m
 
 #endif /* CONSTANTS_H */

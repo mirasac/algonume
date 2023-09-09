@@ -16,8 +16,8 @@ int main(int argc, char * argv[]) {
 	double M_sun, E_sun, M_earth, E_earth; // / (W / m^2)
 	M_sun = global_sigma * global_T_sun*global_T_sun*global_T_sun*global_T_sun;
 	E_sun = M_PI * gaussquad(spectral_irradiance_blackbody_nu, global_nu_min, global_nu_max, QUAD_INTERVALS, 2, global_T_sun);
-	M_earth = global_sigma * global_T_earth*global_T_earth*global_T_earth*global_T_earth;
-	E_earth = M_PI * gaussquad(spectral_irradiance_blackbody_nu, global_nu_min, global_nu_max, QUAD_INTERVALS, 2, global_T_earth);
+	M_earth = global_sigma * global_T_g*global_T_g*global_T_g*global_T_g;
+	E_earth = M_PI * gaussquad(spectral_irradiance_blackbody_nu, global_nu_min, global_nu_max, QUAD_INTERVALS, 2, global_T_g);
 	cout << "In EM spectrum [" << global_nu_min / 100.0 << " 1 / cm, " << global_nu_max / 100.0 << " 1 / cm]:" << endl;
 	cout << "- ratio of Sun's surface calculated irradiance to theroretical radiant exitance is: " << E_sun / M_sun << endl;
 	cout << "- ratio of Earth's surface calculated irradiance to theroretical radiant exitance is: " << E_earth / M_earth << endl;
@@ -39,7 +39,7 @@ int main(int argc, char * argv[]) {
 	for (int i = 0; i <= n_nu; i++) {
 		nu = global_nu_min + i * dnu;
 		E_sun_nu = (1.0 - global_A) * ratio*ratio * M_PI * spectral_irradiance_blackbody_nu(nu, global_T_sun);
-		E_earth_nu = M_PI * spectral_irradiance_blackbody_nu(nu, global_T_earth);
+		E_earth_nu = M_PI * spectral_irradiance_blackbody_nu(nu, global_T_g);
 		nu /= 100.0; // Plot bandwidth in unit 1 / cm.
 		E_sun_nu *= 100.0; // Plot irradiance in unit W cm / m^2.
 		E_earth_nu *= 100.0; // Plot irradiance in unit W cm / m^2.
@@ -58,9 +58,9 @@ int main(int argc, char * argv[]) {
 	cout << endl;
 	double E_sun_long, E_earth_long, E_sun_short, E_earth_short; // / (W / m^2)
 	E_sun_long = (1.0 - global_A) * ratio*ratio * M_PI * gaussquad(spectral_irradiance_blackbody_nu, global_nu_min, nu_div, QUAD_INTERVALS, 2, global_T_sun);
-	E_earth_long = M_PI * gaussquad(spectral_irradiance_blackbody_nu, global_nu_min, nu_div, QUAD_INTERVALS, 2, global_T_earth);
+	E_earth_long = M_PI * gaussquad(spectral_irradiance_blackbody_nu, global_nu_min, nu_div, QUAD_INTERVALS, 2, global_T_g);
 	E_sun_short = (1.0 - global_A) * ratio*ratio * M_PI * gaussquad(spectral_irradiance_blackbody_nu, nu_div, global_nu_max, QUAD_INTERVALS, 2, global_T_sun);
-	E_earth_short = M_PI * gaussquad(spectral_irradiance_blackbody_nu, nu_div, global_nu_max, QUAD_INTERVALS, 2, global_T_earth);
+	E_earth_short = M_PI * gaussquad(spectral_irradiance_blackbody_nu, nu_div, global_nu_max, QUAD_INTERVALS, 2, global_T_g);
 	cout << "In longwave bandwidth [" << global_nu_min / 100.0 << " 1 / cm, " << nu_div / 100.0 << " 1 / cm]:" << endl;
 	cout << "- irradiances ratio of Sun's surface to total: " << E_sun_long / (E_sun_long + E_earth_long) << endl;
 	cout << "- irradiances ratio of Sun's surface to whole spectrum Sun's surface: " << E_sun_long / (E_sun_long + E_sun_short) << endl;

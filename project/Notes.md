@@ -11,7 +11,7 @@
 - Use optical depths and formulae for soot from TTAPS-II because reproducing the aerosol formation computational model presented in Turco 1979 goes beyond the purpose of this work.
 - Spectral radiance is also called specific intensity, mainly in the old literature.
 - Use non-dimensional optical coordinates, cfr. \cite[290]{Modest}.
-- Radiative equilibrium at TOA + steady state temperature = radiative equilibrium at each altitude + atmosphere transparent to transmitted solar irradiance.
+- Energy is not conserved in the atmosphere, but radiative equilibrium is forced at TOA.
 
 ## Questions
 - What is temperature profile instability.
@@ -59,3 +59,5 @@
 - Check content against what prof. Palazzi taught us during lesson.
 - In the hypotheses stay general by using the term medium instead of layer. Then introduce layers and use them in the transition to the numerical resolution of the model.
 - Show equation dependencies only when is needed for clarity, otherwise explain dependencies through words the first time the quantity appears.
+- Check the correctness in the use of terms equilibrium and steady state.
+- Check and integrate captions.

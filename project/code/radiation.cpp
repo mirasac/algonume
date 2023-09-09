@@ -26,7 +26,7 @@ double irradiance_blackbody_average_nu(double nu, double dnu, double T) {
 
 double spectral_irradiance_diff(double nu) {
 	double ratio = global_R_sun / global_au;
-	return M_PI * ((1.0 - global_A) * ratio*ratio * spectral_irradiance_blackbody_nu(nu, global_T_sun) - spectral_irradiance_blackbody_nu(nu, global_T_earth));
+	return M_PI * ((1.0 - global_A) * ratio*ratio * spectral_irradiance_blackbody_nu(nu, global_T_sun) - spectral_irradiance_blackbody_nu(nu, global_T_g));
 }
 
 double spectral_irradiance_diff1(double nu) {
@@ -36,7 +36,7 @@ double spectral_irradiance_diff1(double nu) {
 	return M_PI * (3.0 / nu * spectral_irradiance_diff(nu) + factor * (
 		(1.0 - global_A) * ratio*ratio
 		* spectral_irradiance_blackbody_nu(nu, global_T_sun) / (global_T_sun * expm1(-factor * nu / global_T_sun))
-		- spectral_irradiance_blackbody_nu(nu, global_T_earth) / (global_T_earth * expm1(-factor * nu / global_T_earth))
+		- spectral_irradiance_blackbody_nu(nu, global_T_g) / (global_T_g * expm1(-factor * nu / global_T_g))
 	));
 }
 

@@ -2,12 +2,13 @@ reset
 
 load 'configuration.gp'
 
-set title "Normalised errors between numerical and analytical values" font _font
+set title "Errors between normalised numerical and analytical values" font _font
 set key bottom left font _font
 set logscale x
+set offsets graph 0.05, graph 0.05, 0, 0
 set grid xtics mxtics ytics mytics
 
-set xlabel 'Normalised error' font _font
+set xlabel '$|x_\text{num} - x_\text{ana}|$' font _font
 set mxtics 10
 
 set ylabel '$z / z_0$' font _font
