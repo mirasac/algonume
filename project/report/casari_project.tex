@@ -243,26 +243,33 @@ To apply equation~\eqref{eq:RTE_analytical} to irradiances, two integrations are
 The resulting equations for irradiances in terms of $\delta'$ are
 \begin{align}
   \label{eq:irradiance_upward}
-  - \odv*{E_\text{U}(t, \delta')}{\delta'} & = \sigma T(t, \delta')^4 - E_\text{U}(t, \delta') \quad , \\
+  - \pdv*{E_\text{U}(t, \delta')}{\delta'} & = \sigma T(t, \delta')^4 - E_\text{U}(t, \delta') \quad , \\
   \label{eq:irradiance_downward}
-  \odv*{E_\text{D}(t, \delta')}{\delta'} & = \sigma T(t, \delta')^4 - E_\text{D}(t, \delta')
+  \pdv*{E_\text{D}(t, \delta')}{\delta'} & = \sigma T(t, \delta')^4 - E_\text{D}(t, \delta')
 \end{align}
 and they are coupled with equation~\eqref{eq:temperature} written in terms of $\delta'$:
 \begin{equation}
   \label{eq:temperature_delta}
-  \pdv*{T(t, \delta')}{t} = \frac{D \mu_\text{m}}{c_P} \pdv*{\big( E_\text{U} - E_\text{D} \big)}{\delta'}
+  \pdv*{T(t, \delta')}{t} = \frac{\mu_\text{m} D}{c_P} \pdv*{\big( E_\text{U} - E_\text{D} \big)}{\delta'}
   \quad .
 \end{equation}
+Equations~\eqref{eq:temperature_delta},~\eqref{eq:irradiance_upward} and~\eqref{eq:irradiance_downward} form a system of Partial Differential Equations (PDEs) of first order in two variables.
 
-Boundary conditions are $E_\text{D}(0) = 0$ because energy released to atmosphere at TOA by the downward flux is negligible and $E_\text{U}(0)$ is a constant called Outgoing Longwave Radiation (OLR).
-Since the planet is in radiative equilibrium,
+When the steady state of $T$ is searched, dependence on $t$ is dropped and the PDEs become Ordinary Differential Equations (ODEs) of first order of an Initial Value Problem (IVP).
+Initial conditions for irradiances are
 \begin{equation}
-  \label{eq:radiative_equilibrium}
+  \label{eq:initial_downward}
+  E_\text{D}(0) = 0
+\end{equation}
+because energy released to atmosphere at TOA by the downward flux is negligible and $E_\text{U}(0)$ is a constant called Outgoing Longwave Radiation (OLR).
+Radiative equilibrium provides the condition for the OLR:
+\begin{equation}
+  \label{eq:initial_upward}
   E_\text{U}(0) = S_\text{t}
   \quad .
 \end{equation}
 
-In the steady state, time dependence is dropped and irradiances are related by
+At the steady state, irradiances are related by
 \begin{equation}
   \label{eq:irradiance_steady_state}
   \odv*{\big( E_\text{U}(\delta') - E_\text{D}(\delta') \big)}{\delta'} = 0
@@ -276,14 +283,19 @@ which has solution
 \end{equation}
 Since heat transfer in equation~\eqref{eq:temperature} is determined only by radiative processes, this relation is equivalent to the hypotheses of atmosphere in radiative equilibrium at all altitudes and transparent to radiation coming from outside the planet.
 % MC should I consider to swap the arguments? Because heat transfer in general, i.e. \label{eq:temperature_derivation}, is not gonverned by radiative equilibrium alone. In this section I treat a particular case.
-
-Temperature is obtained by adding and subtracting equations~\eqref{eq:irradiance_upward} and~\eqref{eq:irradiance_downward} and using the conditions provided by equations~\eqref{eq:irradiance_steady_state} and~\eqref{eq:irradiance_steady_state_solution}:
+The ODE for $T$ is obtained by adding and subtracting equations~\eqref{eq:irradiance_upward} and~\eqref{eq:irradiance_downward} and using the conditions provided by equations~\eqref{eq:irradiance_steady_state} and~\eqref{eq:irradiance_steady_state_solution}:
 \begin{equation}
   \label{eq:temperature_analytical}
   2 \sigma \odv*{T(\delta')^4}{\delta'} = S_\text{t}
   \quad .
 \end{equation}
-The solution in terms of $\delta$ is
+In a similar way, initial condition for $T$ is obtained by summing equations~\eqref{eq:irradiance_upward} and~\eqref{eq:irradiance_downward} and applying relation~\eqref{eq:irradiance_steady_state} and the initial conditions~\eqref{eq:initial_upward} and~\eqref{eq:initial_downward}:
+\begin{equation}
+  \label{eq:initial_temperature}
+  T(0) = \bigg( \frac{S_\text{t}}{2 \sigma} \bigg)^\frac{1}{4}
+  \quad .
+\end{equation}
+The solution of equation~\eqref{eq:temperature_analytical} in terms of $\delta$ is
 \begin{equation}
   \label{eq:temperature_analytical_solution}
   T(\delta) = \bigg( \frac{S_\text{t}}{2 \sigma} (1 + D \delta) \bigg)^\frac{1}{4}
@@ -320,6 +332,54 @@ Value $\delta_\text{g}$ can be fixed by using the irradiance emitted by the surf
   \quad .
 \end{equation}
 With this condition, $T$ presents a discontinuity at ground level, which is not physical. Other mechanisms of heat transport redistribute energy at the lower levels of the atmosphere.
+
+
+
+\section{Numerical solution in radiative equilibrium}
+\label{sec:Numerical solution in radiative equilibrium}
+To solve numerically the IVP defined in section~\ref{sec:Analytical solution in radiative equilibrium}, equations~\eqref{eq:temperature_analytical},~\eqref{eq:irradiance_upward} and~\eqref{eq:irradiance_downward} are rewritten in terms of variable $\delta$ and normalised with respect to $S_\text{t}$,
+\begin{equation}
+  \label{eq:normalisation}
+  Y_0 = \frac{\sigma T^4}{S_\text{t}}
+  \quad , \quad
+  Y_1 = \frac{E_\text{U}}{S_\text{t}}
+  \quad , \quad
+  Y_2 = \frac{E_\text{U}}{S_\text{t}}
+  \quad ,
+\end{equation}
+resulting in the system of ODEs:
+\begin{equation}
+  \label{eq:numerical_radiative_equilibrium}
+  \left\{
+  \begin{array}{@{}l@{}}
+    \odv{Y_0}{\delta} = \frac{D}{2} \\[0.5em]
+    \odv{Y_1}{\delta} = D (Y_1 - Y_0) \\[0.5em]
+    \odv{Y_2}{\delta} = D (Y_0 - Y_2)
+  \end{array}
+  \right.
+  \quad .
+\end{equation}
+Initial conditions for the normalised functions are
+\begin{equation}
+  \label{eq:initial_normalisation}
+  Y_0 = \frac{\sigma T^4}{S_\text{t}}
+  \quad , \quad
+  Y_1 = \frac{E_\text{U}}{S_\text{t}}
+  \quad , \quad
+  Y_2 = \frac{E_\text{U}}{S_\text{t}}
+  \quad ,
+\end{equation}
+from conditions~\eqref{eq:initial_temperature},~\eqref{eq:initial_upward} and~\eqref{eq:initial_downward}, respectively.
+
+Runge-Kutta method of order 4 is used to integrate system~\eqref{eq:numerical_radiative_equilibrium}, to maintain accuracy when $T$ is derived from $Y_0$. A variable step size is adopted, because values $\delta$ are obtained from uniformly distributed values $z$ through relation~\eqref{eq:optical_depth_altitude_2}.
+
+Errors between numerical and analytical solutions for normalised temperature and irradiances are shown in figure~\ref{fig:errors}. Their values are compatible with 0 based on precision of double-precision floating-point numbers.
+\begin{figure*}[h]
+  \centering
+  \includegraphics*[keepaspectratio=true,width=0.75\textwidth]{errors}
+  \caption{Errors}
+  \label{fig:errors}
+\end{figure*}
 
 
 

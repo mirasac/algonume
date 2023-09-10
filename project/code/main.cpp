@@ -109,7 +109,7 @@ int main(int argc, char * argv[]) {
 	file_irradiance << z[0] / global_z_0 << ' ' << Y[1] << ' ' << Y[2] << ' ' << delta[0] << ' ' << P[0] << ' ' << sigma[0] << '\n';
 	file_errors << z[0] / global_z_0 << ' ' << fabs(T_tmp - T[0]) << ' ' << fabs(theta_tmp - theta[0]) << ' ' << fabs(Y[1] - E_U[0]) << ' ' << fabs(Y[2] - E_D[0]) << ' ' << delta[0] << ' ' << P[0] << ' ' << sigma[0] << '\n';
 	for (int i = 1; i < global_N; i++) {
-		rungekutta4(delta[i], (delta[i] - delta[i-1]) * global_D, Y, rhs, 3);
+		rungekutta4(delta[i], delta[i] - delta[i-1], Y, rhs, 3);
 		T_tmp = pow(Y[0], 0.25);
 		theta_tmp = get_theta(T_tmp, P[i]);
 		file_temperature << z[i] / global_z_0 << ' ' << T_0 * T_tmp << ' ' << delta[i] << ' ' << P[i] << ' ' << sigma[i] << ' ' << T_0 * theta[i] << '\n';
@@ -138,7 +138,7 @@ int main(int argc, char * argv[]) {
 }
 
 void rhs(double t, double const * Y_0, double * R) {
-	R[0] = 0.5;
-	R[1] = Y_0[1] - Y_0[0];
-	R[2] = Y_0[0] - Y_0[2];
+	R[0] = 0.5 * global_D;
+	R[1] = global_D * (Y_0[1] - Y_0[0]);
+	R[2] = global_D * (Y_0[0] - Y_0[2]);
 }

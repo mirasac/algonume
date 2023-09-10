@@ -12,13 +12,13 @@
 - Spectral radiance is also called specific intensity, mainly in the old literature.
 - Use non-dimensional optical coordinates, cfr. \cite[290]{Modest}.
 - Energy is not conserved in the atmosphere, but radiative equilibrium is forced at TOA.
+- What is lapse rate? Is the technical term of temperature in pressure-temperature plot? Sort of: it is the variation of temperature with altitude and since altitude and pressure can be related quantitatively, it can be expressed also as variation with pressure.
+- Absorption (or more generally, exctintion) coefficients depend on temperature and pressure. How can I use them to approximate absorption in uniform layers of gases? I must assume that their variation with temperature and pressure is negligible with respect to the varying quantities I am evaluating.
+- Why there is a pi multiplying the spectrally averaged plank function? Probably for the parametrizations I use it is not needed. It is needed, since it is the factor resulting from the integration in the solid angle of an hemisphere of Planck law for the azimuthal component of the solar beam.
 
 ## Questions
 - What is temperature profile instability.
-- What is lapse rate? Is the technical term of temperature in pressure-temperature plot? Sort of: it is the variation of temperature with altitude and since altitude and pressure can be related quantitatively, it can be expressed also as variation with pressure.
-- How do I choose which formulae are suitable for specific wavelengths? Do I simply set a threshold on wavelenght value? I may also set the function as method of the class used to represent gases.
-- Why there is a pi multiplying the spectrally averaged plank function? Probably for the parametrizations I use it is not needed. It is needed, since it is the factor resulting from the integration in the solid angle of an hemisphere of Planck law for the azimuthal component of the solar beam.
-- Absorption (or more generally, exctintion) coefficients depend on temperature and pressure. How can I use them to approximate absorbtion in uniform layers of gases? I must assume that their variation with temperature and pressure is negligible with respect to the varying quantities I am evaluating.
+- Do I add evaluation of quantities at ground level in a separate variable or as element at index N + 1 of arrays?
 
 ## Keywords
 - Tracer continuity equation (cfr. https://clima.github.io/OceananigansDocumentation/v0.47.1/physics/navier_stokes_and_tracer_conservation/, https://getm.eu/files/GETM/doc/html/node78.html and https://climate.ucdavis.edu/ATM121/AtmosphericDynamics-Chapter01-Part03-Continuity.pdf).
@@ -36,6 +36,7 @@
 - As flavour, do a routine in the main module where the spectral bands are evaluated automatically based on the studied gases, instead of specifying them manually in an array. It can be also a class method of the atmopsheric layer class.
 - Where possible, use integer values.
 - Flush file buffer only when needed because it could become a huge bottleneck in program execution.
+- How do I choose which formulae are suitable for specific wavelengths? Do I simply set a threshold on wavelenght value? I may also set the function as method of the class used to represent gases.
 
 ## Release
 - Remove all personal comments.
