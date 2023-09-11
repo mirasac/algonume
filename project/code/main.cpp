@@ -61,11 +61,11 @@ int main(int argc, char * argv[]) {
 	
 	// Plot analytical solutions.
 	for (int i = 0; i < global_N; i++) {
-		T[i] = pow(0.5 * (1.0 + global_D * delta[i]), 0.25);
+		T[i] = temperature_norm(delta[i]);
 		theta[i] = get_theta(T[i], P[i]);
 		file_temperature << z[i] / global_z_0 << ' ' << T_0 * T[i] << ' ' << delta[i] << ' ' << P[i] << ' ' << sigma[i] << ' ' << T_0 * theta[i] << '\n';
-		E_U[i] = 0.5 * (2.0 + global_D * delta[i]);
-		E_D[i] = 0.5 * global_D * delta[i];
+		E_U[i] = irradiance_upward_norm(delta[i]);
+		E_D[i] = irradiance_downward_norm(delta[i]);
 		file_irradiance << z[i] / global_z_0 << ' ' << E_U[i] << ' ' << E_D[i] << ' ' << delta[i] << ' ' << P[i] << ' ' << sigma[i] << '\n';
 	}
 	file_temperature.close();
@@ -101,7 +101,7 @@ int main(int argc, char * argv[]) {
 	file_irradiance << "#'1' '1' '1' '1' 'Pa' '1'" << endl;
 	file_errors << scientific << setprecision(N_PRECISION);
 	file_errors.open(fn_errors);
-	file_errors << "#z/z_0 T theta E_U/S_t E_D/S_t delta P sigma" << endl;
+	file_errors << "#z/z_0 T/T_0 theta/T_0 E_U/S_t E_D/S_t delta P sigma" << endl;
 	file_errors << "#'1' '1' '1' '1' '1' '1' 'Pa' '1'" << endl;
 	
 	// Integrate equations.
@@ -122,6 +122,35 @@ int main(int argc, char * argv[]) {
 	cout << "Numerical solution irradiances in radiative equilibrium stored in file " << fn_irradiance_numerical << endl;
 	file_errors.close();
 	cout << "Absolute errors between normalised numerical and analytical solutions stored in file " << fn_errors << endl;
+	
+	
+	
+	/* Stability analysis of numerical solution in radiative equilibrium */
+	
+	// Prepare variables.
+	int n;
+	double ddelta;
+	
+	// Prepare output file.
+	char fn_stability[] = DIR_DATA "/stability.dat";
+	file_errors << scientific << setprecision(N_PRECISION);
+	file_errors.open(fn_stability);
+	file_errors << "#N T/T_0 E_U/S_t E_D/S_t" << endl;
+	file_errors << "#'1' '1' '1' '1'" << endl;
+	
+	// Integrate up to ground level.
+	for (int i = 0; i < N_STABILITY; i++) {
+		n = 1 << i;
+		ddelta = (global_delta_g - global_delta_TOA) / n;
+		Y[0] = 0.5;
+		Y[1] = 1.0;
+		Y[2] = 0.0;
+		integrate_IVP(n, ddelta, Y, rhs, 3, rungekutta4);
+		T_tmp = pow(Y[0], 0.25);
+		file_errors << n << ' ' << fabs(T_tmp - temperature_norm(global_delta_g)) << ' ' << fabs(Y[1] - irradiance_upward_norm((global_delta_g))) << ' ' << fabs(Y[2] - irradiance_downward_norm((global_delta_g))) << '\n';
+	}
+	file_errors.close();
+	cout << "Errors for stability analysis of numerical solution stored in file " << fn_stability << endl;
 	
 	// Tear down.
 	delete[] z;

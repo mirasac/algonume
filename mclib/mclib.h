@@ -292,6 +292,19 @@ Implementation of velocity-Verlet algorithm. Function a is evaluated each step, 
 */
 void verlet_velocity(double const dt, double X[], double V[], void (*a)(double const X_0[], double R[]), int const n_eq);
 
+/*
+Solve numerically with method `method` the IVP defined by the system of n_eq equations which has right hand size rhs and initial values Y. Array t contains n_t elements which are the points the functions are evaluated at. Step size is given by the difference between successive elements of t.
+
+At the end of the integration, array Y contains the values of the functions evaluated at index n_t - 1 of array t.
+*/
+void integrate_IVP(int const n_t, double const t[], double Y[], void (*rhs)(double const t, double const Y_0[], double R[]), int const n_eq, void method(double const t, double const dt, double Y[], void (*rhs)(double const t, double const Y_0[], double R[]), int const n_eq));
+
+/*
+Solve numerically with method `method` the IVP defined by the system of n_eq equations which has right hand size rhs and initial values Y. Equations are integrated forward with n_steps of size dt.
+
+At the end of the integration, array Y contains the values of the functions evaluated at point n_steps * dt.
+*/
+void integrate_IVP(int const n_steps, double const dt, double Y[], void (*rhs)(double const t, double const Y_0[], double R[]), int const n_eq, void method(double const t, double const dt, double Y[], void (*rhs)(double const t, double const Y_0[], double R[]), int const n_eq));
 
 
 ////////// Matrices //////////

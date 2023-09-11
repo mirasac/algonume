@@ -132,15 +132,15 @@ Some additional hypotheses are assumed to simplify the study. Data on constants 
     %    $T_\text{sun}$     & \num{5772}             & \unit{\kelvin}                        & Solar surface temperature, from \cite{IAU}                         \\
     $z_\text{g}$       & \num{0}                & \unit{\metre}                         & Nominal ground level                                               \\
     \midrule
-    $\delta_\text{g}$            & $\frac{1}{D} \big( \frac{2 \sigma T_\text{g}^4}{S_\text{t}} - 2 \big)$            &                         & Optical depth at ground level                                           \\
-    $\mu_\text{m}$            & $\frac{\delta_\text{g} g}{P_\text{g} - \PTOA}$            &                         & Mass attenuation coefficient of the atmosphere of Earth                                           \\
+    $\delta_\text{g}$            & $\frac{1}{D} \Big( \frac{2 \sigma T_\text{g}^4}{S_\text{t}} - 2 \Big)$            &                         & Optical depth at ground level                                           \\
+    $\mu_\text{m}$            & $\frac{\delta_\text{g} g}{P_\text{g} - \PTOA}$            &                         & Mass attenuation coefficient of the atmosphere                                           \\
     $N$            & \num{100}            &                         & Number of atmospheric layers                                             \\
     %    $\nu_\text{min}$            & \num{100}            & \unit{\per\centi\metre}                         & Arbitrary minimum boundary for EM spectrum                                             \\
     %    $\nu_\text{max}$            & \num{100000}            & \unit{\per\centi\metre}                         & Arbitrary maximum boundary for EM spectrum                                             \\
     $P_0$       & \num{1e5}       & \unit{\pascal}                        & Arbitrary reference value for pressure           \\
-    $\PTOA$            & \num{3}            & \unit{\pascal}                         & Arbitrary TOA pressure of Earth                                            \\ 
-    $z_0$            & \num{2000}            & \unit{\metre}                        & Arbitrary constant set in equation~\ref{eq:optical_depth_altitude_2} for normalisation                                            \\
-    $\zTOA$            & \num{55000}            & \unit{\metre}                         & Arbitrary TOA altitude of Earth                                            \\
+    $\PTOA$            & \num{3}            & \unit{\pascal}                         & Arbitrary TOA pressure                                            \\ 
+    $z_0$            & \num{2000}            & \unit{\metre}                        & Arbitrary constant for normalisation of $z$                                            \\
+    $\zTOA$            & $z_\text{g} - z_0 \ln{\Big( \frac{P}{P_\text{g}} \Big)}$            & \unit{\metre}                         & Arbitrary TOA altitude                                            \\
     \bottomrule
   \end{tabular}
 \end{table*}
@@ -197,7 +197,7 @@ Altitude is an immediate choice as vertical coordinate used to describe the prob
 An alternative choice is $P$ and is convenient when used with equation~\eqref{eq:hydrostatic_equilibrium} to remove the dependence on $\varrho$. A bijective relation relates $P$ and $z$ (cfr. section~\ref{sec:Relation between pressure and altitude}):
 \begin{equation}
   \label{eq:pressure_altitude}
-  P(z) = P_g \exp{\bigg( - \frac{z - z_g}{z_0} \bigg)}
+  P(z) = P_\text{g} \exp{\bigg( - \frac{z - z_\text{g}}{z_0} \bigg)}
   \quad ,
 \end{equation}
 where ground level is chosen as reference and constant $z_0$ acts to remove the depence on temperature and thus sets the scale of $z$. Pressure decreases with altitude from standard value $P_\text{g}$ at ground level to $\PTOA$ at TOA.
@@ -362,11 +362,11 @@ resulting in the system of ODEs:
 Initial conditions for the normalised functions are
 \begin{equation}
   \label{eq:initial_normalisation}
-  Y_0 = \frac{\sigma T^4}{S_\text{t}}
+  Y_0 = \frac{1}{2}
   \quad , \quad
-  Y_1 = \frac{E_\text{U}}{S_\text{t}}
+  Y_1 = 1
   \quad , \quad
-  Y_2 = \frac{E_\text{U}}{S_\text{t}}
+  Y_2 = 0
   \quad ,
 \end{equation}
 from conditions~\eqref{eq:initial_temperature},~\eqref{eq:initial_upward} and~\eqref{eq:initial_downward}, respectively.
@@ -377,8 +377,18 @@ Errors between numerical and analytical solutions for normalised temperature and
 \begin{figure*}[h]
   \centering
   \includegraphics*[keepaspectratio=true,width=0.75\textwidth]{errors}
-  \caption{Errors}
+  \caption{Errors} % MC conclude.
   \label{fig:errors}
+\end{figure*}
+
+\subsection{Stability} % MC maybe remove the section division.
+% MC stability at ground level with respect to various number of levels.
+Stability analysis of the numerical method is performed on $N$ and this is equivalent to change the spatial grid size. Powers of 2 are chosen as values of $N$ and step size is constant, obtained by dividing interval $[\deltaTOA, \delta_\text{g}]$ by $N$. Errors are evaluated as absolute differences between numerical and analytical values for each of $T(\delta_\text{g})$, $E_\text{U}(\delta_\text{g})$ and $E_\text{U}(\delta_\text{g})$. For $N \leq 4096$, errors are compatible with 0 within precision, while for greater $N$, errors increase due to error propagation. Normally this effect does not hinder results of simulations because lower values of $N$ are chosen for the model, since average dynamics could lose accuracy if thin layers are used.
+\begin{figure*}[h]
+  \centering
+  \includegraphics*[keepaspectratio=true,width=0.75\textwidth]{stability}
+  \caption{Stability analysis.} % MC conclude.
+  \label{fig:stability}
 \end{figure*}
 
 

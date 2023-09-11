@@ -43,4 +43,19 @@ double get_optical_depth_P(double P, double P_TOA);
 
 double get_optical_depth_z(double z, double P_TOA);
 
+/*
+Return analytical solution for normalised temperature in radiative equilibrium.
+*/
+double temperature_norm(double delta);
+
+/*
+Return analytical solution for normalised upward irradiance in radiative equilibrium.
+*/
+double irradiance_upward_norm(double delta);
+
+/*
+Return analytical solution for normalised downward irradiance in radiative equilibrium.
+*/
+double irradiance_downward_norm(double delta);
+
 #endif /* UTILITIES_H */

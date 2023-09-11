@@ -605,6 +605,20 @@ void verlet_velocity(double const dt, double X[], double V[], void (*a)(double c
 	}
 }
 
+void integrate_IVP(int const n_t, double const t[], double Y[], void (*rhs)(double const t, double const Y_0[], double R[]), int const n_eq, void method(double const t, double const dt, double Y[], void (*rhs)(double const t, double const Y_0[], double R[]), int const n_eq)) {
+	for (int i = 1; i < n_t; i++) {
+		method(t[i], t[i] - t[i-1], Y, rhs, n_eq);
+	}
+}
+
+void integrate_IVP(int const n_steps, double const dt, double Y[], void (*rhs)(double const t, double const Y_0[], double R[]), int const n_eq, void method(double const t, double const dt, double Y[], void (*rhs)(double const t, double const Y_0[], double R[]), int const n_eq)) {
+	double t;
+	for (int i = 1; i <= n_steps; i++) {
+		t = i * dt;
+		method(t, dt, Y, rhs, n_eq);
+	}
+}
+
 
 
 ////////// Matrices //////////

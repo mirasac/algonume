@@ -15,6 +15,8 @@
 #define GAUSSQUAD_POINTS 2
 #define QUAD_INTERVALS 100000
 
+#define N_STABILITY 25
+
 // Arbitrary values.
 int const global_N = 100;
 double const global_nu_min = 1e4; // 1 / m

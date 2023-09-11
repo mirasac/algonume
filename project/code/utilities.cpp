@@ -62,3 +62,15 @@ double get_optical_depth_P(double P, double P_TOA) {
 double get_optical_depth_z(double z, double P_TOA) {
 	return get_optical_depth_P(get_pressure(z), P_TOA);
 }
+
+double temperature_norm(double delta) {
+	return pow(0.5 * (1.0 + global_D * delta), 0.25);
+}
+
+double irradiance_upward_norm(double delta) {
+	return 0.5 * (2.0 + global_D * delta);
+}
+
+double irradiance_downward_norm(double delta) {
+	return 0.5 * global_D * delta;
+}
