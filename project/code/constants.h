@@ -16,7 +16,7 @@ double const global_sigma = 5.670374419e-8; // W / (m^2 K^4)
 // Nominal values.
 double const global_A = 0.3;
 double const global_A_g = 0.1;
-double const global_c_P_air = 1.004e3; // J / (K kg)
+double const global_c_P = 1.004e3; // J / (K kg)
 double const global_delta_TOA = 0.0;
 double const global_D = 1.66;
 double const global_epsilon = M_PI_4; // / rad

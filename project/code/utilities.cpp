@@ -48,7 +48,7 @@ double get_sigma(double P, double P_TOA) {
 }
 
 double get_theta(double T, double P) {
-	return T * pow(global_P_0 / P, global_R_m / global_c_P_air);
+	return T * pow(global_P_0 / P, global_R_m / global_c_P);
 }
 
 double get_density(double z, double T) {
