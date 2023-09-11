@@ -40,9 +40,7 @@
 
 ## Release
 - Remove all personal comments.
-- Decide to apply some optimizations:
-	- In `hypotheses.cpp`, M_PIs in the evaluation of ratio of irradiances can be removed.
-	- Where loops for plots are performed, extremal values of 0 can be removed (e.g. in `main.cpp` t_min = 0 can be omitted).
+- Remove all useless functions (e.g. in `main.cpp` array dz).
 
 # Report
 - For section label markers I put the name of the section, case sensitive, after the string `sec:`. This way the marker could contain spaces, but this should not be a drawback since nowadays most packages managing labels support spaces in them. Another possible drawback is the length that some labels can reach. Instead the advantages are many: it is a consistent way to write meaningful labels for sections, labels get immediately fixed when section titles are changed (i.e. by using a find and replace tool in any editor).

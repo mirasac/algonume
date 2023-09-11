@@ -11,7 +11,7 @@ set xrange [-0.05:1.7]
 set mxtics 4
 
 set ylabel '$z / z_0$' font _font
-set yrange [0:11]
+set yrange [-0.5:11]
 set mytics 4
 
 plot "irradiance_analytical.dat" using 2:1 title '$E_\text{U}$' with lines lc rgb "blue", \

@@ -16,18 +16,18 @@ int main(int argc, char * argv[]) {
 	cout << fixed << setprecision(N_PRECISION);
 	
 	// Configure vertical coordinates.
-	double * z, * dz; // / m
-	z = new double[global_N];
-	dz = new double[global_N];
-	set_layers_uniform(global_z_g, get_altitude(global_P_TOA), global_N, z, dz);
-	
-	// Precompute other vertical coordinates.
+	double z_TOA, dz; // / m
+	double * z; // / m
 	double * P; // / Pa
 	double * delta, * sigma;
-	delta = new double[global_N];
-	P = new double[global_N];
-	sigma = new double[global_N];
-	for (int i = 0; i < global_N; i++) {
+	z_TOA = get_altitude(global_P_TOA);
+	dz = (z_TOA - global_z_g) / global_N;
+	z = new double[global_N + 1];
+	delta = new double[global_N + 1];
+	P = new double[global_N + 1];
+	sigma = new double[global_N + 1];
+	for (int i = 0; i <= global_N; i++) {
+		z[i] = z_TOA - i * dz;
 		delta[i] = get_optical_depth_z(z[i], global_P_TOA);
 		P[i] = get_pressure(z[i]);
 		sigma[i] = get_sigma(P[i], global_P_TOA);
@@ -40,10 +40,10 @@ int main(int argc, char * argv[]) {
 	// Prepare variables.
 	double * T, * theta, * E_U, * E_D;
 	double T_0; // / K
-	T = new double[global_N];
-	theta = new double[global_N];
-	E_U = new double[global_N];
-	E_D = new double[global_N];
+	T = new double[global_N + 1];
+	theta = new double[global_N + 1];
+	E_U = new double[global_N + 1];
+	E_D = new double[global_N + 1];
 	T_0 = pow(global_S_t / global_sigma, 0.25);
 	
 	// Prepare output files.
@@ -60,7 +60,7 @@ int main(int argc, char * argv[]) {
 	file_irradiance << "#'1' '1' '1' '1' 'Pa' '1'" << endl;
 	
 	// Plot analytical solutions.
-	for (int i = 0; i < global_N; i++) {
+	for (int i = 0; i <= global_N; i++) {
 		T[i] = temperature_norm(delta[i]);
 		theta[i] = get_theta(T[i], P[i]);
 		file_temperature << z[i] / global_z_0 << ' ' << T_0 * T[i] << ' ' << delta[i] << ' ' << P[i] << ' ' << sigma[i] << ' ' << T_0 * theta[i] << '\n';
@@ -87,8 +87,8 @@ int main(int argc, char * argv[]) {
 	theta_tmp = get_theta(T_tmp, P[0]);
 	
 	// Prepare output files.
-	char fn_irradiance_numerical[] = DIR_DATA "/irradiance_numerical.dat";
 	char fn_temperature_numerical[] = DIR_DATA "/temperature_numerical.dat";
+	char fn_irradiance_numerical[] = DIR_DATA "/irradiance_numerical.dat";
 	ofstream file_errors;
 	char fn_errors[] = DIR_DATA "/errors.dat";
 	file_temperature << fixed << setprecision(N_PRECISION);
@@ -108,7 +108,7 @@ int main(int argc, char * argv[]) {
 	file_temperature << z[0] / global_z_0 << ' ' << T_0 * T_tmp << ' ' << delta[0] << ' ' << P[0] << ' ' << sigma[0] << ' ' << T_0 * theta[0] << '\n';
 	file_irradiance << z[0] / global_z_0 << ' ' << Y[1] << ' ' << Y[2] << ' ' << delta[0] << ' ' << P[0] << ' ' << sigma[0] << '\n';
 	file_errors << z[0] / global_z_0 << ' ' << fabs(T_tmp - T[0]) << ' ' << fabs(theta_tmp - theta[0]) << ' ' << fabs(Y[1] - E_U[0]) << ' ' << fabs(Y[2] - E_D[0]) << ' ' << delta[0] << ' ' << P[0] << ' ' << sigma[0] << '\n';
-	for (int i = 1; i < global_N; i++) {
+	for (int i = 1; i <= global_N; i++) {
 		rungekutta4(delta[i], delta[i] - delta[i-1], Y, rhs, 3);
 		T_tmp = pow(Y[0], 0.25);
 		theta_tmp = get_theta(T_tmp, P[i]);
@@ -154,7 +154,6 @@ int main(int argc, char * argv[]) {
 	
 	// Tear down.
 	delete[] z;
-	delete[] dz;
 	delete[] P;
 	delete[] delta;
 	delete[] sigma;
