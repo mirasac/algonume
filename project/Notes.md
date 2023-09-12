@@ -60,4 +60,3 @@
 - In the hypotheses stay general by using the term medium instead of layer. Then introduce layers and use them in the transition to the numerical resolution of the model.
 - Check the correctness in the use of terms equilibrium and steady state.
 - Check and integrate captions.
-- Move figure titles to the captions.

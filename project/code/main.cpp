@@ -15,9 +15,9 @@ double * global_P; // / Pa
 double * global_delta, * global_sigma;
 double global_T_0; // / K
 
-void rhs_Y(double t, double const * Y_0, double * R);
+void rhs_delta(double t, double const * Y_0, double * R);
 
-void rhs_T(double t, double const * Y_0, double * R);
+void rhs_t(double t, double const * Y_0, double * R);
 
 int main(int argc, char * argv[]) {
 	using namespace std;
@@ -56,8 +56,8 @@ int main(int argc, char * argv[]) {
 	char fn_irradiance_analytical[] = DIR_DATA "/irradiance_analytical.dat";
 	file_temperature << fixed << setprecision(N_PRECISION);
 	file_temperature.open(fn_temperature_analytical);
-	file_temperature << "#z/z_0 T delta P sigma theta" << endl;
-	file_temperature << "#'1' 'K' '1' 'Pa' '1' 'K'" << endl;
+	file_temperature << "#z/z_0 T/T_0 delta P sigma theta/T_0" << endl;
+	file_temperature << "#'1' '1' '1' 'Pa' '1' '1'" << endl;
 	file_irradiance << fixed << setprecision(N_PRECISION);
 	file_irradiance.open(fn_irradiance_analytical);
 	file_irradiance << "#z/z_0 E_U/S_t E_D/S_t delta P sigma" << endl;
@@ -67,10 +67,20 @@ int main(int argc, char * argv[]) {
 	for (int i = 0; i <= global_N; i++) {
 		Y_3_ana[i] = temperature_norm(global_delta[i]);
 		theta_norm[i] = get_theta(Y_3_ana[i], global_P[i]);
-		file_temperature << global_z[i] / global_z_0 << ' ' << global_T_0 * Y_3_ana[i] << ' ' << global_delta[i] << ' ' << global_P[i] << ' ' << global_sigma[i] << ' ' << global_T_0 * theta_norm[i] << '\n';
+		file_temperature << global_z[i] / global_z_0 << ' '
+			<< Y_3_ana[i] << ' '
+			<< global_delta[i] << ' '
+			<< global_P[i] << ' '
+			<< global_sigma[i] << ' '
+			<< theta_norm[i] << '\n';
 		Y_1_ana[i] = irradiance_upward_norm(global_delta[i]);
 		Y_2_ana[i] = irradiance_downward_norm(global_delta[i]);
-		file_irradiance << global_z[i] / global_z_0 << ' ' << Y_1_ana[i] << ' ' << Y_2_ana[i] << ' ' << global_delta[i] << ' ' << global_P[i] << ' ' << global_sigma[i] << '\n';
+		file_irradiance << global_z[i] / global_z_0 << ' '
+			<< Y_1_ana[i] << ' '
+			<< Y_2_ana[i] << ' '
+			<< global_delta[i] << ' '
+			<< global_P[i] << ' '
+			<< global_sigma[i] << '\n';
 	}
 	file_temperature.close();
 	cout << "Analytical solution temperature profile in radiative equilibrium calculated, values are stored in file " << fn_temperature_analytical << endl;
@@ -93,39 +103,57 @@ int main(int argc, char * argv[]) {
 	// Prepare output files.
 	char fn_temperature_numerical[] = DIR_DATA "/temperature_numerical.dat";
 	char fn_irradiance_numerical[] = DIR_DATA "/irradiance_numerical.dat";
-	ofstream file_errors;
-	char fn_errors[] = DIR_DATA "/errors.dat";
 	file_temperature << fixed << setprecision(N_PRECISION);
 	file_temperature.open(fn_temperature_numerical);
-	file_temperature << "#z/z_0 T delta P sigma theta" << endl;
-	file_temperature << "#'1' 'K' '1' 'Pa' '1' 'K'" << endl;
+	file_temperature << "#z/z_0 T/T_0 T_err/T_0 delta P sigma theta/T_0 theta_err/T_0" << endl;
+	file_temperature << "#'1' '1' '1' '1' 'Pa' '1' '1' '1'" << endl;
 	file_irradiance << fixed << setprecision(N_PRECISION);
 	file_irradiance.open(fn_irradiance_numerical);
-	file_irradiance << "#z/z_0 E_U/S_t E_D/S_t delta P sigma" << endl;
-	file_irradiance << "#'1' '1' '1' '1' 'Pa' '1'" << endl;
-	file_errors << scientific << setprecision(N_PRECISION);
-	file_errors.open(fn_errors);
-	file_errors << "#z/z_0 T/T_0 theta/T_0 E_U/S_t E_D/S_t delta P sigma" << endl;
-	file_errors << "#'1' '1' '1' '1' '1' '1' 'Pa' '1'" << endl;
+	file_irradiance << "#z/z_0 E_U/S_t E_D/S_t E_U_err/S_t E_D_err/S_t delta P sigma" << endl;
+	file_irradiance << "#'1' '1' '1' '1' '1' '1' 'Pa' '1'" << endl;
 	
 	// Integrate equations.
-	file_temperature << global_z[0] / global_z_0 << ' ' << global_T_0 * Y_3_tmp << ' ' << global_delta[0] << ' ' << global_P[0] << ' ' << global_sigma[0] << ' ' << global_T_0 * theta_norm[0] << '\n';
-	file_irradiance << global_z[0] / global_z_0 << ' ' << Y[1] << ' ' << Y[2] << ' ' << global_delta[0] << ' ' << global_P[0] << ' ' << global_sigma[0] << '\n';
-	file_errors << global_z[0] / global_z_0 << ' ' << fabs(Y_3_tmp - Y_3_ana[0]) << ' ' << fabs(theta_tmp - theta_norm[0]) << ' ' << fabs(Y[1] - Y_1_ana[0]) << ' ' << fabs(Y[2] - Y_2_ana[0]) << ' ' << global_delta[0] << ' ' << global_P[0] << ' ' << global_sigma[0] << '\n';
+	file_temperature << global_z[0] / global_z_0 << ' '
+		<< Y_3_tmp << ' '
+		<< scientific << fabs(Y_3_tmp - Y_3_ana[0]) << fixed << ' '
+		<< global_delta[0] << ' '
+		<< global_P[0] << ' '
+		<< global_sigma[0] << ' '
+		<< theta_tmp << ' '
+		<< scientific << fabs(theta_tmp - theta_norm[0]) << fixed << '\n';
+	file_irradiance << global_z[0] / global_z_0 << ' '
+		<< Y[1] << ' '
+		<< Y[2] << ' '
+		<< scientific << fabs(Y[1] - Y_1_ana[0]) << ' '
+		<< fabs(Y[2] - Y_2_ana[0]) << fixed << ' '
+		<< global_delta[0] << ' '
+		<< global_P[0] << ' '
+		<< global_sigma[0] << '\n';
 	for (int i = 1; i <= global_N; i++) {
-		rungekutta4(global_delta[i], global_delta[i] - global_delta[i-1], Y, rhs_Y, 3);
+		rungekutta4(global_delta[i], global_delta[i] - global_delta[i-1], Y, rhs_delta, 3);
 		Y_3_tmp = pow(Y[0], 0.25);
 		theta_tmp = get_theta(Y_3_tmp, global_P[i]);
-		file_temperature << global_z[i] / global_z_0 << ' ' << global_T_0 * Y_3_tmp << ' ' << global_delta[i] << ' ' << global_P[i] << ' ' << global_sigma[i] << ' ' << global_T_0 * theta_norm[i] << '\n';
-		file_irradiance << global_z[i] / global_z_0 << ' ' << Y[1] << ' ' << Y[2] << ' ' << global_delta[i] << ' ' << global_P[i] << ' ' << global_sigma[i] << '\n';
-		file_errors << global_z[i] / global_z_0 << ' ' << fabs(Y_3_tmp - Y_3_ana[i]) << ' ' << fabs(theta_tmp - theta_norm[i]) << ' ' << fabs(Y[1] - Y_1_ana[i]) << ' ' << fabs(Y[2] - Y_2_ana[i]) << ' ' << global_delta[i] << ' ' << global_P[i] << ' ' << global_sigma[i] << '\n';
+		file_temperature << global_z[i] / global_z_0 << ' '
+			<< Y_3_tmp << ' '
+			<< scientific << fabs(Y_3_tmp - Y_3_ana[i]) << fixed << ' '
+			<< global_delta[i] << ' '
+			<< global_P[i] << ' '
+			<< global_sigma[i] << ' '
+			<< theta_tmp << ' '
+			<< scientific << fabs(theta_tmp - theta_norm[i]) << fixed << '\n';
+		file_irradiance << global_z[i] / global_z_0 << ' '
+			<< Y[1] << ' '
+			<< Y[2] << ' '
+			<< scientific << fabs(Y[1] - Y_1_ana[i]) << ' '
+			<< fabs(Y[2] - Y_2_ana[i]) << fixed << ' '
+			<< global_delta[i] << ' '
+			<< global_P[i] << ' '
+			<< global_sigma[i] << '\n';
 	}
 	file_temperature.close();
 	cout << "Numerical solution temperature profile in radiative equilibrium stored in file " << fn_temperature_numerical << endl;
 	file_irradiance.close();
 	cout << "Numerical solution irradiances in radiative equilibrium stored in file " << fn_irradiance_numerical << endl;
-	file_errors.close();
-	cout << "Absolute errors between normalised numerical and analytical solutions stored in file " << fn_errors << endl;
 	
 	
 	
@@ -136,11 +164,12 @@ int main(int argc, char * argv[]) {
 	double ddelta;
 	
 	// Prepare output file.
+	ofstream file_stability;
 	char fn_stability[] = DIR_DATA "/stability.dat";
-	file_errors << scientific << setprecision(N_PRECISION);
-	file_errors.open(fn_stability);
-	file_errors << "#N T/T_0 E_U/S_t E_D/S_t" << endl;
-	file_errors << "#'1' '1' '1' '1'" << endl;
+	file_stability << scientific << setprecision(N_PRECISION);
+	file_stability.open(fn_stability);
+	file_stability << "#N T/T_0 E_U/S_t E_D/S_t" << endl;
+	file_stability << "#'1' '1' '1' '1'" << endl;
 	
 	// Integrate up to ground level.
 	for (int i = 0; i < N_STABILITY; i++) {
@@ -149,11 +178,14 @@ int main(int argc, char * argv[]) {
 		Y[0] = 0.5;
 		Y[1] = 1.0;
 		Y[2] = 0.0;
-		integrate_IVP(n, ddelta, Y, rhs_Y, 3, rungekutta4);
+		integrate_IVP(n, ddelta, Y, rhs_delta, 3, rungekutta4);
 		Y_3_tmp = pow(Y[0], 0.25);
-		file_errors << n << ' ' << fabs(Y_3_tmp - Y_3_ana[global_N]) << ' ' << fabs(Y[1] - Y_1_ana[global_N]) << ' ' << fabs(Y[2] - Y_2_ana[global_N]) << '\n';
+		file_stability << n << ' '
+			<< fabs(Y_3_tmp - Y_3_ana[global_N]) << ' '
+			<< fabs(Y[1] - Y_1_ana[global_N]) << ' '
+			<< fabs(Y[2] - Y_2_ana[global_N]) << '\n';
 	}
-	file_errors.close();
+	file_stability.close();
 	cout << "Errors for stability analysis of numerical solution stored in file " << fn_stability << endl;
 	
 	
@@ -182,59 +214,66 @@ int main(int argc, char * argv[]) {
 	// Run model.
 	do {
 		Y_3_prev[0] = Y_3[0];
+		i_t++;
 		t = i_t * dt;
 		Y[1] = 1.0;
 		Y[2] = 0.0;
 		for (int i = 1; i <= global_N; i++) {
 			Y_3_prev[i] = Y_3[i];
 			Y[0] = Y_3[i]*Y_3[i]*Y_3[i]*Y_3[i];
-			rungekutta4(global_delta[i], global_delta[i] - global_delta[i-1], Y, rhs_Y, 3);
+			rungekutta4(global_delta[i], global_delta[i] - global_delta[i-1], Y, rhs_delta, 3);
 			Y_3[i_0_Y_1 + i] = Y[1];
 			Y_3[i_0_Y_2 + i] = Y[2];
 		}
-		eulerstep(t, dt, Y_3, rhs_T, global_N + 1);
+		eulerstep(t, dt, Y_3, rhs_t, global_N + 1);
 		convective_adjustment(const_Gamma_0 / global_T_0, global_N, Y_3, global_z);
+		// Temperature profile steady state condition.
 		is_steady = 1;
-		for (int i = 0; i <= global_N;  i++) {
+		for (int i = 0; i <= global_N; i++) {
 			if (fabs(Y_3[i] - Y_3_prev[i]) > TOLERANCE) {
 				is_steady = 0;
 				break;
 			}
 		}
-		i_t++;
-	} while (! is_steady); // Temperature profile steady state.
+	} while (! is_steady);
 	cout << "Steady state reached in " << i_t << " iterations" << endl;
 	
 	// Prepare output files.
-	char fn_temperature_steady[] = DIR_DATA "/temperature_steady.dat";
-	char fn_irradiance_steady[] = DIR_DATA "/irradiance_steady.dat";
-	char fn_errors_steady[] = DIR_DATA "/errors_steady.dat";
+	char fn_temperature_RCM[] = DIR_DATA "/temperature_RCM.dat";
+	char fn_irradiance_RCM[] = DIR_DATA "/irradiance_RCM.dat";
 	file_temperature << fixed << setprecision(N_PRECISION);
-	file_temperature.open(fn_temperature_steady);
-	file_temperature << "#z/z_0 T T_err/T_0 delta P sigma theta theta_err/T_0" << endl;
-	file_temperature << "#'1' 'K' '1' '1' 'Pa' '1' 'K' '1'" << endl;
+	file_temperature.open(fn_temperature_RCM);
+	file_temperature << "#z/z_0 T/T_0 T_err/T_0 delta P sigma theta/T_0 theta_err/T_0" << endl;
+	file_temperature << "#'1' '1' '1' '1' 'Pa' '1' '1' '1'" << endl;
 	file_irradiance << fixed << setprecision(N_PRECISION);
-	file_irradiance.open(fn_irradiance_steady);
+	file_irradiance.open(fn_irradiance_RCM);
 	file_irradiance << "#z/z_0 E_U/S_t E_D/S_t E_U_err/S_t E_D_err/S_t delta P sigma" << endl;
 	file_irradiance << "#'1' '1' '1' '1' '1' '1' 'Pa' '1'" << endl;
-	file_errors << scientific << setprecision(N_PRECISION);
-	file_errors.open(fn_errors_steady);
-	file_errors << "#z/z_0 T/T_0 theta/T_0 E_U/S_t E_D/S_t delta P sigma" << endl;
-	file_errors << "#'1' '1' '1' '1' '1' '1' 'Pa' '1'" << endl;
 	
 	// Print output values.
-	for (int i = 1; i <= global_N; i++) {
+	for (int i = 0; i <= global_N; i++) {
 		theta_tmp = get_theta(Y_3[i], global_P[i]);
-		file_temperature << global_z[i] / global_z_0 << ' ' << global_T_0 * Y_3[i] << ' ' << global_delta[i] << ' ' << global_P[i] << ' ' << global_sigma[i] << ' ' << global_T_0 * theta_tmp << '\n';
-		file_irradiance << global_z[i] / global_z_0 << ' ' << Y_3[i_0_Y_1 + i] << ' ' << Y_3[i_0_Y_2 + i] << ' ' << global_delta[i] << ' ' << global_P[i] << ' ' << global_sigma[i] << '\n';
-		file_errors << global_z[i] / global_z_0 << ' ' << fabs(Y_3[i] - Y_3_ana[i]) << ' ' << fabs(theta_tmp - theta_norm[i]) << ' ' << fabs(Y_3[i_0_Y_1 + i] - Y_1_ana[i]) << ' ' << fabs(Y_3[i_0_Y_2 + i] - Y_2_ana[i]) << ' ' << global_delta[i] << ' ' << global_P[i] << ' ' << global_sigma[i] << '\n';
+		file_temperature << global_z[i] / global_z_0 << ' '
+			<< Y_3[i] << ' '
+			<< scientific << fabs(Y_3[i] - Y_3_ana[i]) << fixed << ' '
+			<< global_delta[i] << ' '
+			<< global_P[i] << ' '
+			<< global_sigma[i] << ' '
+			<< theta_tmp << ' '
+			<< scientific << fabs(theta_tmp - theta_norm[i]) << fixed << '\n';
+		file_irradiance << global_z[i] / global_z_0 << ' '
+			<< Y_3[i_0_Y_1 + i] << ' '
+			<< Y_3[i_0_Y_2 + i] << ' '
+			<< scientific << fabs(Y_3[i_0_Y_1 + i] - Y_1_ana[i]) << ' '
+			<< fabs(Y_3[i_0_Y_2 + i] - Y_2_ana[i]) << fixed << ' '
+			<< global_delta[i] << ' '
+			<< global_P[i] << ' '
+			<< global_sigma[i] << '\n';
 	}
 	file_temperature.close();
-	cout << "Numerical solution temperature profile in radiative-convective equilibrium stored in file " << fn_temperature_steady << endl;
+	cout << "Numerical solution temperature profile in radiative-convective equilibrium stored in file " << fn_temperature_RCM << endl;
 	file_irradiance.close();
-	cout << "Numerical solution irradiances in radiative-convective equilibrium stored in file " << fn_irradiance_steady << endl;
-	file_errors.close();
-	cout << "Absolute errors between normalised numerical and analytical solutions from the PDE integration stored in file " << fn_errors_steady << endl;
+	cout << "Numerical solution irradiances in radiative-convective equilibrium stored in file " << fn_irradiance_RCM << endl;
 	
 	// Tear down.
 	delete[] global_z;
@@ -251,13 +290,13 @@ int main(int argc, char * argv[]) {
 	return 0;
 }
 
-void rhs_Y(double t, double const * Y_0, double * R) {
+void rhs_delta(double t, double const * Y_0, double * R) {
 	R[0] = 0.5 * const_D;
 	R[1] = const_D * (Y_0[1] - Y_0[0]);
 	R[2] = const_D * (Y_0[0] - Y_0[2]);
 }
 
-void rhs_T(double t, double const * Y_0, double * R) {
+void rhs_t(double t, double const * Y_0, double * R) {
 	double const * Y_1, * Y_2;
 	Y_1 = Y_0 + global_N + 1;
 	Y_2 = Y_1 + global_N + 1;

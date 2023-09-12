@@ -3,7 +3,6 @@ reset
 load 'configuration.gp'
 _logscale=2
 
-set title "Error at ground level by doubling the number of layers" font _font
 set key top left font _font
 set logscale y
 set grid xtics mxtics ytics mytics
