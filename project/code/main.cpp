@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "constants.h"
+#include "convection.h"
 #include "../../mclib/mclib.h"
 #include "radiation.h"
 #include "utilities.h"
@@ -154,7 +155,7 @@ int main(int argc, char * argv[]) {
 	
 	
 	
-	/* Numerical solution in radiative-convective equilibrium */
+	/* Radiative-convective equilibrium */
 	
 	// Set integration parameters.
 	int i_t, n_T, i_0_Y_1, i_0_Y_2, i_0_ddelta, is_steady;
@@ -194,7 +195,7 @@ int main(int argc, char * argv[]) {
 			T[i_0_ddelta + i] = ddelta;
 		}
 		eulerstep(t, dt, T, rhs_T, global_N + 1);
-		// MC add here convective adjustment.
+		convective_adjustment(global_Gamma_0, global_N, T, z);
 		is_steady = 1;
 		for (int i = 0; i <= global_N;  i++) {
 			if (fabs(T[i] - T_prev[i]) > TOLERANCE) {
