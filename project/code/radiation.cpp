@@ -6,18 +6,18 @@ void delete_absorber(absorber_t absorber) {
 }
 
 double spectral_irradiance_blackbody_nu(double nu, double T) {
-	double factor = global_h * global_c / global_k_B;
-	return 2.0 * global_h * global_c*global_c * nu*nu*nu / expm1(factor * nu / T);
+	double factor = const_h * const_c / const_k_B;
+	return 2.0 * const_h * const_c*const_c * nu*nu*nu / expm1(factor * nu / T);
 }
 
 double spectral_irradiance_blackbody_nu1(double nu, double T) {
-	double factor = global_h * global_c / global_k_B;
+	double factor = const_h * const_c / const_k_B;
 	return spectral_irradiance_blackbody_nu(nu, T) / nu * (3.0 + factor * nu / T / expm1(-factor * nu / T));
 }
 
 double spectral_irradiance_blackbody_lambda(double lambda, double T) {
-	double factor = global_h * global_c / global_k_B;
-	return 2.0 * global_h * global_c*global_c / lambda / lambda / lambda / (lambda*lambda * expm1(factor / (lambda * T)));
+	double factor = const_h * const_c / const_k_B;
+	return 2.0 * const_h * const_c*const_c / lambda / lambda / lambda / (lambda*lambda * expm1(factor / (lambda * T)));
 }
 
 double irradiance_blackbody_average_nu(double nu, double dnu, double T) {
@@ -25,18 +25,18 @@ double irradiance_blackbody_average_nu(double nu, double dnu, double T) {
 }
 
 double spectral_irradiance_diff(double nu) {
-	double ratio = global_R_sun / global_au;
-	return M_PI * ((1.0 - global_A) * ratio*ratio * spectral_irradiance_blackbody_nu(nu, global_T_sun) - spectral_irradiance_blackbody_nu(nu, global_T_g));
+	double ratio = const_R_sun / const_au;
+	return M_PI * ((1.0 - const_A) * ratio*ratio * spectral_irradiance_blackbody_nu(nu, const_T_sun) - spectral_irradiance_blackbody_nu(nu, const_T_g));
 }
 
 double spectral_irradiance_diff1(double nu) {
 	double ratio, factor;
-	ratio = global_R_sun / global_au;
-	factor = global_h * global_c / global_k_B;
+	ratio = const_R_sun / const_au;
+	factor = const_h * const_c / const_k_B;
 	return M_PI * (3.0 / nu * spectral_irradiance_diff(nu) + factor * (
-		(1.0 - global_A) * ratio*ratio
-		* spectral_irradiance_blackbody_nu(nu, global_T_sun) / (global_T_sun * expm1(-factor * nu / global_T_sun))
-		- spectral_irradiance_blackbody_nu(nu, global_T_g) / (global_T_g * expm1(-factor * nu / global_T_g))
+		(1.0 - const_A) * ratio*ratio
+		* spectral_irradiance_blackbody_nu(nu, const_T_sun) / (const_T_sun * expm1(-factor * nu / const_T_sun))
+		- spectral_irradiance_blackbody_nu(nu, const_T_g) / (const_T_g * expm1(-factor * nu / const_T_g))
 	));
 }
 
@@ -45,7 +45,7 @@ double spectrum_division_nu() {
 }
 
 double wavenumber_photon(double Q) {
-	return global_h * global_c / (global_e * Q);
+	return const_h * const_c / (const_e * Q);
 }
 
 // MC test with constant optical depth delta = 0.15.

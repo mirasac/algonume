@@ -47,6 +47,7 @@
 - Use nominal values then associate relative error to them.
 - The chosen font size is 10pt everywhere. Set it automatically everywhere based on a single configuration file takes too much effort compared by setting it manually.
 - I do not use the sigma coordinate as vertical coordinate because in the model I am considering it is simply a rescaled pressure. It could be useful if this model is then used in a model where the horizontal profile of surface pressure changes.
+- Show equation dependencies only when is needed for clarity.
 
 ## Release
 - Check verbal tenses and conjugations.
@@ -57,6 +58,6 @@
 - Use cf. instead of cfr. and use see when needed.
 - Check content against what prof. Palazzi taught us during lesson.
 - In the hypotheses stay general by using the term medium instead of layer. Then introduce layers and use them in the transition to the numerical resolution of the model.
-- Show equation dependencies only when is needed for clarity, otherwise explain dependencies through words the first time the quantity appears.
 - Check the correctness in the use of terms equilibrium and steady state.
 - Check and integrate captions.
+- Move figure titles to the captions.

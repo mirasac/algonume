@@ -114,44 +114,42 @@ Some additional hypotheses are assumed to simplify the study. Data on constants 
   \label{tab:constants}
   \begin{tabular}[b]{cccp{0.5\textwidth}}
     \toprule
-    Symbol             & Value                  & Unit                                  & \centering Notes                                                   \tabularnewline
+    Symbol            & Value                                                                  & Unit                                              & \centering Notes                                                                          \tabularnewline
     \midrule
-    $A$                & \num{0.3}              &                                       & Bond albedo value compatible with various observations, cfr. \cite[1281]{albedo}   \\
-    $A_\text{g}$           & \num{0.1}              &                                       & Average surface albedo of Earth, cfr. \cite[217]{primer}   \\
-    $c_P$ & \num{1.004e3}          & \unit{\joule\per\kelvin\per\kilogram} & Specific heat at constant pressure of air, from \cite[16]{Catling} \\
-    $\deltaTOA$            & \num{0}            &                         & Optical depth at TOA, by definition                                             \\
-    $D$       & \num{1.66}            &                       & Diffusion coefficient, commonly used value from \cite[55]{Catling}                                             \\
-    $g$                & \num{9.80665}          & \unit{\metre\per\square\second}       & Standard gravitational acceleration of Earth                       \\
-    $P_\text{g}$       & \num{1.013250e5}       & \unit{\pascal}                        & Standard pressure at ground level, from \cite[2]{US1976}           \\
-    %    $R$                & \num{8.31446261815324} & \unit{\joule\per\kelvin\per\mole}     & Gas constant                                                       \\
-    $R_\text{m}$ & \num{2.8705287e2}          & \unit{\joule\per\kelvin\per\kilogram} & Specific gas constant of air \\
-    $\sigma$              & \num{5.670374419e-8}           & \unit{\watt\per\square\metre\per\kelvin\tothe{4}}         & Stefan-Boltzmann constant                    \\
-    $S_0$              & \num{1361.0}           & \unit{\watt\per\square\metre}         & Nominal total solar irradiance, from \cite{IAU}                    \\
-    %    $R_\text{sun}$     & \num{6.957e8}          & \unit{\metre}                         & Nominal solar radius, from \cite{IAU}                              \\
-    $T_\text{g}$   & \num{288.15}           & \unit{\kelvin}                        & Earth's surface temperature based on \cite{US1976}                 \\
-    %    $T_\text{sun}$     & \num{5772}             & \unit{\kelvin}                        & Solar surface temperature, from \cite{IAU}                         \\
-    $z_\text{g}$       & \num{0}                & \unit{\metre}                         & Nominal ground level                                               \\
+    $A$               & \num{0.3}                                                              &                                                   & Bond albedo value of Earth compatible with various observations, cfr. \cite[1281]{albedo} \\
+    %$A_\text{g}$      & \num{0.1}                                                              &                                                   & Average surface albedo of Earth, cfr. \cite[217]{primer}                                  \\
+    $c_P$             & \num{1.004e3}                                                          & \unit{\joule\per\kelvin\per\kilogram}             & Specific heat at constant pressure of air, from \cite[16]{Catling}                        \\
+    $\deltaTOA$       & \num{0}                                                                &                                                   & Optical depth at TOA, by definition                                                       \\
+    $D$               & \num{1.66}                                                             &                                                   & Diffusion coefficient, commonly used value from \cite[55]{Catling}                        \\
+    $g$               & \num{9.80665}                                                          & \unit{\metre\per\square\second}                   & Standard gravitational acceleration of Earth                                              \\
+    $\Gamma_0$        & \num{6.5e-3}                                                           & \unit{\kelvin\per\metre\}                         & Environmental lapse rate of Earth's troposphere, from \cite[3]{US1976}                    \\
+    $P_\text{g}$      & \num{1.013250e5}                                                       & \unit{\pascal}                                    & Standard pressure at ground level of Earth, from \cite[2]{US1976}                         \\
+    %$R$               & \num{8.31446261815324}                                                 & \unit{\joule\per\kelvin\per\mole}                 & Gas constant                                                                              \\
+    $R_\text{m}$      & \num{2.8705287e2}                                                      & \unit{\joule\per\kelvin\per\kilogram}             & Specific gas constant of dry air                                                          \\
+    $\sigma$          & \num{5.670374419e-8}                                                   & \unit{\watt\per\square\metre\per\kelvin\tothe{4}} & Stefan-Boltzmann constant                                                                 \\
+    $S_0$             & \num{1361.0}                                                           & \unit{\watt\per\square\metre}                     & Nominal total solar irradiance, from \cite{IAU}                                           \\
+    %$R_\text{sun}$    & \num{6.957e8}                                                          & \unit{\metre}                                     & Nominal solar radius, from \cite{IAU}                                                     \\
+    $T_\text{g}$      & \num{288.15}                                                           & \unit{\kelvin}                                    & Earth's surface temperature based on \cite[2]{US1976}                                     \\
+    %$T_\text{sun}$    & \num{5772.0}                                                             & \unit{\kelvin}                                    & Solar surface temperature, from \cite{IAU}                                                \\
+    $z_\text{g}$      & \num{0}                                                                & \unit{\metre}                                     & Nominal ground level                                                                      \\
     \midrule
-    $\delta_\text{g}$            & $\frac{1}{D} \Big( \frac{2 \sigma T_\text{g}^4}{S_\text{t}} - 2 \Big)$            &                         & Optical depth at ground level                                           \\
-    $\mu_\text{m}$            & $\frac{\delta_\text{g} g}{P_\text{g} - \PTOA}$            &                         & Mass attenuation coefficient of the atmosphere                                           \\
-    $N$            & \num{100}            &                         & Number of atmospheric layers                                             \\
-    %    $\nu_\text{min}$            & \num{100}            & \unit{\per\centi\metre}                         & Arbitrary minimum boundary for EM spectrum                                             \\
-    %    $\nu_\text{max}$            & \num{100000}            & \unit{\per\centi\metre}                         & Arbitrary maximum boundary for EM spectrum                                             \\
-    $P_0$       & \num{1e5}       & \unit{\pascal}                        & Arbitrary reference value for pressure           \\
-    $\PTOA$            & \num{3}            & \unit{\pascal}                         & Arbitrary TOA pressure                                            \\ 
-    $z_0$            & \num{2000}            & \unit{\metre}                        & Arbitrary constant for normalisation of $z$                                            \\
-    $\zTOA$            & $z_\text{g} - z_0 \ln{\Big( \frac{P}{P_\text{g}} \Big)}$            & \unit{\metre}                         & Arbitrary TOA altitude                                            \\
+    $\delta_\text{g}$ & $\frac{1}{D} \Big( \frac{2 \sigma T_\text{g}^4}{S_\text{t}} - 2 \Big)$ &                                                   & Optical depth at ground level                                                             \\
+    $\mu_\text{m}$    & $\frac{\delta_\text{g} g}{P_\text{g} - \PTOA}$                         & \unit{\square\metre\per\kilogram}                 & Mass attenuation coefficient of the atmosphere                                            \\
+    $N$               & \num{100}                                                              &                                                   & Number of atmospheric layers                                                              \\
+    %$\nu_\text{min}$  & \num{100}                                                              & \unit{\per\centi\metre}                           & Arbitrary minimum boundary for EM spectrum                                                \\
+    %$\nu_\text{max}$  & \num{100000}                                                           & \unit{\per\centi\metre}                           & Arbitrary maximum boundary for EM spectrum                                                \\
+    $P_0$             & \num{1e5}                                                              & \unit{\pascal}                                    & Arbitrary reference value for pressure                                                    \\
+    $\PTOA$           & \num{3}                                                                & \unit{\pascal}                                    & Arbitrary TOA pressure                                                                    \\
+    $S_\text{t}$      & $(1 - A) \frac{S_0}{4}$                                                & \unit{\watt\per\square\metre}                     & Irradiance transmitted from outer space to TOA                                            \\
+    $T_0$             & $\big( \frac{S_\text{t}}{\sigma} \big)^\frac{1}{4}$                    & \unit{\kelvin}                                    & Arbitrary reference value for temperature                                                 \\
+    $z_0$             & \num{2000}                                                             & \unit{\metre}                                     & Arbitrary constant for normalisation of altitude                                          \\
+    $\zTOA$           & $z_\text{g} - z_0 \ln{\Big( \frac{P}{P_\text{g}} \Big)}$               & \unit{\metre}                                     & Arbitrary TOA altitude                                                                    \\
     \bottomrule
   \end{tabular}
 \end{table*}
 
 Some assumptions are made on the planet.
-It is supposed to have a diurnal cycle, to receive a constant irradiance $S_0$ and to have a constant Bond albedo $A$. These conditions result in a costant irradiance
-\begin{equation}
-  \label{eq:irradiance_sun_transmitted}
-  S_\text{t} = (1 - A) \frac{S_0}{4}
-\end{equation}
-transmitted to the illuminated hemisphere of the planet at TOA from outer space.
+It is supposed to have a diurnal cycle, to receive a constant irradiance $S_0$ and to have a constant Bond albedo $A$. These conditions result in a costant irradiance $S_\text{t}$ transmitted to the illuminated hemisphere of the planet at TOA from outer space.
 The surface of the planet is approximated as blackbody emitting in the upward direction with temperature $T_\text{g}$. 
 Gravitational acceleration $g$ is constant.
 The atmosphere is supposed to be in hydrostatic equilibrium,
@@ -179,7 +177,8 @@ They obey the ideal gas law
   \quad .
 \end{equation}
 
-The total heat flux $q$ is determined by radiative transfer and atmospheric convection. The RTE is not solved directly by the RCM, instead a two-stream approximation is adopted for the radiation inside atmosphere: components of radiometric quantities in the upward and downward directions are treated separately. Neither the contribution to $q(t,z)$ due to atmospheric convection is obtained by solving the proper fluid dynamics equations, in its place a numerical correction is adopted. % MC do a proper section for convective adjustment.
+The total heat flux $q$ is determined by radiative transfer and atmospheric convection. Other means of vertical heat transfer are neglected, e.g. precipitation. The RTE is not solved directly by the RCM, instead a two-stream approximation is adopted for the radiation inside atmosphere: components of radiometric quantities in the upward and downward directions are treated separately. Neither the contribution to $q(t,z)$ due to atmospheric convection is obtained by solving the proper fluid dynamics equations, in its place a numerical correction is adopted.
+% MC do a proper section for convective adjustment.
 With these considerations, equation~\eqref{eq:temperature_derivation} can be rewritten as
 \begin{equation}
   \label{eq:temperature}
@@ -250,7 +249,7 @@ The resulting equations for irradiances in terms of $\delta'$ are
 and they are coupled with equation~\eqref{eq:temperature} written in terms of $\delta'$:
 \begin{equation}
   \label{eq:temperature_delta}
-  \pdv*{T(t, \delta')}{t} = \frac{\mu_\text{m} D}{c_P} \pdv*{\big( E_\text{U} - E_\text{D} \big)}{\delta'}
+  \pdv*{T(t, \delta')}{t} = \frac{\mu_\text{m} D}{c_P} \pdv*{\big( E_\text{U}(t, \delta') - E_\text{D}(t, \delta') \big)}{\delta'}
   \quad .
 \end{equation}
 Equations~\eqref{eq:temperature_delta},~\eqref{eq:irradiance_upward} and~\eqref{eq:irradiance_downward} form a system of Partial Differential Equations (PDEs) of first order in two variables.
@@ -331,23 +330,22 @@ Value $\delta_\text{g}$ can be fixed by using the irradiance emitted by the surf
   E_\text{U}(\delta_\text{g}) = \sigma T_\text{g}^4
   \quad .
 \end{equation}
-With this condition, $T$ presents a discontinuity at ground level, which is not physical. Other mechanisms of heat transport redistribute energy at the lower levels of the atmosphere.
+With this condition, $T$ presents a discontinuity at ground level, which is not physical. Other mechanisms of heat transport redistribute energy between the surface and the atmospheric layer directly above, removing the discontinuity. Their effect can be simulated by imposing radiative equilibrium at ground level.
 
 
 
 \section{Numerical solution in radiative equilibrium}
 \label{sec:Numerical solution in radiative equilibrium}
-To solve numerically the IVP defined in section~\ref{sec:Analytical solution in radiative equilibrium}, equations~\eqref{eq:temperature_analytical},~\eqref{eq:irradiance_upward} and~\eqref{eq:irradiance_downward} are rewritten in terms of variable $\delta$ and normalised with respect to $S_\text{t}$,
+To solve numerically the IVP defined in section~\ref{sec:Analytical solution in radiative equilibrium}, equations~\eqref{eq:temperature_analytical},~\eqref{eq:irradiance_upward} and~\eqref{eq:irradiance_downward} are rewritten in terms of variable $\delta$ and normalised,
 \begin{equation}
   \label{eq:normalisation}
-  Y_0 = \frac{\sigma T^4}{S_\text{t}}
+  Y_0 = \frac{T^4}{T_0^4}
   \quad , \quad
   Y_1 = \frac{E_\text{U}}{S_\text{t}}
   \quad , \quad
   Y_2 = \frac{E_\text{U}}{S_\text{t}}
-  \quad ,
 \end{equation}
-resulting in the system of ODEs:
+with $T_0$ chosen arbitrarily, resulting in the system of ODEs:
 \begin{equation}
   \label{eq:numerical_radiative_equilibrium}
   \left\{
@@ -371,7 +369,7 @@ Initial conditions for the normalised functions are
 \end{equation}
 from conditions~\eqref{eq:initial_temperature},~\eqref{eq:initial_upward} and~\eqref{eq:initial_downward}, respectively.
 
-Runge-Kutta method of order 4 is used to integrate system~\eqref{eq:numerical_radiative_equilibrium}, to maintain accuracy when $T$ is derived from $Y_0$. A variable step size is adopted, because values $\delta$ are obtained from uniformly distributed values $z$ through relation~\eqref{eq:optical_depth_altitude_2}.
+Runge-Kutta method of order 4 is used to integrate system~\eqref{eq:numerical_radiative_equilibrium}, to maintain accuracy when $T$ is derived from $Y_0$. Non-uniform step sizes are adopted, because values $\delta$ are obtained from uniformly distributed values $z$ through relation~\eqref{eq:optical_depth_altitude_2}.
 
 Errors between numerical and analytical solutions for normalised temperature and irradiances are shown in figure~\ref{fig:errors}. Their values are compatible with 0 based on precision of double-precision floating-point numbers.
 \begin{figure*}[h]
@@ -381,9 +379,10 @@ Errors between numerical and analytical solutions for normalised temperature and
   \label{fig:errors}
 \end{figure*}
 
-\subsection{Stability} % MC maybe remove the section division.
-% MC stability at ground level with respect to various number of levels.
-Stability analysis of the numerical method is performed on $N$ and this is equivalent to change the spatial grid size. Powers of 2 are chosen as values of $N$ and step size is constant, obtained by dividing interval $[\deltaTOA, \delta_\text{g}]$ by $N$. Errors are evaluated as absolute differences between numerical and analytical values for each of $T(\delta_\text{g})$, $E_\text{U}(\delta_\text{g})$ and $E_\text{U}(\delta_\text{g})$. For $N \leq 4096$, errors are compatible with 0 within precision, while for greater $N$, errors increase due to error propagation. Normally this effect does not hinder results of simulations because lower values of $N$ are chosen for the model, since average dynamics could lose accuracy if thin layers are used.
+\subsection{Stability analysis}
+The stability of the numerical method with respect to spatial grid size is studied varying $N$. Powers of 2 are chosen as values of $N$ and step size is constant, obtained by dividing interval $[\deltaTOA, \delta_\text{g}]$ in $N$ subintervals. Errors are evaluated as absolute differences between numerical and analytical values for each of $T(\delta_\text{g})$, $E_\text{U}(\delta_\text{g})$ and $E_\text{U}(\delta_\text{g})$.
+
+In figure~\ref{fig:stability} errors are plotted as function of $N$. For $N \leq 4096$, they are compatible with 0 within precision, while for greater $N$, they increase due to error propagation. In general, this behaviour does not hinder results of simulations because lower values of $N$ are chosen for the model, otherwise averages approximating dynamics could lose accuracy and the computational demand of the equations involved could increase considerably.
 \begin{figure*}[h]
   \centering
   \includegraphics*[keepaspectratio=true,width=0.75\textwidth]{stability}

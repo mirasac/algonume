@@ -32,31 +32,31 @@ void set_absorbers_uniform(int n_layer, int n_absorbers[], absorber_t * absorber
 }
 
 double get_pressure(double z) {
-	return global_P_g * exp(- (z - global_z_g) / global_z_0);
+	return const_P_g * exp(- (z - const_z_g) / global_z_0);
 }
 
 double get_altitude(double P) {
-	return global_z_g - global_z_0 * log(P / global_P_g);
+	return const_z_g - global_z_0 * log(P / const_P_g);
 }
 
 double get_altitude(double P, double T) {
-	return global_z_g - global_R_m * T / global_g * log(P / global_P_g);
+	return const_z_g - const_R_m * T / const_g * log(P / const_P_g);
 }
 
 double get_sigma(double P, double P_TOA) {
-	return (P - P_TOA) / (global_P_g - P_TOA);
+	return (P - P_TOA) / (const_P_g - P_TOA);
 }
 
 double get_theta(double T, double P) {
-	return T * pow(global_P_0 / P, global_R_m / global_c_P);
+	return T * pow(global_P_0 / P, const_R_m / const_c_P);
 }
 
 double get_density(double z, double T) {
-	return get_pressure(z) / global_R_m / T;
+	return get_pressure(z) / const_R_m / T;
 }
 
 double get_optical_depth_P(double P, double P_TOA) {
-	return global_mu_m / global_g * (P - P_TOA);
+	return global_mu_m / const_g * (P - P_TOA);
 }
 
 double get_optical_depth_z(double z, double P_TOA) {
@@ -64,13 +64,13 @@ double get_optical_depth_z(double z, double P_TOA) {
 }
 
 double temperature_norm(double delta) {
-	return pow(0.5 * (1.0 + global_D * delta), 0.25);
+	return pow(0.5 * (1.0 + const_D * delta), 0.25);
 }
 
 double irradiance_upward_norm(double delta) {
-	return 0.5 * (2.0 + global_D * delta);
+	return 0.5 * (2.0 + const_D * delta);
 }
 
 double irradiance_downward_norm(double delta) {
-	return 0.5 * global_D * delta;
+	return 0.5 * const_D * delta;
 }
