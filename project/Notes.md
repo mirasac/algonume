@@ -54,9 +54,6 @@
 - Remove all personal comments.
 - Remove unused appendices, maybe keep them as separate LaTeX source files and include only the ones needed.
 - Correct format issues related to composition of bibliography.
-- Align fields of tables in source code.
 - Use cf. instead of cfr. and use see when needed.
 - Check content against what prof. Palazzi taught us during lesson.
-- In the hypotheses stay general by using the term medium instead of layer. Then introduce layers and use them in the transition to the numerical resolution of the model.
 - Check the correctness in the use of terms equilibrium and steady state.
-- Check and integrate captions.

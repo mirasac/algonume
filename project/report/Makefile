@@ -2,7 +2,7 @@ MAIN=casari_project
 CLASS_OPTIONS=draft
 MAIN_CLASS_OPTIONS="\providecommand\classoptions{${CLASS_OPTIONS}}\input{${MAIN}.tex}"
 DIR_FIGURES=./figures
-FIGURES=${DIR_FIGURES}/spectral_irradiance.pdf ${DIR_FIGURES}/spectral_irradiance_logy.pdf ${DIR_FIGURES}/spectral_irradiance_bands.pdf ${DIR_FIGURES}/spectral_irradiance_wavelength.pdf ${DIR_FIGURES}/shortwave_radiation.pdf ${DIR_FIGURES}/temperature_radiative_equilibrium.pdf ${DIR_FIGURES}/irradiance_radiative_equilibrium.pdf ${DIR_FIGURES}/errors.pdf ${DIR_FIGURES}/stability.pdf
+FIGURES=${DIR_FIGURES}/spectral_irradiance.pdf ${DIR_FIGURES}/spectral_irradiance_logy.pdf ${DIR_FIGURES}/spectral_irradiance_bands.pdf ${DIR_FIGURES}/spectral_irradiance_wavelength.pdf ${DIR_FIGURES}/shortwave_radiation.pdf ${DIR_FIGURES}/temperature.pdf ${DIR_FIGURES}/irradiance.pdf ${DIR_FIGURES}/errors.pdf ${DIR_FIGURES}/stability.pdf ${DIR_FIGURES}/errors_PDE.pdf
 
 .PHONY: all class_options all_figures clean
 
@@ -48,17 +48,20 @@ ${DIR_FIGURES}/shortwave_radiation.pdf: ${DIR_FIGURES}/shortwave_radiation.tex
 	rm ${DIR_FIGURES}/shortwave_radiation.aux
 	rm ${DIR_FIGURES}/shortwave_radiation.log
 
-${DIR_FIGURES}/temperature_radiative_equilibrium.pdf: ${DIR_FIGURES}/temperature_radiative_equilibrium_input.tex ${DIR_FIGURES}/temperature_radiative_equilibrium_input.pdf
-	sh standalone.sh temperature_radiative_equilibrium ${DIR_FIGURES}
+${DIR_FIGURES}/temperature.pdf: ${DIR_FIGURES}/temperature_input.tex ${DIR_FIGURES}/temperature_input.pdf
+	sh standalone.sh temperature ${DIR_FIGURES}
 
-${DIR_FIGURES}/irradiance_radiative_equilibrium.pdf: ${DIR_FIGURES}/irradiance_radiative_equilibrium_input.tex ${DIR_FIGURES}/irradiance_radiative_equilibrium_input.pdf
-	sh standalone.sh irradiance_radiative_equilibrium ${DIR_FIGURES}
+${DIR_FIGURES}/irradiance.pdf: ${DIR_FIGURES}/irradiance_input.tex ${DIR_FIGURES}/irradiance_input.pdf
+	sh standalone.sh irradiance ${DIR_FIGURES}
 
 ${DIR_FIGURES}/errors.pdf: ${DIR_FIGURES}/errors_input.tex ${DIR_FIGURES}/errors_input.pdf
 	sh standalone.sh errors ${DIR_FIGURES}
 
 ${DIR_FIGURES}/stability.pdf: ${DIR_FIGURES}/stability_input.tex ${DIR_FIGURES}/stability_input.pdf
 	sh standalone.sh stability ${DIR_FIGURES}
+
+${DIR_FIGURES}/errors_PDE.pdf: ${DIR_FIGURES}/errors_PDE_input.tex ${DIR_FIGURES}/errors_PDE_input.pdf
+	sh standalone.sh errors_PDE ${DIR_FIGURES}
 
 clean:
 	rm -f *.aux

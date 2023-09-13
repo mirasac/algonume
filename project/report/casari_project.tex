@@ -7,7 +7,7 @@
 \usepackage{amssymb}
 \usepackage[style=ieee,backend=biber]{biblatex}
 \usepackage{booktabs}
-%\usepackage[tableposition=top,figureposition=bottom,font=footnotesize,format=hang,subrefformat=parens]{caption}
+\usepackage[tableposition=top,figureposition=bottom,font=footnotesize]{caption}
 \usepackage{chemformula}
 \usepackage{derivative}
 \usepackage{listings}
@@ -94,7 +94,7 @@ A first approximation is to consider the average over all latitudes and longitud
   \pdv{T}{t} = -\frac{1}{\varrho c_P} \pdv{q}{z}
   \quad ,
 \end{equation}
-where $c_P$ is the specific heat at constant pressure of the atmosphere, $\varrho$ is the average volumetric mass density of the atmosphere and depends on atmospheric pressure $P$, $q$ is the total energy flux due to heat transfer. In general all these quantities are functions of $t$ and $z$, also through $T$. Details on the derivation are in \cite[466]{Ramanathan}, where the equation is written initially in terms of volumetric power densities.
+where $c_P$ is the specific heat at constant pressure of the atmosphere, $\varrho$ is the average volumetric mass density of the atmosphere and depends on atmospheric pressure $P$, $q$ is the total energy flux due to heat transfer. In general all these quantities are functions of $t$ and $z$, also through $T$. Details on the derivation are in \cite[466]{Ramanathan}, where the equation is written initially in terms of volumetric power densities and Local Thermodynamic Equilibrium (LTE) is assumed.
 
 A second hypothesis is the radiative-convective equilibrium of the atmosphere. This translates in the existence of a steady state $\pdv*{T(t,z)}{t} = 0$ where the planet is in radiative equilibrium, i.e. the total irradiance at TOA is null, and the atmosphere is in convective equilibrium, i.e. fluid parcels are stable with respect to vertical motion.
 
@@ -130,12 +130,14 @@ Some additional hypotheses are assumed to simplify the study. Data on constants 
     $S_0$             & \num{1361.0}                                                           & \unit{\watt\per\square\metre}                     & Nominal total solar irradiance, from \cite{IAU}                                           \\
     %$R_\text{sun}$    & \num{6.957e8}                                                          & \unit{\metre}                                     & Nominal solar radius, from \cite{IAU}                                                     \\
     $T_\text{g}$      & \num{288.15}                                                           & \unit{\kelvin}                                    & Earth's surface temperature based on \cite[2]{US1976}                                     \\
-    %$T_\text{sun}$    & \num{5772.0}                                                             & \unit{\kelvin}                                    & Solar surface temperature, from \cite{IAU}                                                \\
+    %$T_\text{sun}$    & \num{5772.0}                                                           & \unit{\kelvin}                                    & Solar surface temperature, from \cite{IAU}                                                \\
     $z_\text{g}$      & \num{0}                                                                & \unit{\metre}                                     & Nominal ground level                                                                      \\
     \midrule
     $\delta_\text{g}$ & $\frac{1}{D} \Big( \frac{2 \sigma T_\text{g}^4}{S_\text{t}} - 2 \Big)$ &                                                   & Optical depth at ground level                                                             \\
+    $\Delta t$        & \num{864000}                                                           & \unit{\second}                                    & Time step for temporal integration                                                        \\
     $\mu_\text{m}$    & $\frac{\delta_\text{g} g}{P_\text{g} - \PTOA}$                         & \unit{\square\metre\per\kilogram}                 & Mass attenuation coefficient of the atmosphere                                            \\
     $N$               & \num{100}                                                              &                                                   & Number of atmospheric layers                                                              \\
+    $N_\text{max}$    & \num{25}                                                               &                                                   & Maximum number of atmospheric layers used for stability analysis                          \\
     %$\nu_\text{min}$  & \num{100}                                                              & \unit{\per\centi\metre}                           & Arbitrary minimum boundary for EM spectrum                                                \\
     %$\nu_\text{max}$  & \num{100000}                                                           & \unit{\per\centi\metre}                           & Arbitrary maximum boundary for EM spectrum                                                \\
     $P_0$             & \num{1e5}                                                              & \unit{\pascal}                                    & Arbitrary reference value for pressure                                                    \\
@@ -150,13 +152,12 @@ Some additional hypotheses are assumed to simplify the study. Data on constants 
 
 Some assumptions are made on the planet.
 It is supposed to have a diurnal cycle, to receive a constant irradiance $S_0$ and to have a constant Bond albedo $A$. These conditions result in a costant irradiance $S_\text{t}$ transmitted to the illuminated hemisphere of the planet at TOA from outer space.
-The surface of the planet is approximated as blackbody emitting in the upward direction with temperature $T_\text{g}$. 
+The surface of the planet is approximated as blackbody emitting in the upward direction with temperature $T_\text{g}$.
 Gravitational acceleration $g$ is constant.
 The atmosphere is supposed to be in hydrostatic equilibrium,
 \begin{equation}
   \label{eq:hydrostatic_equilibrium}
   \odif{P} = - \varrho g \odif{z}
-  \quad ,
 \end{equation}
 with $P$ atmospheric pressure.
 Specific heat at constant pressure $c_P$ is assumed constant.
@@ -227,10 +228,9 @@ Any of the previous relations for $\delta$ can be used to fix the value of $\mu_
 
 \section{Analytical solution in radiative equilibrium}
 \label{sec:Analytical solution in radiative equilibrium}
-Steady state temperature profile and irradiances are derived analytically in this section.
+Steady state temperature profile and irradiances considering only radiative processes are derived analytically in this section.
 
-The additional hypothesis of Local Thermodynamic Equilibrium (LTE) is considered for the atmosphere. % MC in the layers I will set each layer separately in LTE, but can I suppose it for the whole atmosphere and move this hypothesis in the previous section?
-With these hypotheses, the RTE becomes
+With the hypotheses of LTE and non-scattering medium, the RTE becomes
 \begin{equation}
   \label{eq:RTE_analytical}
   \frac{1}{\mu} \pdv{L}{z} = B_\nu - L
@@ -267,22 +267,21 @@ Radiative equilibrium provides the condition for the OLR:
   E_\text{U}(0) = S_\text{t}
   \quad .
 \end{equation}
-
-At the steady state, irradiances are related by
+Moreover, at the steady state irradiances are related by
 \begin{equation}
   \label{eq:irradiance_steady_state}
   \odv*{\big( E_\text{U}(\delta') - E_\text{D}(\delta') \big)}{\delta'} = 0
   \quad ,
 \end{equation}
-which has solution
+which has constant solution determined by the condition of radiative equilibrium for the planet:
 \begin{equation}
   \label{eq:irradiance_steady_state_solution}
   E_\text{U}(\delta') - E_\text{D}(\delta') = S_\text{t}
   \quad .
 \end{equation}
-Since heat transfer in equation~\eqref{eq:temperature} is determined only by radiative processes, this relation is equivalent to the hypotheses of atmosphere in radiative equilibrium at all altitudes and transparent to radiation coming from outside the planet.
-% MC should I consider to swap the arguments? Because heat transfer in general, i.e. \label{eq:temperature_derivation}, is not gonverned by radiative equilibrium alone. In this section I treat a particular case.
-The ODE for $T$ is obtained by adding and subtracting equations~\eqref{eq:irradiance_upward} and~\eqref{eq:irradiance_downward} and using the conditions provided by equations~\eqref{eq:irradiance_steady_state} and~\eqref{eq:irradiance_steady_state_solution}:
+Same relations are derived if the hypotheses of atmosphere in radiative equilibrium at all altitudes and atmopshere transparent to radiation coming from outside the planet are considered instead of atmopshere in radiative equilibrium at TOA and steady state.
+
+An ODE for $T$ can be written by adding and subtracting equations~\eqref{eq:irradiance_upward} and~\eqref{eq:irradiance_downward} and using relations~\eqref{eq:irradiance_steady_state} and~\eqref{eq:irradiance_steady_state_solution}:
 \begin{equation}
   \label{eq:temperature_analytical}
   2 \sigma \odv*{T(\delta')^4}{\delta'} = S_\text{t}
@@ -300,12 +299,12 @@ The solution of equation~\eqref{eq:temperature_analytical} in terms of $\delta$ 
   T(\delta) = \bigg( \frac{S_\text{t}}{2 \sigma} (1 + D \delta) \bigg)^\frac{1}{4}
   \quad ,
 \end{equation}
-represented in figure~\ref{fig:temperature_radiative_equilibrium}.
+represented in figure~\ref{fig:temperature}.
 \begin{figure*}[h]
   \centering
-  \includegraphics*[keepaspectratio=true,width=0.75\textwidth]{temperature_radiative_equilibrium}
-  \caption{Vertical temperature profile of a grey atmosphere in radiative equilibrium. Lower altitudes are candidate to present instability due to higher values of the slope.}
-  \label{fig:temperature_radiative_equilibrium}
+  \includegraphics*[keepaspectratio=true,width=0.75\textwidth]{temperature}
+  \caption{Vertical temperature profile of a grey atmosphere. Continuous line is analytical solution in radiative equilibrium, dashed line is numerical solution in radiative-convective equilibrium. Correction to temperature with lapse rate greater than the critical value is visible at lower altitudes. A discontinuity is present at ground level due to the lack of heat exchange between surface and the lowest atmospheric layer.}
+  \label{fig:temperature}
 \end{figure*}
 
 Once the temperature profile is known, $E_\text{U}(\delta)$ and $E_\text{D}(\delta)$ are evaluated with the same procedure used previously for $T(\delta')$, resulting in:
@@ -316,12 +315,12 @@ Once the temperature profile is known, $E_\text{U}(\delta)$ and $E_\text{D}(\del
   E_\text{D}(\delta) & = \frac{S_\text{t}}{2} D \delta
   \quad .
 \end{align}
-Irradiances are shown in figure~\ref{fig:irradiance_radiative_equilibrium}. At every altitude, $E_\text{U}$ and $E_\text{D}$ are greater then their respective values at TOA. This is result of the greenhouse effect of the atmosphere.
+Irradiances are shown in figure~\ref{fig:irradiance}. At every altitude, $E_\text{U}$ and $E_\text{D}$ are greater then their respective values at TOA. This is result of the greenhouse effect of the atmosphere.
 \begin{figure*}[h]
   \centering
-  \includegraphics*[keepaspectratio=true,width=0.75\textwidth]{irradiance_radiative_equilibrium}
-  \caption{Upward and downward irradiances in a grey atmosphere in radiative equilibrium.}
-  \label{fig:irradiance_radiative_equilibrium}
+  \includegraphics*[keepaspectratio=true,width=0.75\textwidth]{irradiance}
+  \caption{Upward and downward irradiances in a grey atmosphere. Continuous line is the solution in radiative equilibrium, dashed line is solution in radiative-convective equilibrium. Greater values than TOA at lower altitudes are indicators of greenhouse effect. Irradiances of the RCM are not directly subject of convective adjustment, but they are affected due to the dependence on temperature.}
+  \label{fig:irradiance}
 \end{figure*}
 
 Value $\delta_\text{g}$ can be fixed by using the irradiance emitted by the surface of the planet:
@@ -345,9 +344,9 @@ To solve numerically the IVP defined in section~\ref{sec:Analytical solution in 
   \quad , \quad
   Y_2 = \frac{E_\text{U}}{S_\text{t}}
 \end{equation}
-with $T_0$ chosen arbitrarily, resulting in the system of ODEs:
+with $T_0$ chosen arbitrarily, resulting in the system of ODEs
 \begin{equation}
-  \label{eq:numerical_radiative_equilibrium}
+  \label{eq:numerical_steady_state}
   \left\{
   \begin{array}{@{}l@{}}
     \odv{Y_0}{\delta} = \frac{D}{2} \\[0.5em]
@@ -369,25 +368,61 @@ Initial conditions for the normalised functions are
 \end{equation}
 from conditions~\eqref{eq:initial_temperature},~\eqref{eq:initial_upward} and~\eqref{eq:initial_downward}, respectively.
 
-Runge-Kutta method of order 4 is used to integrate system~\eqref{eq:numerical_radiative_equilibrium}, to maintain accuracy when $T$ is derived from $Y_0$. Non-uniform step sizes are adopted, because values $\delta$ are obtained from uniformly distributed values $z$ through relation~\eqref{eq:optical_depth_altitude_2}.
+Runge-Kutta method of order 4 is used to integrate system~\eqref{eq:numerical_steady_state}, to maintain accuracy when $T$ is derived from $Y_0$. Non-uniform step sizes are adopted, because values $\delta$ are obtained from uniformly distributed values $z$ through relation~\eqref{eq:optical_depth_altitude_2}.
 
-Errors between numerical and analytical solutions for normalised temperature and irradiances are shown in figure~\ref{fig:errors}. Their values are compatible with 0 based on precision of double-precision floating-point numbers.
+Accuracy of the numerical procedure is quantified through the errors of normalised temperature and irradiances with respect to analytical solutions. Errors are compatible with 0 based on precision of double-precision floating-point numbers, as shown in figure~\ref{fig:errors}.
 \begin{figure*}[h]
   \centering
   \includegraphics*[keepaspectratio=true,width=0.75\textwidth]{errors}
-  \caption{Errors} % MC conclude.
+  \caption{Errors between numerical and analytical solutions of a grey atmosphere in radiative equilibrium. Points at some altitudes are not shown because their value is exactly 0.}
   \label{fig:errors}
 \end{figure*}
 
 \subsection{Stability analysis}
-The stability of the numerical method with respect to spatial grid size is studied varying $N$. Powers of 2 are chosen as values of $N$ and step size is constant, obtained by dividing interval $[\deltaTOA, \delta_\text{g}]$ in $N$ subintervals. Errors are evaluated as absolute differences between numerical and analytical values for each of $T(\delta_\text{g})$, $E_\text{U}(\delta_\text{g})$ and $E_\text{U}(\delta_\text{g})$.
+Stability of the numerical method with respect to spatial grid size is studied varying $N$. Powers of 2 in the interval $[1, N_\text{max}]$ are chosen as values of $N$ and step size is kept constant, obtained by dividing interval $[\deltaTOA, \delta_\text{g}]$ in $N$ subintervals. Errors are evaluated as absolute differences between numerical and analytical values for each of $T(\delta_\text{g})$, $E_\text{U}(\delta_\text{g})$ and $E_\text{U}(\delta_\text{g})$.
 
 In figure~\ref{fig:stability} errors are plotted as function of $N$. For $N \leq 4096$, they are compatible with 0 within precision, while for greater $N$, they increase due to error propagation. In general, this behaviour does not hinder results of simulations because lower values of $N$ are chosen for the model, otherwise averages approximating dynamics could lose accuracy and the computational demand of the equations involved could increase considerably.
 \begin{figure*}[h]
   \centering
   \includegraphics*[keepaspectratio=true,width=0.75\textwidth]{stability}
-  \caption{Stability analysis.} % MC conclude.
+  \caption{Stability of numerical solution in radiative equilibrium with respect to spatial grid size. Missing points have value 0.}
   \label{fig:stability}
+\end{figure*}
+
+
+
+\subsection{Time integration}
+\label{sec:Time integration}
+Numerical solutions for system~\eqref{eq:numerical_steady_state} are obtained by using in advance the steady state condition~\eqref{eq:irradiance_steady_state}. To preserve information on temporal depence, the more general system given by PDEs~\eqref{eq:temperature_delta},~\eqref{eq:irradiance_upward} and~\eqref{eq:irradiance_downward} is solved numerically.
+More precisely, each variable is considered separately during the integration and an iterative procedure is adopted: starting from an arbitrary temperature profile, equations~\eqref{eq:irradiance_upward} and~\eqref{eq:irradiance_downward} are solved with respect to $\delta'$, then the resulting $E_\text{U}$ and $E_\text{D}$ are used to step forward $T$ with respect to $t$ using equation~\eqref{eq:temperature_delta} for each layer, obtaining a new temperature profile to restart the loop. The iterations continue until a steady state for $T$ is reached. This procedure describes an IVP with respect to $\delta'$ for $T$, $E_\text{U}$ and $E_\text{D}$ and an IVP with respect to $t$ for $T$.
+
+Normalisations~\eqref{eq:normalisation} and
+\begin{equation}
+  \label{eq:temperature_normalisation}
+  Y_3 = \frac{T}{T_0}
+\end{equation}
+are used and $\delta$ is chosen as coordinate, hence the system of PDEs is rewritten as
+\begin{equation}
+  \label{eq:numerical_radiative_equilibrium}
+  \left\{
+  \begin{array}{@{}l@{}}
+    \pdv*{Y_3(t, \delta)}{t} = \frac{\mu_\text{m} S_\text{t}}{c_P T_0} \pdv*{(Y_1(t, \delta) - Y_2(t, \delta))}{\delta} \\[0.5em]
+    \pdv*{Y_1(t, \delta)}{\delta} = D (Y_1(t, \delta) - Y_3(t, \delta)^4) \\[0.5em]
+    \pdv*{Y_2(t, \delta)}{\delta} = D (Y_3(t, \delta)^4 - Y_2(t, \delta))
+  \end{array}
+  \right.
+  \quad .
+\end{equation}
+At the start of the procedure, the initial condition for $T$ is an arbitrary temperature profile, while at each temporal step, initial conditions~\eqref{eq:initial_normalisation} are reapplied. Point $Y_3(0, 0) = \frac{1}{2}$ is fixed by relation but it is not used during the integration.
+
+Integration of irradiances is performed as before using Runge-Kutta method of order 4. For the temporal integration of $T$ Euler method is used with a costant time step $\Delta t$, chosen arbitrarily to reduce the errors of irradiances below the precision of numeric values outputs.
+
+Figure~\ref{fig:errors_PDE} displays errors between numerical solutions of PDE system~\eqref{eq:numerical_radiative_equilibrium} and analytical solutions. Errors are propagated during the iterations, limiting the precision of the numerical procedure.
+\begin{figure*}[h]
+  \centering
+  \includegraphics*[keepaspectratio=true,width=0.75\textwidth]{errors_PDE}
+  \caption{Errors between numerical and analytical solutions of a grey atmosphere in radiative equilibrium. Steady state is reached throught iterative temporal and spatial integration. Precision is reduced by propagation of errors during successive iterations. Points at TOA are omitted being compatible with 0 within precision of double-precision floating-point numbers.}
+  \label{fig:errors_PDE}
 \end{figure*}
 
 
@@ -397,20 +432,12 @@ In figure~\ref{fig:stability} errors are plotted as function of $N$. For $N \leq
 
 \onecolumn
 \section{Source code}
-In this section the \cpp\ code used to obtain the results presented in this work is shown and commented.
-% MC show the whole source code, splitted in sections.
-
-% MC some thoughts about the development of the code.
-First, the parametrization of the vertical coordinate is chosen among three alternatives: altitude $z$ in \unit{\metre}, atmospheric pressure $P$ in \unit{\pascal}, coordinate $\sigma = \frac{P - \PTOA}{P_S - \PTOA}$ adimensional, with $\PTOA$ pressure at the top of the modelised atmosphere and $P_S$ pressure at the surface. One parametrisation can be written in term of another through a monotonic function (e.g. pressure decreases with altitude, cfr. section~\ref{sec:Relation between pressure and altitude}). For the initial development the altitude $z$ is chosen as vertical coordinate because it is more intuitive, moreover plots in \cite{TTAPS-I} are expressed in terms of both $z$ and $P$.
-
-Second, the atmospheric layers are configured. In \cite{TTAPS-I} 20 layers are used and they are numbered from the top of the atmosphere down as it is common in RCMs. The vertical coordinate refers to the center of each layer, with the excpetion of the last layer which is in direct contact with the surface and needs to be treated separately. % MC "Temperatures are calculated at the midpoints of the layers, and fluxes are computed at the layer boundaries."\cite[449]{Catling}
-Therefore two arrays are needed: one for the point and one with the corresponding layer thicknesses. Values are then assigned as double precision numbers. The value corresponding to the top of the atmosphere is set in a proper variable and a uniform distribution of layer thicknesses is assumed for ease.
-
+In this section the code written in \cpp\ used to obtain the results presented in this work is shown.
 \lstinputlisting[language=C++,style=mystyle]{../code/main.cpp}
+
+
+
 \twocolumn
-
-
-
 \section{Mathematical derivations}
 In this appendix mathematical derivations of some ancillary results and formulae used in the main text are explicitly shown.
 
