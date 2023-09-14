@@ -179,7 +179,6 @@ They obey the ideal gas law
 \end{equation}
 
 The total heat flux $q$ is determined by radiative transfer and atmospheric convection. Other means of vertical heat transfer are neglected, e.g. precipitation. The RTE is not solved directly by the RCM, instead a two-stream approximation is adopted for the radiation inside atmosphere: components of radiometric quantities in the upward and downward directions are treated separately. Neither the contribution to $q(t,z)$ due to atmospheric convection is obtained by solving the proper fluid dynamics equations, in its place a numerical correction is adopted.
-% MC do a proper section for convective adjustment.
 With these considerations, equation~\eqref{eq:temperature_derivation} can be rewritten as
 \begin{equation}
   \label{eq:temperature}
@@ -287,7 +286,7 @@ An ODE for $T$ can be written by adding and subtracting equations~\eqref{eq:irra
   2 \sigma \odv*{T(\delta')^4}{\delta'} = S_\text{t}
   \quad .
 \end{equation}
-In a similar way, initial condition for $T$ is obtained by summing equations~\eqref{eq:irradiance_upward} and~\eqref{eq:irradiance_downward} and applying relation~\eqref{eq:irradiance_steady_state} and the initial conditions~\eqref{eq:initial_upward} and~\eqref{eq:initial_downward}:
+In a similar way, initial condition for $T$ is obtained by summing equations~\eqref{eq:irradiance_upward} and~\eqref{eq:irradiance_downward} and applying relation~\eqref{eq:irradiance_steady_state} and initial conditions~\eqref{eq:initial_upward} and~\eqref{eq:initial_downward}:
 \begin{equation}
   \label{eq:initial_temperature}
   T(0) = \bigg( \frac{S_\text{t}}{2 \sigma} \bigg)^\frac{1}{4}
@@ -303,7 +302,7 @@ represented in figure~\ref{fig:temperature}.
 \begin{figure*}[h]
   \centering
   \includegraphics*[keepaspectratio=true,width=0.75\textwidth]{temperature}
-  \caption{Vertical temperature profile of a grey atmosphere. Continuous line is analytical solution in radiative equilibrium, dashed line is numerical solution in radiative-convective equilibrium. Correction to temperature with lapse rate greater than the critical value is visible at lower altitudes. A discontinuity is present at ground level due to the lack of heat exchange between surface and the lowest atmospheric layer.}
+  \caption{Vertical temperature profile of a grey atmosphere. Continuous line is analytical solution in radiative equilibrium, dashed line is numerical solution in radiative-convective equilibrium. Correction to temperature with lapse rate greater than the critical value is visible at lower altitudes, but values are affected by low precision of the numerical procedure. A discontinuity is present at ground level due to the lack of heat exchange between surface and the lowest atmospheric layer.}
   \label{fig:temperature}
 \end{figure*}
 
@@ -319,7 +318,7 @@ Irradiances are shown in figure~\ref{fig:irradiance}. At every altitude, $E_\tex
 \begin{figure*}[h]
   \centering
   \includegraphics*[keepaspectratio=true,width=0.75\textwidth]{irradiance}
-  \caption{Upward and downward irradiances in a grey atmosphere. Continuous line is the solution in radiative equilibrium, dashed line is solution in radiative-convective equilibrium. Greater values than TOA at lower altitudes are indicators of greenhouse effect. Irradiances of the RCM are not directly subject of convective adjustment, but they are affected due to the dependence on temperature.}
+  \caption{Upward and downward irradiances in a grey atmosphere. Continuous line is the solution in radiative equilibrium, dashed line is solution in radiative-convective equilibrium. Greater values than TOA at lower altitudes are indicators of greenhouse effect. Irradiances of the RCM are not directly subject to convective adjustment, but they are affected due to the dependence on temperature.}
   \label{fig:irradiance}
 \end{figure*}
 
@@ -394,7 +393,14 @@ In figure~\ref{fig:stability} errors are plotted as function of $N$. For $N \leq
 \subsection{Time integration}
 \label{sec:Time integration}
 Numerical solutions for system~\eqref{eq:numerical_steady_state} are obtained by using in advance the steady state condition~\eqref{eq:irradiance_steady_state}. To preserve information on temporal depence, the more general system given by PDEs~\eqref{eq:temperature_delta},~\eqref{eq:irradiance_upward} and~\eqref{eq:irradiance_downward} is solved numerically.
-More precisely, each variable is considered separately during the integration and an iterative procedure is adopted: starting from an arbitrary temperature profile, equations~\eqref{eq:irradiance_upward} and~\eqref{eq:irradiance_downward} are solved with respect to $\delta'$, then the resulting $E_\text{U}$ and $E_\text{D}$ are used to step forward $T$ with respect to $t$ using equation~\eqref{eq:temperature_delta} for each layer, obtaining a new temperature profile to restart the loop. The iterations continue until a steady state for $T$ is reached. This procedure describes an IVP with respect to $\delta'$ for $T$, $E_\text{U}$ and $E_\text{D}$ and an IVP with respect to $t$ for $T$.
+More precisely, each variable is considered separately during the integration and an iterative procedure is adopted:
+\begin{enumerate}
+  \item \label{enum:start} an arbitrary temperature profile is chosen;
+  \item equations~\eqref{eq:irradiance_upward} and~\eqref{eq:irradiance_downward} are solved with respect to $\delta'$;
+  \item the resulting $E_\text{U}$ and $E_\text{D}$ are used to step forward $T$ with respect to $t$ using equation~\eqref{eq:temperature_delta} for each layer;
+  \item the obtained temperature profile is used to restart the loop from point~\ref{enum:start}.
+\end{enumerate}
+The iterations continue until a steady state for $T$ is reached. This procedure describes an IVP with respect to $\delta'$ for $T$, $E_\text{U}$ and $E_\text{D}$ and an IVP with respect to $t$ for $T$.
 
 Normalisations~\eqref{eq:normalisation} and
 \begin{equation}
@@ -413,7 +419,7 @@ are used and $\delta$ is chosen as coordinate, hence the system of PDEs is rewri
   \right.
   \quad .
 \end{equation}
-At the start of the procedure, the initial condition for $T$ is an arbitrary temperature profile, while at each temporal step, initial conditions~\eqref{eq:initial_normalisation} are reapplied. Point $Y_3(0, 0) = \frac{1}{2}$ is fixed by relation but it is not used during the integration.
+At the start of the procedure, the initial condition for $T$ is an arbitrary temperature profile, while at each temporal step, initial conditions~\eqref{eq:initial_normalisation} are reapplied. Point $Y_3(0, 0) = \frac{1}{2}$ is fixed by radiative equilibrium at TOA but it is not used during the integration.
 
 Integration of irradiances is performed as before using Runge-Kutta method of order 4. For the temporal integration of $T$ Euler method is used with a costant time step $\Delta t$, chosen arbitrarily to reduce the errors of irradiances below the precision of numeric values outputs.
 
@@ -427,17 +433,36 @@ Figure~\ref{fig:errors_PDE} displays errors between numerical solutions of PDE s
 
 
 
+\section{Radiative-convective equilibrium}
+\label{sec:Radiative-convective equilibrium}
+Convective processes are responsible for heat transport in the vertical direction of the idealised atmosphere under study. The effect of convection is the motion of fluid parcels with different $T$ than the surroundings, to achieve a steady lapse rate, which is the temperature gradient $-\pdv{T}{z}$.
+
+When convective processes are coupled with radiative processes, the former redistributes the energy accumulated because of the latter to higher layers, cooling the lower layers of the atmosphere. The two processes work on different time scales, convection being faster than radiative processes. The steady state reached by $T$ when the two processes compensate is called radiative-convective equilibrium.
+
+Convection is introduced in the model by imposing values of $T$ such that the lapse rate is always greater or equal than some critical lapse rate. This procedure is called convective adjustment.
+In particular for this RCM, a constant value $\Gamma_0$ is used as critical lapse rate and $T$ for layers in interval $(z_\text{g}, \zTOA)$ is set through an iterative procedure starting from ground level. The lapse rate of each atmopsheric layer is evaluated using values of the actual and previous layers, then if condition $-\pdv{T}{z} > \Gamma_0$ is met, $T$ is set to equate the two terms of the inequality. Convective adjustment is applied at each temporal step of the numerical procedure presented in section~\ref{sec:Time integration}, after the evaluation of the temperature profile. The difference in time scales justify the direct substitution of $T$.
+
+Steady states for $T$ and irradiances after convective adjustment are shown in figures~\ref{fig:temperature} and~\ref{fig:irradiance}, respectively. Even though values are affected by errors derived from the numerical method, two regions can be isolated in the temperature profile: one at low altitudes affected by radiative-convective equilibrium, called troposhere, the other at higher altitudes where radiative processes dominate the heat transfer, called stratosphere. The separation between these regions goes under the name tropopause. Convective adjustment acts on irradiances indirectly, because they are evaluated at each time step using a modified temperature profile.
+
+
+
+\section{Conclusion}
+In this work the vertical temperature profile of a grey atmosphere is studied under hypotheses which simplify convective and radiative processes. The problem is defined in general by a system of PDEs or at the steady state by a system of ODEs. Numerical solution is evaluated for the planet in radiative equilibrium and is compared with analytical values. Errors are negligible, except for the ones in temporal integration of the PDEs. Convection is recovered using convective adjustment to set temperature values assording to a prescribed lapse rate.
+
+The RCM can be improved in various ways. First of all, differences in composition and properties of the atmosphere can be considered, e.g. different chemical species absorbing radiation, non-constant values of lapse rate and albedo. Thus, interesting effects which characterise planetary atmospheres can be studied, e.g. more realistic stratosphere and greenhouse effect, response of the atmosphere to changes in composition. In addition, overall energy conservation is not checked during time integration, hence more advanced procedures of convective adjustment can be adopted to account for conservation of quantities.
+
+
+
 \newpage
 \appendix
 
 \onecolumn
 \section{Source code}
-In this section the code written in \cpp\ used to obtain the results presented in this work is shown.
-\lstinputlisting[language=C++,style=mystyle]{../code/main.cpp}
-
-
-
+\lstinputlisting[caption={File \texttt{main.cpp}.},label={lst:main.cpp},language=C++,style=mystyle]{../code/main.cpp}
 \twocolumn
+
+
+
 \section{Mathematical derivations}
 In this appendix mathematical derivations of some ancillary results and formulae used in the main text are explicitly shown.
 
@@ -460,7 +485,7 @@ If density is not constant its expression is given by the ideal gas law (cfr. eq
   \label{eq:hydrostatic_equilibrium_ideal_gas_law_constant_temperature}
   \begin{split}
     & \odif{P} = - \frac{P g}{R_\text{m} T} \odif{z} \iff \\
-    \iff & \frac{\odif{P}}{P} = - \frac{g}{R_\text{m} T} \odif{z}
+    & \iff \frac{\odif{P}}{P} = - \frac{g}{R_\text{m} T} \odif{z}
   \end{split}
 \end{equation}
 with solution
@@ -468,11 +493,11 @@ with solution
   \label{eq:pressure_constant_temperature}
   \begin{split}
     & \ln(P') \bigg|_{P_0}^{P(z)} = - \frac{g}{R_\text{m} T} z' \bigg|_{z_0}^{z} \iff \\
-    \iff & P(z) = P_0 \exp{\bigg( - \frac{g}{R_\text{m} T} (z - z_0) \bigg)}
+    & \iff P(z) = P_0 \exp{\bigg( - \frac{g}{R_\text{m} T} (z - z_0) \bigg)}
     \quad .
   \end{split}
 \end{equation}
-This relation is not meaningful, since the aim of the work is to derive the non-constant temperature profile of the atmosphere. However, it can be used inside atmospheric layers where the temperature is considered constant (e.g. stratosphere).
+This relation is not meaningful if used at every $z$, since the aim of the work is to derive the non-constant temperature profile of the atmosphere. However, it can be used inside atmospheric layers where the temperature is considered constant (e.g. stratosphere).
 
 A better approximation assumes non-constant density and constant lapse rate $\Gamma$, hence temperature depends linearly on altitude,
 \begin{equation}
@@ -485,7 +510,7 @@ with $T_0$ temperature corresponding to reference altitude $z_0$. Using these as
   \label{eq:hydrostatic_equilibrium_ideal_gas_law_constant_lapse_rate}
   \begin{split}
     & \odif{P} = - \frac{P g}{R_\text{m} T} \bigg( - \frac{\odif{T}}{\Gamma} \bigg) \iff \\
-    \iff & \frac{\odif{P}}{P} = \frac{g}{R_\text{m} \Gamma} \frac{\odif{T}}{T}
+    & \iff \frac{\odif{P}}{P} = \frac{g}{R_\text{m} \Gamma} \frac{\odif{T}}{T}
     \quad ,
   \end{split}
 \end{equation}
@@ -494,7 +519,7 @@ which has solution
   \label{eq:pressure_constant_lapse_rate}
   \begin{split}
     & \ln(P') \bigg|_{P_0}^{P(z)} = \frac{g}{R_\text{m} \Gamma} \ln(T') \bigg|_{T_0}^{T(z)} \iff \\
-    \iff & P(z) = P_0 \bigg( \frac{T_0 - \Gamma (z - z_0)}{T_0} \bigg)^\frac{g}{R_\text{m} \Gamma}
+    & \iff P(z) = P_0 \bigg( \frac{T_0 - \Gamma (z - z_0)}{T_0} \bigg)^\frac{g}{R_\text{m} \Gamma}
     \quad .
   \end{split}
 \end{equation}
@@ -505,11 +530,9 @@ Equation \eqref{eq:pressure_constant_lapse_rate} can be used also with a piecewi
 
 \subsection{Radiometric quantities}
 \label{sec:Radiometric quantities}
-Refer to \cite{CIE} for more details on quantities reviewed in this section.
+Refer to \cite{CIE} and \cite{Modest} for more details on quantities reviewed in this section.
 
 Consider electromagnetic radiation emitted by a point source. The total emitted power is called \emph{radiant flux}, with unit \unit{\watt}. The density of radiant flux with respect to a solid angle in the direction of emission is called \emph{radiant intensity}, expressed in \unit{\watt\per\steradian}. When radiation interacts with a surface, i.e. it gets absorbed, transmitted or reflected, its radiant intensity distributed over the surface is measured through \emph{radiance} in \unit{\watt\per\square\metre\per\steradian}. If the area on which the radiation is incident is expressed through the solid angle it subtends, the integral of radiance over this solid angle is called \emph{irradiance}, expressed in \unit{\watt\per\square\metre}. Note that the coordinate system where the solid angles of radiant intensity and irradiance are defined may not be the same. Radiant flux emitted by a body normalised over the surface of emission is measured by \emph{radiant exitance} in \unit{\watt\per\square\metre}.
-
-% MC if needed make a consideration for the case where there is no source and only the radiation incident on a surface is considered. This phenomenon is addressed as diffusion.
 
 All previous quantities can be expressed as densities with respect to the wavelength or the wavenumber and the adjective \emph{spectral} is prefixed to their names. Their units are divided by the respective spectral quantity (e.g. spectral radiance with wavenumber in \unit{\per\centi\metre} has units \unit{\watt\per\metre\squared\centi\metre\per\steradian}).
 
@@ -519,7 +542,7 @@ Spectral radiance of a blackbody is given by Planck's law
   B_\nu (\nu, T) = 2 h c^2 \nu^3 \frac{1}{e^\frac{h c \nu}{k_B T} - 1}
   \quad ,
 \end{equation}
-where $\nu$ is the wavenumber in unit \unit{\per\centi\metre}, $T$ in unit \unit{\kelvin} is the temperature of the emitting body and the other quantities are constants (cfr. table~\ref{tab:constants}).
+where $\nu$ is the wavenumber in unit \unit{\per\metre}, $T$ in unit \unit{\kelvin} is the temperature of the emitting body and the other quantities are constants (cfr. table~\ref{tab:constants}).
 Note that Planck's law has different form when it is expressed in terms of wavelength, due to its definition as density and the resulting change of variables:
 \begin{equation}
   \label{eq:spectral_radiance_blackbody_lambda}
@@ -545,13 +568,14 @@ where spherical coordinates are used to describe the surface and the term $\cos(
 
 \subsection{Radiation attenuation}
 \label{sec:Radiation attenuation}
-Details on quantities appearing in this section can be found in \cite[285]{Modest}.
+Details on quantities present in this section can be found in \cite[285]{Modest}.
 Radiation crossing a medium loses energy due to absorption and scattering. The effect of chemical species on these processes is quantified through the \emph{attenuation coefficient} (commonly called \emph{extinction coefficient} in atmospheric sciences), which has different definitions based on the way it is derived (cfr. \cite[44]{Catling}). The attenuation coefficient is the sum of \emph{absorption coefficient} and \emph{scattering coefficient} which contain information on the attenuation due to the respective physical processes. The \emph{optical depth} (also called \emph{optical thickness}) takes in consideration the amount of substance involved in the absorption.
 
 Ratios between radiant fluxes are related by the conservation of energy: the sum of \emph{internal transmittance} and \emph{internal absorptance} is 1, as well as the sum of \emph{reflectance}, \emph{absorptance} and \emph{transmittance}.
 
 In general these coefficients are functions of wavelength or wavenumber, in which case the prefix \emph{spectral} is adopted. If the medium is a fluid, they depends on temperature and pressure of the medium.
-Another related quantity is the spectral internal transmittance
+
+The spectral internal transmittance is defined as
 \begin{equation}
   \label{eq:spectral_internal_transmittance}
   \tau_\text{i}(\nu, s, s_0) = e^{-\delta(\nu, s, s_0)}
@@ -565,7 +589,7 @@ where $\delta(\nu, s, s_0)$ is the spectral optical depth, which depends only on
 \end{equation}
 If the absorbing species do not interact, $\mu(\nu, s')$ is simply the sum of the spectral attenuation coefficients of the individual components of the medium.
 
-Moreover, if the medium is homogenoeus, in the sense that quantities affecting radiative calculations are not dependent on spatial position (e.g. attenuation coefficients $\mu$ are constant inside the medium), the spectral attenuation coefficient depends only on the concentration of the absorbing species contained, hence the spectral attenuation coefficient can be rewritten as
+Moreover, if the medium is homogenoeus, in the sense that quantities affecting radiative calculations are not dependent on spatial position (e.g. attenuation coefficients $\mu$ are constant inside the medium), the spectral attenuation coefficient depends only on the concentration of the absorbing species, hence the spectral attenuation coefficient can be rewritten as
 \begin{equation}
   \label{eq:spectral_attenuation_coefficient}
   \mu(\nu, s') = \mu_\text{m}(\nu) \rho(s')
@@ -593,16 +617,6 @@ An alternative quantity evaluated in place of $T(t,z)$ for a given parcel of flu
   \quad ,
 \end{equation}
 where $P_0$ is a reference pressure and quantities $P(z)$, $R_\text{m}$ and $c_P$ refer to the fluid.
-
-
-
-\section{Supplementary information}
-
-
-
-\subsection{Plotting}
-\label{sec:Plotting}
-Software gnuplot is used to generate plots shown in this work. Output values from the simulation are stored in a DAT file.
 
 
 
