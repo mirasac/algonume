@@ -1,6 +1,5 @@
 # General
 - I need probably to create skew-T plots in Gnuplot, find how. I can resort to drwaing many curves with some kind of transparency to simulate the skew-plot lines at last. Some kind of change of variables is probably needed because in this case axes are still cartesian. Also search for the implementation of class metpy.plots.SkewT for help.
-- Use the sigma adimensional pressure variable to represent heights.
 - Introduce spectral dependence in albedo values for each layer surface.
 - TTAPS-I works on visible wavelength of 550 nm.
 - Gravitational acceleration is not constant and depends also on the altitude. Discuss why I take a constant value, or discuss the parametrization I choose if I take a non-constant value.
@@ -15,10 +14,9 @@
 - What is lapse rate? Is the technical term of temperature in pressure-temperature plot? Sort of: it is the variation of temperature with altitude and since altitude and pressure can be related quantitatively, it can be expressed also as variation with pressure.
 - Absorption (or more generally, exctintion) coefficients depend on temperature and pressure. How can I use them to approximate absorption in uniform layers of gases? I must assume that their variation with temperature and pressure is negligible with respect to the varying quantities I am evaluating.
 - Why there is a pi multiplying the spectrally averaged plank function? Probably for the parametrizations I use it is not needed. It is needed, since it is the factor resulting from the integration in the solid angle of an hemisphere of Planck law for the azimuthal component of the solar beam.
+- What is temperature profile instability? It is the tendency of fluid parcels to move to satisfy equilibrium conditions, which are radiative-convective equilibrium in the model I study.
 
 ## Questions
-- What is temperature profile instability.
-- Do I add evaluation of quantities at ground level in a separate variable or as element at index N + 1 of arrays?
 
 ## Keywords
 - Tracer continuity equation (cfr. https://clima.github.io/OceananigansDocumentation/v0.47.1/physics/navier_stokes_and_tracer_conservation/, https://getm.eu/files/GETM/doc/html/node78.html and https://climate.ucdavis.edu/ATM121/AtmosphericDynamics-Chapter01-Part03-Continuity.pdf).
@@ -37,6 +35,7 @@
 - Where possible, use integer values.
 - Flush file buffer only when needed because it could become a huge bottleneck in program execution.
 - How do I choose which formulae are suitable for specific wavelengths? Do I simply set a threshold on wavelenght value? I may also set the function as method of the class used to represent gases.
+- Do I add evaluation of quantities at ground level in a separate variable or as element at index N of arrays, where indeces go from 0 to N - 1? As element at index N of arrays with size N + 1.
 
 ## Release
 
@@ -44,14 +43,7 @@
 - For section label markers I put the name of the section, case sensitive, after the string `sec:`. This way the marker could contain spaces, but this should not be a drawback since nowadays most packages managing labels support spaces in them. Another possible drawback is the length that some labels can reach. Instead the advantages are many: it is a consistent way to write meaningful labels for sections, labels get immediately fixed when section titles are changed (i.e. by using a find and replace tool in any editor).
 - Use nominal values then associate relative error to them.
 - The chosen font size is 10pt everywhere. Set it automatically everywhere based on a single configuration file takes too much effort compared by setting it manually.
-- I do not use the sigma coordinate as vertical coordinate because in the model I am considering it is simply a rescaled pressure. It could be useful if this model is then used in a model where the horizontal profile of surface pressure changes.
+- I do not use the sigma coordinate as vertical coordinate because it is simply a rescaled pressure in the model I am considering. It could be useful if this model is then used in a model where the horizontal profile of surface pressure changes.
 - Show equation dependencies only when is needed for clarity.
 
 ## Release
-- Check verbal tenses and conjugations.
-- Remove all personal comments.
-- Remove unused appendices, maybe keep them as separate LaTeX source files and include only the ones needed.
-- Correct format issues related to composition of bibliography.
-- Use cf. instead of cfr. and use see when needed.
-- Check content against what prof. Palazzi taught us during lesson.
-- Check the correctness in the use of terms equilibrium and steady state.
