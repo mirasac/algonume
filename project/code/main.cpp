@@ -4,20 +4,39 @@
 #include <iostream>
 
 #include "constants.h"
-#include "convection.h"
 #include "../../mclib/mclib.h"
-#include "radiation.h"
-#include "utilities.h"
-#include "configuration.h" // Include last to allow redefinitions.
 
-double * global_z; // / m
-double * global_P; // / Pa
+#ifdef N_PRECISION
+#undef N_PRECISION
+#endif /* N_PRECISION */
+
+#define DIR_DATA "../data"
+#define N_PRECISION 6
+#define TOLERANCE 1e-6
+#define N_STABILITY 25
+
+int const global_N = 100;
+double const global_P_0 = 1e5; // Pa
+double const global_P_TOA = 3.0; // Pa
+double const global_z_0 = 2000.0; // m
+
+double const global_S_t = 0.25 * (1.0 - const_A) * const_S_0; // / (W / m^2)
+double const global_delta_g = 2.0 * (const_sigma / global_S_t * const_T_g*const_T_g*const_T_g*const_T_g - 1.0) / const_D;
+double const global_mu_m = global_delta_g * const_g / (const_P_g - global_P_TOA); // / (m^2 / kg)
 double * global_delta, * global_sigma;
+double * global_P; // / Pa
 double global_T_0; // / K
-double global_Delta_t; // / s
+double * global_z; // / m
 
+double get_altitude(double P);
+double get_pressure(double z);
+double get_optical_depth_z(double z, double P_TOA);
+double get_sigma(double P, double P_TOA);
+double get_theta(double T, double P);
+double temperature_norm(double delta);
+double irradiance_upward_norm(double delta);
+double irradiance_downward_norm(double delta);
 void rhs_delta(double t, double const * Y_0, double * R);
-
 void rhs_t(double t, double const * Y_0, double * R);
 
 int main(int argc, char * argv[]) {
@@ -102,11 +121,12 @@ int main(int argc, char * argv[]) {
 	double t; // / s
 	double Y[3];
 	double Y_3_tmp, theta_tmp, theta_PDE_tmp;
+	double Delta_t; // s
 	Y_3 = new double[3 * (global_N + 1)]; // Use to store irradiances.
 	Y_3_prev = new double[global_N + 1];
 	Y_1 = Y_3 + global_N + 1;
 	Y_2 = Y_1 + global_N + 1;
-	global_Delta_t = 10 * 24 * 3600.0;
+	Delta_t = 10 * 24 * 3600.0;
 	
 	// Set initial values PDEs.
 	i_t = 0;
@@ -121,7 +141,7 @@ int main(int argc, char * argv[]) {
 	do {
 		Y_3_prev[0] = Y_3[0];
 		i_t++;
-		t = i_t * global_Delta_t;
+		t = i_t * Delta_t;
 		Y[1] = 1.0;
 		Y[2] = 0.0;
 		for (int i = 1; i <= global_N; i++) {
@@ -131,7 +151,7 @@ int main(int argc, char * argv[]) {
 			Y_1[i] = Y[1];
 			Y_2[i] = Y[2];
 		}
-		eulerstep(t, global_Delta_t, Y_3, rhs_t, global_N + 1);
+		eulerstep(t, Delta_t, Y_3, rhs_t, global_N + 1);
 		// Temperature profile steady state condition.
 		is_steady = 1;
 		for (int i = 0; i <= global_N; i++) {
@@ -273,7 +293,7 @@ int main(int argc, char * argv[]) {
 	do {
 		Y_3_prev[0] = Y_3[0];
 		i_t++;
-		t = i_t * global_Delta_t;
+		t = i_t * Delta_t;
 		Y[1] = 1.0;
 		Y[2] = 0.0;
 		for (int i = 1; i <= global_N; i++) {
@@ -283,8 +303,13 @@ int main(int argc, char * argv[]) {
 			Y_1[i] = Y[1];
 			Y_2[i] = Y[2];
 		}
-		eulerstep(t, global_Delta_t, Y_3, rhs_t, global_N + 1);
-		convective_adjustment(const_Gamma_0 / global_T_0, global_N, Y_3, global_z);
+		eulerstep(t, Delta_t, Y_3, rhs_t, global_N + 1);
+		// Convective adjustment.
+		for (int i = global_N - 1; i > 0; i--) {
+			if (- global_T_0 * (Y_3[i] - Y_3[i + 1]) / (global_z[i] - global_z[i + 1]) > const_Gamma_0) {
+				Y_3[i] = Y_3[i + 1] - (global_z[i] - global_z[i + 1]) * const_Gamma_0 / global_T_0;
+			}
+		}
 		// Temperature profile steady state condition.
 		is_steady = 1;
 		for (int i = 0; i <= global_N; i++) {
@@ -346,6 +371,38 @@ int main(int argc, char * argv[]) {
 	delete[] Y_3_prev;
 	
 	return 0;
+}
+
+double get_altitude(double P) {
+	return const_z_g - global_z_0 * log(P / const_P_g);
+}
+
+double get_pressure(double z) {
+	return const_P_g * exp(- (z - const_z_g) / global_z_0);
+}
+
+double get_optical_depth_z(double z, double P_TOA) {
+	return global_mu_m / const_g * (get_pressure(z) - P_TOA);
+}
+
+double get_sigma(double P, double P_TOA) {
+	return (P - P_TOA) / (const_P_g - P_TOA);
+}
+
+double get_theta(double T, double P) {
+	return T * pow(global_P_0 / P, const_R_m / const_c_P);
+}
+
+double temperature_norm(double delta) {
+	return pow(0.5 * (1.0 + const_D * delta), 0.25);
+}
+
+double irradiance_upward_norm(double delta) {
+	return 0.5 * (2.0 + const_D * delta);
+}
+
+double irradiance_downward_norm(double delta) {
+	return 0.5 * const_D * delta;
 }
 
 void rhs_delta(double t, double const * Y_0, double * R) {

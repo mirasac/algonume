@@ -118,11 +118,14 @@ Some additional hypotheses are assumed to simplify the study. Data on constants 
     \midrule
     $A$               & \num{0.3}                                                              &                                                   & Bond albedo value of Earth compatible with various observations, cfr. \cite[1281]{albedo} \\
     %$A_\text{g}$      & \num{0.1}                                                              &                                                   & Average surface albedo of Earth, cfr. \cite[217]{primer}                                  \\
+    $c$               & \num{2.99792458e8}                                                     & \unit{\metre\per\second}                          & Speed of light in vacuum                                                                  \\
     $c_P$             & \num{1.004e3}                                                          & \unit{\joule\per\kelvin\per\kilogram}             & Specific heat at constant pressure of air, from \cite[16]{Catling}                        \\
     $\deltaTOA$       & \num{0}                                                                &                                                   & Optical depth at TOA, by definition                                                       \\
     $D$               & \num{1.66}                                                             &                                                   & Diffusion coefficient, commonly used value from \cite[55]{Catling}                        \\
+    $h$               & \num{6.62607015e-34}                                                   & \unit{\joule\second}                              & Planck constant                                                                           \\
     $g$               & \num{9.80665}                                                          & \unit{\metre\per\square\second}                   & Standard gravitational acceleration of Earth                                              \\
     $\Gamma_0$        & \num{6.5e-3}                                                           & \unit{\kelvin\per\metre}                          & Environmental lapse rate of Earth's troposphere, from \cite[3]{US1976}                    \\
+    $k_\text{B}$      & \num{1.380649e-23}                                                     & \unit{\joule\per\kelvin}                          & Boltzmann constant                                                                        \\
     $P_\text{g}$      & \num{1.013250e5}                                                       & \unit{\pascal}                                    & Standard pressure at ground level of Earth, from \cite[2]{US1976}                         \\
     %$R$               & \num{8.31446261815324}                                                 & \unit{\joule\per\kelvin\per\mole}                 & Gas constant                                                                              \\
     $R_\text{m}$      & \num{2.8705287e2}                                                      & \unit{\joule\per\kelvin\per\kilogram}             & Specific gas constant of dry air                                                          \\
@@ -137,7 +140,7 @@ Some additional hypotheses are assumed to simplify the study. Data on constants 
     $\Delta t$        & \num{864000}                                                           & \unit{\second}                                    & Time step for temporal integration                                                        \\
     $\mu_\text{m}$    & $\frac{\delta_\text{g} g}{P_\text{g} - \PTOA}$                         & \unit{\square\metre\per\kilogram}                 & Mass attenuation coefficient of the atmosphere                                            \\
     $N$               & \num{100}                                                              &                                                   & Number of atmospheric layers                                                              \\
-    $N_\text{max}$    & \num{25}                                                               &                                                   & Maximum number of atmospheric layers used for stability analysis                          \\
+    $N_\text{max}$    & $2^{24}$                                                               &                                                   & Maximum number of atmospheric layers used for stability analysis                          \\
     %$\nu_\text{min}$  & \num{100}                                                              & \unit{\per\centi\metre}                           & Arbitrary minimum boundary for EM spectrum                                                \\
     %$\nu_\text{max}$  & \num{100000}                                                           & \unit{\per\centi\metre}                           & Arbitrary maximum boundary for EM spectrum                                                \\
     $P_0$             & \num{1e5}                                                              & \unit{\pascal}                                    & Arbitrary reference value for pressure                                                    \\
@@ -456,9 +459,11 @@ The RCM can be improved in various ways. First of all, differences in compositio
 \newpage
 \appendix
 
-\onecolumn
 \section{Source code}
+Calculations are performed with code in file \texttt{main.cpp} (cfr. listing~\ref{lst:main.cpp}). Header \texttt{constants.h} provides values of physical constants, it is shown in listing~\ref{lst:constants.h} for completeness. Functions for ODEs integration are stored in file \texttt{mclib.cpp} which is not shown here, since any library for numerical solution of ODEs provides the needed functions.
+\onecolumn
 \lstinputlisting[caption={File \texttt{main.cpp}.},label={lst:main.cpp},language=C++,style=mystyle]{../code/main.cpp}
+\lstinputlisting[caption={File \texttt{constants.h}.},label={lst:constants.h},language=C++,style=mystyle]{../code/constants.h}
 \twocolumn
 
 

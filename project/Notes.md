@@ -39,8 +39,6 @@
 - How do I choose which formulae are suitable for specific wavelengths? Do I simply set a threshold on wavelenght value? I may also set the function as method of the class used to represent gases.
 
 ## Release
-- Remove all personal comments.
-- Remove all useless functions (e.g. in `main.cpp` array dz).
 
 # Report
 - For section label markers I put the name of the section, case sensitive, after the string `sec:`. This way the marker could contain spaces, but this should not be a drawback since nowadays most packages managing labels support spaces in them. Another possible drawback is the length that some labels can reach. Instead the advantages are many: it is a consistent way to write meaningful labels for sections, labels get immediately fixed when section titles are changed (i.e. by using a find and replace tool in any editor).
