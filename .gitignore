@@ -12,6 +12,10 @@ project/report/casari_project.*
 !project/report/*.bib
 !project/report/*.pdf
 project/report/figures/*input.*
+project/presentation/casari_project.*
+!project/presentation/*.tex
+!project/presentation/*.bib
+!project/presentation/*.pdf
 
 # Folder for temporary files
 project/gitignore/
