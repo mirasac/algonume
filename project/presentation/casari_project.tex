@@ -282,6 +282,28 @@
 
 \section{Radiative-convective equilibrium}
 \begin{frame}{Radiative-convective equilibrium}
+  \begin{itemize}
+    \item<1-> Lapse rate at steady state.
+    \note[item]<1->{Convective equilibrium correspond to steady state of lapse rate.}
+    \item<2-> Convection faster than radiative processes.
+    \note[item]<2->{Different time scales between processes.}
+    \item<3-> Convective adjustment if $-\pdv{T}{z} > \Gamma_0$.
+    \note[item]<3->{If convective adjustment is applied, temperature is set to obtain the value of critical lapse rate.}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Temperature plot}
+  \begin{center}
+    \includegraphics[keepaspectratio=true,width=0.9\textwidth]{temperature}
+  \end{center}
+  \note{Vertical temperature profile of a grey atmosphere. Continuous line is the analytical solution in radiative equilibrium, dashed line is the numerical solution in radiative-convective equilibrium. Convective adjustment is visible at lower altitudes, but values are affected by the low precision of the numerical procedure. A discontinuity is present at ground level due to the lack of heat exchange between surface and the lowest atmospheric layer.}
+\end{frame}
+
+\begin{frame}{Irradiances plot}
+  \begin{center}
+    \includegraphics[keepaspectratio=true,width=0.9\textwidth]{irradiance}
+  \end{center}
+  \note{Upward and downward irradiances in a grey atmosphere. Continuous line is the solution in radiative equilibrium, dashed line is the solution in radiative-convective equilibrium. Greater values than TOA at lower altitudes are indicators of greenhouse effect. Irradiances of the RCM are not directly subject to convective adjustment, but they are affected due to the dependence on temperature.}
 \end{frame}
 
 
