@@ -243,12 +243,22 @@
 \begin{frame}{Time integration}
   \begin{itemize}
     \item<1-> Iterative procedure.
+    \note[item]<1->{
+      The iterations continue until a steady state for temperature is reached:
+      \begin{enumerate}
+        \item an arbitrary temperature profile is chosen;
+        \item \label{enum:start} equations~\eqref{eq:irradiance_upward} and~\eqref{eq:irradiance_downward} are solved with respect to $\delta'$;
+        \item the resulting $E_\text{U}$ and $E_\text{D}$ are used to step forward $T$ with respect to $t$ for each layer;
+        \item the obtained temperature profile is used to restart the loop from point~\ref{enum:start}.
+      \end{enumerate}
+    }
     \item<2-> Additional normalisation:
       \begin{equation}
         \label{eq:temperature_normalisation}
         Y_3 = \frac{T}{T_0}
         \quad .
       \end{equation}
+    \note[item]<2->{Same initial conditions for analytical solution are used, point $Y_3(0, 0)$ is not used during the integration.}
     \item<3-> Resulting system of PDEs:
       \begin{equation}
         \label{eq:numerical_radiative_equilibrium}
@@ -263,6 +273,7 @@
       \end{equation}
     \item<3-> Euler method for temporal integration.
     \item<3-> Constant time step.
+    \note[item]<3->{Integration over vertical coordinate remains unchanged.}
   \end{itemize}
 \end{frame}
 
@@ -310,7 +321,12 @@
 
 \section{Conclusion}
 \begin{frame}{Conclusion}
-  % MC put conclusive summary with items.
+  \begin{itemize}
+    \item Vertical temperature profile of a grey atmopshere described in general by a system of PDEs and at the steady state by a system of ODEs.
+    \item Negligible errors for ODEs numerical solutions.
+    \item Possible improvements on description of physical phenomena.
+    \item Possible improvements on precision of PDEs numerical solutions.
+  \end{itemize}
 %  \vfill
 %  \onslide<2->{
 %    \centering
