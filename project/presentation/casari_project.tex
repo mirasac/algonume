@@ -16,6 +16,10 @@
 \usecolortheme{spruce}
 \graphicspath{{./figures/}{../report/figures/}}
 
+\newcommand{\zTOA}{z_\text{TOA}}
+\newcommand{\PTOA}{P_\text{TOA}}
+\newcommand{\deltaTOA}{\delta_\text{TOA}}
+
 %%%%%%%%% Document informations %%%%%%%%%
 \title{Radiative-convective equilibrium in a grey atmosphere}
 \author{Marco Casari}
@@ -39,14 +43,14 @@
   \begin{itemize}
     \item<1-> Average vertical temperature profile $T(t, z)$ of atmosphere.
     \note[item]<1->{The analysed quantity is the atmospheric temperature profile averaged over all latitudes and longitudes.}
-    \item<2-> Radiative Transfer Equation (RTE)
+    \item<2-> Radiative Transfer Equation (RTE).
     \note[item]<2->{RTE describes radiative processes.}
-    \item<3-> Fluid dynamics equations
+    \item<3-> Fluid dynamics equations.
     \note[item]<3->{Fluid dynamics equations describe convective processes.}
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Main hypotheses}
+\begin{frame}{Hypotheses}
   \begin{itemize}
     \item<1-> Thermodynamic energy equation in Local Thermodynamic Equilibrium (LTE):
     \begin{equation}
@@ -60,13 +64,38 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Secondary hypotheses}
+\begin{frame}{Additional hypotheses}
   \begin{itemize}
-    \item MC continue.
+    \item<1-> Hypotheses on the planet.
+    \note[item]<1->{Diurnal cycle, constant irradiance, constant Bond albedo, blackbody surface, constant gravitational acceleration.}
+    \item<2-> Hypotheses on the atmosphere composition.
+    \note[item]<2->{Hydrostatic equilibrium, constant specific heat at constant pressure, scattering is neglected, absorption coefficient depends only on altitude, constant mass attenutation coefficient, ideal gas.}
+    \item<3-> Hypotheses on total heat flux.
+    \note[item]<3->{Heat flux determined only by radiative and convective processes, two-stream approximation, numerical correction for convection.}
   \end{itemize}
 \end{frame}
 
 \begin{frame}{Vertical coordinates}
+  \begin{itemize}
+    \item Relation between pressure and altitude:
+      \begin{equation}
+        \label{eq:pressure_altitude}
+        P(z) = P_\text{g} \exp{\bigg( - \frac{z - z_\text{g}}{z_0} \bigg)}
+        \quad .
+      \end{equation}
+    \item Relation between optical depth and pressure:
+      \begin{equation}
+        \label{eq:optical_depth_pressure}
+        \delta(P) = \frac{\mu_\text{m}}{g} (P - \PTOA)
+        \quad .
+      \end{equation}
+    \item Relation between optical depth and altitude:
+      \begin{equation}
+        \label{eq:optical_depth_altitude_2}
+        \delta(z) = \frac{\mu_\text{m}}{g} \bigg( P_\text{g} \exp{\bigg( - \frac{z - z_\text{g}}{z_0} \bigg)} - \PTOA \bigg)
+        \quad .
+      \end{equation}
+  \end{itemize}
 \end{frame}
 
 
