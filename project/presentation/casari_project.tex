@@ -189,6 +189,55 @@
 \end{frame}
 
 \begin{frame}{Numerical solution}
+  \begin{itemize}
+    \item Normalisation:
+      \begin{equation}
+        \label{eq:normalisation}
+        Y_0 = \frac{T^4}{T_0^4}
+        \quad , \quad
+        Y_1 = \frac{E_\text{U}}{S_\text{t}}
+        \quad , \quad
+        Y_2 = \frac{E_\text{U}}{S_\text{t}}
+      \end{equation}
+    \item Resulting system of ODEs:
+      \begin{equation}
+        \label{eq:numerical_steady_state}
+        \left\{
+        \begin{array}{@{}l@{}}
+          \odv{Y_0}{\delta} = \frac{D}{2} \\[0.5em]
+          \odv{Y_1}{\delta} = D (Y_1 - Y_0) \\[0.5em]
+          \odv{Y_2}{\delta} = D (Y_0 - Y_2)
+        \end{array}
+        \right.
+        \quad .
+      \end{equation}
+    \item Runge-Kutta method of order 4.
+    \item Non-uniform step size.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Errors of numerical solutions}
+  \begin{center}
+    \includegraphics[keepaspectratio=true,width=0.9\textwidth]{errors}
+  \end{center}
+  \note{
+    \begin{itemize}
+      \item Errors between numerical and analytical solutions of a grey atmosphere in radiative equilibrium, assuming steady state. Points at some altitudes are not shown because their value is exactly 0.
+      \item Errors are compatible with 0 based on precision of double-precision floating-point numbers.
+    \end{itemize}
+  }
+\end{frame}
+
+\begin{frame}{Stability analysis}
+  \begin{center}
+    \includegraphics[keepaspectratio=true,width=0.9\textwidth]{stability}
+  \end{center}
+  \note{
+    \begin{itemize}
+      \item Stability of numerical solution for ODEs system in radiative equilibrium with respect to spatial grid size. Errors are negligible up to 4096 layers, then error propagation dominates reducing the precision of the method. Missing points have value 0.
+      \item Errors are evaluated as absolute differences between numerical and analytical values at ground level of each normalised function.
+    \end{itemize}
+  }
 \end{frame}
 
 
