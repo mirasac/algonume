@@ -3,7 +3,7 @@
 %%%%%%%%% Packages %%%%%%%%%
 \documentclass[aspectratio=43]{beamer}
 \usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
+\usepackage{derivative}
 \usepackage{pgfpages}
 
 %%%%%%%%% Packages setup %%%%%%%%%
@@ -28,11 +28,8 @@
   \titlepage
   \note{
     \begin{itemize}
-      \item Radiative-convective models.
-      \item Atmospheric temperature profile averaged over all latitudes and longitudes.
-      \item Radiative and convective processes dominates.
-      \item Grey atmosphere.
-      \item Temperature profile is studied under radiative equilibrium and radiative-convective equilibrium.
+      \item A radiative-convective model is used to study a grey atmosphere.
+      \item Comparison between numerical and analytical solutions is possible in radiative equilibrium.
     \end{itemize}
   }
 \end{frame}
@@ -40,12 +37,33 @@
 \section{Introduction}
 \begin{frame}{Introduction}
   \begin{itemize}
-    \item<1-> 
-    % MC continue.
+    \item<1-> Average vertical temperature profile $T(t, z)$ of atmosphere.
+    \note[item]<1->{The analysed quantity is the atmospheric temperature profile averaged over all latitudes and longitudes.}
+    \item<2-> Radiative Transfer Equation (RTE)
+    \note[item]<2->{RTE describes radiative processes.}
+    \item<3-> Fluid dynamics equations
+    \note[item]<3->{Fluid dynamics equations describe convective processes.}
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Hypotheses}
+\begin{frame}{Main hypotheses}
+  \begin{itemize}
+    \item<1-> Thermodynamic energy equation in Local Thermodynamic Equilibrium (LTE):
+    \begin{equation}
+      \label{eq:temperature_derivation}
+      \pdv{T}{t} = -\frac{1}{\varrho c_P} \pdv{q}{z}
+      \quad .
+    \end{equation}
+    \item<2-> Radiative-convective equilibrium.
+    \item<3-> Grey atmosphere.
+    \note[item]<3->{Quantities do not depend on the frequency of electromagnetic radiation.}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Secondary hypotheses}
+  \begin{itemize}
+    \item MC continue.
+  \end{itemize}
 \end{frame}
 
 \begin{frame}{Vertical coordinates}
