@@ -112,14 +112,79 @@
 
 
 \section{Radiative equilibrium}
-\begin{frame}{Analytical solution}
+\begin{frame}{Equations in radiative equilibrium}
   \begin{itemize}
-    \item RTE for non-scattering medium in LTE:
+    \item<1-> RTE for non-scattering medium in LTE:
       \begin{equation}
         \label{eq:RTE_analytical}
         \frac{1}{\mu} \pdv{L}{z} = B_\nu - L
         \quad .
       \end{equation}
+    \note[item]<1->{RTE describes radiance in a medium.}
+    \item<2-> Integration over frequency and solid angle.
+    \item<2-> Diffusion approximation: $\delta' = D \delta$.
+    \note[item]<2->{To describe irradiances, RTE is integrated over the whole spectrum of radiation and over the solid angle of a hemisphere.}
+    \item<3-> Equations for irradiances:
+      \begin{align}
+        \label{eq:irradiance_upward}
+        - \pdv*{E_\text{U}(t, \delta')}{\delta'} & = \sigma T(t, \delta')^4 - E_\text{U}(t, \delta') \quad , \\
+        \label{eq:irradiance_downward}
+        \pdv*{E_\text{D}(t, \delta')}{\delta'} & = \sigma T(t, \delta')^4 - E_\text{D}(t, \delta')
+        \quad .
+      \end{align}
+    \note[item]<3->{Equations for irradiances and temperature are written in terms of $\delta'$.}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Initial Value Problem}
+  \begin{itemize}
+    \item<1-> Steady state.
+    \note[item]<1->{Analytical solutions are found for temperature at the steady state.}
+    \item<2-> Initial conditions on irradiances:
+      \begin{align}
+        \label{eq:initial_downward}
+        E_\text{D}(0) = 0 \quad , \\
+        \label{eq:initial_upward}
+        E_\text{U}(0) = S_\text{t}
+        \quad .
+      \end{align}
+    \note[item]<2->{At TOA downward irradiance does not deposit energy and radiative equilibrium fixes upward irradiance, i.e. outgoing longwave radiation.}
+    \item<3-> Additional relations:
+      \begin{align}
+        \label{eq:irradiance_steady_state}
+        \odv*{\big( E_\text{U}(\delta') - E_\text{D}(\delta') \big)}{\delta'} = 0
+        \quad , \\
+        \label{eq:irradiance_steady_state_solution}
+        E_\text{U}(\delta') - E_\text{D}(\delta') = S_\text{t}
+        \quad .
+      \end{align}
+    \note[item]<3->{Hypotheses of atmosphere in radiative equilibrium at all altitudes and atmopshere transparent to radiation coming from outside the planet are equivalent to hypotheses of atmopshere in radiative equilibrium at TOA and steady state.}
+    \item<4-> Initial condition on temperature:
+      \begin{equation}
+        \label{eq:initial_temperature}
+        T(0) = \bigg( \frac{S_\text{t}}{2 \sigma} \bigg)^\frac{1}{4}
+        \quad .
+      \end{equation}
+    \note[item]<4->{Initial condition on temperature is obtained by combining all conditions on irradiances.}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Analytical solution}
+  \begin{itemize}
+    \item Temperature:
+      \begin{equation}
+        \label{eq:temperature_analytical_solution}
+        T(\delta) = \bigg( \frac{S_\text{t}}{2 \sigma} (1 + D \delta) \bigg)^\frac{1}{4}
+        \quad .
+      \end{equation}
+    \item Irradiances:
+      \begin{align}
+        \label{eq:irradiance_upward_solution}
+        E_\text{U}(\delta) & = \frac{S_\text{t}}{2} (2 + D \delta) \quad , \\
+        \label{eq:irradiance_downward_solution}
+        E_\text{D}(\delta) & = \frac{S_\text{t}}{2} D \delta
+        \quad .
+      \end{align}
   \end{itemize}
 \end{frame}
 
