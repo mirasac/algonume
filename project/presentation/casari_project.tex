@@ -53,12 +53,14 @@
 \begin{frame}{Hypotheses}
   \begin{itemize}
     \item<1-> Thermodynamic energy equation in Local Thermodynamic Equilibrium (LTE):
-    \begin{equation}
-      \label{eq:temperature_derivation}
-      \pdv{T}{t} = -\frac{1}{\varrho c_P} \pdv{q}{z}
-      \quad .
-    \end{equation}
+      \begin{equation}
+        \label{eq:temperature_derivation}
+        \pdv{T}{t} = -\frac{1}{\varrho c_P} \pdv{q}{z}
+        \quad .
+      \end{equation}
+    \note[item]<1->{Thermodynamic energy equation describes average vertical temperature profile.}
     \item<2-> Radiative-convective equilibrium.
+    \note[item]<2->{The study is conducted on an atmosphere in radiative-convective equilibrium.}
     \item<3-> Grey atmosphere.
     \note[item]<3->{Quantities do not depend on the frequency of electromagnetic radiation.}
   \end{itemize}
@@ -67,11 +69,17 @@
 \begin{frame}{Additional hypotheses}
   \begin{itemize}
     \item<1-> Hypotheses on the planet.
-    \note[item]<1->{Diurnal cycle, constant irradiance, constant Bond albedo, blackbody surface, constant gravitational acceleration.}
-    \item<2-> Hypotheses on the atmosphere composition.
+    \note[item]<1->{Diurnal cycle, constant irradiance, constant Bond albedo, surface emits blackbody radiation, constant gravitational acceleration.}
+    \item<2-> Hypotheses on the composition of atmosphere.
     \note[item]<2->{Hydrostatic equilibrium, constant specific heat at constant pressure, scattering is neglected, absorption coefficient depends only on altitude, constant mass attenutation coefficient, ideal gas.}
     \item<3-> Hypotheses on total heat flux.
     \note[item]<3->{Heat flux determined only by radiative and convective processes, two-stream approximation, numerical correction for convection.}
+    \item<3-> Resulting thermodynamic energy equation:
+      \begin{equation}
+        \label{eq:temperature}
+        \pdv{T}{t} = -\frac{1}{\varrho c_P} \pdv*{\big( E_\text{U} - E_\text{D} \big)}{z}
+        \quad .
+      \end{equation}
   \end{itemize}
 \end{frame}
 
@@ -83,18 +91,21 @@
         P(z) = P_\text{g} \exp{\bigg( - \frac{z - z_\text{g}}{z_0} \bigg)}
         \quad .
       \end{equation}
+    \note[item]{Obtained from hydrostatic equilibrium and ideal gas law.}
     \item Relation between optical depth and pressure:
       \begin{equation}
         \label{eq:optical_depth_pressure}
         \delta(P) = \frac{\mu_\text{m}}{g} (P - \PTOA)
         \quad .
       \end{equation}
+    \note[item]{Obtained from definition of optical depth, hydrostatic equilibrium and hypotheses on attenutation coefficient.}
     \item Relation between optical depth and altitude:
       \begin{equation}
         \label{eq:optical_depth_altitude_2}
         \delta(z) = \frac{\mu_\text{m}}{g} \bigg( P_\text{g} \exp{\bigg( - \frac{z - z_\text{g}}{z_0} \bigg)} - \PTOA \bigg)
         \quad .
       \end{equation}
+    \note[item]{Obtained by combining relations~\eqref{eq:pressure_altitude} and~\eqref{eq:optical_depth_pressure}.}
   \end{itemize}
 \end{frame}
 
