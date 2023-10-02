@@ -240,6 +240,44 @@
   }
 \end{frame}
 
+\begin{frame}{Time integration}
+  \begin{itemize}
+    \item<1-> Iterative procedure.
+    \item<2-> Additional normalisation:
+      \begin{equation}
+        \label{eq:temperature_normalisation}
+        Y_3 = \frac{T}{T_0}
+        \quad .
+      \end{equation}
+    \item<3-> Resulting system of PDEs:
+      \begin{equation}
+        \label{eq:numerical_radiative_equilibrium}
+        \left\{
+        \begin{array}{@{}l@{}}
+          \pdv*{Y_3(t, \delta)}{t} = \frac{\mu_\text{m} S_\text{t}}{c_P T_0} \pdv*{(Y_1(t, \delta) - Y_2(t, \delta))}{\delta} \\[0.5em]
+          \pdv*{Y_1(t, \delta)}{\delta} = D (Y_1(t, \delta) - Y_3(t, \delta)^4) \\[0.5em]
+          \pdv*{Y_2(t, \delta)}{\delta} = D (Y_3(t, \delta)^4 - Y_2(t, \delta))
+        \end{array}
+        \right.
+        \quad .
+      \end{equation}
+    \item<3-> Euler method for temporal integration.
+    \item<3-> Constant time step.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Errors of time integration at steady state}
+  \begin{center}
+    \includegraphics[keepaspectratio=true,width=0.9\textwidth]{errors_PDE}
+  \end{center}
+  \note{
+    \begin{itemize}
+      \item Errors between numerical and analytical solutions of a grey atmosphere in radiative equilibrium. Steady state is reached throught iterative temporal and spatial integrations. Precision is reduced by propagation of errors during successive iterations. Points at TOA are omitted being compatible with 0 within precision of double-precision floating-point numbers.
+      \item Time step is chosen arbitrarily to reduce the errors of irradiances below the precision of numeric values outputs.
+    \end{itemize}
+  }
+\end{frame}
+
 
 
 \section{Radiative-convective equilibrium}
