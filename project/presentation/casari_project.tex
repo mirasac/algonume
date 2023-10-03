@@ -91,21 +91,21 @@
         P(z) = P_\text{g} \exp{\bigg( - \frac{z - z_\text{g}}{z_0} \bigg)}
         \quad .
       \end{equation}
-    \note[item]{Obtained from hydrostatic equilibrium and ideal gas law.}
+    \note[item]{Equation~\eqref{eq:pressure_altitude} obtained from hydrostatic equilibrium and ideal gas law.}
     \item Relation between optical depth and pressure:
       \begin{equation}
         \label{eq:optical_depth_pressure}
         \delta(P) = \frac{\mu_\text{m}}{g} (P - \PTOA)
         \quad .
       \end{equation}
-    \note[item]{Obtained from definition of optical depth, hydrostatic equilibrium and hypotheses on attenutation coefficient.}
+    \note[item]{Equation~\eqref{eq:optical_depth_pressure} obtained from definition of optical depth, hydrostatic equilibrium and hypotheses on attenutation coefficient.}
     \item Relation between optical depth and altitude:
       \begin{equation}
         \label{eq:optical_depth_altitude_2}
         \delta(z) = \frac{\mu_\text{m}}{g} \bigg( P_\text{g} \exp{\bigg( - \frac{z - z_\text{g}}{z_0} \bigg)} - \PTOA \bigg)
         \quad .
       \end{equation}
-    \note[item]{Obtained by combining relations~\eqref{eq:pressure_altitude} and~\eqref{eq:optical_depth_pressure}.}
+    \note[item]{Equation~\eqref{eq:optical_depth_altitude_2} obtained by combining relations~\eqref{eq:pressure_altitude} and~\eqref{eq:optical_depth_pressure}.}
   \end{itemize}
 \end{frame}
 
@@ -120,7 +120,7 @@
         \frac{1}{\mu} \pdv{L}{z} = B_\nu - L
         \quad .
       \end{equation}
-    \note[item]<1->{RTE describes radiance in a medium.}
+    \note[item]<1->{RTE describes spectral radiance in a medium.}
     \item<2-> Integration over frequency and solid angle.
     \item<2-> Diffusion approximation: $\delta' = D \delta$.
     \note[item]<2->{To describe irradiances, RTE is integrated over the whole spectrum of radiation and over the solid angle of a hemisphere.}
@@ -158,7 +158,7 @@
         E_\text{U}(\delta') - E_\text{D}(\delta') = S_\text{t}
         \quad .
       \end{align}
-    \note[item]<3->{Hypotheses of atmosphere in radiative equilibrium at all altitudes and atmopshere transparent to radiation coming from outside the planet are equivalent to hypotheses of atmopshere in radiative equilibrium at TOA and steady state.}
+    \note[item]<3->{Hypotheses of atmosphere in radiative equilibrium at all altitudes and atmosphere transparent to radiation coming from outside the planet are equivalent to hypotheses of atmosphere in radiative equilibrium at TOA and steady state.}
     \item<4-> Initial condition on temperature:
       \begin{equation}
         \label{eq:initial_temperature}
@@ -218,7 +218,7 @@
 
 \begin{frame}{Errors of numerical solutions}
   \begin{center}
-    \includegraphics[keepaspectratio=true,width=0.9\textwidth]{errors}
+    \includegraphics[keepaspectratio=true,width=\textheight]{errors}
   \end{center}
   \note{
     \begin{itemize}
@@ -230,7 +230,7 @@
 
 \begin{frame}{Stability analysis}
   \begin{center}
-    \includegraphics[keepaspectratio=true,width=0.9\textwidth]{stability}
+    \includegraphics[keepaspectratio=true,width=\textheight]{stability}
   \end{center}
   \note{
     \begin{itemize}
@@ -279,7 +279,7 @@
 
 \begin{frame}{Errors of time integration at steady state}
   \begin{center}
-    \includegraphics[keepaspectratio=true,width=0.9\textwidth]{errors_PDE}
+    \includegraphics[keepaspectratio=true,width=\textheight]{errors_PDE}
   \end{center}
   \note{
     \begin{itemize}
@@ -305,14 +305,14 @@
 
 \begin{frame}{Temperature plot}
   \begin{center}
-    \includegraphics[keepaspectratio=true,width=0.9\textwidth]{temperature}
+    \includegraphics[keepaspectratio=true,width=\textheight]{temperature}
   \end{center}
   \note{Vertical temperature profile of a grey atmosphere. Continuous line is the analytical solution in radiative equilibrium, dashed line is the numerical solution in radiative-convective equilibrium. Convective adjustment is visible at lower altitudes, but values are affected by the low precision of the numerical procedure. A discontinuity is present at ground level due to the lack of heat exchange between surface and the lowest atmospheric layer.}
 \end{frame}
 
 \begin{frame}{Irradiances plot}
   \begin{center}
-    \includegraphics[keepaspectratio=true,width=0.9\textwidth]{irradiance}
+    \includegraphics[keepaspectratio=true,width=\textheight]{irradiance}
   \end{center}
   \note{Upward and downward irradiances in a grey atmosphere. Continuous line is the solution in radiative equilibrium, dashed line is the solution in radiative-convective equilibrium. Greater values than TOA at lower altitudes are indicators of greenhouse effect. Irradiances of the RCM are not directly subject to convective adjustment, but they are affected due to the dependence on temperature.}
 \end{frame}
@@ -322,7 +322,7 @@
 \section{Conclusion}
 \begin{frame}{Conclusion}
   \begin{itemize}
-    \item Vertical temperature profile of a grey atmopshere described in general by a system of PDEs and at the steady state by a system of ODEs.
+    \item Vertical temperature profile of a grey atmosphere described in general by a system of PDEs and at the steady state by a system of ODEs.
     \item Negligible errors for ODEs numerical solutions.
     \item Possible improvements on description of physical phenomena.
     \item Possible improvements on precision of PDEs numerical solutions.
