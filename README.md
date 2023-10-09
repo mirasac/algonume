@@ -33,10 +33,16 @@ Course topics are grouped in chapters as shown on the course web page. A chapter
 ### Exam
 The final exam consists in solving a physical problem with numerical techniques and explain the procedure through a brief report. More information on the course website.
 
+The topic of my project is the description of a grey atmosphere using a radiative-convective model. The project is prepared both as exam for this course and as part of the exam of course "Complex systems in climate physics" held by Professor Palazzi in the academic year 2022-2023.
+
 ## Repository structure
 Files and exercises used in each lesson are contained in folders named with the day of the relative lesson in [ISO format](https://en.wikipedia.org/wiki/ISO_8601#Dates) for calendar dates, with dashes.
 
-Folder `project` contains sources for code and report of the exam project.
+Folder `project` contains material about the project. More in detail:
+- folder `project/code` contains project source codes;
+- folder `project/data` contains output data from calculations;
+- folder `project/report` contains images and material about the report presented during the exam of this course;
+- folder `project/presentation` contains material about the presentation used during the exam of course "Complex systems in climate physics".
 
 ## Local environment setup
 I have a PC with Windows 10 but a Unix environment is mandatory for the course. Since I already have a VM with an Ubuntu image, I use it for the purpose.
