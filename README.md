@@ -36,12 +36,7 @@ The final exam consists in solving a physical problem with numerical techniques 
 ## Repository structure
 Files and exercises used in each lesson are contained in folders named with the day of the relative lesson in [ISO format](https://en.wikipedia.org/wiki/ISO_8601#Dates) for calendar dates, with dashes.
 
-Folder `project` contains material about the project. More in detail:
-- folder `project/code` contains project source codes;
-- folder `project/data` contains output data from calculations;
-- folder `project/report` contains images and material about the report presented during the exam of this course;
-- folder `project/presentation` contains material about the presentation used during the exam of course "Complex systems in climate physics";
-- text file `project/Notes.md` lists notes and ideas written while reading literature and collecting material about the topic and during project development.
+Folder `project` contains material about the project.
 
 ## Local environment setup
 I have a PC with Windows 10 but a Unix environment is mandatory for the course. Since I already have a VM with an Ubuntu image, I use it for the purpose.
