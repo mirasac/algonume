@@ -31,9 +31,7 @@ Course topics are grouped in chapters as shown on the course web page. A chapter
 20. 2022-12-02 - Chapter 10
 
 ### Exam
-The final exam consists in solving a physical problem with numerical techniques and explain the procedure through a brief report. More information on the course website.
-
-The topic of my project is the description of a grey atmosphere using a radiative-convective model. The project is prepared both as exam for this course and as part of the exam of course "Complex systems in climate physics" held by Professor Palazzi in the academic year 2022-2023.
+The final exam consists in solving a physical problem with numerical techniques and explain the procedure through a brief report. More information on the course website. A brief description of my project can be found in [project/README.md](https://github.com/mirasac/algonume/blob/main/project/README.md).
 
 ## Repository structure
 Files and exercises used in each lesson are contained in folders named with the day of the relative lesson in [ISO format](https://en.wikipedia.org/wiki/ISO_8601#Dates) for calendar dates, with dashes.
