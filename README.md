@@ -33,6 +33,8 @@ Course topics are grouped in chapters as shown on the course web page. A chapter
 ## Repository structure
 Files and exercises used in each lesson are contained in folders named with the day of the relative lesson in [ISO format](https://en.wikipedia.org/wiki/ISO_8601#Dates) for calendar dates, with dashes.
 
+Branch `sistbiol` contains code being used to experiment with the system studied for the exam of [Complex Systems for Biology](https://fisica-sc.campusnet.unito.it/do/storicocorsi.pl/Show?_id=ec3f_2223).
+
 ## Local environment setup
 I have a PC with Windows 10 but a Unix environment is mandatory for the course. Since I already have a VM with an Ubuntu image, I use it for the purpose.
 
