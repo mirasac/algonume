@@ -38,6 +38,8 @@ Files and exercises used in each lesson are contained in folders named with the 
 
 Folder `project` contains sources for code and report of the exam project.
 
+Branch `project` contains material about the original idea of the project: a radiative convective model used to study the effects of nuclear winter with the aim to reproduce the temperature-pressure-time plot in Fig. 3 of article *Nuclear Winter: Global Consequences of Multiple Nuclear Explosions* by Turco et al, also known as [TTAPS-1](https://doi.org/10.1126/science.222.4630.1283).
+
 ## Local environment setup
 I have a PC with Windows 10 but a Unix environment is mandatory for the course. Since I already have a VM with an Ubuntu image, I use it for the purpose.
 
